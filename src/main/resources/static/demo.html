@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>AT-UI Example</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/at-ui/dist/at.js"></script>
+    <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
 </head>
 <body>
-
+<div id="app" class="container">
+    <div class="row at-row no-gutter">
+        <div class="col-md-2">2</div>
+        <div class="col-md-2">2</div>
+        <div class="col-md-8">8</div>
+        <div class="col-md-2">2</div>
+        <div class="col-md-8">8</div>
+        <div class="col-md-2">2</div>
+    </div>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+    })
+</script>
 </body>
 </html>
