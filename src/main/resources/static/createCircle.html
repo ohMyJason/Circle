@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>创建圈子</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/at-ui/dist/at.js"></script>
+    <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="node_modules/css/top.css">
+    <link rel="stylesheet" href="node_modules/css/createCircle.css">
+</head>
+<body>
+<div id="app" class="container">
+    <div class="row top-header">
+        <div class="col-md-3 logo">
+            <img src="node_modules/images/logo.png" class="img-up">
+        </div>
+        <div class="col-md-9">
+            <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
+                <template slot="append">
+                    <i class="icon icon-search"></i>
+                </template>
+            </at-input>
+        </div>
+        <div class="col-md-7 col-md-offset-5">
+            <at-menu mode="horizontal" active-name="0">
+                <at-menu-item name="1"><i class="icon icon-home"></i>首页</at-menu-item>
+                <at-menu-item name="2"><i class="icon icon-aperture"></i>圈子</at-menu-item>
+                <at-menu-item name="3"><i class="icon icon-mail"></i>私信</at-menu-item>
+                <at-menu-item name="4"><i class="icon icon-user"></i>用户</at-menu-item>
+            </at-menu>
+        </div>
+    </div>
+    <div class="row create-margin">
+        <div class="col-md-6"></div>
+        <div class="col-md-12">
+            <div class="row"><h1 class="h1-circle">开始创建你的圈子！</h1></div>
+            <div class="row">
+                <form class="circle-form">
+                    圈子名称:<at-input v-model="circleName" placeholder="请输入名称" size="large"></at-input>
+                    圈子主题:<at-input v-model="circleTitle" placeholder="一句话描述你的圈子"></at-input>
+                    圈子头像:<br>
+                    <input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">
+                    <label for="file"><img :src="src" class="img-container"></label><br>
+                    <input type="submit" class="at-btn--primary at-btn--large" value="创建圈子">
+                </form>
+                <div class="rule">
+                    <h3>创建须知:</h3>
+                    <span>1.圈子创建者拥有圈子的管理权，负责定时审查圈子，删除违规信息！</span><br>
+                    <span>2.创建者账号需处于正常使用状态!</span><br>
+                    <span>3.创建者拥有删除圈子的权利，圈子一旦删除，圈子中的信息也将随之删除!</span><br>
+                    <h4>以下内容为违规信息</h4>
+                    <span>1.不符合社会主义核心价值观</span><br>
+                    <span>2.传播扩散虚假信息和不良信息</span><br>
+                    <span>3.宣传反动言论、宣传鬼神之说</span><br>
+                    <span>4.其他违规信息</span><br>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data:{
+            inputValue4:'',
+            src:'node_modules/images/upload.png',
+            circleName:'',
+            circleTitle:'',
+        },methods: {
+            getFile(e) {
+                let _this = this
+                var files = e.target.files[0]
+                if (!e || !window.FileReader) return  // 看支持不支持FileReader
+                let reader = new FileReader()
+                reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
+                reader.onloadend = function () {
+                    _this.src = this.result
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>
+
