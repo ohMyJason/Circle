@@ -29,3 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### springboot ###
+## **/resources/*.properties
+**/resources/generatorConfig.xml
