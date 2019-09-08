@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>用户界面</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/at-ui/dist/at.js"></script>
+    <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="node_modules/css/top.css">
+    <link rel="stylesheet" href="node_modules/css/personal.css">
+</head>
+<body>
+<div id="app" class="container">
+    <div class="row top-header">
+        <div class="col-md-3 logo">
+            <img src="node_modules/images/logo.png" class="img-up">
+        </div>
+        <div class="col-md-9">
+            <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
+                <template slot="append">
+                    <i class="icon icon-search"></i>
+                </template>
+            </at-input>
+        </div>
+        <div class="col-md-7 col-md-offset-5">
+            <at-menu mode="horizontal" active-name="0">
+                <at-menu-item name="1"><i class="icon icon-home"></i>首页</at-menu-item>
+                <at-menu-item name="2"><i class="icon icon-aperture"></i>圈子</at-menu-item>
+                <at-menu-item name="3"><i class="icon icon-mail"></i>私信</at-menu-item>
+                <at-menu-item name="4"><i class="icon icon-user"></i>用户</at-menu-item>
+            </at-menu>
+        </div>
+    </div>
+
+    <div class="create-margin">
+        <div class="row circle_frame">
+            <div class="col-md-3"></div>
+            <div class="col-md-18">
+
+                <div class="first_box flex-center">
+                    <input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">
+                    <label for="file"><img :src="src" class="icon-head"></label><br>
+                    <span class="nick_name">{{userName}}</span><br>
+                    <span class="sign_name">{{signName}}</span>
+                </div>
+
+                <div class="row second_box">
+                    <at-menu mode="horizontal" active-name="0" class="col-md-24">
+                        <at-menu-item name="1" class="col-md-offset-5">我的主页</at-menu-item>
+                        <at-menu-item name="2" class="col-md-offset-8">我的相册</at-menu-item>
+                    </at-menu>
+                </div>
+
+                <div class="row">
+                    <div class="left_box col-md-9">
+                        <div class="left_top_box flex-center">
+                            <at-breadcrumb separator="" class="row sel_list">
+                                <at-breadcrumb-item href="#" class="col-md-offset-1">123 关注</at-breadcrumb-item>
+                                <div class="box_29X1"></div>
+                                <at-breadcrumb-item href="#" class="col-md-offset-1">145 粉丝</at-breadcrumb-item>
+                                <div class="box_29X1"></div>
+                                <at-breadcrumb-item href="#" class="col-md-offset-1">156 微博</at-breadcrumb-item>
+                            </at-breadcrumb>
+                        </div>
+                        <div class="person_info flex-center">
+                            <span><a>编辑个人资料</a></span>
+                        </div>
+                    </div>
+                    <div class="right_box col-md-15">
+                        <div class="row nav_bar">
+                            <div class="choose_item col-md-15">
+                                <at-menu mode="horizontal" active-name="0" class="menu_choose">
+                                    <at-menu-item name="1" class="menu_item col-md-offset-2">全部</at-menu-item>
+                                    <at-menu-item name="2" class="menu_item col-md-offset-2">热门</at-menu-item>
+                                    <at-menu-item name="3" class="menu_item col-md-offset-2">更多</at-menu-item>
+                                </at-menu>
+                            </div>
+                            <at-input v-model="inputValue4" class="nav-search" placeholder="搜索我的微博" prepend-button>
+                                <template slot="prepend">
+                                    <i class="icon icon-search"></i>
+                                </template>
+                            </at-input>
+                        </div>
+                        <div class="personal_card">
+                            <div class="personal_box row">
+                                <img :src="src" class="user_img">
+                                <div class="user_info">
+                                    <span class="user_nickname">{{userName}}</span><br>
+                                    <span class="publish_date">{{date}} 来自 红米Redmi</span>
+                                </div>
+                            </div>
+                            <at-textarea v-model="inputValue2" min-rows="1" max-rows="8" placeholder="这里输入内容，请输入多行" disabled></at-textarea>
+                            <div class="img_list">
+                                <img src="node_modules/images/upload.png" class="publish_img">
+                                <img src="node_modules/images/upload.png" class="publish_img">
+                            </div>
+                            <div class="box_49X1"></div>
+                            <div>
+                                <at-menu mode="horizontal" active-name="0">
+                                    <at-menu-item name="1" class="col-md-offset-2">阅读 36</at-menu-item>
+                                    <at-menu-item name="2" class="col-md-offset-2"><i class="icon icon-external-link"></i>转发</at-menu-item>
+                                    <at-menu-item name="3" class="col-md-offset-2"><i class="icon icon-message-square"></i>评论</at-menu-item>
+                                    <at-menu-item name="4" class="col-md-offset-2"><i class="icon icon-thumbs-up"></i>赞</at-menu-item>
+                                </at-menu>
+                            </div>
+                        </div>
+
+                        <div class="personal_card">
+                            <div class="personal_box row">
+                                <img :src="src" class="user_img">
+                                <div class="user_info">
+                                    <span class="user_nickname">{{userName}}</span><br>
+                                    <span class="publish_date">{{date}} 来自 红米Redmi</span>
+                                </div>
+                            </div>
+                            <at-textarea v-model="inputValue2" min-rows="1" max-rows="8" placeholder="这里输入内容，请输入多行" disabled></at-textarea>
+                            <div class="img_list">
+                                <img src="node_modules/images/upload.png" class="publish_img">
+                                <img src="node_modules/images/upload.png" class="publish_img">
+                            </div>
+                            <div class="box_49X1"></div>
+                            <div>
+                                <at-menu mode="horizontal" active-name="0">
+                                    <at-menu-item name="1" class="col-md-offset-2">阅读 36</at-menu-item>
+                                    <at-menu-item name="2" class="col-md-offset-2"><i class="icon icon-external-link"></i>转发</at-menu-item>
+                                    <at-menu-item name="3" class="col-md-offset-2"><i class="icon icon-message-square"></i>评论</at-menu-item>
+                                    <at-menu-item name="4" class="col-md-offset-2"><i class="icon icon-thumbs-up"></i>赞</at-menu-item>
+                                </at-menu>
+                            </div>
+                        </div>
+
+                        <div class="pagination ">
+                            <at-pagination :total="100" show-quickjump></at-pagination>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data:{
+            inputValue4:'',
+            src:'node_modules/images/head.png',
+            userName:'用户昵称69096',
+            signName:'个性签名',
+            date:'8月31日 19:30'
+        },methods: {
+            getFile(e) {
+                let _this = this
+                var files = e.target.files[0]
+                if (!e || !window.FileReader) return  // 看支持不支持FileReader
+                let reader = new FileReader()
+                reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
+                reader.onloadend = function () {
+                    _this.src = this.result
+                }
+            }
+        }
+    })
+</script>
+</html>
