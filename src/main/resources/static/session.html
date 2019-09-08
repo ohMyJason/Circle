@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>私信</title>
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/session.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/session.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row" id="top20">
+        <!-- 会话列表 -->
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 col-lg-offset-1" id="ConversationList">
+            <!-- 个人信息 -->
+            <div class="row" id="userInfo">
+                <!-- 头像 -->
+                <div class="imgBox left">
+                    <img :src="userInfo.avatarUrl" alt="用户头像" class="imgSize">
+                </div>
+                <!-- 用户名 -->
+                <div class=left">
+                    <span v-text="userInfo.userName" id="myName"></span>
+                </div>
+                <!-- 顶部logo -->
+                <div id="aLogo" class="right">
+                    <div class="aLogoBox left">
+                        one
+                    </div>
+                    <div class="aLogoBox right">
+                        two
+                    </div>
+                </div>
+            </div>
+            <!-- 搜索栏 -->
+            <div class="row" id="listSearch" style="background-color: #232212">
+                好友列表
+<!--                <input type="text" class="form-control" placeholder="查找联系人或群" id="searchBox">-->
+            </div>
+            <!-- 会话 -->
+            <div class="row list" v-for="(item,i) in userList">
+                <!-- 头像 -->
+                <div class="imgBox left">
+                    <img :src="item.avatarUrl" alt="用户头像" class="imgSize">
+                </div>
+                <!-- 用户名 -->
+                <div class=left">
+                    <span class="userName" v-text="item.userName"></span>
+                </div>
+                <!-- 消息概况 -->
+                <div>
+                    <span class="listText" v-text = "item.content"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 会话详情 -->
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" id="ConversationDetails">
+            <!-- 历史消息$联系人信息 -->
+            <div class="row" id="message">
+                <!-- 顶部：联系人信息 -->
+                <div id="messageTitle">
+                    <span id="contactName" class="left">吴彦祖</span>
+                    <div class="right" id="newGroupTalk">
+                        three
+                    </div>
+                </div>
+                <!-- 历史消息 -->
+                <div id = "msgContent" >
+<!--                    <div >-->
+                        <!-- 接收信息示例 -->
+                        <div class="messageBigBox left">
+                            <!-- 信息发送时间 -->
+                            <div class="time">
+                                <span>昨天</span>
+                            </div>
+                            <!-- 用户的头像 -->
+                            <div class="smallImgBox left">
+                                <img src="images/2.jpg" alt="用户头像" class="imgSize">
+                            </div>
+                            <div class="messageMiddleBox left">
+                                <div class="messageBox">
+                                    <p>
+                                        <!-- 你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好-->
+                                        你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+                                        你好你好你好
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 发送信息示例 -->
+                        <div class="messageBigBox left">
+                            <!-- 信息发送时间 -->
+                            <div class="time">
+                                <span>昨天</span>
+                            </div>
+                            <!-- 用户的头像 -->
+                            <div class="smallImgBox right">
+                                <img src="images/1.jpg" alt="用户头像" class="imgSize">
+                            </div>
+                            <div class="messageMiddleBox right">
+                                <div class="messageBox right">
+                                    <p>
+                                        <!-- 你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好-->
+                                        你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+                                        你好你好你好
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 接收信息示例 -->
+                        <div class="messageBigBox left">
+                            <!-- 信息发送时间 -->
+                            <div class="time">
+                                <span>昨天</span>
+                            </div>
+                            <!-- 用户的头像 -->
+                            <div class="smallImgBox left">
+                                <img src="images/2.jpg" alt="用户头像" class="imgSize">
+                            </div>
+                            <div class="messageMiddleBox left">
+                                <div class="messageBox">
+                                    <p>
+                                        <!-- 你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好-->
+<!--                                        你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好-->
+                                        你好你好你好
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 发送信息示例 -->
+                        <div class="messageBigBox left">
+                            <!-- 信息发送时间 -->
+                            <div class="time">
+                                <span>昨天</span>
+                            </div>
+                            <!-- 用户的头像 -->
+                            <div class="smallImgBox right">
+                                <img src="images/1.jpg" alt="用户头像" class="imgSize">
+                            </div>
+                            <div class="messageMiddleBox right">
+                                <div class="messageBox right">
+                                    <p>
+                                        <!-- 你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好-->
+                                        你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+                                        你好你好你好
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+<!--                    </div>-->
+                </div>
+            </div>
+            <!-- 输入 -->
+            <div class="row" id="editBox">
+                <div id="inputLogo">
+                    <div class="bLogoBox left">four</div>
+                    <div class="bLogoBox left">five</div>
+                    <div class="bLogoBox left">six</div>
+                    <div class="bLogoBox left">seven</div>
+                </div>
+                <!-- 输入内容 -->
+                <textarea rows="5" cols="91" id="inputText"  placeholder="按下Enter回车键发送内容"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    new Vue({
+        el:"#ConversationList",
+        data:{
+            userInfo:{
+                userId:"",
+                userName:"用户名",
+                avatarUrl:"images/1.jpg"
+            },
+            userList:[{
+                userId:"",
+                userName:"联系人一",
+                avatarUrl:"images/2.jpg",
+                content:"我是消息一"
+            },{
+                userId:"",
+                userName:"联系人二",
+                avatarUrl:"images/3.jpg",
+                content:"我是消息二"
+            },{
+                userId:"",
+                userName:"联系人三",
+                avatarUrl:"images/4.jpg",
+                content:"我是消息三"
+            }],
+        }
+    })
+
+</script>
+
+
+</body>
+</html>
