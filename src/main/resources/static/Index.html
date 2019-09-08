@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>AT-UI Example</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/at-ui/dist/at.js"></script>
+    <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="node_modules/css/top.css">
+    <link rel="stylesheet" href="node_modules/css/Index.css">
+    <style>
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="container">
+    <div class="row top-header">
+        <div class="col-md-3 logo">
+            <img src="node_modules/images/logo.png" class="img-up">
+        </div>
+        <div class="col-md-9">
+            <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
+                <template slot="append">
+                    <i class="icon icon-search"></i>
+                </template>
+            </at-input>
+        </div>
+        <div class="col-md-7 col-md-offset-5">
+            <at-menu mode="horizontal" active-name="0">
+                <at-menu-item name="1"><i class="icon icon-home"></i>首页</at-menu-item>
+                <at-menu-item name="2"><i class="icon icon-aperture"></i>圈子</at-menu-item>
+                <at-menu-item name="3"><i class="icon icon-mail"></i>私信</at-menu-item>
+                <at-menu-item name="4"><i class="icon icon-user"></i>用户</at-menu-item>
+            </at-menu>
+        </div>
+    </div>
+</div>
+<!--<div id="photo-index">-->
+<!--    <div class="item">-->
+<!--        <img :src="datalist[currentIndex]">-->
+<!--    </div>-->
+<!--    <div class="page" v-if="this.datalist.length >1">-->
+<!--        <ul>-->
+<!--            <li @click="gotoPage(prevIndex)">&lt;</li>-->
+<!--            <li  v-for="(item,index) in datalist"  @click="gotoPage(index)":class="{'current':currentIndex==index}">{{index+1}}</li>-->
+<!--            <li @click="gotoPage(nextIndex)">&gt;</li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<script>
+    new Vue({
+        el: '#app',
+        data:{
+            inputValue4:''
+        }
+    })
+    // new Vue({
+    //     el:'Index',
+    //     data:{
+    //         datalist:["node_modules/images/1111.png","node_modules/images/2222.png","node_modules/images/3333.png"],
+    //         currentIndex:0,
+    //         index:0,
+    //         timer:null
+    //     },
+    //     method:{
+    //         gotoPage(index){
+    //             this.currentIndex=index;
+    //         }
+    //     },
+    //     computed:{
+    //         prevIndex(){
+    //             //上一张
+    //             if(this.currentIndex==0){
+    //                 return this.datalist.length-1;
+    //             }else{
+    //                 return this.currentIndex-1;
+    //             }
+    //         },
+    //         //下一张
+    //         nextIndex()
+    //         {
+    //             if(this.currentIndex==this.datalist.length-1)
+    //             {
+    //                 return 0;
+    //             }else{
+    //                 return this.currentIndex+1;
+    //             }
+    //         },
+    //         runInv(){
+    //             this.timer=setInterval(()=>{
+    //                 this.gotoPage(this.nextIndex)
+    //             },1000)
+    //         }
+    //
+    //     }
+    //
+    // })
+
+
+
+</script>
+</body>
+</html>
