@@ -49,6 +49,10 @@
             <div class="items" @click="change" @blur="chnage1"><a href="#">圈子</a></div>
             <div class="items" @click="change" @blur="chnage1"><a href="#">私信</a></div>
             <div class="items" @click="change" @blur="chnage1"><a href="#">我的</a></div>
+<!--            <at-menu router>-->
+<!--                <at-menu-item>圈子</at-menu-item>-->
+<!--            </at-menu>-->
+<!--            <at-menu-item>圈子</at-menu-item>-->
 
 
         </div>
@@ -168,7 +172,7 @@
         },
         method:{
             change:function () {
-                this.target.style.backgroundColor=red;
+                this.css(backgroundColor=red);
             },
             change1:function () {
 
