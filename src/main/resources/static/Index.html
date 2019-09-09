@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>AT-UI Example</title>
+    <title>首页</title>
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/at-ui/dist/at.js"></script>
     <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="node_modules/css/top.css">
     <link rel="stylesheet" href="node_modules/css/Index.css">
+    <link rel="stylesheet" href="node_modules/layui/css/layui.css" media="all">
     <style>
 
         [v-cloak] {
@@ -39,68 +40,143 @@
         </div>
     </div>
 </div>
-<!--<div id="photo-index">-->
-<!--    <div class="item">-->
-<!--        <img :src="datalist[currentIndex]">-->
-<!--    </div>-->
-<!--    <div class="page" v-if="this.datalist.length >1">-->
-<!--        <ul>-->
-<!--            <li @click="gotoPage(prevIndex)">&lt;</li>-->
-<!--            <li  v-for="(item,index) in datalist"  @click="gotoPage(index)":class="{'current':currentIndex==index}">{{index+1}}</li>-->
-<!--            <li @click="gotoPage(nextIndex)">&gt;</li>-->
-<!--        </ul>-->
-<!--    </div>-->
-<!--</div>-->
+<div id="contain" >
+    <div  class="row circle_frame">
+        <div class="col-md-3" id="left-item">
+            <div class="items" @click="change">
+                <a href="#">首页</a>
+            </div>
+            <div class="items" @click="change" @blur="chnage1"><a href="#">圈子</a></div>
+            <div class="items" @click="change" @blur="chnage1"><a href="#">私信</a></div>
+            <div class="items" @click="change" @blur="chnage1"><a href="#">我的</a></div>
 
 
+        </div>
+        <div  class="col-md-15" >
+            <div class="layui-carousel" id="test10" class="photo-size">
+                <div carousel-item="">
+                    <div><img src="node_modules/images/1111.png"></div>
+                    <div><img src="node_modules/images/2222.png"></div>
+                    <div><img src="node_modules/images/3333.png"></div>
+                    <div><img src="node_modules/images/beijing.jpg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="right-top">
+                <div class="login-box">
+                    <div class="login-inner">
+                        <div class="header">账号登陆</div>
+                        <hr>
+                        <div class="inputbox">
+                            <div class="tag" >
+                                <i class="icon icon-user"></i>
+                            </div>
+                            <input type="text" placeholder="请输入账号" onclick="this.placeholder='' " style="width: 200px;height: 28px">
+
+                        </div>
+                        <div class="inputbox">
+                            <div class="tag" >
+                                <i class="icon icon-user"></i>
+                            </div>
+                            <input type="text" placeholder="请输入密码" onclick="this.placeholder=''" style="width: 200px;height: 28px">
+                        </div>
+                        <div class="tip">
+                            <input type="checkbox">
+                            <span>记住我</span>
+                            <span class="nego">忘记密码</span>
+                        </div>
+<!--                        //鼠标放至上面就变色-->
+                        <div class="loginbutton" @blur="turn">
+                            <span style="color: white">立即登陆</span>
+                        </div>
+                        <div class="tip">
+                            还没有账号？
+                            <span ><a href="#" style="color: #c7254e">立刻注册</a></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+<script src="node_modules/layui/layui.js" charset="utf-8"></script>
+
+<script>
+    layui.use(['carousel', 'form'], function(){
+        var carousel = layui.carousel
+            ,form = layui.form;
+        //图片轮播
+        carousel.render({
+            elem: '#test10'
+            ,width: '700px'
+            ,height: '440px'
+            ,interval: 5000
+        });
+
+
+        var $ = layui.$, active = {
+            set: function(othis){
+                var THIS = 'layui-bg-normal'
+                    ,key = othis.data('key')
+                    ,options = {};
+
+                othis.css('background-color', '#5FB878').siblings().removeAttr('style');
+                options[key] = othis.data('value');
+                ins3.reload(options);
+            }
+        };
+
+        //监听开关
+        form.on('switch(autoplay)', function(){
+            ins3.reload({
+                autoplay: this.checked
+            });
+        });
+
+        $('.demoSet').on('keyup', function(){
+            var value = this.value
+                ,options = {};
+            if(!/^\d+$/.test(value)) return;
+
+            options[this.name] = value;
+            ins3.reload(options);
+        });
+
+        //其它示例
+        $('.demoTest .layui-btn').on('click', function(){
+            var othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        });
+    });
+</script>
 <script>
     new Vue({
         el: '#app',
         data:{
             inputValue4:''
+        },
+        method:{
+            change:function () {
+                this.style
+                i9
+
+            },
+            change1:function () {
+
+            },
         }
     })
-    // new Vue({
-    //     el:'Index',
-    //     data:{
-    //         datalist:["node_modules/images/1111.png","node_modules/images/2222.png","node_modules/images/3333.png"],
-    //         currentIndex:0,
-    //         index:0,
-    //         timer:null
-    //     },
-    //     method:{
-    //         gotoPage(index){
-    //             this.currentIndex=index;
-    //         }
-    //     },
-    //     computed:{
-    //         prevIndex(){
-    //             //上一张
-    //             if(this.currentIndex==0){
-    //                 return this.datalist.length-1;
-    //             }else{
-    //                 return this.currentIndex-1;
-    //             }
-    //         },
-    //         //下一张
-    //         nextIndex()
-    //         {
-    //             if(this.currentIndex==this.datalist.length-1)
-    //             {
-    //                 return 0;
-    //             }else{
-    //                 return this.currentIndex+1;
-    //             }
-    //         },
-    //         runInv(){
-    //             this.timer=setInterval(()=>{
-    //                 this.gotoPage(this.nextIndex)
-    //             },1000)
-    //         }
-    //
-    //     }
-    //
-    // })
 
 
 
