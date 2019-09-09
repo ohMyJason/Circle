@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>个人信息</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/at-ui/dist/at.js"></script>
+    <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="node_modules/css/top.css">
+    <link rel="stylesheet" href="node_modules/css/settingInfo.css">
+</head>
+<body>
+<div id="app" class="container">
+    <div class="row top-header">
+        <div class="col-md-3 logo">
+            <img src="node_modules/images/logo.png" class="img-up">
+        </div>
+        <div class="col-md-9">
+            <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
+                <template slot="append">
+                    <i class="icon icon-search"></i>
+                </template>
+            </at-input>
+        </div>
+        <div class="col-md-7 col-md-offset-5">
+            <at-menu mode="horizontal" active-name="0">
+                <at-menu-item name="1"><i class="icon icon-home"></i>首页</at-menu-item>
+                <at-menu-item name="2"><i class="icon icon-aperture"></i>圈子</at-menu-item>
+                <at-menu-item name="3"><i class="icon icon-mail"></i>私信</at-menu-item>
+                <at-menu-item name="4"><i class="icon icon-user"></i>用户</at-menu-item>
+            </at-menu>
+        </div>
+    </div>
+
+    <div class="create-margin">
+        <div class="row circle_frame">
+            <div class="col-md-3"></div>
+            <div class="col-md-18 setting_info">
+                <div class="text_481X1">账号设置</div>
+                <div class="box_480X1"></div>  <!--水平分隔线-->
+                <div class="account_envent">
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">登录名</span>
+                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">昵称</span>
+                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">密码</span>
+                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">手机号</span>
+                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">邮箱</span>
+                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">性别</span>
+                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">感情状况</span>
+                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">生日</span>
+                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">简介</span>
+                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">注册时间</span>
+                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">所在地</span>
+                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data:{
+            inputValue4:''
+        }
+    })
+</script>
+</html>
