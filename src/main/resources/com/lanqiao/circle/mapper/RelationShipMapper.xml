@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanqiao.circle.mapper.RelationShipMapper" >
+  <resultMap id="BaseResultMap" type="com.lanqiao.circle.entity.RelationShip" >
+    <id column="blogger_id" property="bloggerId" jdbcType="INTEGER" />
+    <id column="fans_id" property="fansId" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    blogger_id, fans_id, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.lanqiao.circle.entity.RelationShipKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_relation
+    where blogger_id = #{bloggerId,jdbcType=INTEGER}
+      and fans_id = #{fansId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.lanqiao.circle.entity.RelationShipKey" >
+    delete from tb_relation
+    where blogger_id = #{bloggerId,jdbcType=INTEGER}
+      and fans_id = #{fansId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lanqiao.circle.entity.RelationShip" >
+    insert into tb_relation (blogger_id, fans_id, is_delete
+      )
+    values (#{bloggerId,jdbcType=INTEGER}, #{fansId,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.RelationShip" >
+    insert into tb_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bloggerId != null" >
+        blogger_id,
+      </if>
+      <if test="fansId != null" >
+        fans_id,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bloggerId != null" >
+        #{bloggerId,jdbcType=INTEGER},
+      </if>
+      <if test="fansId != null" >
+        #{fansId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lanqiao.circle.entity.RelationShip" >
+    update tb_relation
+    <set >
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where blogger_id = #{bloggerId,jdbcType=INTEGER}
+      and fans_id = #{fansId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lanqiao.circle.entity.RelationShip" >
+    update tb_relation
+    set is_delete = #{isDelete,jdbcType=INTEGER}
+    where blogger_id = #{bloggerId,jdbcType=INTEGER}
+      and fans_id = #{fansId,jdbcType=INTEGER}
+  </update>
+</mapper>
