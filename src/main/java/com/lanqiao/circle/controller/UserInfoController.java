@@ -25,24 +25,26 @@ public class UserInfoController {
 
     /**
      * 查询用户基本信息
-     * @Param   头部加token
-     * @return  Users
+     *
+     * @return Users
+     * @Param 头部加token
      */
     @UserLoginToken
     @PostMapping("getUserInfo")
-    public Result getUserInfoByUserId(HttpServletRequest httpServletRequest){
+    public Result getUserInfoByUserId(HttpServletRequest httpServletRequest) {
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
         return userInfoService.getUserInfoByUserId(userId);
     }
 
     /**
      * 修改用户基本信息
-     * @Param  头部加token, Users
-     * @return  int
+     *
+     * @return int
+     * @Param 头部加token, Users
      */
     @UserLoginToken
     @PostMapping("updateUserInfo")
-    public Result updateUserInfo(HttpServletRequest httpServletRequest,Users users){
+    public Result updateUserInfo(HttpServletRequest httpServletRequest, Users users) {
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
         users.setUserId(userId);
         return userInfoService.updateUserInfo(users);
@@ -50,44 +52,61 @@ public class UserInfoController {
 
     /**
      * 自己查询粉丝
-     * @Param  头部加token
-     * @return  FansList
+     *
+     * @return FansList
+     * @Param 头部加token
      */
     @UserLoginToken
     @PostMapping("getAllFansSelf")
-    public Result getAllFansToken(HttpServletRequest httpServletRequest){
+    public Result getAllFansToken(HttpServletRequest httpServletRequest) {
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
         return userInfoService.getFansByUserId(userId);
     }
+
     /**
      * 查询别人的粉丝
-     * @Param  userId
-     * @return  FansList
+     *
+     * @return FansList
+     * @Param userId
      */
     @PostMapping("getAllFansOthers")
-    public Result getAllFansByUserId(@RequestParam(name = "userId")int userId){
+    public Result getAllFansByUserId(@RequestParam(name = "userId") int userId) {
         return userInfoService.getFansByUserId(userId);
     }
+
     /**
      * 自己查询关注
-     * @Parm  头部加token
-     * @return  BloggerList
+     *
+     * @return BloggerList
+     * @Param 头部加token
      */
     @UserLoginToken
     @PostMapping("getAllBloggerSelf")
-    public Result getAllBloggerByToken(HttpServletRequest httpServletRequest){
+    public Result getAllBloggerByToken(HttpServletRequest httpServletRequest) {
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
         return userInfoService.getBloggerByUserId(userId);
     }
 
     /**
      * 查询别人的关注
-     * @Parm  头部加token
-     * @return  BloggerList
+     *
+     * @return BloggerList
+     * @Param 头部加token
      */
     @PostMapping("getAllBloggerOthers")
-    public Result getAllBloggerByUserId(@RequestParam(name = "userId")int userId){
+    public Result getAllBloggerByUserId(@RequestParam(name = "userId") int userId) {
         return userInfoService.getBloggerByUserId(userId);
     }
 
+    /**
+     * 查看自己首页
+     * @Param 头部加token
+     * return  UserAllInfo
+     */
+    @UserLoginToken
+    @PostMapping("getUserAvatarAndRelation")
+    public Result getUserIndex(HttpServletRequest httpServletRequest) {
+        int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        return userInfoService.getUserAvatarAndRelation(userId);
+    }
 }

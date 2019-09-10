@@ -4,6 +4,9 @@ import com.lanqiao.circle.entity.Users;
 import com.lanqiao.circle.util.Result;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+
 public interface UserInfoService {
     // 查询用户基本信息
     public Result getUserInfoByUserId(int userId);
@@ -17,5 +20,10 @@ public interface UserInfoService {
     // 查询用户关注
     public Result getBloggerByUserId(int userId);
 
+    // 查看主页头像和关注
+    public Result getUserAvatarAndRelation(int userId);
+
+    // 查看主页微博
+//    public Result getUserAllInfo(int userId);
 
 }

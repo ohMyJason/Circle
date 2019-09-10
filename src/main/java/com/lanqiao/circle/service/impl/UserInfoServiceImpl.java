@@ -1,6 +1,7 @@
 package com.lanqiao.circle.service.impl;
 
 import com.lanqiao.circle.entity.Users;
+import com.lanqiao.circle.mapper.BlogMapper;
 import com.lanqiao.circle.mapper.RelationShipMapper;
 import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.UserInfoService;
@@ -18,6 +19,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     RelationShipMapper relationShipMapper;
+
+    @Autowired
+    BlogMapper blogMapper;
+
     @Override
     public Result getUserInfoByUserId(int userId) {
         try {
@@ -64,4 +69,31 @@ public class UserInfoServiceImpl implements UserInfoService {
             return Result.createByFailure("操作异常，请联系管理人员！");
         }
     }
+
+    @Override
+    public Result getUserAvatarAndRelation(int userId) {
+        try {
+            HashMap<String,String> hashMap= new HashMap<>();
+            Users users = usersMapper.selectByPrimaryKey(userId);
+            hashMap.put("userName",users.getUserName());
+            hashMap.put("avatarUrl",users.getAvatarUrl());
+            List<HashMap> allFans = relationShipMapper.getFansByUserId(userId);
+            hashMap.put("fansNum",String.valueOf(allFans.size()));
+            List<HashMap> allBlogger = relationShipMapper.getBloggerByUserId(userId);
+            hashMap.put("bloggerNum",String.valueOf(allBlogger.size()));
+            return Result.createSuccessResult(hashMap);
+        }catch (Exception e){
+            return Result.createByFailure("操作异常，请联系管理人员！");
+        }
+
+    }
+
+//    @Override
+//    public Result getUserAllInfo(int userId) {
+//        try{
+//            List<HashMap> userAllBlog = blogMapper.getUserAllblogByUserId(userId);
+//            return Result.createSuccessResult(userAllBlog.size(),userAllBlog);
+//        }catch (Exception e){
+//        }
+//    }
 }
