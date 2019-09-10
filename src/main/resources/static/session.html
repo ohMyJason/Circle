@@ -9,8 +9,8 @@
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/js/session.js"></script>
 
-    <link  rel="stylesheet" href="node_modules/layui/css/modules/layer/default/layer.css"/>
-    <script type="text/javascript" src="node_modules/layui/lay/modules/layer.js"></script>
+    <link rel="stylesheet" href="node_modules/layui/css/layui.css">
+    <script src="node_modules/layui/layui.js"></script>
 </head>
 <body>
 <div class="container">
@@ -30,7 +30,7 @@
             </div>
             <!-- 搜索栏 -->
             <div class="row" id="friends" style="background-color: #232212">
-                好友列表
+                会话列表
             </div>
             <!-- 会话 -->
             <div class="row list" v-for="(item,i) in userList" @click = "clickFriends(i)">
@@ -67,7 +67,7 @@
                 <!-- 历史消息 -->
                 <div id = "msgContent" >
                     <!-- 接收信息示例 -->
-                    <div class="messageBigBox left" v-for="(item,i) in messageList" >
+                    <div class="messageBigBox left" v-for="(item,i) in messageList">
                         <!-- 信息发送时间 -->
                         <div class="time">
                             <span>{{item.sendTime}}</span>
@@ -82,26 +82,6 @@
                             </div>
                         </div>
                     </div>
-
-<!--                    &lt;!&ndash; 发送信息示例 &ndash;&gt;-->
-<!--                    <div class="messageBigBox left">-->
-<!--                        &lt;!&ndash; 信息发送时间 &ndash;&gt;-->
-<!--                        <div class="time">-->
-<!--                            <span>昨天</span>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash; 用户的头像 &ndash;&gt;-->
-<!--                        <div class="smallImgBox right">-->
-<!--                            <img src="node_modules/images/head.png" alt="用户头像" class="imgSize">-->
-<!--                        </div>-->
-<!--                        <div class="messageMiddleBox right">-->
-<!--                            <div class="messageBox right">-->
-<!--                                <p>-->
-<!--                                    你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好-->
-<!--                                    你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好-->
-<!--                                </p>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
             </div>
             <!-- 输入 -->
@@ -121,7 +101,7 @@
 <script>
 
     //绑定用户信息以及好友列表
-    var vm1 = new Vue({
+    new Vue({
         el:"#top20",
         data:{
             userInfo:{
@@ -133,19 +113,19 @@
                 userId:"2",
                 userName:"胡歌",
                 avatarUrl:"node_modules/images/2.jpg",
-                content:"这是最近的一条消息",
+                content:"进行截取长度处理，这是一个很长很长很长的话",
                 sendTime:"昨天"
             },{
                 userId:"3",
                 userName:"吴彦祖",
                 avatarUrl:"node_modules/images/3.jpg",
-                content:"这是最近的一条消息",
+                content:"进行截取长度处理，这是一个很长很长很长的话",
                 sendTime:"前天"
             },{
                 userId:"4",
                 userName:"迪丽热巴",
                 avatarUrl:"node_modules/images/4.jpg",
-                content:"暂时没有进行截取长度处理",
+                content:"进行截取长度处理，这是一个很长很长很长的话",
                 sendTime:"大前天"
             }],
             messageList:[{
@@ -230,8 +210,7 @@
             }
          }
     })
-
-    //判断inputText按下enter,将senderId（发送者）,userId（接收者）,sendTime（发送时间）,content（发送内容）
+    //判断inputText按下enter,将sessionId（发送者）,userId（接收者）,sendTime（发送时间）,content（发送内容）
     //传到后端，进行数据库操作，重新生成list，刷新历史信息界面
 </script>
 </body>
