@@ -21,12 +21,11 @@
             <div class="row" id="userInfo">
                 <!-- 头像 -->
                 <div class="imgBox left">
-                    <img :src="userInfo.avatarUrl" alt="用户头像" class="imgSize">
+                    <img :src="userInfo.avatar_url" alt="用户头像" class="imgSize">
                 </div>
                 <!-- 用户名 -->
                 <div class=left">
-<!--                    <span v-text="userInfo.userName" id="myName">{{userInfo.userName}}</span>-->
-                    <span  id="myName">{{userInfo.userName}}</span>
+                    <span v-text="userInfo.user_name" id="myName"></span>
                 </div>
             </div>
             <!-- 搜索栏 -->
@@ -102,37 +101,34 @@
 <script>
     //判断inputText按下enter,将sessionId（发送者）,userId（接收者）,sendTime（发送时间）,content（发送内容）
     //传到后端，进行数据库操作，重新生成list，刷新历史信息界面
-    $(function () {
-        function userInfo() {
-            $.ajax({
-                url:"/session/getUserInfo",
-                type:"post",
-                dataType:"json",
-                async:false,
-                data:{
-                    userId:1
-                },success:function (result) {
-                    if(result.code == 0){
-                        console.log(result.data);
-                        console.log(this.userInfo);
-                        this.userInfo = result.data;
-                        console.log(this.userInfo);
-                    }
-                }
-
-            })
-        }
-        // userInfo();
-    })
+    // $(function () {
+    //     function userInfo() {
+    //         $.ajax({
+    //             url:"/session/getUserInfo",
+    //             type:"post",
+    //             dataType:"json",
+    //             async:false,
+    //             data:{
+    //                 userId:1
+    //             },success:function (result) {
+    //                 if(result.code == 0){
+    //                     console.log(result.data);
+    //                     console.log(this.userInfo);
+    //                     this.userInfo = result.data;
+    //                     console.log(this.userInfo);
+    //                 }
+    //             }
+    //
+    //         })
+    //     }
+    //     // userInfo();
+    // })
 
     //绑定用户信息以及好友列表
     var vm = new Vue({
         el:"#top20",
-        data:function(){
+        data:{
             userInfo:{
-                userId:"",
-                userName:"qwe",
-                avatarUrl:""
             },
             userList:[{
                 userId:"2",
@@ -172,26 +168,6 @@
             }]
         },
         methods: {
-            qwe:function(){
-                var _this = this;
-                $.ajax({
-                    url:"/session/getUserInfo",
-                    type:"post",
-                    dataType:"json",
-                    async:false,
-                    data:{
-                        userId:1
-                    },success:function (result) {
-                        if(result.code == 0){
-                            console.log(result.data);
-                            console.log(_this.userInfo);
-                            _this.userInfo = result.data;
-                            console.log(_this.userInfo);
-                        }
-                    }
-
-                })
-            },
             clickFriends: function (i) {
                 //先将所有的list的背景颜色初始化，包括去掉右边框
                 $(".list").css({"background-color": "#383838"});
@@ -254,8 +230,21 @@
                 }
             }
         },
-        created:function(){
-            this.qwe();
+        created(){
+            $.ajax({
+                url:"/session/getUserInfo",
+                type:"post",
+                dataType:"json",
+                data:{
+                    userId:1
+                },success:function (result) {
+                    if(result.code == 0){
+                        console.log(result.data);
+                        vm.userInfo = result.data;
+                        console.log(vm.userInfo);
+                    }
+                }
+            })
         }
     })
 
