@@ -190,4 +190,11 @@
     select user_id as userId,user_name as userName
     from  tb_users
   </select>
+
+  <select id="selectUserByUserNameOrPhoneOrEmailAndPassword" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_users
+    where
+    user_name = #{userName} or phone = #{phone} or email = #{email} and password = #{password}
+  </select>
 </mapper>
