@@ -126,4 +126,16 @@
       is_delete = #{isDelete,jdbcType=INTEGER}
     where letter_id = #{letterId,jdbcType=INTEGER}
   </update>
+
+  <select id = "selectUserList" resultType="hashmap" parameterType="java.lang.Integer">
+    select user_id as 'userId',user_name as 'userName',avatar_url as 'avatarUrl' from tb_users where user_id in
+(select receiver_id from tb_letter where senter_id =#{senterId,jdbcType=INTEGER} UNION
+select senter_id from tb_letter where receiver_id =#{receiverId,jdbcType=INTEGER});
+  </select>
+
+  <select id="selecLastLetter" resultType="com.lanqiao.circle.entity.Letter" parameterType="com.lanqiao.circle.entity.Letter">
+     select senter_id,receiver_id,letter_content,resource_url,type,send_time   from tb_letter
+ where senter_id in (#{senterId,jdbcType=INTEGER},#{receiverId,jdbcType=INTEGER}) and receiver_id in (#{senterId,jdbcType=INTEGER},#{receiverId,jdbcType=INTEGER}) and is_delete != 1
+  order by send_time desc limit 1
+  </select>
 </mapper>
