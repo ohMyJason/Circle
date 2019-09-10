@@ -139,4 +139,8 @@
       is_delete = #{isDelete,jdbcType=INTEGER}
     where blog_id = #{blogId,jdbcType=INTEGER}
   </update>
+
+  <select id="getUserAllblogByUserId" resultType="hashmap">
+        select * from index_blog where userId = #{userId,jdbcType=INTEGER}
+  </select>
 </mapper>

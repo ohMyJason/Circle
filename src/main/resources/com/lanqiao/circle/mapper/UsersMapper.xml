@@ -195,4 +195,11 @@
     select user_id,user_name,avatar_url from tb_users
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
+
+  <select id="selectUserByUserNameOrPhoneOrEmailAndPassword" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_users
+    where
+    user_name = #{userName} or phone = #{phone} or email = #{email} and password = #{password}
+  </select>
 </mapper>

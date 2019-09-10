@@ -23,4 +23,6 @@ public interface UsersMapper {
     List<HashMap> getAllUser();
 
     HashMap selectUserInfo(Integer userId);
+
+    Users selectUserByUserNameOrPhoneOrEmailAndPassword(Users user);
 }
