@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="node_modules/css/top.css">
     <link rel="stylesheet" href="node_modules/css/circle.css">
     <style>
-        [v-cloak]{
+        [v-cloak] {
             display: none;
         }
     </style>
@@ -20,7 +20,7 @@
     <div id="app" class="row top-header">
         <div class="col-md-3 logo">
             <a href="#">
-            <img src="node_modules/images/logo.png" class="img-up">
+                <img src="node_modules/images/logo.png" class="img-up">
             </a>
         </div>
         <div class="col-md-9">
@@ -72,12 +72,9 @@
                 <span class="span-item" v-cloak>点赞：{{circleItem.blogLike}}</span>
             </div>
 
-            <div class="col-md-6 col-md-offset-4">
-    <!--            <h3>创建人:{{circleItem.createName}}</h3>-->
-    <!--            <h3>创建时间:{{circleItem.createTime}}</h3>-->
-            </div>
+            <div class="col-md-6 col-md-offset-4"></div>
             <div class="col-md-2">
-                <a><span class="all-circle">全部圈子 ></span></a><br>
+                <a><span class="all-circle">热门排行 ></span></a><br>
                 <a href="createCircle.html"><span class="all-circle">创建圈子 ></span></a>
             </div>
             <div class="col-md-3"></div>
@@ -100,7 +97,120 @@
     </div>
 
     <div id="circle-content">
-        <div class="row"></div>
+        <div class="row content-margin">
+            <div class="col-md-3"></div>
+
+            <div class="col-md-18">
+                <div class="content-show" v-for="(item,i) in blogInfoList">
+
+                    <!--         控制头           -->
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-1">
+                            <img :src="item.avatar" class="header-img">
+                        </div>
+                        <div class="col-md-8">
+                            <a href="#"><span v-text="item.userName" class="black-blue blog-belonger"></span></a>
+                        </div>
+                        <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 0">
+                            <at-tag color="success">原创</at-tag>
+                        </div>
+                        <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 1">
+                            <at-tag color="info">转载</at-tag>
+                        </div>
+                    </div>
+                    <!--        原创展示            -->
+                    <div v-if="item.isRepost == 0">
+                        <div class="row">
+                            <div class="col-md-18 col-md-offset-3">
+                                <span v-text="item.content"></span>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <div class="row" v-if="item.type == 2">
+                            <div class="col-md-18 col-md-offset-3">
+                                <video :src="item.resourceUrl" controls="controls" width="100%" height="260px">您的浏览器不支持播放该视频！</video>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <div class="row" v-if="item.type == 1">
+                            <div class="col-md-11 col-md-offset-3">
+                                <div v-for="(urlList,i) in item.resourceList" class="show-img" >
+                                    <img :src="urlList.img" class="all-img">
+                                </div>
+                            </div>
+                            <div class="col-md-10"></div>
+                        </div>
+                    </div>
+                    <!--      转载展示          -->
+
+                    <div v-if="item.isRepost == 1">
+                        <div class="row">
+                            <div class="col-md-18 col-md-offset-3">
+                                <span v-text="item.content"></span>
+                                <span v-if="item.blogInfo.isRepost == 1">
+                                    //<a href="" v-cloak>@{{item.blogInfo.userName}}&nbsp;{{item.blogInfo.content}}</a>
+                                </span>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <!--    原帖展示    -->
+                        <div v-if="item.blogInfo.isRepost == 0" class="row">
+                            <div class="col-md-18 col-md-offset-3 trans-show">
+                                <div class="row">
+                                    <div class="col-md-2 col-md-offset-1">
+                                        <img :src="item.blogInfo.avatar" class="header-img">
+                                    </div>
+                                    <div class="col-md-7 col-md-offset-1">
+                                        <a href="#"><span v-text="item.blogInfo.userName" class="black-blue blog-belonger"></span></a>
+                                    </div>
+                                    <div class="col-md-13"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-18 col-md-offset-3">
+                                        <span v-text="item.blogInfo.content"></span>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                </div>
+                                <div class="row" v-if="item.blogInfo.type == 2">
+                                    <div class="col-md-18 col-md-offset-3">
+                                        <video :src="item.blogInfo.resourceUrl" controls="controls" width="100%" height="260px">您的浏览器不支持播放该视频！</video>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                </div>
+                                <div class="row" v-if="item.blogInfo.type == 1">
+                                    <div class="col-md-13 col-md-offset-2">
+                                        <div v-for="(urlList,i) in item.blogInfo.resourceList" class="show-img" >
+                                            <img :src="urlList.img" class="all-img">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+
+                    <!--    评论点赞相关 -->
+                    <div class="row l-c-s">
+                        <div class="col-md-5">
+                            <a href="" @click.prevent="transflag = !transflag" class="icon icon-share a-font-20px">转发</a>
+                        </div>
+                        <div class="col-md-5">
+                            <a href="" @click.prevent="" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</a>
+                        </div>
+                        <div class="col-md-5">
+                            <a href="" @click.prevent="" class="icon icon-thumbs-up a-font-20px" v-cloak>{{item.likeNum}}</a>
+                        </div>
+                        <div class="col-md-9">
+                            <span class="font-16px" v-cloak>创建时间:{{item.createTime}}</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-md-3"></div>
+        </div>
     </div>
 
 
@@ -108,39 +218,147 @@
 <script>
     new Vue({
         el: '#app',
-        data:{
-            inputValue4:''
+        data: {
+            inputValue4: ''
         }
     })
     var vm1 = new Vue({
-        el:'#mid-search',
-        data:{
-            searchVal:'',
+        el: '#mid-search',
+        data: {
+            searchVal: '',
         }
     })
 
     var vm2 = new Vue({
         el: '#mid-title',
-        data:{
-                circleItem:{
-                    circleId:'',
-                    circleImgUrl : 'node_modules/images/upload.png',
-                    circleName: '搞笑圈',
-                    blogNum:'2',
-                    blogLike:'8',
-                    createName: '用户1',
-                    createTime: '2019-09-01',
-                    circleTitle: '分享身边的搞笑事情',
-                }
+        data: {
+            circleItem: {
+                circleId: '',
+                circleImgUrl: 'node_modules/images/upload.png',
+                circleName: '搞笑圈',
+                blogNum: '2',
+                blogLike: '8',
+                createName: '用户1',
+                createTime: '2019-09-01',
+                circleTitle: '分享身边的搞笑事情',
             }
+        }
     })
 
     var vm3 = new Vue({
         el: '#circle-content',
-        data:{
-
+        data: {
+            blogInfoList:[
+                {
+                    blogId:'1',
+                    userId:'',
+                    userName:'王某',
+                    avatar:'node_modules/images/upload.png',
+                    createTime:'2019-08-01 20:37:21',
+                    content:'？？？？',
+                    likeNum:'10',
+                    commentNum:'11',
+                    isRepost:'0',
+                    repostId:'',
+                    weight:'10',
+                    circleId:'',
+                    resourceUrl:'node_modules/video/videotest.mp4',
+                    resourceList:[],
+                    type:'2',
+                    blogInfo:{},
+                },{
+                    blogId:'2',
+                    userId:'',
+                    userName:'王某',
+                    avatar:'node_modules/images/upload.png',
+                    createTime:'2019-08-01 20:37:21',
+                    content:'？？？？',
+                    likeNum:'10',
+                    commentNum:'11',
+                    isRepost:'0',
+                    repostId:'',
+                    weight:'10',
+                    circleId:'',
+                    resourceUrl:'',
+                    resourceList:[{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'}],
+                    type:'1',
+                    blogInfo:{},
+                },{
+                    blogId:'3',
+                    userId:'',
+                    userName:'测试',
+                    avatar:'node_modules/images/upload.png',
+                    createTime:'2019-08-01 20:37:21',
+                    content:'一级转载',
+                    likeNum:'10',
+                    commentNum:'11',
+                    isRepost:'1',
+                    repostId:'',
+                    weight:'10',
+                    circleId:'',
+                    resourceUrl:'',
+                    resourceList:[],
+                    type:'0',
+                    blogInfo:{
+                        blogId:'',
+                        userId:'',
+                        userName:'王某',
+                        avatar:'node_modules/images/upload.png',
+                        createTime:'2019-08-01 20:37:21',
+                        content:'？？？？？',
+                        likeNum:'10',
+                        commentNum:'11',
+                        isRepost:'0',
+                        repostId:'',
+                        weight:'10',
+                        circleId:'',
+                        resourceUrl:'',
+                        resourceList:[{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'}],
+                        type:'1',
+                        blogInfo:{}
+                    },
+                }
+            ],
+            transflag : false,
+        },methods:{
+            add(){
+                var test = {blogId:'',
+                    userId:'',
+                    userName:'王某',
+                    avatar:'node_modules/images/upload.png',
+                    createTime:'2019-08-01 20:37:21',
+                    content:'？？？？',
+                    likeNum:'10',
+                    commentNum:'11',
+                    isRepost:'0',
+                    repostId:'',
+                    weight:'10',
+                    circleId:'',
+                    resourceUrl:'',
+                    resourceList:[{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'}],
+                    type:'1',
+                    blogInfo:{},};
+                this.blogInfoList.push(test);
+            }
+        },created(){
+            window.onscroll = function(){
+                //变量scrollTop是滚动条滚动时，距离顶部的距离
+                var scrollTop = document.documentElement.scrollTop||document.body.scrollTop;
+                //变量windowHeight是可视区的高度
+                var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+                //变量scrollHeight是滚动条的总高度
+                var scrollHeight = document.documentElement.scrollHeight||document.body.scrollHeight;
+                //滚动条到底部的条件
+                if(scrollTop+windowHeight==scrollHeight){
+                    //写后台加载数据的函数
+                    console.log("距顶部"+scrollTop+"可视区高度"+windowHeight+"滚动条总高度"+scrollHeight);
+                    vm3.add();
+                }
+            }
         }
     })
+
+
 </script>
 </body>
 </html>
