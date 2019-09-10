@@ -44,6 +44,11 @@
     <table id="usersInfo" lay-filter="test"></table>
 </div>
 <script src="node_modules/layui/layui.js"></script>
+<script type="text/html" id="barDemo">
+<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
 <script>
     layui.use('element', function(){
         var element = layui.element;
@@ -63,10 +68,13 @@
         //第一个实例
         table.render({
             elem: '#usersInfo'
-            ,width:865
+            // ,width:865
+            ,width:1200
             ,height: 312
             ,url: '/demo/table/user/' //数据接口
             ,page: true //开启分页
+            ,limit: 5 //每页默认显示的数量
+            ,even:true//隔行换色
             ,cols: [[ //表头
                 {field: 'id', title: '圈子ID', width:80, sort: true, fixed: 'left'}
                 ,{field: 'username', title: '圈子名',sort:true, width:150}
@@ -74,6 +82,7 @@
                 ,{field: 'city', title: '圈子创建时间', width:150, sort: true}
                 ,{field: 'sign', title: '头像', width: 100}
                 ,{field: 'experience', title: '圈子状态', width: 100, sort: true}
+                // ,{fixed: 'qwe', title: '圈子状态', width: 100,toolBar:'#barDemo'}
             ]]
         });
     });
