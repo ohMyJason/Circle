@@ -68,4 +68,14 @@
     where blogger_id = #{bloggerId,jdbcType=INTEGER}
       and fans_id = #{fansId,jdbcType=INTEGER}
   </update>
+
+  <select id="getFansByUserId" resultType="hashmap">
+    select blogger_id as bloggerId, fans_id as fansId, user_name as fansName, sex ,birthday,is_single as isSingle,address
+    from fans where blogger_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getBloggerByUserId" resultType="hashmap">
+    select blogger_id as bloggerId, fans_id as fansId, user_name as bloggerName, sex ,birthday,is_single as isSingle,address
+    from blogger where fans_id = #{userId,jdbcType=INTEGER}
+  </select>
 </mapper>
