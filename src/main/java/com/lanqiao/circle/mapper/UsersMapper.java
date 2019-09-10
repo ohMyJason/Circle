@@ -21,4 +21,6 @@ public interface UsersMapper {
     int updateByPrimaryKey(Users record);
 
     List<HashMap> getAllUser();
+
+    Users selectUserByUserNameOrPhoneOrEmailAndPassword(Users user);
 }
