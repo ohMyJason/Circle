@@ -17,7 +17,7 @@
     <result column="address" property="address" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    user_id, user_name, password, phone, email, sex, is_single, birthday, status, create_time, 
+    user_id , user_name, password, phone, email, sex, is_single, birthday, status, create_time,
     avatar_url, is_delete, address
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -185,4 +185,9 @@
       address = #{address,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+
+  <select id="getAllUser" resultType="hashmap">
+    select user_id as userId,user_name as userName
+    from  tb_users
+  </select>
 </mapper>
