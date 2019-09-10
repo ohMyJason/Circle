@@ -165,6 +165,7 @@
                 reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
                 reader.onloadend = function () {
                     _this.userImgUrl = this.result;
+                    //点击大头像，同时循环给每一个card换头像
                     for (var i=0; i<Object.keys('myBlogList').length;i++){
                         _this.myBlogList[i].userImgUrl = this.result;
                     }
