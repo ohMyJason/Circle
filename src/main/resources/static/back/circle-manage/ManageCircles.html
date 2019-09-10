@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>圈子管理</title>
+    <link rel="stylesheet" href="../../node_modules/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-form" style="margin-top: 30px">
+    <div class="layui-form-item" >
+        <label class="layui-form-label">筛选圈子</label>
+        <div class="layui-input-block" style="width: 200px">
+            <select name="city" lay-search>
+                <option value="1" selected>搞笑圈</option>
+                <option value="2">鬼畜圈</option>
+                <option value="3">自拍圈</option>
+                <option value="4">交友圈</option>
+                <option value="5">漫画圈</option>
+                <option value="5">美剧圈</option>
+                <option value="6">英剧圈</option>
+                <option value="7">动漫圈</option>
+                <option value="8">lolita圈</option>
+                <option value="9">jk圈</option>
+                <option value="10">汉服圈</option>
+                <option value="11">饭圈</option>
+                <option value="12">宠物圈</option>
+                <option value="13">好物分享圈</option>
+                <option value="14">抖机灵圈</option>
+                <option value="15">记录生活圈</option>
+                <option value="16">旅行圈</option>
+                <option value="17">音乐圈</option>
+                <option value="18">内涵圈</option>
+                <option value="19">多肉圈</option>
+                <option value="20">计算搞笑圈</option>
+                <option value="21">信管搞笑圈</option>
+                <option value="22">软件搞笑圈</option>
+                <option value="23">网络搞笑圈</option>
+                <option value="24">一起搞笑圈</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div style="margin-left: 25px">
+    <table id="usersInfo" lay-filter="test"></table>
+</div>
+<script src="../../node_modules/layui/layui.js"></script>
+<script type="text/html" id="barDemo">
+<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use('element', function(){
+        var element = layui.element;
+    });
+
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交-->
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+
+    layui.use('table', function(){
+        var table = layui.table;
+        //第一个实例
+        table.render({
+            elem: '#usersInfo'
+            // ,width:865
+            ,width:1200
+            ,height: 312
+            ,url: '/demo/table/user/' //数据接口
+            ,page: true //开启分页
+            ,limit: 5 //每页默认显示的数量
+            ,even:true//隔行换色
+            ,cols: [[ //表头
+                {field: 'id', title: '圈子ID', width:80, sort: true, fixed: 'left'}
+                ,{field: 'username', title: '圈子名',sort:true, width:150}
+                ,{field: 'sex', title: '圈子简介', width:280}
+                ,{field: 'city', title: '圈子创建时间', width:150, sort: true}
+                ,{field: 'sign', title: '头像', width: 100}
+                ,{field: 'experience', title: '圈子状态', width: 100, sort: true}
+                // ,{fixed: 'qwe', title: '圈子状态', width: 100,toolBar:'#barDemo'}
+            ]]
+        });
+    });
+</script>
+</body>
+</html>

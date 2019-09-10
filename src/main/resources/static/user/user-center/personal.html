@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>用户界面</title>
-    <script src="node_modules/vue/dist/vue.js"></script>
-    <script src="node_modules/at-ui/dist/at.js"></script>
-    <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
-    <link rel="stylesheet" href="node_modules/css/top.css">
-    <link rel="stylesheet" href="node_modules/css/personal.css">
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="../../node_modules/css/top.css">
+    <link rel="stylesheet" href="../../node_modules/css/personal.css">
     <style>
         [v-cloak] {
             display: none;
@@ -19,7 +19,7 @@
 <div id="app" class="container">
     <div class="row top-header">
         <div class="col-md-3 logo">
-            <img src="node_modules/images/logo.png" class="img-up">
+            <img src="../../node_modules/images/logo.png" class="img-up">
         </div>
         <div class="col-md-9">
             <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
@@ -130,29 +130,29 @@
         data:{
             inputValue4:'',
             searchMyBlog:'',
-            userImgUrl:'node_modules/images/head.png',
-            userName:'用户昵称69096',
+            userImgUrl:'../../node_modules/images/head.png',
+            userName:'result.userName',
             signName:'个性签名',
             attentionNum: '123',
             fansNum: '1563',
             blogNum: '152',
             myBlogList:[
                 {
-                    userImgUrl: 'node_modules/images/head.png',
+                    userImgUrl: '../../node_modules/images/head.png',
                     userName:'用户昵称69096',
                     date:'8月31日 19:30',
                     phoneType:'红米Redmi',
                     inputValue2:'',
-                    imgUrlList:[{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'}],
+                    imgUrlList:[{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'}],
                     readNum:'56'
                 },
                 {
-                    userImgUrl: 'node_modules/images/head.png',
+                    userImgUrl: '../../node_modules/images/head.png',
                     userName:'用户昵称69096',
                     date:'8月31日 19:30',
                     phoneType:'红米Redmi',
                     inputValue2:'',
-                    imgUrlList:[{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'}],
+                    imgUrlList:[{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'}],
                     readNum:'56'
                 }
             ]

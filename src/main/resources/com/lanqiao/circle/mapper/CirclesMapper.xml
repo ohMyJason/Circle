@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanqiao.circle.mapper.CirclesMapper" >
+  <resultMap id="BaseResultMap" type="com.lanqiao.circle.entity.Circles" >
+    <id column="circle_id" property="circleId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="circle_name" property="circleName" jdbcType="VARCHAR" />
+    <result column="circle_title" property="circleTitle" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="circle_img_url" property="circleImgUrl" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    circle_id, user_id, circle_name, circle_title, create_time, circle_img_url, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_circle
+    where circle_id = #{circleId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_circle
+    where circle_id = #{circleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lanqiao.circle.entity.Circles" >
+    insert into tb_circle (circle_id, user_id, circle_name, 
+      circle_title, create_time, circle_img_url, 
+      is_delete)
+    values (#{circleId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{circleName,jdbcType=VARCHAR}, 
+      #{circleTitle,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{circleImgUrl,jdbcType=VARCHAR}, 
+      #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Circles" >
+    insert into tb_circle
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="circleId != null" >
+        circle_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="circleName != null" >
+        circle_name,
+      </if>
+      <if test="circleTitle != null" >
+        circle_title,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="circleImgUrl != null" >
+        circle_img_url,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="circleId != null" >
+        #{circleId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="circleName != null" >
+        #{circleName,jdbcType=VARCHAR},
+      </if>
+      <if test="circleTitle != null" >
+        #{circleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="circleImgUrl != null" >
+        #{circleImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lanqiao.circle.entity.Circles" >
+    update tb_circle
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="circleName != null" >
+        circle_name = #{circleName,jdbcType=VARCHAR},
+      </if>
+      <if test="circleTitle != null" >
+        circle_title = #{circleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="circleImgUrl != null" >
+        circle_img_url = #{circleImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where circle_id = #{circleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lanqiao.circle.entity.Circles" >
+    update tb_circle
+    set user_id = #{userId,jdbcType=INTEGER},
+      circle_name = #{circleName,jdbcType=VARCHAR},
+      circle_title = #{circleTitle,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      circle_img_url = #{circleImgUrl,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where circle_id = #{circleId,jdbcType=INTEGER}
+  </update>
+</mapper>
