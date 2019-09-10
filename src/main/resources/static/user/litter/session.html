@@ -25,7 +25,8 @@
                 </div>
                 <!-- 用户名 -->
                 <div class=left">
-                    <span v-text="userInfo.userName" id="myName"></span>
+<!--                    <span v-text="userInfo.userName" id="myName">{{userInfo.userName}}</span>-->
+                    <span  id="myName">{{userInfo.userName}}</span>
                 </div>
             </div>
             <!-- 搜索栏 -->
@@ -127,13 +128,12 @@
     //绑定用户信息以及好友列表
     var vm = new Vue({
         el:"#top20",
-        data:{
+        data:function(){
             userInfo:{
                 userId:"",
-                userName:"",
+                userName:"qwe",
                 avatarUrl:""
-            }
-            ,
+            },
             userList:[{
                 userId:"2",
                 userName:"胡歌",
