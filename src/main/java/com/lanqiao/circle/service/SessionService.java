@@ -17,4 +17,7 @@ public interface SessionService {
 
     //根据senterId和receiverId查询历史消息
     public Result selectMessageLog(Letter letter);
+
+    //发送信息
+    public Result sendMsg(Letter letter);
 }

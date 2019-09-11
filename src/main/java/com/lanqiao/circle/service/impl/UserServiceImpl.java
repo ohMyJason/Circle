@@ -1,7 +1,9 @@
 package com.lanqiao.circle.service.impl;
 
 import com.lanqiao.circle.entity.Users;
+import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,9 +14,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    UsersMapper usersMapper;
     //TODO 还没写
     @Override
     public Users findUserById(int parseInt) {
-        return null;
+        Users users = usersMapper.selectByPrimaryKey(parseInt);
+        return users;
     }
 }
