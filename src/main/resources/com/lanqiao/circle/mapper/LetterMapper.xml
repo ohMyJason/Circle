@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanqiao.circle.mapper.LetterMapper" >
+  <resultMap id="BaseResultMap" type="com.lanqiao.circle.entity.Letter" >
+    <id column="letter_id" property="letterId" jdbcType="INTEGER" />
+    <result column="letter_content" property="letterContent" jdbcType="VARCHAR" />
+    <result column="senter_id" property="senterId" jdbcType="INTEGER" />
+    <result column="receiver_id" property="receiverId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="resource_url" property="resourceUrl" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    letter_id, letter_content, senter_id, receiver_id, type, resource_url, send_time, 
+    is_delete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_letter
+    where letter_id = #{letterId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_letter
+    where letter_id = #{letterId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lanqiao.circle.entity.Letter" >
+    insert into tb_letter (letter_id, letter_content, senter_id, 
+      receiver_id, type, resource_url, 
+      send_time, is_delete)
+    values (#{letterId,jdbcType=INTEGER}, #{letterContent,jdbcType=VARCHAR}, #{senterId,jdbcType=INTEGER}, 
+      #{receiverId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{resourceUrl,jdbcType=VARCHAR}, 
+      #{sendTime,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Letter" >
+    insert into tb_letter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="letterId != null" >
+        letter_id,
+      </if>
+      <if test="letterContent != null" >
+        letter_content,
+      </if>
+      <if test="senterId != null" >
+        senter_id,
+      </if>
+      <if test="receiverId != null" >
+        receiver_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="resourceUrl != null" >
+        resource_url,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="letterId != null" >
+        #{letterId,jdbcType=INTEGER},
+      </if>
+      <if test="letterContent != null" >
+        #{letterContent,jdbcType=VARCHAR},
+      </if>
+      <if test="senterId != null" >
+        #{senterId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverId != null" >
+        #{receiverId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="resourceUrl != null" >
+        #{resourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lanqiao.circle.entity.Letter" >
+    update tb_letter
+    <set >
+      <if test="letterContent != null" >
+        letter_content = #{letterContent,jdbcType=VARCHAR},
+      </if>
+      <if test="senterId != null" >
+        senter_id = #{senterId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverId != null" >
+        receiver_id = #{receiverId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="resourceUrl != null" >
+        resource_url = #{resourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where letter_id = #{letterId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lanqiao.circle.entity.Letter" >
+    update tb_letter
+    set letter_content = #{letterContent,jdbcType=VARCHAR},
+      senter_id = #{senterId,jdbcType=INTEGER},
+      receiver_id = #{receiverId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      resource_url = #{resourceUrl,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where letter_id = #{letterId,jdbcType=INTEGER}
+  </update>
+
+  <select id = "selectUserList" resultType="hashmap" parameterType="java.lang.Integer">
+    select user_id as 'userId',user_name as 'userName',avatar_url as 'avatarUrl' from tb_users where user_id in
+(select receiver_id from tb_letter where senter_id =#{senterId,jdbcType=INTEGER} UNION
+select senter_id from tb_letter where receiver_id =#{receiverId,jdbcType=INTEGER});
+  </select>
+
+  <select id="selecLastLetter" resultType="com.lanqiao.circle.entity.Letter" parameterType="com.lanqiao.circle.entity.Letter">
+     select senter_id,receiver_id,letter_content,resource_url,type,send_time   from tb_letter
+ where senter_id in (#{senterId,jdbcType=INTEGER},#{receiverId,jdbcType=INTEGER}) and receiver_id in (#{senterId,jdbcType=INTEGER},#{receiverId,jdbcType=INTEGER}) and is_delete != 1
+  order by send_time desc limit 1
+  </select>
+</mapper>

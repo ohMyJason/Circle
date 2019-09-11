@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>私信</title>
-    <link type="text/css" rel="stylesheet" href="node_modules/css/bootstrap.css">
-    <link type="text/css" rel="stylesheet" href="node_modules/css/session.css">
-    <script src="node_modules/jQuery/jquery-3.4.1.min.js"></script>
-    <script src="node_modules/vue/dist/vue.js"></script>
-    <script src="node_modules/js/session.js"></script>
+    <link type="text/css" rel="stylesheet" href="../../node_modules/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="../../node_modules/css/session.css">
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/js/session.js"></script>
 
-    <link  rel="stylesheet" href="node_modules/layui/css/modules/layer/default/layer.css"/>
-    <script type="text/javascript" src="node_modules/layui/lay/modules/layer.js"></script>
-</head>.
+    <link rel="stylesheet" href="../../node_modules/layui/css/layui.css">
+    <script src="../../node_modules/layui/layui.js"></script>
+</head>
 <body>
 <div class="container">
     <div class="row" id="top20">
@@ -21,16 +21,16 @@
             <div class="row" id="userInfo">
                 <!-- 头像 -->
                 <div class="imgBox left">
-                    <img :src="userInfo.avatarUrl" alt="用户头像" class="imgSize">
+                    <img :src="userInfo.avatar_url" alt="用户头像" class="imgSize">
                 </div>
                 <!-- 用户名 -->
                 <div class=left">
-                    <span v-text="userInfo.userName" id="myName"></span>
+                    <span v-text="userInfo.user_name" id="myName"></span>
                 </div>
             </div>
             <!-- 搜索栏 -->
             <div class="row" id="friends" style="background-color: #232212">
-                好友列表
+                会话列表
             </div>
             <!-- 会话 -->
             <div class="row list" v-for="(item,i) in userList" @click = "clickFriends(i)">
@@ -67,14 +67,14 @@
                 <!-- 历史消息 -->
                 <div id = "msgContent" >
                     <!-- 接收信息示例 -->
-                    <div class="messageBigBox left" v-for="(item,i) in messageList" >
+                    <div class="messageBigBox left" v-for="(item,i) in messageList">
                         <!-- 信息发送时间 -->
                         <div class="time">
                             <span>{{item.sendTime}}</span>
                         </div>
                         <!-- 用户的头像 -->
                         <div class="smallImgBox right">
-                            <img src="node_modules/images/head.png" alt="用户头像" class="imgSize">
+                            <img src="../../node_modules/images/head.png" alt="用户头像" class="imgSize">
                         </div>
                         <div class="messageMiddleBox right">
                             <div class="messageBox right">
@@ -82,26 +82,6 @@
                             </div>
                         </div>
                     </div>
-
-<!--                    &lt;!&ndash; 发送信息示例 &ndash;&gt;-->
-<!--                    <div class="messageBigBox left">-->
-<!--                        &lt;!&ndash; 信息发送时间 &ndash;&gt;-->
-<!--                        <div class="time">-->
-<!--                            <span>昨天</span>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash; 用户的头像 &ndash;&gt;-->
-<!--                        <div class="smallImgBox right">-->
-<!--                            <img src="node_modules/images/head.png" alt="用户头像" class="imgSize">-->
-<!--                        </div>-->
-<!--                        <div class="messageMiddleBox right">-->
-<!--                            <div class="messageBox right">-->
-<!--                                <p>-->
-<!--                                    你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好-->
-<!--                                    你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好-->
-<!--                                </p>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
             </div>
             <!-- 输入 -->
@@ -119,33 +99,55 @@
     </div>
 </div>
 <script>
+    //判断inputText按下enter,将sessionId（发送者）,userId（接收者）,sendTime（发送时间）,content（发送内容）
+    //传到后端，进行数据库操作，重新生成list，刷新历史信息界面
+    // $(function () {
+    //     function userInfo() {
+    //         $.ajax({
+    //             url:"/session/getUserInfo",
+    //             type:"post",
+    //             dataType:"json",
+    //             async:false,
+    //             data:{
+    //                 userId:1
+    //             },success:function (result) {
+    //                 if(result.code == 0){
+    //                     console.log(result.data);
+    //                     console.log(this.userInfo);
+    //                     this.userInfo = result.data;
+    //                     console.log(this.userInfo);
+    //                 }
+    //             }
+    //
+    //         })
+    //     }
+    //     // userInfo();
+    // })
 
     //绑定用户信息以及好友列表
-    var vm1 = new Vue({
+    var vm = new Vue({
         el:"#top20",
         data:{
             userInfo:{
-                userId:"1",
-                userName:"用户名",
-                avatarUrl:"node_modules/images/1.jpg"
-            },
+            }
+            ,
             userList:[{
                 userId:"2",
                 userName:"胡歌",
                 avatarUrl:"node_modules/images/2.jpg",
-                content:"这是最近的一条消息",
+                content:"进行截取长度处理，这是一个很长很长很长的话",
                 sendTime:"昨天"
             },{
                 userId:"3",
                 userName:"吴彦祖",
                 avatarUrl:"node_modules/images/3.jpg",
-                content:"这是最近的一条消息",
+                content:"进行截取长度处理，这是一个很长很长很长的话",
                 sendTime:"前天"
             },{
                 userId:"4",
                 userName:"迪丽热巴",
                 avatarUrl:"node_modules/images/4.jpg",
-                content:"暂时没有进行截取长度处理",
+                content:"进行截取长度处理，这是一个很长很长很长的话",
                 sendTime:"大前天"
             }],
             messageList:[{
@@ -166,8 +168,8 @@
                 content:"好久不见"//内容
             }]
         },
-        methods:{
-            clickFriends:function (i) {
+        methods: {
+            clickFriends: function (i) {
                 //先将所有的list的背景颜色初始化，包括去掉右边框
                 $(".list").css({"background-color": "#383838"});
                 $(".list").css({"border": "none"});
@@ -183,7 +185,7 @@
                 //设置聊天头像的url
                 var j = 0;
                 //获取到每个消息的发送者的id
-                var senderId=[];
+                var senderId = [];
                 $(this.messageList).each(function () {
                     senderId.push(this.senderId);
                     j++;
@@ -196,13 +198,13 @@
                 //获取到聊天对象的头像url
                 var url = $now.find(".imgSize").attr("src");
 
-                j=0;
+                j = 0;
                 //换头像
                 $(".messageBigBox").each(function () {
                     //判断为发送
-                    if(senderId[j] == userId){
+                    if (senderId[j] == userId) {
                         //换头像
-                        $(this).find(".smallImgBox img").attr("src",userAvatar);
+                        $(this).find(".smallImgBox img").attr("src", userAvatar);
                     }
                     //判断为接收
                     else {
@@ -216,23 +218,39 @@
                         $(this).find(".messageBox").removeClass("right");
                         $(this).find(".messageBox").addClass("left");
                         //头像
-                        $(this).find(".smallImgBox img").attr("src",url);
+                        $(this).find(".smallImgBox img").attr("src", url);
                     }
                     j++;
                 })
 
                 //显示出聊天记录
-                $(".messageBigBox").css("display","block");
+                $(".messageBigBox").css("display", "block");
                 var content = document.getElementById("msgContent");
                 if (content != null) {
                     content.scrollTop = content.scrollHeight;
                 }
             }
-         }
+        },
+        created(){
+            $.ajax({
+                url:"/session/getUserInfo",
+                type:"post",
+                dataType:"json",
+                data:{
+                    userId:1
+                },success:function (result) {
+                    if(result.code == 0){
+                        console.log(result.data);
+                        vm.userInfo = result.data;
+                        console.log(vm.userInfo);
+                    }
+                }
+            })
+        }
     })
 
-    //判断inputText按下enter,将senderId（发送者）,userId（接收者）,sendTime（发送时间）,content（发送内容）
-    //传到后端，进行数据库操作，重新生成list，刷新历史信息界面
+
+
 </script>
 </body>
 </html>

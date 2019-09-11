@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>微博</title>
+    <link rel="stylesheet" href="../../node_modules/layui/css/layui.css">
+</head>
+<body>
+<div style="margin-top: 25px">
+<label class="layui-form-label" style="width: 160px">输入微博内容进行筛选：</label>
+<input type="text" name="title" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input" style="width: 300px">
+
+</div>
+<div style="margin-left: 25px;margin-top: 30px">
+    <table id="usersInfo" lay-filter="test"></table>
+</div>
+<script src="../../node_modules/layui/layui.js"></script>
+<script>
+    layui.use('form', function(){
+       var form = layui.form;
+    });
+
+    layui.use('table', function(){
+        var table = layui.table;
+        // 第一个实例
+        table.render({
+            elem: '#usersInfo'
+            ,width:1045
+            ,height: 312
+            ,url: '/demo/table/user/' //数据接口
+            ,page: true //开启分页
+            ,even:true
+            ,limit: 5 //每页默认显示的数量
+            ,cols: [[ //表头
+                {field: 'blogId', title: '微博ID', width:80, sort: true, fixed: 'left'}
+                ,{field: 'userId', title: '用户ID',sort:true, width:150}
+                ,{field: 'userName', title: '用户名', width:80, sort: true}
+                ,{field: 'content', title: '微博内容', width:150}
+                ,{field: 'createTime', title: '创建时间', width: 177}
+                ,{field: 'circleName', title: '所属圈子', width: 120, sort: true}
+                ,{field: 'repostId', title: '转载的微博ID', width: 120, sort: true}
+                ,{field: 'weight', title: '权重', width: 60}
+                ,{field: 'isDelete', title: '微博状态', width: 100}
+                // ,{field: 'caozuo', title: '操作', width: 100,toolbar:"#qwe"}
+            ]]
+        });
+    });
+</script>
+</body>
+</html>
