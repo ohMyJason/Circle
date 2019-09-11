@@ -6,6 +6,7 @@
     <title>用户界面</title>
     <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/personal.css">
@@ -125,13 +126,66 @@
 </div>
 </body>
 <script>
+    // export default {
+    //     name: 'app',
+    //     data() {
+    //         return{
+    //             inputValue4:'',
+    //             searchMyBlog:'',
+    //             userImgUrl:'../../node_modules/images/head.png',
+    //             userName:'用户昵称69096',
+    //             signName:'个性签名',
+    //             attentionNum: '123',
+    //             fansNum: '1563',
+    //             blogNum: '152',
+    //             myBlogList:[
+    //                 {
+    //                     userImgUrl: '../../node_modules/images/head.png',
+    //                     userName:'用户昵称69096',
+    //                     date:'8月31日 19:30',
+    //                     phoneType:'红米Redmi',
+    //                     inputValue2:'',
+    //                     imgUrlList:[{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'}],
+    //                     readNum:'56'
+    //                 }
+    //             ]
+    //         }
+    //     },
+    //     created() {
+    //         this.$axios({
+    //             method:'post',
+    //             url:'/userInfo/getUserInfo',
+    //             headers:{
+    //                 'token':window.localStorage['token']
+    //             }
+    //         }).then((res)=>{
+    //             console.log(res);
+    //             this.userName = res.data.userName
+    //         })
+    //     }
+    // }
+    // axios({
+    //     method:'post',
+    //     url:'/userInfo/getUserInfo',
+    //     data:{userName:this.userName},
+    //     headers:{'token':window.localStorage['token']},
+    //     transformRequest: function(obj) {
+    //         var str = [];
+    //         for(var p in obj){
+    //             str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    //         }
+    //         return str.join("&");
+    //     }
+    // }).then((res)=>{
+    //     console.log(res.data);
+    // });
     new Vue({
         el: '#app',
         data:{
             inputValue4:'',
             searchMyBlog:'',
             userImgUrl:'../../node_modules/images/head.png',
-            userName:'result.userName',
+            userName:'用户昵称69096',
             signName:'个性签名',
             attentionNum: '123',
             fansNum: '1563',
