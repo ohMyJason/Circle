@@ -1,10 +1,11 @@
 package com.lanqiao.circle.mapper;
 
 import com.lanqiao.circle.entity.Blog;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
-
+@Repository
 public interface BlogMapper {
     int deleteByPrimaryKey(Integer blogId);
 

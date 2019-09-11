@@ -99,14 +99,27 @@ public class UserInfoController {
     }
 
     /**
-     * 查看自己首页
-     * @Param 头部加token
-     * return  UserAllInfo
+     * 查看自己主页除微博外的东西
+     * @param httpServletRequest
+     * @return
      */
     @UserLoginToken
     @PostMapping("getUserAvatarAndRelation")
     public Result getUserIndex(HttpServletRequest httpServletRequest) {
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
         return userInfoService.getUserAvatarAndRelation(userId);
+    }
+
+    /**
+     * 查看自己主页所有微博
+     * @param httpServletRequest
+     * @return
+     */
+
+    @UserLoginToken
+    @PostMapping("getUserAllBlog")
+    public Result getUserAllBlog(HttpServletRequest httpServletRequest){
+        int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        return userInfoService.getUserAllBlog(userId);
     }
 }

@@ -1,5 +1,6 @@
 package com.lanqiao.circle.service;
 
+import com.lanqiao.circle.entity.BlogInfo;
 import com.lanqiao.circle.entity.Users;
 import com.lanqiao.circle.util.Result;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,5 @@ public interface UserInfoService {
     public Result getUserAvatarAndRelation(int userId);
 
     // 查看主页微博
-//    public Result getUserAllInfo(int userId);
-
+    public Result getUserAllBlog(int userId);
 }
