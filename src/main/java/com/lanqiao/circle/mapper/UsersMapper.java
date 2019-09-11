@@ -1,5 +1,6 @@
 package com.lanqiao.circle.mapper;
 
+import com.lanqiao.circle.entity.BlogInfo;
 import com.lanqiao.circle.entity.Users;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +26,10 @@ public interface UsersMapper {
     HashMap selectUserInfo(Integer userId);
 
     Users selectUserByUserNameOrPhoneOrEmailAndPassword(Users user);
+
+    List<BlogInfo> getUserAllBlog(Integer userId);
+
+    List<String> getAllResource(Integer blogId);
+
+    BlogInfo getRepostBlog(Integer repostId);
 }
