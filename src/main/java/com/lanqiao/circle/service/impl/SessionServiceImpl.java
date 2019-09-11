@@ -43,7 +43,7 @@ public class SessionServiceImpl implements SessionService {
         //查询出userId（对方）,userName,avatarUrl
         List<HashMap> userList= letterMapper.selectUserList(userId);
 
-        //根据自己和对方的id号查询出最近的信息以及发送时间以及发送者
+        //根据自己和对方的id号查询出最近的信息以及发送时间
         //对于查询出来的每一个会话信息
         for(HashMap hashMap:userList){
             Letter temp = new Letter();
@@ -52,11 +52,27 @@ public class SessionServiceImpl implements SessionService {
             temp.setReceiverId(receiverId);
             //调用
             Letter letter = letterMapper.selecLastLetter(temp);
-            hashMap.put("senterId",letter.getSenterId());
             hashMap.put("letterContent",letter.getLetterContent());
-            hashMap.put("type",letter.getType());
             hashMap.put("sendTime",letter.getSendTime());
         }
         return Result.createSuccessResult(userList.size(),userList);
+    }
+
+    //根据senterId和receiverId查询历史消息
+    public Result selectMessageLog(Letter letter)
+    {
+        List<HashMap> messageLog = letterMapper.selectMessageLog(letter);
+        return Result.createSuccessResult(messageLog.size(),messageLog);
+    }
+
+    //发送消息
+    public Result sendMsg(Letter letter)
+    {
+        int col = letterMapper.insertSelective(letter);
+        if(col == 0)
+        {
+            return Result.createByFailure("信息发送失败，请重试");
+        }
+        return Result.createSuccessResult();
     }
 }

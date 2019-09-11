@@ -2,7 +2,9 @@ package com.lanqiao.circle.mapper;
 
 import com.lanqiao.circle.entity.Like;
 import com.lanqiao.circle.entity.LikeKey;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface LikeMapper {
     int deleteByPrimaryKey(LikeKey key);
 
