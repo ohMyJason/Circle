@@ -64,4 +64,15 @@ public class SessionServiceImpl implements SessionService {
         List<HashMap> messageLog = letterMapper.selectMessageLog(letter);
         return Result.createSuccessResult(messageLog.size(),messageLog);
     }
+
+    //发送消息
+    public Result sendMsg(Letter letter)
+    {
+        int col = letterMapper.insertSelective(letter);
+        if(col == 0)
+        {
+            return Result.createByFailure("信息发送失败，请重试");
+        }
+        return Result.createSuccessResult();
+    }
 }
