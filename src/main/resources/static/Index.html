@@ -46,9 +46,9 @@
             <div class="items" @click="change">
                 <a href="#">首页</a>
             </div>
-            <div class="items" @click="change" @blur="chnage1"><a href="#">圈子</a></div>
-            <div class="items" @click="change" @blur="chnage1"><a href="#">私信</a></div>
-            <div class="items" @click="change" @blur="chnage1"><a href="#">我的</a></div>
+            <div class="items" @click="change"><a href="#">圈子</a></div>
+            <div class="items" @click="change" ><a href="#">私信</a></div>
+            <div class="items" @click="change" ><a href="#">我的</a></div>
 <!--            <at-menu router>-->
 <!--                <at-menu-item>圈子</at-menu-item>-->
 <!--            </at-menu>-->
@@ -170,14 +170,28 @@
         data:{
             inputValue4:''
         },
-        method:{
+        // methods:{
+        //     change:function () {
+        //         console.log(this);
+        //         // $(".items").css({"background-color":"red"});
+        //     },
+        //     change1:function () {
+        //
+        //     },
+        // }
+    })
+    new Vue({
+        el:'#contain',
+        methods:{
             change:function () {
-                this.css(backgroundColor=red);
+                // console.log(this);
+                // $(".items").css({"background-color":"red"});
             },
             change1:function () {
 
             },
         }
+
     })
 
 
