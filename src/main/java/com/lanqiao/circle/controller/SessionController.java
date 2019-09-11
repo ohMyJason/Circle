@@ -1,5 +1,6 @@
 package com.lanqiao.circle.controller;
 
+import com.lanqiao.circle.entity.Letter;
 import com.lanqiao.circle.service.SessionService;
 import com.lanqiao.circle.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,10 @@ public class SessionController {
     }
 
     //根据senterId和receiverId查询历史消息
-//    @PostMapping("/getMessageLog")
-
+    @PostMapping("/getMessageLog")
+    public Result selectMessageLog(Letter letter)
+    {
+        return sessionService.selectMessageLog(letter);
+    }
 
 }

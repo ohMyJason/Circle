@@ -1,6 +1,7 @@
 package com.lanqiao.circle.mapper;
 
 import com.lanqiao.circle.entity.Letter;
+import com.lanqiao.circle.util.Result;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -25,5 +26,7 @@ public interface LetterMapper {
     List<HashMap> selectUserList(Integer userId);
 
     Letter selecLastLetter(Letter letter);
+
+    List<HashMap> selectMessageLog(Letter letter);
 
 }
