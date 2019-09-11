@@ -1,5 +1,6 @@
 package com.lanqiao.circle.service;
 
+import com.lanqiao.circle.entity.Letter;
 import com.lanqiao.circle.util.Result;
 /**
  * @Author 钱琦瑛
@@ -13,4 +14,7 @@ public interface SessionService {
 
     //根据userId查询会话列表
     public Result selectUserList(Integer userId);
+
+    //根据senterId和receiverId查询历史消息
+    public Result selectMessageLog(Letter letter);
 }

@@ -192,7 +192,7 @@
   </select>
 
   <select id="selectUserInfo" resultType="hashmap" parameterType="java.lang.Integer">
-    select user_id,user_name,avatar_url from tb_users
+    select user_id as 'userId',user_name as 'userName',avatar_url as 'avatarUrl' from tb_users
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
 
