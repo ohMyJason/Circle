@@ -19,7 +19,6 @@ public class UserServiceImpl implements UserService {
     //TODO 还没写
     @Override
     public Users findUserById(int parseInt) {
-        Users users = usersMapper.selectByPrimaryKey(parseInt);
-        return users;
+        return usersMapper.selectByPrimaryKey(parseInt);
     }
 }
