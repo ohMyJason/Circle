@@ -3,14 +3,13 @@ package com.lanqiao.circle.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 
 /**
  * @author 刘佳昇
  * @Date 2019/9/10 11:10
  */
 @Configuration
-@PropertySource("classpath:PathConfig.properties")
+@PropertySource("classpath:temp.properties")
 public class PathConfig {
 
     @Value("${img.path}")

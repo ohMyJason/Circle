@@ -40,59 +40,59 @@
                 <div class="text_481X1">账号设置</div>
                 <div class="box_480X1"></div>  <!--水平分隔线-->
                 <div class="account_envent">
+                    <div class="row info_item avatar_box">
+                        <span class="text_485X1">用户头像</span>
+                        <img :src="userInfo.avatarUrl" class="avatarUrl">
+                        <span class="text_487X1 flex-center">编辑</span>
+                    </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">登录名</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15">{{userInfo.phone}}</span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">昵称</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15">{{userInfo.userName}}</span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">密码</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15">{{userInfo.password}}</span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">手机号</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15">{{userInfo.phone}}</span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">邮箱</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15">{{userInfo.email}}</span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">性别</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15">{{userInfo.sex}}</span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">感情状况</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15">{{userInfo.isSingle}}</span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">生日</span>
-                        <span class="show_info col-md-15">178****4596</span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
-                    </div>
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">简介</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15">{{userInfo.birthday}}</span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">注册时间</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15">{{userInfo.createTime}}</span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">所在地</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15">{{userInfo.address}}</span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                 </div>
@@ -107,6 +107,28 @@
         el: '#app',
         data:{
             inputValue4:''
+        }
+    });
+
+    var vm = new Vue({
+        el: '.setting_info',
+        data:{
+            userInfo:{
+
+            }
+        },
+        created(){
+            $.ajax({
+                url:"/userInfo/getUserInfo",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.userInfo = result.data;
+                    }
+                }
+            })
         }
     })
 </script>
