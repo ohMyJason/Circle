@@ -6,6 +6,7 @@ import com.lanqiao.circle.mapper.BlogMapper;
 import com.lanqiao.circle.mapper.RelationShipMapper;
 import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.UserInfoService;
+import com.lanqiao.circle.util.PageCheck;
 import com.lanqiao.circle.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,6 +108,39 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         }catch (Exception e){
             return Result.createByFailure("操作异常，请联系管理人员！");
+        }
+    }
+
+    @Override
+    public Result normalUser(String userName, int page, int limit) {
+        try {
+            page = PageCheck.checkPage(page);
+            limit = PageCheck.checkLimit(limit);
+            int start = PageCheck.calculateStart(page,limit);
+            int count = usersMapper.getCount(userName);
+            List<Users> allUser = usersMapper.normalUser(start, limit, userName);
+            if (count>0){
+                return Result.createSuccessResult(count,allUser);
+            }else {
+                return Result.createByFailure("无数据");
+            }
+        }catch (Exception e ){
+            System.out.println(e.getCause());
+            return Result.createByFailure("异常");
+        }
+
+    }
+    @Override
+    public Result deleteUsers(Integer usersId){
+        try{
+            if (usersMapper.deleteUsers(usersId)>0){
+                return Result.createSuccessResult();
+            }else {
+                return Result.createByFailure("ERROR");
+            }
+        }catch (Exception e){
+            System.out.println(e.getCause());
+            return Result.createByFailure("异常");
         }
     }
 }

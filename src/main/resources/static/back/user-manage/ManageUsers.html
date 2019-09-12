@@ -23,19 +23,19 @@
             elem: '#usersInfo'
             ,width:965
             ,height: 312
-            ,url: '/demo/table/user/' //数据接口
+            ,url: '/getNormalUser' //数据接口
             ,page: true //开启分页
             ,even:true
             ,limit: 5 //每页默认显示的数量
             ,cols: [[ //表头
-                {field: 'id', title: '用户ID', width:80, sort: true, fixed: 'left'}
-                ,{field: 'username', title: '用户名',sort:true, width:150}
+                {field: 'userId', title: '用户ID', width:80, sort: true, fixed: 'left'}
+                ,{field: 'userName', title: '用户名',sort:true, width:150}
                 ,{field: 'sex', title: '性别', width:80, sort: true}
-                ,{field: 'city', title: '手机号码', width:150}
-                ,{field: 'sign', title: '电子邮箱', width: 177}
-                ,{field: 'experience', title: '账号状态', width: 100, sort: true}
-                ,{field: 'score', title: '账号创建时间', width: 140, sort: true}
-                ,{field: 'classify', title: '头像', width: 80}
+                ,{field: 'password', title: '手机号码', width:150}
+                // ,{field: 'sign', title: '电子邮箱', width: 177}
+                // ,{field: 'experience', title: '账号状态', width: 100, sort: true}
+                // ,{field: 'score', title: '账号创建时间', width: 140, sort: true}
+                // ,{field: 'classify', title: '头像', width: 80}
             ]]
         });
     });

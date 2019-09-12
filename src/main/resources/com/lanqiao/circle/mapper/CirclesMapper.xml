@@ -114,4 +114,8 @@
       is_delete = #{isDelete,jdbcType=INTEGER}
     where circle_id = #{circleId,jdbcType=INTEGER}
   </update>
+
+  <select id="getCircleInfo" resultType="hashmap" parameterType="java.lang.Integer">
+    select * from circleInfo where circleId = #{circleId,jdbcType=INTEGER}
+  </select>
 </mapper>

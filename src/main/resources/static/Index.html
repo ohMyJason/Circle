@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>登陆</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/at-ui/dist/at.js"></script>
+    <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="node_modules/css/top.css">
+    <link rel="stylesheet" href="node_modules/css/Index.css">
+    <link rel="stylesheet" href="node_modules/layui/css/layui.css" media="all">
+    <style>
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="container">
+    <div class="row top-header">
+        <div class="col-md-3 logo">
+            <img src="node_modules/images/logo.png" class="img-up">
+        </div>
+        <div class="col-md-9">
+            <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
+                <template slot="append">
+                    <i class="icon icon-search"></i>
+                </template>
+            </at-input>
+        </div>
+        <div class="col-md-7 col-md-offset-5">
+            <at-menu mode="horizontal" active-name="0">
+                <at-menu-item name="1"><i class="icon icon-home"></i>首页</at-menu-item>
+                <at-menu-item name="2"><i class="icon icon-aperture"></i>圈子</at-menu-item>
+                <at-menu-item name="3"><i class="icon icon-mail"></i>私信</at-menu-item>
+                <at-menu-item name="4"><i class="icon icon-user"></i>用户</at-menu-item>
+            </at-menu>
+        </div>
+    </div>
+</div>
+<div id="contain" >
+    <div  class="row circle_frame">
+<!--        <div class="col-md-3" id="left-item">-->
+<!--            <div class="items" @click="change">-->
+<!--                <a href="#">首页</a>-->
+<!--            </div>-->
+<!--            <div class="items" @click="change"><a href="#">圈子</a></div>-->
+<!--            <div class="items" @click="change" ><a href="#">私信</a></div>-->
+<!--            <div class="items" @click="change" ><a href="#">我的</a></div>-->
+<!--&lt;!&ndash;            <at-menu router>&ndash;&gt;-->
+<!--&lt;!&ndash;                <at-menu-item>圈子</at-menu-item>&ndash;&gt;-->
+<!--&lt;!&ndash;            </at-menu>&ndash;&gt;-->
+<!--&lt;!&ndash;            <at-menu-item>圈子</at-menu-item>&ndash;&gt;-->
+
+
+<!--        </div>-->
+        <div  class="col-md-16" >
+            <div class="photo">
+                <div class="layui-carousel" id="test10" class="photo-size">
+                    <div carousel-item="">
+                        <div><img src="node_modules/images/1111.png"></div>
+                        <div><img src="node_modules/images/2222.png"></div>
+                        <div><img src="node_modules/images/3333.png"></div>
+                        <div><img src="node_modules/images/beijing.jpg"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="contain-show" >
+                <div class=" raw1">
+                    <div class="pho">
+                        <img src="node_modules/images/1.jpg" height="70px" width="70px">
+                    </div>
+                    <div class="name">
+                        <span style="color: #c7254e">{{name}}暂定名字</span>
+                    </div>
+                    <div class="logo">原创</div>
+                </div>
+                <div class="discuss">
+                    迪迦奥特曼
+                </div>
+                <div class="video">
+                    <video style="width: 450px;height: 250px" controls="controls" src="#"></video>
+                </div>
+                <div class="bottom">
+                   <div class="bottom-1">
+                       <a href="#" name="forward" class="icon icon-share">转发</a>
+                   </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-edit">45{{discuss}}</a>
+                    </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-thumbs-up">50{{upnum}}</a>
+                    </div>
+                    <div class="layday">
+                        <span>创建时间:{{createTime}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="contain-show">
+                <div class=" raw1">
+                    <div class="pho">
+                        <img src="node_modules/images/1.jpg" height="70px" width="70px">
+                    </div>
+                    <div class="name">
+                        <span style="color: #c7254e">{{name}}暂定名字</span>
+                    </div>
+                    <div class="lgog">原创</div>
+                </div>
+                <div class="discuss">
+                    迪迦奥特曼
+                </div>
+                <div class="ihl">
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                </div>
+                <div class="ih2">
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-share">转发</a>
+                    </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-edit">45{{discuss}}</a>
+                    </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-thumbs-up">50{{uum}}</a>
+                    </div>
+                    <div class="layday">
+                        <span>创建时间:{{createTime}}</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-8">
+            <div class="right-top">
+                <div class="login-box">
+                    <div class="login-inner">
+                        <div class="header">账号登陆</div>
+                        <hr>
+                        <div class="inputbox">
+                            <div class="tag" >
+                                <i class="icon icon-user"></i>
+                            </div>
+                            <input type="text" placeholder="请输入账号" onclick="this.placeholder='' " style="width: 200px;height: 28px">
+
+                        </div>
+                        <div class="inputbox">
+                            <div class="tag" >
+                                <i class="icon icon-lock"></i>
+                            </div>
+                            <input type="text" placeholder="请输入密码" onclick="this.placeholder=''" style="width: 200px;height: 28px">
+                        </div>
+                        <div class="tip">
+                            <input type="checkbox">
+                            <span>记住我</span>
+                            <span class="nego">忘记密码</span>
+                        </div>
+<!--                        //鼠标放至上面就变色-->
+                        <div class="loginbutton" @blur="turn">
+                            <span style="color: white">立即登陆</span>
+                        </div>
+                        <div class="tip">
+                            还没有账号？
+                            <span ><a href="#" style="color: #c7254e">立刻注册</a></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="ri-item">
+                <div class="hot">
+                    <h2 style="font-weight: bolder">圈圈热门话题</h2>
+                </div>
+                <div class="circle">
+                    <div class="example">
+                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
+                    </div>
+                    <div class="text">
+                        <div class="line1">
+                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent" >
+                        </div>
+                        <div class="line2">
+                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px  ;background-color:transparent" >
+                        </div>
+                    </div>
+
+                </div>
+                <div class="circle">
+                    <div class="example">
+                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
+                    </div>
+                    <div class="text">
+                        <div class="line1">
+                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
+                        </div>
+                        <div class="line2">
+                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                        </div>
+                    </div>
+
+                </div>
+                <div class="circle">
+                    <div class="example">
+                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
+                    </div>
+                    <div class="text">
+                        <div class="line1">
+                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
+                        </div>
+                        <div class="line2">
+                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                        </div>
+                    </div>
+                </div>
+                <div class="circle">
+                    <div class="example">
+                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
+                    </div>
+                    <div class="text">
+                        <div class="line1">
+                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
+                        </div>
+                        <div class="line2">
+                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                        </div>
+                    </div>
+
+                </div>
+                <div class="circle">
+                    <div class="example">
+                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
+                    </div>
+                    <div class="text">
+                        <div class="line1">
+                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
+                        </div>
+                        <div class="line2">
+                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+<script src="node_modules/layui/layui.js" charset="utf-8"></script>
+
+<script>
+    layui.use(['carousel', 'form'], function(){
+        var carousel = layui.carousel
+            ,form = layui.form;
+        //图片轮播
+        carousel.render({
+            elem: '#test10'
+            ,width: '750px'
+            ,height: '440px'
+            ,interval: 5000
+        });
+
+
+        var $ = layui.$, active = {
+            set: function(othis){
+                var THIS = 'layui-bg-normal'
+                    ,key = othis.data('key')
+                    ,options = {};
+
+                othis.css('background-color', '#5FB878').siblings().removeAttr('style');
+                options[key] = othis.data('value');
+                ins3.reload(options);
+            }
+        };
+
+        //监听开关
+        form.on('switch(autoplay)', function(){
+            ins3.reload({
+                autoplay: this.checked
+            });
+        });
+
+        $('.demoSet').on('keyup', function(){
+            var value = this.value
+                ,options = {};
+            if(!/^\d+$/.test(value)) return;
+
+            options[this.name] = value;
+            ins3.reload(options);
+        });
+
+        //其它示例
+        $('.demoTest .layui-btn').on('click', function(){
+            var othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        });
+    });
+</script>
+<script>
+    new Vue({
+        el: '#app',
+        data:{
+            inputValue4:''
+        }
+
+    })
+    new Vue({
+        el:'#contain',
+        methods:{
+            change:function () {
+                // console.log(this);
+                // $(".items").css({"background-color":"red"});
+            },
+            change1:function () {
+
+            },
+        }
+
+    })
+
+
+
+</script>
+</body>
+</html>
