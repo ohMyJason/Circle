@@ -6,6 +6,8 @@
     <title>登陆后首页</title>
     <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/jQuery/emoji_jQuery.min.js"></script>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/login.css">
@@ -39,7 +41,14 @@
             <div class="dio">
                 <div class="news" style="border: 1px">有什么新鲜事告诉大家？</div>
                 <div class="neiro">
-                    <input style="border:1px solid #2b542c;width:100%;height: 100%" >
+                    <input style="border:1px solid #2b542c;width:100%;height: 100%" id="input">
+                </div>
+                <div class="nima">
+                    <div class="emji">
+                        <i class="icon icon-github" style="color: #f0ad4e" id="btn"></i>
+                        <span style="font-size: 70%" id="btn1">表情</span>
+                    </div>
+
                 </div>
 
             </div>
@@ -50,7 +59,16 @@
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        $("#btn #btn1").emoji({
+            showTab:true,
 
+
+        })
+    })
+
+</script>
 <script>
     new Vue({
         el: '#app',
