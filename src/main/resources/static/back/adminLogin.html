@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>登录页</title>
+    <script src="../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../node_modules/jQuery/jquery.cookie.js"></script>
+    <link rel="stylesheet" href="../node_modules/layui/css/layui.css">
+    <link rel="stylesheet" href="../node_modules/layui/css/style.css">
+    <script src="../node_modules/layui/layui.js"></script>
+
+</head>
+<body>
+
+<div class="login-main">
+    <header class="layui-elip">登录</header>
+    <form class="layui-form">
+        <div class="layui-input-inline">
+            <input type="text" name="loginName" required lay-verify="required" placeholder="用户名/手机号/邮箱" autocomplete="off"
+                   class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off"
+                   class="layui-input">
+        </div>
+        <div class="layui-input-inline login-btn">
+            <input lay-submit lay-filter="login" class="layui-btn" value="登录" >
+        </div>
+        <!--<hr/>-->
+        <!--<div class="layui-input-inline">-->
+            <!--<button type="button" class="layui-btn layui-btn-primary">QQ登录</button>-->
+        <!--</div>-->
+        <!--<div class="layui-input-inline">-->
+            <!--<button type="button" class="layui-btn layui-btn-normal">微信登录</button>-->
+        <!--</div>-->
+       <!--<p><a href="register.html" class="fl">立即注册</a><a href="javascript:;" class="fr">忘记密码？</a></p>-->
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    layui.use('form', function () {
+        // 操作对象
+        var form = layui.form;
+        form.on('submit(login)',function (obj) {
+            var data = obj.field;
+            // alert(data);
+            function fun(res){
+                if (res.code==0) {
+                        window.location.href = "/back/backstageManagement.html";
+                }else {
+                    layer.msg("用户名或密码错误");
+                }
+
+            }
+            $.ajax({
+                url: "/userLogin/login",
+                type: "post",
+                dataType: "json",
+                data: data,
+                // contentType:"application/json",
+                success:fun,
+                error:function () {
+                    
+                }
+            })
+        });
+    });
+</script>
+</body>
+</html>
