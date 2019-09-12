@@ -130,4 +130,11 @@ public class UserInfoController {
     public Result normalUser(String userName, int page, int limit){
         return userInfoService.normalUser(userName,page,limit);
     }
+    /**
+     * 管理员删除用户
+     */
+    @PostMapping("/delete")
+    public Result deleteUsers(Integer usersId){
+        return userInfoService.deleteUsers(usersId);
+    }
 }

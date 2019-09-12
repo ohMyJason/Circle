@@ -37,4 +37,5 @@ public interface UsersMapper {
 
     List<Users> normalUser(@Param("start") int start, @Param("limit") int limit, @Param("userName")  String userName);
     int getCount(@Param("userName")  String userName);
+    int deleteUsers(Integer usersId);
 }

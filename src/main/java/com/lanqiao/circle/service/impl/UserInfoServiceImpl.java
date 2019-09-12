@@ -130,4 +130,17 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
 
     }
+    @Override
+    public Result deleteUsers(Integer usersId){
+        try{
+            if (usersMapper.deleteUsers(usersId)>0){
+                return Result.createSuccessResult();
+            }else {
+                return Result.createByFailure("ERROR");
+            }
+        }catch (Exception e){
+            System.out.println(e.getCause());
+            return Result.createByFailure("异常");
+        }
+    }
 }

@@ -240,4 +240,9 @@
       </if>
     </where>
   </select>
+
+  <delete id="deleteUsers" parameterType="java.lang.Integer" >
+    delete from tb_users
+    where is_delete = 1
+  </delete>
 </mapper>
