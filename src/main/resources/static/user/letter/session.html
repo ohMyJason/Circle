@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>私信</title>
+    <link type="text/css" rel="stylesheet" href="../../node_modules/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="../../node_modules/css/session.css">
+    <link rel="stylesheet" href="../../node_modules/layui/css/layui.css">
+
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
+    <script src="../../node_modules/js/session.js"></script>
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
+    <!--    <script src="../../node_modules/js/jquery-cookie.js"></script>-->
+</head>
+<body>
+<div class="container">
+    <div class="row" id="top20">
+        <!-- 会话列表 -->
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 col-lg-offset-1" id="ConversationList">
+            <!-- 个人信息 -->
+            <div class="row" id="userInfo">
+                <!-- 头像 -->
+                <div class="imgBox left">
+                    <img :src="userInfo.avatarUrl" alt="用户头像" class="imgSize">
+                </div>
+                <!-- 用户名 -->
+                <div class=left">
+                    <span v-text="userInfo.userName" id="myName"></span>
+                </div>
+            </div>
+            <!-- 搜索栏 -->
+            <div class="row" id="friends" style="background-color: #232212">
+                会话列表
+            </div>
+            <!-- 会话 -->
+            <div class="row list" v-for="(item,i) in userList" @click = "clickFriends(i);getMsg(i)" >
+                <!-- 头像 -->
+                <div class="imgBox left">
+                    <img :src="item.avatarUrl" alt="用户头像" class="imgSize" >
+                </div>
+                <!-- 用户名 -->
+                <div class=left">
+                    <span class="userName left" v-text="item.userName" ></span>
+                </div>
+                <!-- 最近一条消息的时间 -->
+                <div>
+                    <span class="lastMsgTime right" v-text="item.sendTime"></span>
+                </div>
+                <!-- 消息概况 -->
+                <div>
+                    <span class="listText left" v-text = "item.letterContent"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 会话详情 -->
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" id="ConversationDetails">
+            <!-- 历史消息$联系人信息 -->
+            <div class="row" id="message">
+                <!-- 顶部：联系人信息 -->
+                <div id="messageTitle">
+                    <span id="contactName" class="left">您还未选中或发起聊天，快去跟好友聊一聊吧</span>
+                    <div class="right" id="messageSetUp">
+                        设置
+                    </div>
+                </div>
+                <!-- 历史消息 -->
+                <div id = "msgContent" >
+                    <!-- 接收信息示例 -->
+                    <div class="messageBigBox left" v-for="(item,i) in messageList">
+                        <!-- 信息发送时间 -->
+                        <div class="time">
+                            <span>{{item.sendTime}}</span>
+                        </div>
+                        <!-- 用户的头像 -->
+                        <div class="smallImgBox right" v-if="item.senterId == userInfo.userId">
+                            <img :src="userInfo.avatarUrl" alt="用户头像" class="imgSize" >
+                        </div>
+                        <!-- 用户的头像 -->
+                        <div class="smallImgBox left" v-if="item.senterId != userInfo.userId">
+                            <img :src="item.avatarUrl" alt="用户头像" class="imgSize">
+                        </div>
+
+                        <div class="messageMiddleBox right" v-if="item.senterId == userInfo.userId">
+                            <div class="messageBox right">
+                                <p>{{item.letterContent}} </p>
+                            </div>
+                        </div>
+                        <div class="messageMiddleBox left" v-if="item.senterId != userInfo.userId">
+                            <div class="messageBox left">
+                                <p>{{item.letterContent}} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 输入 -->
+            <div class="row" id="editBox">
+                <div id="inputLogo">
+                    <div class="bLogoBox left">four</div>
+                    <div class="bLogoBox left">five</div>
+                    <div class="bLogoBox left">six</div>
+                    <div class="bLogoBox left">seven</div>
+                </div>
+                <!-- 输入内容 -->
+                <textarea rows="5" cols="91" id="inputText" onkeypress="back(event);"  placeholder="按下Enter回车键发送内容"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //绑定用户信息以及好友列表
+    var vm = new Vue({
+        el:"#top20",
+        data:{
+            userInfo:{
+                // avatarUrl: "",
+                // userName: "",
+                // userId: ""
+            },
+            userList:[{
+                // avatarUrl: "",
+                // letterContent: "",
+                // userName: "",
+                // userId: "",
+                // sendTime: ""
+            }],
+            messageList:[{
+                senterId:"",//发送者
+                letterContent:"",//内容
+                resourceUrl:"",
+                type:"",
+                sendTime:"", //发送时间
+            }]
+        },
+        methods: {
+            getMsg:function(i){
+                //当前聊天对象的id和头像
+                var connectionId = vm.userList[i].userId;
+                $.ajax({
+                    url:"/session/getMessageLog",
+                    type:"post",
+                    dataType:"json",
+                    async:true,
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        receiverId:connectionId
+                    },success:function (result) {
+                        if (result.code == 0) {
+                            vm.messageList = result.data;
+                        }
+                    }
+                })
+
+            },
+            clickFriends: function (i) {
+                //先将所有的list的背景颜色初始化，包括去掉右边框
+                $(".list").css({"background-color": "#383838"});
+                $(".list").css({"border": "none"});
+                $(".list").css({"border-bottom": "1px solid black"});
+
+                // 将点击的那一个list的div的背景颜色进行更改，加上右边框
+                var $now = $(".list").eq(i);
+                $now.css({"background-color": "#232212"});
+                $now.css({"border-right": "2px solid #ff5500"});
+                $now.css({"border-bottom": "1px solid black"});
+                $("#contactName").html($now.find(".userName").html());
+            },
+        },
+        created(){
+            //获取登陆者的用户信息
+            $.ajax({
+                url:"/session/getUserInfo",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.userInfo = result.data;
+                    }
+                }
+            })
+
+            //获取会话列表
+            $.ajax({
+                url:"/session/getUserList",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.userList = result.data;
+                    }
+                }
+            })
+        }
+        ,updated()
+        {
+            this.$nextTick(function () {
+                var content = document.getElementById("msgContent");
+                // console.log("+" + content.scrollTop);
+                if (content != null) {
+                    content.scrollTop = content.scrollHeight;
+                }
+                //     $(".list").click(function () {
+                //         $(".messageBigBox").css("display","block");
+                //     })
+            })
+        }
+    })
+    // $(function () {
+    //     $(".list").click(function () {
+    //         $(".messageBigBox").css("display","block");
+    //     })
+    // })
+</script>
+</body>
+</html>

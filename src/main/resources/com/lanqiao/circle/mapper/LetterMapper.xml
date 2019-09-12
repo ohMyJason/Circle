@@ -138,4 +138,17 @@ select senter_id from tb_letter where receiver_id =#{receiverId,jdbcType=INTEGER
  where senter_id in (#{senterId,jdbcType=INTEGER},#{receiverId,jdbcType=INTEGER}) and receiver_id in (#{senterId,jdbcType=INTEGER},#{receiverId,jdbcType=INTEGER}) and is_delete != 1
   order by send_time desc limit 1
   </select>
+
+  <select id="selectMessageLog" resultType="hashmap" parameterType="com.lanqiao.circle.entity.Letter">
+ select a.*,b.avatar_url as 'avatarUrl' from
+(select senter_id as  'senterId',letter_content as 'letterContent',resource_url as 'resourceUrl',type,send_time as 'sendTime'  from tb_letter
+ where senter_id in (#{senterId,jdbcType=INTEGER},#{receiverId,jdbcType=INTEGER}) and receiver_id in (#{senterId,jdbcType=INTEGER},#{receiverId,jdbcType=INTEGER}) and is_delete != 1
+  order by send_time)as a
+left join
+(
+select user_id,avatar_url from tb_users) as b
+on a.senterId = b.user_id
+  </select>
+
+
 </mapper>

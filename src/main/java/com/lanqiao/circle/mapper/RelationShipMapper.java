@@ -2,10 +2,14 @@ package com.lanqiao.circle.mapper;
 
 import com.lanqiao.circle.entity.RelationShip;
 import com.lanqiao.circle.entity.RelationShipKey;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 
+@Mapper
+@Repository
 public interface RelationShipMapper {
     int deleteByPrimaryKey(RelationShipKey key);
 

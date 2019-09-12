@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/attention.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div id="app" class="container">
@@ -41,8 +46,8 @@
                 <div class="first_box flex-center">
                     <input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">
                     <label for="file"><img :src="src" class="icon-head"></label><br>
-                    <span class="nick_name">{{userName}}</span><br>
-                    <span class="sign_name">{{signName}}</span>
+                    <span class="nick_name" v-cloak>{{userName}}</span><br>
+                    <span class="sign_name" v-cloak>{{signName}}</span>
                 </div>
 
                 <div class="row second_box">
@@ -54,21 +59,32 @@
 
                 <div class="third_box">
                     <div class="row">
-                        <div class="text_481X1">全部关注&nbsp;{{attentionNum}}</div>
+                        <div class="text_481X1" v-cloak>全部关注&nbsp;{{attentionNum}}</div>
                     </div>
                     <div class="box_480X1"></div>  <!--水平分隔线-->
 
-                    <div class="member_box">
+                    <div class="member_box row">
                         <ul class="member_ul">
-                            <li class="member_li S_bg1"></li>
-                            <li class="member_li S_bg1"></li>
-                            <li class="member_li S_bg1"></li>
-                            <li class="member_li S_bg1"></li>
+                            <li class="member_li S_bg1 row" v-for="(item,index) in memberList">
+                                <img :src="item.memberAvatar" alt="用户头像" class="member_avatar">
+                                <div class="box_111X1"></div>
+                                <div class="member_info">
+                                    <p class="text_96X1">{{item.memberName}}</p>
+                                    <p class="member_attention icon icon-check">已关注</p>
+                                    <p class="member_word">{{item.memberWord}}</p>
+                                </div>
+                                <at-button type="primary" class="session_btn">私信</at-button>
+                                <at-button class="cancel_btn">取消关注</at-button>
+                            </li>
+                            <!--<li class="member_li S_bg1"></li>-->
+                            <!--<li class="member_li S_bg1"></li>-->
+                            <!--<li class="member_li S_bg1"></li>-->
+                            <!--<li class="member_li S_bg1"></li>-->
                         </ul>
                     </div>
 
-                    <div class="row flex-center pagination">
-                        <at-pagination :total="100"></at-pagination>
+                    <div class="row flex-center">
+                        <at-pagination :total="100" class="pagination"></at-pagination>
                     </div>
                 </div>
 
@@ -83,11 +99,28 @@
         el: '#app',
         data:{
             inputValue4:'',
-            src:'node_modules/images/head.png',
+            src:'../../node_modules/images/head.png',
             userName:'用户昵称69096',
             signName:'个性签名',
             date:'8月31日 19:30',
-            attentionNum: '1275'
+            attentionNum: '1275',
+            memberList:[
+                {
+                    memberAvatar:'../../node_modules/images/head.png',
+                    memberName:'用户昵称',
+                    memberWord:'个人简介',
+                },
+                {
+                    memberAvatar:'../../node_modules/images/head.png',
+                    memberName:'用户昵称',
+                    memberWord:'个人简介',
+                },
+                {
+                    memberAvatar:'../../node_modules/images/head.png',
+                    memberName:'用户昵称',
+                    memberWord:'个人简介',
+                }
+            ]
         },methods: {
             getFile(e) {
                 let _this = this

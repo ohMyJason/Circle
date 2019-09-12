@@ -192,7 +192,7 @@
   </select>
 
   <select id="selectUserInfo" resultType="hashmap" parameterType="java.lang.Integer">
-    select user_id,user_name,avatar_url from tb_users
+    select user_id as 'userId',user_name as 'userName',avatar_url as 'avatarUrl' from tb_users
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
 
@@ -202,4 +202,21 @@
     where
     user_name = #{userName} or phone = #{phone} or email = #{email} and password = #{password}
   </select>
+
+  <select id="getUserAllBlog" resultType="com.lanqiao.circle.entity.BlogInfo" parameterType="java.lang.Integer">
+    select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
+    from index_blog
+    where userId = #{userId}
+  </select>
+
+  <select id="getAllResource" resultType="java.lang.String" parameterType="java.lang.Integer">
+    select resourceUrl from index_blog where blogId = #{blogId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRepostBlog" resultType="com.lanqiao.circle.entity.BlogInfo" parameterType="java.lang.Integer">
+     select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
+    from index_blog
+    where blogId = #{repostId}
+  </select>
+
 </mapper>
