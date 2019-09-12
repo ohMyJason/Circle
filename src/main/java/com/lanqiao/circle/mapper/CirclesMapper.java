@@ -1,7 +1,12 @@
 package com.lanqiao.circle.mapper;
 
 import com.lanqiao.circle.entity.Circles;
+import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+
+
+@Repository
 public interface CirclesMapper {
     int deleteByPrimaryKey(Integer circleId);
 
@@ -14,4 +19,6 @@ public interface CirclesMapper {
     int updateByPrimaryKeySelective(Circles record);
 
     int updateByPrimaryKey(Circles record);
+
+    HashMap getCircleInfo(Integer circleId);
 }
