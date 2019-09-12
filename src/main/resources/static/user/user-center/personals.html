@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>用户界面</title>
+    <title>其他用户界面</title>
     <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
-    <link rel="stylesheet" href="../../node_modules/css/personal.css">
+    <link rel="stylesheet" href="../../node_modules/css/personals.css">
     <style>
         [v-cloak] {
             display: none;
@@ -28,7 +29,7 @@
                 </template>
             </at-input>
         </div>
-        <div class="col-md-7 col-md-offset-5" @click="gotoSession()">
+        <div class="col-md-7 col-md-offset-5">
             <at-menu mode="horizontal" active-name="0">
                 <at-menu-item name="1"><i class="icon icon-home"></i>首页</at-menu-item>
                 <at-menu-item name="2"><i class="icon icon-aperture"></i>圈子</at-menu-item>
@@ -61,15 +62,35 @@
                     <div class="left_box col-md-9">
                         <div class="left_top_box flex-center">
                             <at-breadcrumb separator="" class="row sel_list">
-                                <at-breadcrumb-item href="../../user/user-center/attention.html" class="col-md-offset-1" v-cloak>{{attentionNum}} 关注</at-breadcrumb-item>
+                                <at-breadcrumb-item href="attention.html" class="col-md-offset-1" v-cloak>{{attentionNum}}<br>关注</at-breadcrumb-item>
                                 <div class="box_29X1"></div>
-                                <at-breadcrumb-item href="../../user/user-center/fans.html" class="col-md-offset-1" v-cloak>{{fansNum}} 粉丝</at-breadcrumb-item>
+                                <at-breadcrumb-item href="fans.html" class="col-md-offset-1" v-cloak>{{fansNum}}<br>粉丝</at-breadcrumb-item>
                                 <div class="box_29X1"></div>
-                                <at-breadcrumb-item href="../../user/user-center/personal.html" class="col-md-offset-1" v-cloak>{{blogNum}} 微博</at-breadcrumb-item>
+                                <at-breadcrumb-item href="personal.html" class="col-md-offset-1" v-cloak>{{blogNum}}<br>微博</at-breadcrumb-item>
                             </at-breadcrumb>
                         </div>
                         <div class="person_info flex-center">
-                            <span><a href="../../user/letter/settingInfo.html">编辑个人资料</a></span>
+                            <div class="row info_item">
+                                <div class="text_485X1 col-md-4"><i class="icon icon-map-pin"></i></div>
+                                <div class="show_info col-md-20">{{addressInfo}}</div>
+                            </div>
+                            <div class="box_29X2"></div>
+                            <div class="row info_item">
+                                <span class="text_485X1 col-md-4"><i class="icon icon-heart"></i></span>
+                                <span class="show_info col-md-20">{{singleInfo}}</span>
+                            </div>
+                            <div class="box_29X2"></div>
+                            <div class="row info_item">
+                                <span class="text_485X1 col-md-4"><i class="icon icon-life-buoy"></i></span>
+                                <span class="show_info col-md-20">{{birthInfo}}</span>
+                            </div>
+                            <div class="box_29X2"></div>
+                            <div class="row info_item">
+                                <span class="text_485X1 col-md-4"><i class="icon icon-mail"></i></span>
+                                <span class="show_info col-md-20">{{emailInfo}}</span>
+                            </div>
+                            <div class="box_29X2"></div>
+                            <div><a href="../../user/letter/settingInfo.html">查看更多<i class="icon icon-chevron-right"></i></a></div>
                         </div>
                     </div>
                     <div class="right_box col-md-15">
@@ -136,6 +157,10 @@
             attentionNum: '123',
             fansNum: '1563',
             blogNum: '152',
+            addressInfo:'北京',
+            singleInfo:'单身',
+            birthInfo:'生日日期',
+            emailInfo:'1216612753@qq.com',
             myBlogList:[
                 {
                     userImgUrl: '../../node_modules/images/head.png',
@@ -155,11 +180,6 @@
                 }
             ]
         },methods: {
-            gotoSession:function(){
-                alert(12345)
-                window.location.href="../../user/letter/session.html";
-                // this.$route.push({path: '../../node_modules/user/letter/session.html'});
-            },
             getFile(e) {
                 let _this = this
                 var files = e.target.files[0]

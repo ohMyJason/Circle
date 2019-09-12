@@ -5,12 +5,13 @@
     <title>私信</title>
     <link type="text/css" rel="stylesheet" href="../../node_modules/css/bootstrap.css">
     <link type="text/css" rel="stylesheet" href="../../node_modules/css/session.css">
+    <link rel="stylesheet" href="../../node_modules/layui/css/layui.css">
+
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <script src="../../node_modules/vue/dist/vue.js"></script>
-    <script src="../../node_modules/js/session.js"></script>
-
-    <link rel="stylesheet" href="../../node_modules/layui/css/layui.css">
     <script src="../../node_modules/layui/layui.js"></script>
+    <script src="../../node_modules/js/session.js"></script>
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
 </head>
 <body>
 <div class="container">
@@ -33,14 +34,14 @@
                 会话列表
             </div>
             <!-- 会话 -->
-            <div class="row list" v-for="(item,i) in userList" @click = "clickFriends(i);getMsg(i)">
+            <div class="row list" v-for="(item,i) in userList" @click = "clickFriends(i);getMsg(i)" >
                 <!-- 头像 -->
                 <div class="imgBox left">
-                    <img :src="item.avatarUrl" alt="用户头像" class="imgSize">
+                    <img :src="item.avatarUrl" alt="用户头像" class="imgSize" >
                 </div>
                 <!-- 用户名 -->
                 <div class=left">
-                    <span class="userName left" v-text="item.userName"></span>
+                    <span class="userName left" v-text="item.userName" ></span>
                 </div>
                 <!-- 最近一条消息的时间 -->
                 <div>
@@ -73,13 +74,23 @@
                             <span>{{item.sendTime}}</span>
                         </div>
                         <!-- 用户的头像 -->
-                        <div class="smallImgBox right">
-                            <img src="../../node_modules/images/head.png" alt="用户头像" class="imgSize">
+                        <div class="smallImgBox right" v-if="item.senterId == userInfo.userId">
+                            <img :src="userInfo.avatarUrl" alt="用户头像" class="imgSize" >
                         </div>
-                        <div class="messageMiddleBox right">
+                        <!-- 聊天对象的头像 -->
+                        <div class="smallImgBox left" v-if="item.senterId != userInfo.userId">
+                            <img :src="item.avatarUrl" alt="用户头像" class="imgSize">
+                        </div>
+                        <!-- 发送消息 -->
+                        <div class="messageMiddleBox right" v-if="item.senterId == userInfo.userId">
                             <div class="messageBox right">
                                 <p>{{item.letterContent}} </p>
-<!--                                <p>{{item.ResourceUrl}}</p>-->
+                            </div>
+                        </div>
+                        <!-- 接收消息 -->
+                        <div class="messageMiddleBox left" v-if="item.senterId != userInfo.userId">
+                            <div class="messageBox left">
+                                <p>{{item.letterContent}} </p>
                             </div>
                         </div>
                     </div>
@@ -94,7 +105,8 @@
                     <div class="bLogoBox left">seven</div>
                 </div>
                 <!-- 输入内容 -->
-                <textarea rows="5" cols="91" id="inputText" onkeypress="back(event);"  placeholder="按下Enter回车键发送内容"></textarea>
+                <textarea rows="5" cols="91" id="inputText"  onkeypress="back(event);"  placeholder="按下Enter回车键发送内容">
+                </textarea>
             </div>
         </div>
     </div>
@@ -126,92 +138,41 @@
         },
         methods: {
             getMsg:function(i){
-                var $now = $(".list").eq(i);
-                //当前登录用户的Id和头像
-                var userId = vm.userInfo.userId;
-                var userAvatar = this.userInfo.avatarUrl;
-                // console.log("用户Id"+userId);
-                // console.log("用户头像"+userAvatar);
-
-                //当前聊天对象的id和头像
+                //当前聊天对象的id
                 var connectionId = vm.userList[i].userId;
-                var connectionUrl = $now.find(".imgSize").attr("src");
-                // console.log("聊天对象的Id"+connectionId);
-                // console.log("聊天对象的头像地址"+connectionUrl);
-
-                // 用于存放历史消息中的发送者id
-                // var senterId = [];
-
-                // var j = 0;
+                var userName = vm.userList[i].userName;
                 $.ajax({
                     url:"/session/getMessageLog",
                     type:"post",
                     dataType:"json",
                     async:true,
+                    headers:{'token':$.cookie("token")},
                     data:{
-                        senterId:userId,
-                        receiverId:connectionId
+                        // receiverId:connectionId
+                        userName:userName
                     },success:function (result) {
-                        if(result.code == 0){
+                        if (result.code == 0) {
                             vm.messageList = result.data;
-                            // console.log(vm.messageList.length);
-                            console.log(vm.messageList);
-                            //获取到每个消息的发送者的id
-                            // for(var k = 0; k<result.count; k++)
-                            // {
-                            //     senterId.push(vm.messageList[k].senterId);
-                            //     // console.log(senterId[k]);
-                            // }
-                            // j=0;
-
-                            // $(".messageBigBox").each(function () {
-                            //     console.log(1);
-                            //     console.log("j:" + j);
-                            //     //判断为发送
-                            //     if (senterId[j] == _sentreId) {
-                            //         //换头像
-                            //         // alert(1);
-                            //         $(this).find(".smallImgBox img").attr("src", userAvatar);
-                            //         $(this).find(".smallImgBox img").attr("border","5px solid red");
-                            //     }
-                            //     //判断为接收
-                            //     else {
-                            //         // 让消息显示到左边
-                            //         $(this).find(".smallImgBox").removeClass("right");
-                            //         $(this).find(".smallImgBox").addClass("left");
-                            //         //大框
-                            //         $(this).find(".messageMiddleBox").removeClass("right");
-                            //         $(this).find(".messageMiddleBox").addClass("left");
-                            //         //小框
-                            //         $(this).find(".messageBox").removeClass("right");
-                            //         $(this).find(".messageBox").addClass("left");
-                            //         //头像
-                            //         $(this).find(".smallImgBox img").attr("src", url);
-                            //     }
-                            //     j++;
-                            // })
-                            // //显示出聊天记录
-                            // var content = document.getElementById("msgContent");
-                            // if (content != null) {
-                            //     content.scrollTop = content.scrollHeight;
-                            // })
                         }
                     }
                 })
+
             },
             clickFriends: function (i) {
                 //先将所有的list的背景颜色初始化，包括去掉右边框
-                $(".list").css({"background-color": "#383838"});
+                // $(".list").css({"background-color": "#383838"});
+                $(".list").removeClass("choose");
                 $(".list").css({"border": "none"});
                 $(".list").css({"border-bottom": "1px solid black"});
 
                 // 将点击的那一个list的div的背景颜色进行更改，加上右边框
                 var $now = $(".list").eq(i);
-                $now.css({"background-color": "#232212"});
+                // $now.css({"background-color": "#232212"});
+                $now.addClass("choose");
                 $now.css({"border-right": "2px solid #ff5500"});
                 $now.css({"border-bottom": "1px solid black"});
                 $("#contactName").html($now.find(".userName").html());
-            }
+            },
         },
         created(){
             //获取登陆者的用户信息
@@ -219,35 +180,126 @@
                 url:"/session/getUserInfo",
                 type:"post",
                 dataType:"json",
-                data:{
-                    userId:1
-                },success:function (result) {
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
                     if(result.code == 0){
-                        // console.log(result.data);
                         vm.userInfo = result.data;
-                        // console.log(vm.userInfo);
                     }
                 }
             })
-
             //获取会话列表
-            $.ajax({
-                url:"/session/getUserList",
-                type:"post",
-                dataType:"json",
-                data:{
-                    userId:1
-                },success:function (result) {
-                    if(result.code == 0){
-                        vm.userList = result.data;
+            function getUserList()
+            {
+                $.ajax({
+                    url:"/session/getUserList",
+                    type:"post",
+                    dataType:"json",
+                    headers:{'token':$.cookie("token")},
+                    success:function (result) {
+                        if(result.code == 0){
+                            vm.userList = result.data;
+                        }
                     }
+                })
+            }
+            getUserList();
+
+
+        }
+        ,updated()
+        {
+            this.$nextTick(function () {
+                var content = document.getElementById("msgContent");
+                // console.log("+" + content.scrollTop);
+                if (content != null) {
+                    content.scrollTop = content.scrollHeight;
                 }
             })
         }
     })
 
+    function back(event){
+        event = event || window.event;
+        if(event.keyCode==13){
+            event.returnValue = false;
+            var length = $("#inputText").val().length;
+            if(length == 0){
+                layui.use('layer',function() {
+                    var layer = layui.layer;
+                    layer.msg("发送内容不能为空，请重新输入");
+                })
+            }
+            else {
+                //TODO
+                //发送消息
+                //userName,letterContent,resourceUrl
+                var userName =$(".choose").find(".userName").html();
+                if(userName == null)
+                {
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请先选择联系人");
+                    })
+                }
+                else
+                {
+                    var letterContent = $("#inputText").val();
+                    console.log(letterContent);
+                    // console.log(userName);
+                    $.ajax({
+                        url:"/session/sendMsg",
+                        type:"post",
+                        dataType:"json",
+                        headers:{'token':$.cookie("token")},
+                        data: {
+                            userName:userName,
+                            letterContent:letterContent,
+                            resourceUrl:""
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                $("#inputText").val("");
+
+                                $.ajax({
+                                    url:"/session/getMessageLog",
+                                    type:"post",
+                                    dataType:"json",
+                                    async:true,
+                                    headers:{'token':$.cookie("token")},
+                                    data:{
+                                        // receiverId:connectionId
+                                        userName:userName
+                                    },success:function (result) {
+                                        if (result.code == 0) {
+                                            vm.messageList = result.data;
+                                        }
+                                    }
+                                })
+                                // vm.getUserList();
+                                $.ajax({
+                                    url:"/session/getUserList",
+                                    type:"post",
+                                    dataType:"json",
+                                    headers:{'token':$.cookie("token")},
+                                    success:function (result) {
+                                        if(result.code == 0){
+                                            vm.userList = result.data;
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    })
+
+                }
 
 
+
+
+            }
+            return false;
+        }
+    }
 </script>
 </body>
 </html>

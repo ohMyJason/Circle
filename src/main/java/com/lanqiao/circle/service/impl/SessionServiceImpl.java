@@ -9,7 +9,9 @@ import com.lanqiao.circle.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,15 +61,51 @@ public class SessionServiceImpl implements SessionService {
     }
 
     //根据senterId和receiverId查询历史消息
-    public Result selectMessageLog(Letter letter)
+//    public Result selectMessageLog(Letter letter)
+//    {
+//        List<HashMap> messageLog = letterMapper.selectMessageLog(letter);
+//        return Result.createSuccessResult(messageLog.size(),messageLog);
+//    }
+    public Result selectMessageLog(int senterId,String userName)
     {
+        Users users = new Users();
+        users.setUserName(userName);
+        Integer receiverId = usersMapper.selectUserByUserNameOrPhoneOrEmailAndPassword(users).getUserId();
+
+        Letter letter = new Letter();
+        letter.setSenterId(senterId);
+
+        letter.setReceiverId(receiverId);
         List<HashMap> messageLog = letterMapper.selectMessageLog(letter);
         return Result.createSuccessResult(messageLog.size(),messageLog);
     }
 
     //发送消息
-    public Result sendMsg(Letter letter)
+    public Result sendMsg(Integer senterId,String userName,String  letterContent,String  resourceUrl)
     {
+        String  data = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+        Users users = new Users();
+        users.setUserName(userName);
+        Integer receiverId = usersMapper.selectUserByUserNameOrPhoneOrEmailAndPassword(users).getUserId();
+
+        Letter letter = new Letter();
+        letter.setSenterId(senterId);
+        letter.setReceiverId(receiverId);
+        letter.setSendTime(data);
+
+        if(letterContent != null)
+        {
+            letter.setLetterContent(letterContent);
+            letter.setType(0);
+        }
+        else if(resourceUrl != null)
+        {
+            letter.setLetterContent("[图片]");
+            letter.setResourceUrl(resourceUrl);
+            letter.setType(1);
+        }
+
         int col = letterMapper.insertSelective(letter);
         if(col == 0)
         {

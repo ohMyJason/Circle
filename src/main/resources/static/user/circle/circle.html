@@ -194,7 +194,17 @@
                             <a href="" @click.prevent="transflag = !transflag" class="icon icon-share a-font-20px">转发</a>
                         </div>
                         <div class="col-md-5">
-                            <a href="" @click.prevent="" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</a>
+                            <at-popover trigger="click" placement="bottom">
+                                <at-button style="width: 100px;height: 30px;border:none;margin-right: 10px" size="small" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</at-button>
+                                <template slot="content">
+                                    <textarea>123</textarea>
+                                    <div style="text-align: right;margin-top: 8px;">
+                                        <at-button size="smaller" @click="show=false">取消</at-button>
+                                        <at-button size="smaller" type="primary" @click="show=false">评论</at-button>
+                                    </div>
+                                </template>
+                            </at-popover>
+                            <!--<a href="" @click.prevent="" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</a>-->
                         </div>
                         <div class="col-md-5">
                             <a href="" @click.prevent="" class="icon icon-thumbs-up a-font-20px" v-cloak>{{item.likeNum}}</a>
