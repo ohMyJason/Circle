@@ -18,9 +18,20 @@ public class CircleController {
     @Autowired
     CircleService circleService;
 
+    /**
+     * 查看圈子基本信息
+     * @param circleId
+     * @return
+     */
     @PostMapping("circleInfo")
     public Result circleInfo(@RequestParam(name = "circleId") int circleId){
         return circleService.circleInfo(circleId);
+    }
+
+    @PostMapping("circleBlog")
+    public Result circleBlog(@RequestParam(name = "circleId") int circleId,@RequestParam(name = "page") int page,
+                             @RequestParam(name = "size") int size){
+        return circleService.circleBlog(circleId,page,size);
     }
 }
 
