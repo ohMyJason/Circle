@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>首页</title>
+    <title>登陆</title>
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/at-ui/dist/at.js"></script>
     <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
@@ -40,33 +40,72 @@
         </div>
     </div>
 </div>
-<div id="contain" >
+<div id="contain" class="container">
     <div  class="row circle_frame">
-        <div class="col-md-3" id="left-item">
-            <div class="items" @click="change">
-                <a href="#">首页</a>
-            </div>
-            <div class="items" @click="change"><a href="#">圈子</a></div>
-            <div class="items" @click="change" ><a href="#">私信</a></div>
-            <div class="items" @click="change" ><a href="#">我的</a></div>
-<!--            <at-menu router>-->
-<!--                <at-menu-item>圈子</at-menu-item>-->
-<!--            </at-menu>-->
-<!--            <at-menu-item>圈子</at-menu-item>-->
+<!--        <div class="col-md-3" id="left-item">-->
+<!--            <div class="items" @click="change">-->
+<!--                <a href="#">首页</a>-->
+<!--            </div>-->
+<!--            <div class="items" @click="change"><a href="#">圈子</a></div>-->
+<!--            <div class="items" @click="change" ><a href="#">私信</a></div>-->
+<!--            <div class="items" @click="change" ><a href="#">我的</a></div>-->
+<!--&lt;!&ndash;            <at-menu router>&ndash;&gt;-->
+<!--&lt;!&ndash;                <at-menu-item>圈子</at-menu-item>&ndash;&gt;-->
+<!--&lt;!&ndash;            </at-menu>&ndash;&gt;-->
+<!--&lt;!&ndash;            <at-menu-item>圈子</at-menu-item>&ndash;&gt;-->
 
 
-        </div>
-        <div  class="col-md-15" >
-            <div class="layui-carousel" id="test10" class="photo-size">
-                <div carousel-item="">
-                    <div><img src="node_modules/images/1111.png"></div>
-                    <div><img src="node_modules/images/2222.png"></div>
-                    <div><img src="node_modules/images/3333.png"></div>
-                    <div><img src="node_modules/images/beijing.jpg"></div>
+<!--        </div>-->
+        <div  class="col-md-16" >
+            <div class="photo">
+                <div class="layui-carousel" id="test10" class="photo-size">
+                    <div carousel-item="">
+                        <div><img src="node_modules/images/1111.png"></div>
+                        <div><img src="node_modules/images/2222.png"></div>
+                        <div><img src="node_modules/images/3333.png"></div>
+                        <div><img src="node_modules/images/beijing.jpg"></div>
+                    </div>
                 </div>
             </div>
+            <div class="contain-show" >
+                <div class=" raw1">
+                    <div class="pho">
+                        <img src="node_modules/images/1.jpg" height="70px" width="70px">
+                    </div>
+                    <div class="name">
+                        <span style="color: #c7254e">{{name}}暂定名字</span>
+                    </div>
+                    <div class="logo">原创</div>
+
+                </div>
+                <div class="discuss">
+                    迪迦奥特曼
+                </div>
+                <div class="video">
+                    <video style="width: 450px;height: 250px" controls="controls" src="#"></video>
+                </div>
+                <div class="bottom">
+                   <div class="bottom-1">
+                       <a href="#" name="forward" class="icon icon-share">转发</a>
+                   </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-edit">45{{discuss}}</a>
+                    </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-thumbs-up">50{{upnum}}</a>
+                    </div>
+                    <div class="layday">
+                        <span>创建时间:{{createTime}}</span>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
         </div>
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="right-top">
                 <div class="login-box">
                     <div class="login-inner">
@@ -104,6 +143,81 @@
 
                 </div>
             </div>
+            <div class="ri-item">
+                <div class="hot">
+                    <h2 style="font-weight: bolder">圈圈热门话题</h2>
+                </div>
+                <div class="circle">
+                    <div class="example">
+                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
+                    </div>
+                    <div class="text">
+                        <div class="line1">
+                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent" >
+                        </div>
+                        <div class="line2">
+                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px  ;background-color:transparent" >
+                        </div>
+                    </div>
+
+                </div>
+                <div class="circle">
+                    <div class="example">
+                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
+                    </div>
+                    <div class="text">
+                        <div class="line1">
+                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
+                        </div>
+                        <div class="line2">
+                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                        </div>
+                    </div>
+
+                </div>
+                <div class="circle">
+                    <div class="example">
+                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
+                    </div>
+                    <div class="text">
+                        <div class="line1">
+                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
+                        </div>
+                        <div class="line2">
+                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                        </div>
+                    </div>
+                </div>
+                <div class="circle">
+                    <div class="example">
+                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
+                    </div>
+                    <div class="text">
+                        <div class="line1">
+                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
+                        </div>
+                        <div class="line2">
+                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                        </div>
+                    </div>
+
+                </div>
+                <div class="circle">
+                    <div class="example">
+                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
+                    </div>
+                    <div class="text">
+                        <div class="line1">
+                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
+                        </div>
+                        <div class="line2">
+                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
     </div>
@@ -123,7 +237,7 @@
         //图片轮播
         carousel.render({
             elem: '#test10'
-            ,width: '700px'
+            ,width: '750px'
             ,height: '440px'
             ,interval: 5000
         });
