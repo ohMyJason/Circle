@@ -34,7 +34,7 @@ public class SmsUtils {
         // 必填:待发送手机号
         request.setPhoneNumbers(telephone);
         // 必填:短信签名-可在短信控制台中找到
-        request.setSignName("仿京东购物网站项目"); // TODO 改这里
+        request.setSignName("圈圈"); // TODO 改这里
         // 必填:短信模板-可在短信控制台中找到
         request.setTemplateCode("SMS_172358214");  // TODO 改这里
         // 可选:模板中的变量替换JSON串,如模板内容为"亲爱的用户,您的验证码为${code}"时,此处的值为

@@ -6,6 +6,7 @@
     <title>圈子</title>
     <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/circle.css">
@@ -69,7 +70,6 @@
             <div class="col-md-4">
                 <h1 v-text="circleItem.circleName"></h1>
                 <span class="span-item" v-cloak>帖子：{{circleItem.blogNum}}</span>
-                <span class="span-item" v-cloak>点赞：{{circleItem.blogLike}}</span>
             </div>
 
             <div class="col-md-6 col-md-offset-4"></div>
@@ -238,15 +238,23 @@
         el: '#mid-title',
         data: {
             circleItem: {
-                circleId: '',
-                circleImgUrl: 'node_modules/images/upload.png',
-                circleName: '搞笑圈',
-                blogNum: '2',
-                blogLike: '8',
-                createName: '用户1',
-                createTime: '2019-09-01',
-                circleTitle: '分享身边的搞笑事情',
             }
+        },created(){
+            $.ajax({
+                url:"/circle/circleInfo",
+                type:"post",
+                dataType:"json",
+                data:{
+                  circleId : 1
+                },
+                success:function (result) {
+                    if(result.code == 0){
+                        vm2.circleItem = result.data;
+                    }else {
+                        alert(result.msg);
+                    }
+                }
+            })
         }
     })
 
@@ -287,11 +295,16 @@
                     type:'1',
                     blogInfo:{},
                 },
-                // {
-                //     blogId:'2',
+            ],
+            transflag : false,
+            pageNum: 1,
+            size: 3
+        },methods:{
+            add(){
+                // var test = {blogId:'',
                 //     userId:'',
                 //     userName:'王某',
-                //     avatar:'node_modules/images/upload.png',
+                //     avatarUrl:'node_modules/images/upload.png',
                 //     createTime:'2019-08-01 20:37:21',
                 //     content:'？？？？',
                 //     likeNum:'10',
@@ -303,65 +316,26 @@
                 //     resourceUrl:'',
                 //     resourceList:[{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'}],
                 //     type:'1',
-                //     blogInfo:{},
-                // },{
-                //     blogId:'3',
-                //     userId:'',
-                //     userName:'测试',
-                //     avatar:'node_modules/images/upload.png',
-                //     createTime:'2019-08-01 20:37:21',
-                //     content:'一级转载',
-                //     likeNum:'10',
-                //     commentNum:'11',
-                //     isRepost:'1',
-                //     repostId:'',
-                //     weight:'10',
-                //     circleId:'',
-                //     resourceUrl:'',
-                //     resourceList:[],
-                //     type:'0',
-                //     blogInfo:{
-                //         blogId:'',
-                //         userId:'',
-                //         userName:'王某',
-                //         avatar:'node_modules/images/upload.png',
-                //         createTime:'2019-08-01 20:37:21',
-                //         content:'？？？？？',
-                //         likeNum:'10',
-                //         commentNum:'11',
-                //         isRepost:'0',
-                //         repostId:'',
-                //         weight:'10',
-                //         circleId:'',
-                //         resourceUrl:'',
-                //         resourceList:[{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'}],
-                //         type:'1',
-                //         blogInfo:{}
-                //     },
-                // }
-            ],
-            transflag : false,
-        },methods:{
-            add(){
-                var test = {blogId:'',
-                    userId:'',
-                    userName:'王某',
-                    avatarUrl:'node_modules/images/upload.png',
-                    createTime:'2019-08-01 20:37:21',
-                    content:'？？？？',
-                    likeNum:'10',
-                    commentNum:'11',
-                    isRepost:'0',
-                    repostId:'',
-                    weight:'10',
-                    circleId:'',
-                    resourceUrl:'',
-                    resourceList:[{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'}],
-                    type:'1',
-                    blogInfo:{},};
-                this.blogInfoList.push(test);
+                //     blogInfo:{},};
+                // this.blogInfoList.push(test);
             }
         },created(){
+            // $.ajax({
+            //     url:"/circle/circleBlog",
+            //     type:"post",
+            //     data:{
+            //         circleId : 1,
+            //         page: vm3.pageNum,
+            //         size: vm3.size
+            //     },
+            //     success:function (result) {
+            //         if(result.code == 0){
+            //             vm3.blogInfoList.push(result.data);
+            //             vm3.pageNum = vm3.pageNum+1;
+            //         }
+            //     }
+            // })
+
             window.onscroll = function(){
                 //变量scrollTop是滚动条滚动时，距离顶部的距离
                 var scrollTop = document.documentElement.scrollTop||document.body.scrollTop;
@@ -373,7 +347,7 @@
                 if(scrollTop+windowHeight==scrollHeight){
                     //写后台加载数据的函数
                     console.log("距顶部"+scrollTop+"可视区高度"+windowHeight+"滚动条总高度"+scrollHeight);
-                    vm3.add();
+                    // vm3.add();
                 }
             }
         }

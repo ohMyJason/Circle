@@ -1,7 +1,15 @@
 package com.lanqiao.circle.mapper;
 
+import com.lanqiao.circle.entity.BlogInfo;
 import com.lanqiao.circle.entity.Circles;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.List;
+
+
+@Repository
 public interface CirclesMapper {
     int deleteByPrimaryKey(Integer circleId);
 
@@ -14,4 +22,8 @@ public interface CirclesMapper {
     int updateByPrimaryKeySelective(Circles record);
 
     int updateByPrimaryKey(Circles record);
+
+    HashMap getCircleInfo(Integer circleId);
+
+    List<BlogInfo> getCircleBlogDESCByWeight(@Param("circleId")int circleId,@Param("pageIndex")int pageIndex,@Param("size")int size);
 }

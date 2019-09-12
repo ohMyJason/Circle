@@ -74,21 +74,21 @@
                             <span>{{item.sendTime}}</span>
                         </div>
                         <!-- 用户的头像 -->
-                        <div class="smallImgBox right" v-if="item.senterId == userInfo.userId">
+                        <div class="smallImgBox right" v-show="item.senterId == userInfo.userId">
                             <img :src="userInfo.avatarUrl" alt="用户头像" class="imgSize" >
                         </div>
                         <!-- 聊天对象的头像 -->
-                        <div class="smallImgBox left" v-if="item.senterId != userInfo.userId">
+                        <div class="smallImgBox left" v-show="item.senterId != userInfo.userId">
                             <img :src="item.avatarUrl" alt="用户头像" class="imgSize">
                         </div>
                         <!-- 发送消息 -->
-                        <div class="messageMiddleBox right" v-if="item.senterId == userInfo.userId">
+                        <div class="messageMiddleBox right" v-show="item.senterId == userInfo.userId">
                             <div class="messageBox right">
                                 <p>{{item.letterContent}} </p>
                             </div>
                         </div>
                         <!-- 接收消息 -->
-                        <div class="messageMiddleBox left" v-if="item.senterId != userInfo.userId">
+                        <div class="messageMiddleBox left" v-show="item.senterId != userInfo.userId">
                             <div class="messageBox left">
                                 <p>{{item.letterContent}} </p>
                             </div>
@@ -141,6 +141,7 @@
                 //当前聊天对象的id
                 var connectionId = vm.userList[i].userId;
                 var userName = vm.userList[i].userName;
+
                 $.ajax({
                     url:"/session/getMessageLog",
                     type:"post",
