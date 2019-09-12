@@ -42,39 +42,32 @@ public class SessionController {
     }
 
     //根据senterId和receiverId查询历史消息
+//    @UserLoginToken
+//    @PostMapping("/getMessageLog")
+//    public Result selectMessageLog(HttpServletRequest httpServletRequest,Integer receiverId)
+//    {
+//        int senterId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+//        Letter letter = new Letter();
+//        letter.setSenterId(senterId);
+//        letter.setReceiverId(receiverId);
+//        return sessionService.selectMessageLog(letter);
+//    }
+
+    //查询历史消息
     @UserLoginToken
     @PostMapping("/getMessageLog")
-    public Result selectMessageLog(HttpServletRequest httpServletRequest,Integer receiverId)
+    public Result selectMessageLog(HttpServletRequest httpServletRequest,String userName)
     {
         int senterId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
-        Letter letter = new Letter();
-        letter.setSenterId(senterId);
-        letter.setReceiverId(receiverId);
-        return sessionService.selectMessageLog(letter);
+        return sessionService.selectMessageLog(senterId,userName);
     }
 
     //发送信息
     @UserLoginToken
     @PostMapping("/sendMsg")
-    public Result sendMsg(HttpServletRequest httpServletRequest,Integer receiverId,String letterContent,String resourceUrl)
+    public Result sendMsg(HttpServletRequest httpServletRequest,String userName,String letterContent,String resourceUrl)
     {
         int senterId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
-        String  data = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
-        Letter letter = new Letter();
-        letter.setSenterId(senterId);
-        letter.setReceiverId(receiverId);
-        letter.setSendTime(data);
-        if(letterContent != null)
-        {
-            letter.setLetterContent(letterContent);
-            letter.setType(0);
-        }if(resourceUrl != null)
-        {
-            letter.setLetterContent("[图片]");
-            letter.setResourceUrl(resourceUrl);
-            letter.setType(1);
-        }
-        return sessionService.sendMsg(letter);
+        return sessionService.sendMsg(senterId,userName, letterContent,resourceUrl);
     }
 }

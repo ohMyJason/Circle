@@ -12,7 +12,6 @@
     <script src="../../node_modules/layui/layui.js"></script>
     <script src="../../node_modules/js/session.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
-    <!--    <script src="../../node_modules/js/jquery-cookie.js"></script>-->
 </head>
 <body>
 <div class="container">
@@ -78,16 +77,17 @@
                         <div class="smallImgBox right" v-if="item.senterId == userInfo.userId">
                             <img :src="userInfo.avatarUrl" alt="用户头像" class="imgSize" >
                         </div>
-                        <!-- 用户的头像 -->
+                        <!-- 聊天对象的头像 -->
                         <div class="smallImgBox left" v-if="item.senterId != userInfo.userId">
                             <img :src="item.avatarUrl" alt="用户头像" class="imgSize">
                         </div>
-
+                        <!-- 发送消息 -->
                         <div class="messageMiddleBox right" v-if="item.senterId == userInfo.userId">
                             <div class="messageBox right">
                                 <p>{{item.letterContent}} </p>
                             </div>
                         </div>
+                        <!-- 接收消息 -->
                         <div class="messageMiddleBox left" v-if="item.senterId != userInfo.userId">
                             <div class="messageBox left">
                                 <p>{{item.letterContent}} </p>
@@ -105,7 +105,8 @@
                     <div class="bLogoBox left">seven</div>
                 </div>
                 <!-- 输入内容 -->
-                <textarea rows="5" cols="91" id="inputText" onkeypress="back(event);"  placeholder="按下Enter回车键发送内容"></textarea>
+                <textarea rows="5" cols="91" id="inputText"  onkeypress="back(event);"  placeholder="按下Enter回车键发送内容">
+                </textarea>
             </div>
         </div>
     </div>
@@ -137,8 +138,9 @@
         },
         methods: {
             getMsg:function(i){
-                //当前聊天对象的id和头像
+                //当前聊天对象的id
                 var connectionId = vm.userList[i].userId;
+                var userName = vm.userList[i].userName;
                 $.ajax({
                     url:"/session/getMessageLog",
                     type:"post",
@@ -146,7 +148,8 @@
                     async:true,
                     headers:{'token':$.cookie("token")},
                     data:{
-                        receiverId:connectionId
+                        // receiverId:connectionId
+                        userName:userName
                     },success:function (result) {
                         if (result.code == 0) {
                             vm.messageList = result.data;
@@ -157,13 +160,15 @@
             },
             clickFriends: function (i) {
                 //先将所有的list的背景颜色初始化，包括去掉右边框
-                $(".list").css({"background-color": "#383838"});
+                // $(".list").css({"background-color": "#383838"});
+                $(".list").removeClass("choose");
                 $(".list").css({"border": "none"});
                 $(".list").css({"border-bottom": "1px solid black"});
 
                 // 将点击的那一个list的div的背景颜色进行更改，加上右边框
                 var $now = $(".list").eq(i);
-                $now.css({"background-color": "#232212"});
+                // $now.css({"background-color": "#232212"});
+                $now.addClass("choose");
                 $now.css({"border-right": "2px solid #ff5500"});
                 $now.css({"border-bottom": "1px solid black"});
                 $("#contactName").html($now.find(".userName").html());
@@ -182,19 +187,24 @@
                     }
                 }
             })
-
             //获取会话列表
-            $.ajax({
-                url:"/session/getUserList",
-                type:"post",
-                dataType:"json",
-                headers:{'token':$.cookie("token")},
-                success:function (result) {
-                    if(result.code == 0){
-                        vm.userList = result.data;
+            function getUserList()
+            {
+                $.ajax({
+                    url:"/session/getUserList",
+                    type:"post",
+                    dataType:"json",
+                    headers:{'token':$.cookie("token")},
+                    success:function (result) {
+                        if(result.code == 0){
+                            vm.userList = result.data;
+                        }
                     }
-                }
-            })
+                })
+            }
+            getUserList();
+
+
         }
         ,updated()
         {
@@ -204,17 +214,92 @@
                 if (content != null) {
                     content.scrollTop = content.scrollHeight;
                 }
-                //     $(".list").click(function () {
-                //         $(".messageBigBox").css("display","block");
-                //     })
             })
         }
     })
-    // $(function () {
-    //     $(".list").click(function () {
-    //         $(".messageBigBox").css("display","block");
-    //     })
-    // })
+
+    function back(event){
+        event = event || window.event;
+        if(event.keyCode==13){
+            event.returnValue = false;
+            var length = $("#inputText").val().length;
+            if(length == 0){
+                layui.use('layer',function() {
+                    var layer = layui.layer;
+                    layer.msg("发送内容不能为空，请重新输入");
+                })
+            }
+            else {
+                //TODO
+                //发送消息
+                //userName,letterContent,resourceUrl
+                var userName =$(".choose").find(".userName").html();
+                if(userName == null)
+                {
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请先选择联系人");
+                    })
+                }
+                else
+                {
+                    var letterContent = $("#inputText").val();
+                    console.log(letterContent);
+                    // console.log(userName);
+                    $.ajax({
+                        url:"/session/sendMsg",
+                        type:"post",
+                        dataType:"json",
+                        headers:{'token':$.cookie("token")},
+                        data: {
+                            userName:userName,
+                            letterContent:letterContent,
+                            resourceUrl:""
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                $("#inputText").val("");
+
+                                $.ajax({
+                                    url:"/session/getMessageLog",
+                                    type:"post",
+                                    dataType:"json",
+                                    async:true,
+                                    headers:{'token':$.cookie("token")},
+                                    data:{
+                                        // receiverId:connectionId
+                                        userName:userName
+                                    },success:function (result) {
+                                        if (result.code == 0) {
+                                            vm.messageList = result.data;
+                                        }
+                                    }
+                                })
+                                // vm.getUserList();
+                                $.ajax({
+                                    url:"/session/getUserList",
+                                    type:"post",
+                                    dataType:"json",
+                                    headers:{'token':$.cookie("token")},
+                                    success:function (result) {
+                                        if(result.code == 0){
+                                            vm.userList = result.data;
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    })
+
+                }
+
+
+
+
+            }
+            return false;
+        }
+    }
 </script>
 </body>
 </html>

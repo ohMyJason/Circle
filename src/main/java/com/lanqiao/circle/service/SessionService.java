@@ -16,8 +16,9 @@ public interface SessionService {
     public Result selectUserList(Integer userId);
 
     //根据senterId和receiverId查询历史消息
-    public Result selectMessageLog(Letter letter);
+//    public Result selectMessageLog(Letter letter);
+    public Result selectMessageLog(int senterId,String userName);
 
     //发送信息
-    public Result sendMsg(Letter letter);
+    public Result sendMsg(Integer senterId,String userName,String  letterContent,String  resourceUrl);
 }
