@@ -9,4 +9,6 @@ import com.lanqiao.circle.entity.Users;
 
 public interface UserService {
     Users findUserById(int parseInt);
+
+
 }
