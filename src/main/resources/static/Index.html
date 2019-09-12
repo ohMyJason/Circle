@@ -40,7 +40,7 @@
         </div>
     </div>
 </div>
-<div id="contain" class="container">
+<div id="contain" >
     <div  class="row circle_frame">
 <!--        <div class="col-md-3" id="left-item">-->
 <!--            <div class="items" @click="change">-->
@@ -76,7 +76,6 @@
                         <span style="color: #c7254e">{{name}}暂定名字</span>
                     </div>
                     <div class="logo">原创</div>
-
                 </div>
                 <div class="discuss">
                     迪迦奥特曼
@@ -97,10 +96,57 @@
                     <div class="layday">
                         <span>创建时间:{{createTime}}</span>
                     </div>
-
-
                 </div>
-
+            </div>
+            <div class="contain-show">
+                <div class=" raw1">
+                    <div class="pho">
+                        <img src="node_modules/images/1.jpg" height="70px" width="70px">
+                    </div>
+                    <div class="name">
+                        <span style="color: #c7254e">{{name}}暂定名字</span>
+                    </div>
+                    <div class="lgog">原创</div>
+                </div>
+                <div class="discuss">
+                    迪迦奥特曼
+                </div>
+                <div class="ihl">
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                </div>
+                <div class="ih2">
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-share">转发</a>
+                    </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-edit">45{{discuss}}</a>
+                    </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-thumbs-up">50{{uum}}</a>
+                    </div>
+                    <div class="layday">
+                        <span>创建时间:{{createTime}}</span>
+                    </div>
+                </div>
 
             </div>
 
@@ -283,16 +329,8 @@
         el: '#app',
         data:{
             inputValue4:''
-        },
-        // methods:{
-        //     change:function () {
-        //         console.log(this);
-        //         // $(".items").css({"background-color":"red"});
-        //     },
-        //     change1:function () {
-        //
-        //     },
-        // }
+        }
+
     })
     new Vue({
         el:'#contain',
