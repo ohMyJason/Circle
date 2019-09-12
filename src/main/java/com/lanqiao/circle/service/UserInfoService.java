@@ -26,4 +26,10 @@ public interface UserInfoService {
 
     // 查看主页微博
     public Result getUserAllBlog(int userId);
+
+    //管理员查询用户
+    public Result normalUser(String userName,int page,int limit);
+
+    //管理员删除用户
+    public Result deleteUsers(Integer usersId);
 }
