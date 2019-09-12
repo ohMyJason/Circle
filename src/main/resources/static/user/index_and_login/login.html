@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>登陆后首页</title>
-    <script src="node_modules/vue/dist/vue.js"></script>
-    <script src="node_modules/at-ui/dist/at.js"></script>
-    <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
-    <link rel="stylesheet" href="node_modules/css/top.css">
-    <link rel="stylesheet" href="node_modules/css/login.css">
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="../../node_modules/css/top.css">
+    <link rel="stylesheet" href="../../node_modules/css/login.css">
 </head>
 <body>
 <div id="app" class="container">
     <div class="row top-header">
         <div class="col-md-3 logo">
-            <img src="node_modules/images/logo.png" class="img-up">
+            <img src="../../node_modules/images/logo.png" class="img-up">
         </div>
         <div class="col-md-9">
             <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
@@ -33,13 +33,13 @@
         </div>
     </div>
 </div>
-
 <div id="contain" >
     <div  class="row circle_frame">
         <div  class="col-md-15" >
             <div class="dio">
-                <div >
-
+                <div class="news" style="border: 1px">有什么新鲜事告诉大家？</div>
+                <div class="neiro">
+                    <input style="border:1px solid #2b542c;width:100%;height: 100%" >
                 </div>
 
             </div>
