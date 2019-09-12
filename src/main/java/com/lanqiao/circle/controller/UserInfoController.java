@@ -122,4 +122,12 @@ public class UserInfoController {
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
         return userInfoService.getUserAllBlog(userId);
     }
+
+    /**
+     * 管理员查询用户信息
+     */
+    @PostMapping("/getNormalUser")
+    public Result normalUser(String userName, int page, int limit){
+        return userInfoService.normalUser(userName,page,limit);
+    }
 }
