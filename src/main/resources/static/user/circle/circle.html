@@ -190,7 +190,7 @@
                     <!--    评论点赞相关 -->
                     <div class="row l-c-s">
                         <div class="col-md-5">
-                            <a href="" @click.prevent="show=true" class="icon icon-share a-font-20px">转发</a>
+                            <a href="" class="icon icon-share a-font-20px" @click.prevent="showForward(i)">转发</a>
                         </div>
                         <div class="col-md-5">
 <!--                            <at-popover trigger="click" placement="bottom">-->
@@ -203,7 +203,7 @@
 <!--                                    </div>-->
 <!--                                </template>-->
 <!--                            </at-popover>-->
-                            <a href="" @click.prevent="" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</a>
+                            <a href="" @click.prevent="showReview(i)" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</a>
                         </div>
                         <div class="col-md-5">
                             <a href="" @click.prevent="like($event,item.blogId)" class="icon icon-thumbs-up a-font-20px" v-cloak>{{item.likeNum}}</a>
@@ -212,13 +212,20 @@
                             <span class="font-16px" v-cloak>创建时间:{{item.createTime}}</span>
                         </div>
                     </div>
-                    <div class="row addForward" v-if="show=true" :key="item.blogId">
+                    <div :class=['row','addForward',selected==i?'':'hidden']>
                         <div class="col-md-20 col-md-offset-1">
-                            <input type="text" class="forwardInput">
+                            <input type="text" class="forwardInput" v-model="forwardInput">
                         </div>
                         <div class="col-md-3">
-                            <input type="submit" class="forwardButton" value="转发">
-                            <input type="submit" class="forwardButton" value="取消" @click="show=false">
+                            <input type="button" class="forwardButton" value="转发" @click="forwardBlog($event,item.blogId)">
+                        </div>
+                    </div>
+                    <div :class=['row','addForward',reviewed==i?'':'hidden']>
+                        <div class="col-md-20 col-md-offset-1">
+                            <input type="text" class="forwardInput" v-model="forwardInput">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="button" class="forwardButton" value="发布评论" @click="reviedBlog($event,item.blogId)">
                         </div>
                     </div>
 
@@ -275,7 +282,10 @@
             blogInfoList:[
             ],
             pageNum: '1',
-            size: '3'
+            size: '3',
+            forwardInput:'',
+            selected: 'll',
+            reviewed:'ll'
         },methods:{
             add(){
                 $.ajax({
@@ -296,6 +306,72 @@
                     }
                 })
             },
+            showForward(i){
+                if(this.selected != i) {
+                    this.selected = i;
+                    this.reviewed='ll';
+                    this.forwardInput='';
+                }else {
+                    this.selected = 'lll';
+                }
+            },
+            forwardBlog(e,blogId){
+                $.ajax({
+                    url:"/blog/forwardBlog",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        blogId:blogId,
+                        forwardContent: this.forwardInput
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("转发成功");
+                            })
+                            vm3.selected = 'll';
+                        }
+                    }
+                })
+            },
+            showReview(i){
+                if(this.reviewed != i) {
+                    this.reviewed = i;
+                    this.forwardInput='';
+                    this.selected = 'lll';
+                }else {
+                    this.reviewed = 'lll';
+                }
+            },
+            reviedBlog(e,blogId){
+                if(this.forwardInput == ''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入评论信息！");
+                    })
+                }else {
+                    $.ajax({
+                        url: "/blog/insertComment",
+                        type: "post",
+                        headers: {'token': $.cookie("token")},
+                        data: {
+                            blogId: blogId,
+                            commentContent: this.forwardInput
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer', function () {
+                                    var layer = layui.layer;
+                                    layer.msg("评论成功");
+                                })
+                                vm3.reviewed = 'lll';
+                            }
+                        }
+                    })
+                }
+            }
+            ,
             like(e,blogId){
                 $.ajax({
                     url:"/blog/insertLike",
