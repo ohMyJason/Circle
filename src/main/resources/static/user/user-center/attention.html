@@ -115,10 +115,10 @@
                     if(result.code == 0){
                         vm.src = result.data.avatarUrl;
                         vm.userName = result.data.userName;
-                        console.log(result.data.avatarUrl)
                     }
                 }
-            })
+            });
+
             //查看自己关注接口
             $.ajax({
                 url:"/userInfo/getAllBloggerSelf",
@@ -128,8 +128,27 @@
                 success:function (result) {
                     if(result.code == 0){
                         vm.attentionNum = result.count;
-                        vm.memberList = result.data;
-                        console.log(result.count)
+                        for(i=0;i<result.count;i++){
+                            vm.memberList[i] = result.data[i];
+                            console.log(result.data[i].sex)
+                            //判断性别
+                            if(result.data[i].sex == 0){
+                                vm.memberList[i].sex = "保密";
+                            }else if (result.data[i].sex == 1) {
+                                vm.memberList[i].sex = "男";
+                            }else if (result.data[i].sex == 2) {
+                                vm.memberList[i].sex = "女";
+                            }
+
+                            //判断感情状况
+                            if(result.data[i].isSingle == 0){
+                                vm.memberList[i].isSingle = "保密";
+                            }else if(result.data[i].isSingle == 1){
+                                vm.memberList[i].isSingle = "单身";
+                            }else if(result.data[i].isSingle == 2){
+                                vm.memberList[i].isSingle = "恋爱";
+                            }
+                        }
                     }
                 }
             })

@@ -2,6 +2,7 @@ package com.lanqiao.circle.mapper;
 
 import com.lanqiao.circle.entity.Blog;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
