@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>登陆后首页</title>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/jQuery/emoji_jQuery.min.js"></script>
+    <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="../../node_modules/css/top.css">
+    <link rel="stylesheet" href="../../node_modules/css/login.css">
+</head>
+<body>
+<div id="app" class="container">
+    <div class="row top-header">
+        <div class="col-md-3 logo">
+            <img src="../../node_modules/images/logo.png" class="img-up">
+        </div>
+        <div class="col-md-9">
+            <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
+                <template slot="append">
+                    <i class="icon icon-search"></i>
+                </template>
+            </at-input>
+        </div>
+        <div class="col-md-7 col-md-offset-5">
+            <at-menu mode="horizontal" active-name="0">
+                <at-menu-item name="1"><i class="icon icon-home"></i>首页</at-menu-item>
+                <at-menu-item name="2"><i class="icon icon-aperture"></i>圈子</at-menu-item>
+                <at-menu-item name="3"><i class="icon icon-mail"></i>私信</at-menu-item>
+                <at-menu-item name="4"><i class="icon icon-user"></i>用户</at-menu-item>
+            </at-menu>
+        </div>
+    </div>
+</div>
+<div id="contain" >
+    <div  class="row circle_frame">
+        <div  class="col-md-15" >
+            <div class="dio">
+                <div class="news" style="border: 1px">有什么新鲜事告诉大家？</div>
+                <div class="neiro">
+                    <input style="border:1px solid #2b542c;width:100%;height: 100%" id="input">
+                </div>
+                <div class="nima">
+                    <div class="emji">
+                        <i class="icon icon-github" style="color: #f0ad4e" id="btn"></i>
+                        <span style="font-size: 70%" id="btn1">表情</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-8">
+
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#btn #btn1").emoji({
+            showTab:true,
+
+
+        })
+    })
+
+</script>
+<script>
+    new Vue({
+        el: '#app',
+        data:{
+            inputValue4:''
+        }
+    })
+</script>
+</body>
+</html>

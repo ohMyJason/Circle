@@ -200,7 +200,7 @@
     select <include refid="Base_Column_List"/>
     from tb_users
     where
-    user_name = #{userName} or phone = #{phone} or email = #{email} and password = #{password}
+    (user_name = #{userName} or phone = #{phone} or email = #{email}) and password = #{password}
   </select>
 
   <select id="getUserAllBlog" resultType="com.lanqiao.circle.entity.BlogInfo" parameterType="java.lang.Integer">

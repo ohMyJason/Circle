@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <link  type="text/css" rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link type="text/css" rel="stylesheet" href="../../node_modules/layui/css/layui.css" media="all">
+    <link type="text/css" rel="stylesheet" href="../../node_modules/css/register.css">
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+</head>
+<script>
+
+</script>
+<body>
+<div  id="foot">
+    <div class="head"></div>
+    <div id="contain">
+        <div class="line">
+            <div class="wenzi">
+                <a href="#">个人注册</a>
+            </div>
+        </div>
+        <div class="main">
+            <div class="reg-form">
+                <div class="info-list">
+                    <div class="tip">
+                        <div class="tag">
+                            <div class="icon icon-smartphone">&nbsp;&nbsp;手机:</div>
+                        </div>
+                    </div>
+                    <div class="flag">
+                        <div class="flag-1">
+                            <input  name=user type="text" placeholder="请输入手机号码" onclick="this.placeholder=''">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="pas">
+                    <div class="tid">&nbsp;&nbsp;设置密码:</div>
+                    <div class="pascenter">
+                        <input name="passward" type="text" placeholder="请输入密码" onclick="this.placeholder=''">
+                    </div>
+                </div>
+                <div class="choose">
+                    <div class="bir">&nbsp;&nbsp;生日:</div>
+                    <select class="year" name="year">
+                        <option value="2002">2002</option>
+                        <option value="2001">2001</option>
+                        <option value="2000">2000</option>
+                        <option value="1999">1999</option>
+                        <option value="请选择" selected>请选择</option>
+                        <option value="1998">1998</option>
+                        <option value="1997">1997</option>
+                        <option value="1996">1996</option>
+                        <option value="1995">1995</option>
+                    </select>年
+                    <select class="month" name="month">
+                        <option value="12">12</option>
+                        <option value="11">11</option>
+                        <option value="10">10</option>
+                        <option value="9">9</option>
+                        <option value="8">8</option>
+                        <option value="7">7</option>
+                        <option value="6" selected>6</option>
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                    </select>月
+                    <select class="day" name="day">
+                        <option value="31">31</option>
+                        <option value="30">30</option>
+                        <option value="29">29</option>
+                        <option value="28">28</option>
+                        <option value="27">27</option>
+                        <option value="26">26</option>
+                        <option value="25">25</option>
+                        <option value="24">24</option>
+                        <option value="23">23</option>
+                        <option value="22">22</option>
+                        <option value="21">21</option>
+                        <option value="20">20</option>
+                        <option value="19">19</option>
+                        <option value="18">18</option>
+                        <option value="17">17</option>
+                        <option value="16">16</option>
+                        <option value="15">15</option>
+                        <option value="14">14</option>
+                        <option value="13">13</option>
+                        <option value="12">12</option>
+                        <option value="11">11</option>
+                        <option value="10">10</option>
+                        <option value="9">9</option>
+                        <option value="8">8</option>
+                        <option value="7">7</option>
+                        <option value="6">6</option>
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+
+                    </select>日
+                </div>
+                <div class="actcode">
+                    <div class="send">激活码:</div>
+                    <button class="button" name="send">免费获取短信激活码</button>
+                    <input type="text" name="sendcontain"   style="width: 50px;height: 30px ;border-box:2px ">
+                    <div class="fit" >
+                        <input type="text" name="resend" value=" 收不到验证码？" style="border: 0px" @click="resend">
+                    </div>
+                </div>
+                <div class="rejister">
+                    <div class="qwe">
+                        <div class="aaa" name="push"  @click="push">立即注册</div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-item">
+                <div class="login">
+                    <div class="right-item1">
+                        已有账号，
+                        <a href="#" style="color: #1E9FFF">直接登陆>></a>
+                    </div>
+                    <div class="right-item2">圈圈注册帮助</div>
+                    <div class="right-item3">
+                        <a href="#" style="color: #1E9FFF" >1.&nbsp;&nbsp;注册帮助指南</a>
+                    </div>
+                    <div class="right-item3">
+                        <a href="#" style="color: #1E9FFF" >2.&nbsp;&nbsp;账号已经注册怎么办？</a>
+                    </div>
+                    <div class="right-item3">
+                        <a href="#" style="color: #1E9FFF" >3.&nbsp;&nbsp;注册时显示IP地址异常怎么办？</a>
+                    </div>
+                    <div class="right-item3">
+                        <a href="#" style="color: #1E9FFF" >更多帮助>></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

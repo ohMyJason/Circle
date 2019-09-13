@@ -1,6 +1,5 @@
 package com.lanqiao.circle.controller;
 
-import com.lanqiao.circle.config.PathConfig;
 import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.TokenService;
 import com.lanqiao.circle.util.Result;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -24,8 +22,7 @@ import java.util.List;
 @RequestMapping("/test")
 public class TestController {
 
-    @Autowired
-    PathConfig pathConfig;
+
 
     @Autowired
     UsersMapper usersMapper;
@@ -33,10 +30,7 @@ public class TestController {
     @Autowired
     TokenService tokenService;
 
-    @GetMapping("/testGetPath")
-    public Result testGetPath(){
-        return Result.createSuccessResult(pathConfig.getChatImgPath());
-    }
+
 
     @GetMapping("/testMapGet")
     public Result testMapGet(){
