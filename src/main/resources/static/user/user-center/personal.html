@@ -6,6 +6,7 @@
     <title>用户界面</title>
     <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/personal.css">
@@ -125,7 +126,7 @@
 </div>
 </body>
 <script>
-    new Vue({
+    var vm = new Vue({
         el: '#app',
         data:{
             inputValue4:'',
@@ -154,7 +155,8 @@
                     readNum:'56'
                 }
             ]
-        },methods: {
+        },
+        methods: {
             gotoSession:function(){
                 alert(12345)
                 window.location.href="../../user/letter/session.html";
@@ -174,7 +176,44 @@
                     }
                 }
             }
+        },
+        created(){
+            $.ajax({
+                url:"/userInfo/getUserInfo",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0){
+                        alert(result.data);
+                        // vm.userImgUrl = "../../"+result.data.avatarUrl;
+                        vm.userName = result.data.userName;
+                    }
+                }
+            })
         }
     })
+
+
+    // $(function () {
+    //     $.ajax({
+    //         url:"/userInfo/getUserInfo",
+    //         type:"post",
+    //         dataType:"json",
+    //         headers:{'token':$.cookie("token")},
+    //         success:function (result) {
+    //             if(result.code == 0){
+    //                 alert(result.data.userName);
+    //                 // vm.userImgUrl = "../../"+result.data.avatarUrl;
+    //                 // vm.userName = result.data[0].userName;
+    //             }else {
+    //                 alert(result.code)
+    //             }
+    //         },
+    //         error:function () {
+    //             alert("error");
+    //         }
+    //     })
+    // })
 </script>
 </html>
