@@ -144,6 +144,19 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
     }
     @Override
+    public Result bannedUser(Integer usersId){
+        try{
+            if (usersMapper.bannedUser(usersId)>0){
+                return Result.createSuccessResult();
+            }else {
+                return Result.createByFailure("ERROR");
+            }
+        }catch (Exception e){
+            System.out.println(e.getCause());
+            return Result.createByFailure("异常");
+        }
+    }
+    @Override
     public Result findUser(String userName){
         try {
             List<Users> usersList = usersMapper.findUser(userName);

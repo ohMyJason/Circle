@@ -246,6 +246,12 @@
     set is_delete = 1
     where userId = #{userId}
   </update>
+
+  <update id="bannedUser" parameterType="com.lanqiao.circle.entity.Users" >
+    update tb_user
+    set status = 1
+    where userId = #{userId}
+  </update>
   
   <select id="findUser" resultType="com.lanqiao.circle.entity.Users" parameterType="java.lang.String">
     select user_name
