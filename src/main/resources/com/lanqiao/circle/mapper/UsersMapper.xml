@@ -222,7 +222,7 @@
   <select id="normalUser" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from tb_user
-    where status = 0
+    where status = 0 and is_delete = 0
     <where>
       <if test="userName!=null">
         user_name like '%${userName}%'
@@ -241,8 +241,15 @@
     </where>
   </select>
 
-  <delete id="deleteUsers" parameterType="java.lang.Integer" >
-    delete from tb_users
-    where is_delete = 1
-  </delete>
+  <update id="deleteUsers" parameterType="com.lanqiao.circle.entity.Users" >
+    update tb_user
+    set is_delete = 1
+    where userId = #{userId}
+  </update>
+  
+  <select id="findUser" resultType="com.lanqiao.circle.entity.Users" parameterType="java.lang.String">
+    select user_name
+    from tb_user
+    where user_name LIKE concat(concat("%",#{userName,jdbcType=VARCHAR}),"%")
+  </select>
 </mapper>

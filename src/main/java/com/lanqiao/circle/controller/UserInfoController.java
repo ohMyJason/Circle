@@ -137,4 +137,11 @@ public class UserInfoController {
     public Result deleteUsers(Integer usersId){
         return userInfoService.deleteUsers(usersId);
     }
+    /**
+     * 管理员查询用户
+     */
+    @PostMapping("/find")
+    public Result findUser(String userName){
+        return userInfoService.findUser(userName);
+    }
 }

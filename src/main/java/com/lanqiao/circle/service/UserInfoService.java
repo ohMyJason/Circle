@@ -32,4 +32,7 @@ public interface UserInfoService {
 
     //管理员删除用户
     public Result deleteUsers(Integer usersId);
+
+    //管理员查询用户
+    public Result findUser(String userName);
 }

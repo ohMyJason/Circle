@@ -143,4 +143,14 @@ public class UserInfoServiceImpl implements UserInfoService {
             return Result.createByFailure("异常");
         }
     }
+    @Override
+    public Result findUser(String userName){
+        try {
+            List<Users> usersList = usersMapper.findUser(userName);
+            return Result.createSuccessResult();
+        }catch (Exception e){
+            System.out.println(e.getCause());
+            return Result.createByFailure("异常");
+        }
+    }
 }
