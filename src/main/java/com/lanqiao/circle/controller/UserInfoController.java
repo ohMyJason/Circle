@@ -137,4 +137,18 @@ public class UserInfoController {
     public Result deleteUsers(Integer usersId){
         return userInfoService.deleteUsers(usersId);
     }
+    /**
+     * 管理员封禁用户
+     */
+    @PostMapping("/banned")
+    public Result bannedUser(Integer usersId){
+        return userInfoService.bannedUser(usersId);
+    }
+    /**
+     * 管理员查询用户
+     */
+    @PostMapping("/find")
+    public Result findUser(String userName){
+        return userInfoService.findUser(userName);
+    }
 }

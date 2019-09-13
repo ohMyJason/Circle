@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>个人信息</title>
-    <script src="../../node_modules/vue/dist/vue.js"></script>
-    <script src="../../node_modules/at-ui/dist/at.js"></script>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/settingInfo.css">
+
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
 </head>
 <body>
 <div id="app" class="container">
@@ -39,60 +42,79 @@
             <div class="col-md-18 setting_info">
                 <div class="text_481X1">账号设置</div>
                 <div class="box_480X1"></div>  <!--水平分隔线-->
-                <div class="account_envent">
+                <div class="account_event">
+                    <div class="row first_item">
+                        <div class="row avatar_box col-md-11">
+                            <span class="text_485X1">用户头像</span>
+                            <input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">
+                            <label for="file"><img :src="userInfo.avatarUrl" class="avatarUrl"></label>
+                            <label for="file"><span class="text_487X1 flex-center">编辑</span></label>
+                        </div>
+                        <div class="row account_box col-md-11">
+                            <span class="text_485X1">账户状态</span>
+                            <span class="account_status" v-text="userInfo.status"></span>
+                            <span class="text_487X1 flex-center">编辑</span>
+                        </div>
+                    </div>
+
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">登录名</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15" v-text="userInfo.phone"></span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
+                    <!--<div id="change" class="row info_item" style="display: none">-->
+                        <!--<span class="text_485X1 col-md-6">修改昵称</span>-->
+                        <!--<input type="text" class="changeUserName" v-model="changeUserName">-->
+                        <!--<span class="text_487X1 col-md-2 flex-center" @click="submit()">确定</span>-->
+                    <!--</div>-->
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">昵称</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15" v-text="userInfo.userName"></span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">密码</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15" v-text="userInfo.password"></span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">手机号</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15" v-text="userInfo.phone"></span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">邮箱</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15" v-text="userInfo.email"></span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">性别</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15" v-text="userInfo.sex"></span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">感情状况</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15" v-text="userInfo.isSingle"></span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">生日</span>
-                        <span class="show_info col-md-15">178****4596</span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
-                    </div>
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">简介</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15" v-text="userInfo.birthday"></span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">注册时间</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15" v-text="userInfo.createTime"></span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">所在地</span>
-                        <span class="show_info col-md-15">178****4596</span>
+                        <span class="show_info col-md-15" v-text="userInfo.address"></span>
+                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                    </div>
+                    <div class="row info_item">
+                        <span class="text_485X1 col-md-6">是否注销</span>
+                        <span class="show_info col-md-15" v-text="userInfo.isDelete"></span>
                         <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
                 </div>
@@ -103,10 +125,76 @@
 </div>
 </body>
 <script>
-    new Vue({
+    var vm = new Vue({
         el: '#app',
         data:{
-            inputValue4:''
+            inputValue4:'',
+            userInfo:{}
+        },
+        methods:{
+            getFile(e) {
+                let _this = this
+                var files = e.target.files[0]
+                if (!e || !window.FileReader) return  // 看支持不支持FileReader
+                let reader = new FileReader()
+                reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
+                reader.onloadend = function () {
+                    _this.userImgUrl = this.result;
+                    //点击大头像，同时循环给每一个card换头像
+                    for (var i=0; i<Object.keys('myBlogList').length;i++){
+                        _this.myBlogList[i].userImgUrl = this.result;
+                    }
+                }
+            }
+            // changeUserName:function () {
+                //         $("#change").css("display","block");
+                //         // userInfo.id = userId;
+                //     },
+                //     submit:function () {
+                //         this.books.splice(id-1,1,this.book);
+                //         $("#change").css("display","none");
+                //     }
+        },
+        created(){
+            $.ajax({
+                url:"/userInfo/getUserInfo",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0) {
+                        vm.userInfo = result.data;
+                        //判断性别
+                        if(result.data.sex==0){
+                            vm.userInfo.sex = "保密";
+                        }else if(result.data.sex==1){
+                            vm.userInfo.sex = "男";
+                        }else if(result.data.sex==2){
+                            vm.userInfo.sex = "女";
+                        }
+                        //判断感情状况
+                        if(result.data.isSingle == 0){
+                            vm.userInfo.isSingle = "保密";
+                        }else if(result.data.isSingle == 1){
+                            vm.userInfo.isSingle = "单身";
+                        }else if(result.data.isSingle == 2){
+                            vm.userInfo.isSingle = "恋爱";
+                        }
+                        //判断账号状态
+                        if(result.data.status == 0){
+                            vm.userInfo.status = "正常";
+                        }else{
+                            vm.userInfo.status = "封禁";
+                        }
+                        //判断是否注销
+                        if(result.data.isDelete == 0){
+                            vm.userInfo.isDelete = "正常";
+                        }else{
+                            vm.userInfo.isDelete = "注销";
+                        }
+                    }
+                }
+            })
         }
     })
 </script>

@@ -2,6 +2,7 @@ package com.lanqiao.circle.mapper;
 
 import com.lanqiao.circle.entity.Blog;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -23,4 +24,11 @@ public interface BlogMapper {
     int updateByPrimaryKey(Blog record);
 
     List<HashMap> getUserAllblogByUserId(Integer userId);
+
+
+    List<Blog> normalBlog(@Param("start") int start, @Param("limit") int limit, @Param("content")  String content);
+    int getCount(@Param("content")  String content);
+    int deleteBlog(Integer blogId);
+    List<Blog> findBlog(String content);
+
 }

@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>关注</title>
-    <script src="../../node_modules/vue/dist/vue.js"></script>
-    <script src="../../node_modules/at-ui/dist/at.js"></script>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/attention.css">
+
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
     <style>
         [v-cloak] {
             display: none;
@@ -44,10 +47,8 @@
             <div class="col-md-18">
 
                 <div class="first_box flex-center">
-                    <input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">
-                    <label for="file"><img :src="src" class="icon-head"></label><br>
+                    <img :src="src" class="icon-head"><br>
                     <span class="nick_name" v-cloak>{{userName}}</span><br>
-                    <span class="sign_name" v-cloak>{{signName}}</span>
                 </div>
 
                 <div class="row second_box">
@@ -66,20 +67,19 @@
                     <div class="member_box row">
                         <ul class="member_ul">
                             <li class="member_li S_bg1 row" v-for="(item,index) in memberList">
-                                <img :src="item.memberAvatar" alt="用户头像" class="member_avatar">
+                                <img :src="item.memberAvatar" alt="关注用户头像" class="member_avatar">
                                 <div class="box_111X1"></div>
                                 <div class="member_info">
-                                    <p class="text_96X1">{{item.memberName}}</p>
+                                    <span class="text_96X1">{{item.bloggerName}}</span>
                                     <p class="member_attention icon icon-check">已关注</p>
-                                    <p class="member_word">{{item.memberWord}}</p>
+                                    <p class="member_word">生日：{{item.birthday}}</p>
+                                    <p class="member_word">地址：{{item.address}}</p>
+                                    <p class="member_word">性别：{{item.sex}}</p>
+                                    <p class="member_word">感情状况：{{item.isSingle}}</p>
                                 </div>
                                 <at-button type="primary" class="session_btn">私信</at-button>
                                 <at-button class="cancel_btn">取消关注</at-button>
                             </li>
-                            <!--<li class="member_li S_bg1"></li>-->
-                            <!--<li class="member_li S_bg1"></li>-->
-                            <!--<li class="member_li S_bg1"></li>-->
-                            <!--<li class="member_li S_bg1"></li>-->
                         </ul>
                     </div>
 
@@ -95,44 +95,65 @@
 </div>
 </body>
 <script>
-    new Vue({
+    var vm = new Vue({
         el: '#app',
         data:{
             inputValue4:'',
-            src:'../../node_modules/images/head.png',
-            userName:'用户昵称69096',
-            signName:'个性签名',
-            date:'8月31日 19:30',
-            attentionNum: '1275',
-            memberList:[
-                {
-                    memberAvatar:'../../node_modules/images/head.png',
-                    memberName:'用户昵称',
-                    memberWord:'个人简介',
-                },
-                {
-                    memberAvatar:'../../node_modules/images/head.png',
-                    memberName:'用户昵称',
-                    memberWord:'个人简介',
-                },
-                {
-                    memberAvatar:'../../node_modules/images/head.png',
-                    memberName:'用户昵称',
-                    memberWord:'个人简介',
+            src:'',
+            userName:'',
+            attentionNum:'',
+            memberList:[]
+        },
+        created() {
+            //展示自己头像和名字
+            $.ajax({
+                url:"/userInfo/getUserAvatarAndRelation",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.src = result.data.avatarUrl;
+                        vm.userName = result.data.userName;
+                    }
                 }
-            ]
-        },methods: {
-            getFile(e) {
-                let _this = this
-                var files = e.target.files[0]
-                if (!e || !window.FileReader) return  // 看支持不支持FileReader
-                let reader = new FileReader()
-                reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
-                reader.onloadend = function () {
-                    _this.src = this.result
+            });
+
+            //查看自己关注接口
+            $.ajax({
+                url:"/userInfo/getAllBloggerSelf",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.attentionNum = result.count;
+                        for(i=0;i<result.count;i++){
+                            vm.memberList[i] = result.data[i];
+                            console.log(result.data[i].sex)
+                            //判断性别
+                            if(result.data[i].sex == 0){
+                                vm.memberList[i].sex = "保密";
+                            }else if (result.data[i].sex == 1) {
+                                vm.memberList[i].sex = "男";
+                            }else if (result.data[i].sex == 2) {
+                                vm.memberList[i].sex = "女";
+                            }
+
+                            //判断感情状况
+                            if(result.data[i].isSingle == 0){
+                                vm.memberList[i].isSingle = "保密";
+                            }else if(result.data[i].isSingle == 1){
+                                vm.memberList[i].isSingle = "单身";
+                            }else if(result.data[i].isSingle == 2){
+                                vm.memberList[i].isSingle = "恋爱";
+                            }
+                        }
+                    }
                 }
-            }
+            })
         }
     })
+
 </script>
 </html>

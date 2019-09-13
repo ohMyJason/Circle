@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>用户界面</title>
-    <script src="../../node_modules/vue/dist/vue.js"></script>
-    <script src="../../node_modules/at-ui/dist/at.js"></script>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/personal.css">
+
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
     <style>
         [v-cloak] {
             display: none;
@@ -44,10 +47,8 @@
             <div class="col-md-18">
 
                 <div class="first_box flex-center">
-                    <input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">
-                    <label for="file"><img :src="userImgUrl" class="icon-head"></label><br>
-                    <span class="nick_name" v-cloak>{{userName}}</span><br>
-                    <span class="sign_name" v-cloak>{{signName}}</span>
+                    <img :src="userInfo.avatarUrl" class="icon-head"><br>
+                    <span class="nick_name" v-cloak>{{userInfo.userName}}</span><br>
                 </div>
 
                 <div class="second_box row">
@@ -63,9 +64,9 @@
                             <at-breadcrumb separator="" class="row sel_list">
                                 <at-breadcrumb-item href="../../user/user-center/attention.html" class="col-md-offset-1" v-cloak>{{attentionNum}} 关注</at-breadcrumb-item>
                                 <div class="box_29X1"></div>
-                                <at-breadcrumb-item href="../../user/user-center/fans.html" class="col-md-offset-1" v-cloak>{{fansNum}} 粉丝</at-breadcrumb-item>
+                                <at-breadcrumb-item href="../../user/user-center/fans.html" class="col-md-offset-1" v-cloak>{{userInfo.fansNum}} 粉丝</at-breadcrumb-item>
                                 <div class="box_29X1"></div>
-                                <at-breadcrumb-item href="../../user/user-center/personal.html" class="col-md-offset-1" v-cloak>{{blogNum}} 微博</at-breadcrumb-item>
+                                <at-breadcrumb-item href="../../user/user-center/personal.html" class="col-md-offset-1" v-cloak>{{userInfo.bloggerNum}} 微博</at-breadcrumb-item>
                             </at-breadcrumb>
                         </div>
                         <div class="person_info flex-center">
@@ -78,7 +79,6 @@
                                 <at-menu mode="horizontal" active-name="0" class="menu_choose">
                                     <at-menu-item name="1" class="menu_item col-md-offset-2">全部</at-menu-item>
                                     <at-menu-item name="2" class="menu_item col-md-offset-2">原创</at-menu-item>
-                                    <!--<at-menu-item name="3" class="menu_item col-md-offset-2">更多</at-menu-item>-->
                                 </at-menu>
                             </div>
                             <at-input v-model="searchMyBlog" class="nav-search" placeholder="搜索我的微博" prepend-button>
@@ -87,27 +87,29 @@
                                 </template>
                             </at-input>
                         </div>
+
                         <div class="personal_card" v-for="(item,index) in myBlogList">
                             <div class="personal_box row">
-                                <img :src="item.userImgUrl" class="user_img">
+                                <img :src="item.avatarUrl" class="user_img">
                                 <div class="user_info">
                                     <span class="user_nickname" v-cloak>{{item.userName}}</span><br>
-                                    <span class="publish_date" v-cloak>{{item.date}}</span>
+                                    <span class="publish_date" v-cloak>{{item.createTime}}</span>
                                 </div>
+                                <div>{{item.circleName}}</div>
                             </div>
-                            <at-textarea v-model="inputValue2" min-rows="1" max-rows="8" placeholder="这里输入内容，请输入多行" disabled></at-textarea>
-                            <div class="row">
-                                <div class="img_list" v-for="(imgUrl,index) in item.imgUrlList">
-                                    <img :src="imgUrl.img" class="publish_img">
-                                </div>
-                            </div>
+                            <at-textarea v-model="inputValue2" min-rows="1" max-rows="8" placeholder="这里输入内容，请输入多行" disabled>{{item.content}}</at-textarea>
+                            <!--<div class="row">-->
+                                <!--<div class="img_list" v-for="(imgUrl,index) in item.resourceList">-->
+                                    <!--<img :src="../../imgUrl" class="publish_img">-->
+                                <!--</div>-->
+                            <!--</div>-->
                             <div class="box_49X1"></div> <!--分隔线-->
                             <div>
                                 <at-menu mode="horizontal" active-name="0">
-                                    <at-menu-item name="1" class="col-md-offset-2" v-cloak>阅读 {{item.readNum}}</at-menu-item>
+                                    <at-menu-item name="1" class="col-md-offset-2" v-cloak>阅读</at-menu-item>
                                     <at-menu-item name="2" class="col-md-offset-2"><i class="icon icon-external-link"></i>转发</at-menu-item>
-                                    <at-menu-item name="3" class="col-md-offset-2"><i class="icon icon-message-square"></i>评论</at-menu-item>
-                                    <at-menu-item name="4" class="col-md-offset-2"><i class="icon icon-thumbs-up"></i>赞</at-menu-item>
+                                    <at-menu-item name="3" class="col-md-offset-2"><i class="icon icon-message-square"></i>评论 {{item.commentNum}}</at-menu-item>
+                                    <at-menu-item name="4" class="col-md-offset-2"><i class="icon icon-thumbs-up"></i>赞 {{item.likeNum}}</at-menu-item>
                                 </at-menu>
                             </div>
                         </div>
@@ -125,55 +127,73 @@
 </div>
 </body>
 <script>
-    new Vue({
+    var vm = new Vue({
         el: '#app',
         data:{
             inputValue4:'',
             searchMyBlog:'',
-            userImgUrl:'../../node_modules/images/head.png',
-            userName:'用户昵称69096',
-            signName:'个性签名',
-            attentionNum: '123',
-            fansNum: '1563',
-            blogNum: '152',
+            attentionNum: '',
+            userInfo:{},
             myBlogList:[
-                {
-                    userImgUrl: '../../node_modules/images/head.png',
-                    userName:'用户昵称69096',
-                    date:'8月31日 19:30',
-                    inputValue2:'',
-                    imgUrlList:[{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'}],
-                    readNum:'56'
-                },
-                {
-                    userImgUrl: '../../node_modules/images/head.png',
-                    userName:'用户昵称69096',
-                    date:'8月31日 19:30',
-                    inputValue2:'',
-                    imgUrlList:[{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'}],
-                    readNum:'56'
-                }
+                // userName:"用户昵称",
+                // avatarUrl:"../../node_modules/images/avatar1.png",
+                // createTime:"2019",
+                // content:"hhh",
+                // likeNum:1,
+                // commentNum:2,
+                // circleName:"全"
             ]
-        },methods: {
+        },
+        methods: {
             gotoSession:function(){
                 alert(12345)
                 window.location.href="../../user/letter/session.html";
                 // this.$route.push({path: '../../node_modules/user/letter/session.html'});
-            },
-            getFile(e) {
-                let _this = this
-                var files = e.target.files[0]
-                if (!e || !window.FileReader) return  // 看支持不支持FileReader
-                let reader = new FileReader()
-                reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
-                reader.onloadend = function () {
-                    _this.userImgUrl = this.result;
-                    //点击大头像，同时循环给每一个card换头像
-                    for (var i=0; i<Object.keys('myBlogList').length;i++){
-                        _this.myBlogList[i].userImgUrl = this.result;
+            }
+        },
+        created(){
+            //展示自己除微博外信息
+            $.ajax({
+                url:"/userInfo/getUserAvatarAndRelation",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.userInfo = result.data;
                     }
                 }
-            }
+            })
+
+            //展示自己每条微博信息
+            $.ajax({
+                url:"/userInfo/getUserAllBlog",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.myBlogList = result.data;
+                        // for(i = 0;i<result.count;i++){
+                        //     vm.myBlogList[i] = result.data[i];
+                        //     alert(vm.myBlogList[i].content)
+                        // }
+                    }
+                }
+            })
+
+            //关注数
+            $.ajax({
+                url:"/userInfo/getAllBloggerSelf",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.attentionNum = result.count;
+                    }
+                }
+            })
         }
     })
 </script>

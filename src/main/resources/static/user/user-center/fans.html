@@ -4,11 +4,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>粉丝</title>
-    <script src="../../node_modules/vue/dist/vue.js"></script>
-    <script src="../../node_modules/at-ui/dist/at.js"></script>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/fans.css">
+
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div id="app" class="container">
@@ -39,10 +47,8 @@
             <div class="col-md-18">
 
                 <div class="first_box flex-center">
-                    <input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">
-                    <label for="file"><img :src="src" class="icon-head"></label><br>
-                    <span class="nick_name">{{userName}}</span><br>
-                    <span class="sign_name">{{signName}}</span>
+                    <img :src="src" class="icon-head"><br>
+                    <span class="nick_name" v-cloak>{{userName}}</span><br>
                 </div>
 
                 <div class="row second_box">
@@ -58,43 +64,15 @@
                     </div>
                     <div class="box_480X1"></div>  <!--水平分隔线-->
 
-                    <div class="fans_card">
+                    <div class="fans_card" v-for="(item,index) in fansList">
                         <div class="personal_box row">
-                            <img :src="src" class="user_img">
+                            <img :src="fansAvatarUrl" class="user_img">
                             <div class="user_info">
-                                <p class="user_nickname">{{userName}}</p>
-                                <p class="user_number">关注 135|粉丝 456|微博 125</p>
-                                <p class="user_address">地址 山东 青岛</p>
-                                <p class="personal_info">个人简介个人简介</p>
-                            </div>
-                            <div class="focus_btn">
-                                <at-button type="warning">+关注</at-button>
-                            </div>
-                            <div class="select_more">
-                                <at-dropdown>
-                                    <i class="icon icon-list"></i>
-                                    <at-dropdown-menu slot="menu">
-                                        <at-dropdown-item>私信</at-dropdown-item>
-                                        <at-dropdown-item>悄悄关注</at-dropdown-item>
-                                        <at-dropdown-item>分享到微博</at-dropdown-item>
-                                        <at-dropdown-item>移除粉丝</at-dropdown-item>
-                                        <at-dropdown-item>加入黑名单</at-dropdown-item>
-                                        <at-dropdown-item>投诉他</at-dropdown-item>
-                                    </at-dropdown-menu>
-                                </at-dropdown>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="fans_card">
-                        <div class="personal_box row">
-                            <img :src="src" class="user_img">
-                            <div class="user_info">
-                                <p class="user_nickname">{{userName}}</p>
-                                <p class="user_number">关注 135|粉丝 456|微博 125</p>
-                                <p class="user_address">地址 山东 青岛</p>
-                                <p class="personal_info">个人简介个人简介</p>
+                                <p class="user_nickname">{{item.fansName}}</p>
+                                <p class="user_item">生日 {{item.birthday}}</p>
+                                <p class="user_item">地址 {{item.address}}</p>
+                                <p class="user_item">性别 {{item.sex}}</p>
+                                <p class="user_item">感情状况 {{item.isSingle}}</p>
                             </div>
                             <div class="focus_btn">
                                 <at-button type="warning">+关注</at-button>
@@ -128,26 +106,62 @@
 </div>
 </body>
 <script>
-    new Vue({
+    var vm = new Vue({
         el: '#app',
         data:{
             inputValue4:'',
-            src:'../../node_modules/images/head.png',
-            userName:'用户昵称69096',
-            signName:'个性签名',
-            date:'8月31日 19:30',
-            fansNum: '1275'
-        },methods: {
-            getFile(e) {
-                let _this = this
-                var files = e.target.files[0]
-                if (!e || !window.FileReader) return  // 看支持不支持FileReader
-                let reader = new FileReader()
-                reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
-                reader.onloadend = function () {
-                    _this.src = this.result
+            src:'',
+            userName:'',
+            fansNum: '',
+            fansList:[]
+        },
+        created() {
+            //展示自己头像和名字
+            $.ajax({
+                url:"/userInfo/getUserAvatarAndRelation",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.src = result.data.avatarUrl;
+                        vm.userName = result.data.userName;
+                    }
                 }
-            }
+            })
+
+            //展示自己粉丝信息
+            $.ajax({
+                url:"/userInfo/getAllFansSelf",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.fansNum = result.count;
+                        for(i=0;i<result.count;i++) {
+                            vm.fansList[i] = result.data[i];
+                            //判断性别
+                            if(result.data[i].sex == 0){
+                                vm.fansList[i].sex = "保密";
+                            }else if (result.data[i].sex == 1) {
+                                vm.fansList[i].sex = "男";
+                            }else if (result.data[i].sex == 2) {
+                                vm.fansList[i].sex = "女";
+                            }
+
+                            //判断感情状况
+                            if(result.data[i].isSingle == 0){
+                                vm.fansList[i].isSingle = "保密";
+                            }else if(result.data[i].isSingle == 1){
+                                vm.fansList[i].isSingle = "单身";
+                            }else if(result.data[i].isSingle == 2){
+                                vm.fansList[i].isSingle = "恋爱";
+                            }
+                        }
+                    }
+                }
+            })
         }
     })
 </script>

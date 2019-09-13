@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/circle.css">
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
     <style>
         [v-cloak] {
             display: none;
@@ -126,7 +128,7 @@
                         </div>
                         <div class="row" v-if="item.type == 2">
                             <div class="col-md-18 col-md-offset-3">
-                                <video :src="item.resourceUrl" controls="controls" width="100%" height="260px">您的浏览器不支持播放该视频！</video>
+                                <video :src="item.resourceList[0]" controls="controls" width="100%" height="260px">您的浏览器不支持播放该视频！</video>
                             </div>
                             <div class="col-md-3"></div>
                         </div>
@@ -188,26 +190,42 @@
                     <!--    评论点赞相关 -->
                     <div class="row l-c-s">
                         <div class="col-md-5">
-                            <a href="" @click.prevent="transflag = !transflag" class="icon icon-share a-font-20px">转发</a>
+                            <a href="" class="icon icon-share a-font-20px" @click.prevent="showForward(i)">转发</a>
                         </div>
                         <div class="col-md-5">
-                            <at-popover trigger="click" placement="bottom">
-                                <at-button style="width: 100px;height: 30px;border:none;margin-right: 10px" size="small" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</at-button>
-                                <template slot="content">
-                                    <textarea>123</textarea>
-                                    <div style="text-align: right;margin-top: 8px;">
-                                        <at-button size="smaller" @click="show=false">取消</at-button>
-                                        <at-button size="smaller" type="primary" @click="show=false">评论</at-button>
-                                    </div>
-                                </template>
-                            </at-popover>
-                            <!--<a href="" @click.prevent="" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</a>-->
+<!--                            <at-popover trigger="click" placement="bottom">-->
+<!--                                <at-button style="width: 100px;height: 30px;border:none;margin-right: 10px" size="small" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</at-button>-->
+<!--                                <template slot="content">-->
+<!--                                    <textarea>123</textarea>-->
+<!--                                    <div style="text-align: right;margin-top: 8px;">-->
+<!--                                        <at-button size="smaller" @click="show=false">取消</at-button>-->
+<!--                                        <at-button size="smaller" type="primary" @click="show=false">评论</at-button>-->
+<!--                                    </div>-->
+<!--                                </template>-->
+<!--                            </at-popover>-->
+                            <a href="" @click.prevent="showReview(i)" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</a>
                         </div>
                         <div class="col-md-5">
-                            <a href="" @click.prevent="" class="icon icon-thumbs-up a-font-20px" v-cloak>{{item.likeNum}}</a>
+                            <a href="" @click.prevent="like($event,item.blogId)" class="icon icon-thumbs-up a-font-20px" v-cloak>{{item.likeNum}}</a>
                         </div>
                         <div class="col-md-9">
                             <span class="font-16px" v-cloak>创建时间:{{item.createTime}}</span>
+                        </div>
+                    </div>
+                    <div :class=['row','addForward',selected==i?'':'hidden']>
+                        <div class="col-md-20 col-md-offset-1">
+                            <input type="text" class="forwardInput" v-model="forwardInput">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="button" class="forwardButton" value="转发" @click="forwardBlog($event,item.blogId)">
+                        </div>
+                    </div>
+                    <div :class=['row','addForward',reviewed==i?'':'hidden']>
+                        <div class="col-md-20 col-md-offset-1">
+                            <input type="text" class="forwardInput" v-model="forwardInput">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="button" class="forwardButton" value="发布评论" @click="reviedBlog($event,item.blogId)">
                         </div>
                     </div>
 
@@ -262,79 +280,136 @@
         el: '#circle-content',
         data: {
             blogInfoList:[
-                {
-                    blogId:'1',
-                    userId:'',
-                    userName:'王某',
-                    avatarUrl:'node_modules/images/upload.png',
-                    createTime:'2019-08-01 20:37:21',
-                    content:'？？？？',
-                    likeNum:'10',
-                    commentNum:'11',
-                    isRepost:'0',
-                    repostId:'',
-                    weight:'10',
-                    circleId:'',
-                    resourceList:['node_modules/images/upload.png','node_modules/images/upload.png'],
-                    type:'1',
-                    blogInfo:{},
-                },{
-                    blogId:'1',
-                    userId:'',
-                    userName:'王某',
-                    avatarUrl:'node_modules/images/upload.png',
-                    createTime:'2019-08-01 20:37:21',
-                    content:'？？？？',
-                    likeNum:'10',
-                    commentNum:'11',
-                    isRepost:'0',
-                    repostId:'',
-                    weight:'10',
-                    circleId:'',
-                    resourceList:['node_modules/images/upload.png','node_modules/images/upload.png'],
-                    type:'1',
-                    blogInfo:{},
-                },
             ],
-            transflag : false,
-            pageNum: 1,
-            size: 3
+            pageNum: '1',
+            size: '3',
+            forwardInput:'',
+            selected: 'll',
+            reviewed:'ll'
         },methods:{
             add(){
-                // var test = {blogId:'',
-                //     userId:'',
-                //     userName:'王某',
-                //     avatarUrl:'node_modules/images/upload.png',
-                //     createTime:'2019-08-01 20:37:21',
-                //     content:'？？？？',
-                //     likeNum:'10',
-                //     commentNum:'11',
-                //     isRepost:'0',
-                //     repostId:'',
-                //     weight:'10',
-                //     circleId:'',
-                //     resourceUrl:'',
-                //     resourceList:[{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'},{img:'node_modules/images/upload.png'}],
-                //     type:'1',
-                //     blogInfo:{},};
-                // this.blogInfoList.push(test);
+                $.ajax({
+                    url:"/circle/circleBlog",
+                    type:"post",
+                    data:{
+                        circleId : 1,
+                        page: this.pageNum,
+                        size: this.size
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            for(i = 0;i<result.count;i++){
+                                vm3.blogInfoList.push(result.data[i]);
+                            }
+                            vm3.pageNum = parseInt(vm3.pageNum)+1;
+                        }
+                    }
+                })
+            },
+            showForward(i){
+                if(this.selected != i) {
+                    this.selected = i;
+                    this.reviewed='ll';
+                    this.forwardInput='';
+                }else {
+                    this.selected = 'lll';
+                }
+            },
+            forwardBlog(e,blogId){
+                $.ajax({
+                    url:"/blog/forwardBlog",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        blogId:blogId,
+                        forwardContent: this.forwardInput
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("转发成功");
+                            })
+                            vm3.selected = 'll';
+                        }
+                    }
+                })
+            },
+            showReview(i){
+                if(this.reviewed != i) {
+                    this.reviewed = i;
+                    this.forwardInput='';
+                    this.selected = 'lll';
+                }else {
+                    this.reviewed = 'lll';
+                }
+            },
+            reviedBlog(e,blogId){
+                if(this.forwardInput == ''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入评论信息！");
+                    })
+                }else {
+                    $.ajax({
+                        url: "/blog/insertComment",
+                        type: "post",
+                        headers: {'token': $.cookie("token")},
+                        data: {
+                            blogId: blogId,
+                            commentContent: this.forwardInput
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer', function () {
+                                    var layer = layui.layer;
+                                    layer.msg("评论成功");
+                                })
+                                vm3.reviewed = 'lll';
+                            }
+                        }
+                    })
+                }
+            }
+            ,
+            like(e,blogId){
+                $.ajax({
+                    url:"/blog/insertLike",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        blogId:blogId
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            e.target.innerText = parseInt(e.target.innerText) + 1;
+                            e.target.style.color = "blue";
+                        }else {
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg(result.msg);
+                            })
+                            e.target.style.color = "blue";
+                        }
+                    }
+                })
             }
         },created(){
-            // $.ajax({
-            //     url:"/circle/circleBlog",
-            //     type:"post",
-            //     data:{
-            //         circleId : 1,
-            //         page: vm3.pageNum,
-            //         size: vm3.size
-            //     },
-            //     success:function (result) {
-            //         if(result.code == 0){
-            //             vm3.blogInfoList.push(result.data);
-            //             vm3.pageNum = vm3.pageNum+1;
-            //         }
-            //     }
-            // })
+            $.ajax({
+                url:"/circle/circleBlog",
+                type:"post",
+                data:{
+                    circleId : 1,
+                    page: this.pageNum,
+                    size: this.size
+                },
+                success:function (result) {
+                    if(result.code == 0){
+                        vm3.blogInfoList = result.data;
+                        vm3.pageNum = parseInt(vm3.pageNum)+1;
+                    }
+                }
+            })
 
             window.onscroll = function(){
                 //变量scrollTop是滚动条滚动时，距离顶部的距离
@@ -346,8 +421,8 @@
                 //滚动条到底部的条件
                 if(scrollTop+windowHeight==scrollHeight){
                     //写后台加载数据的函数
-                    console.log("距顶部"+scrollTop+"可视区高度"+windowHeight+"滚动条总高度"+scrollHeight);
-                    // vm3.add();
+                    // console.log("距顶部"+scrollTop+"可视区高度"+windowHeight+"滚动条总高度"+scrollHeight);
+                    vm3.add();
                 }
             }
         }
