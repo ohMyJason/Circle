@@ -118,7 +118,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             limit = PageCheck.checkLimit(limit);
             int start = PageCheck.calculateStart(page,limit);
             int count = usersMapper.getCount(userName);
-            List<Users> allUser = usersMapper.normalUser(start, limit, userName);
+            List<Users> allUser = usersMapper.normalUsers(start, limit, userName);
             if (count>0){
                 return Result.createSuccessResult(count,allUser);
             }else {
@@ -146,7 +146,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public Result bannedUsers(Integer usersId){
         try{
-            if (usersMapper.bannedUser(usersId)>0){
+            if (usersMapper.bannedUsers(usersId)>0){
                 return Result.createSuccessResult();
             }else {
                 return Result.createByFailure("ERROR");
@@ -159,7 +159,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public Result findUsers(String userName){
         try {
-            List<Users> usersList = usersMapper.findUser(userName);
+            List<Users> usersList = usersMapper.findUsers(userName);
             return Result.createSuccessResult();
         }catch (Exception e){
             System.out.println(e.getCause());
