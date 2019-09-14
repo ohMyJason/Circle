@@ -1,7 +1,9 @@
 package com.lanqiao.circle.mapper;
 
 import com.lanqiao.circle.entity.BlogItem;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface BlogItemMapper {
     int deleteByPrimaryKey(Integer blogItemId);
 

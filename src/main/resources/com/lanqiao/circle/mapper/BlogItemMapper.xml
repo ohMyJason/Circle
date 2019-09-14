@@ -27,7 +27,7 @@
     values (#{blogItemId,jdbcType=INTEGER}, #{resourceUrl,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
       #{blogId,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.BlogItem" >
+  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.BlogItem" useGeneratedKeys="true" keyProperty="blogItemId">
     insert into tb_blog_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="blogItemId != null" >
