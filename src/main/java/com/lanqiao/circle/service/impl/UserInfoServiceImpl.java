@@ -1,5 +1,6 @@
 package com.lanqiao.circle.service.impl;
 
+import com.lanqiao.circle.entity.Blog;
 import com.lanqiao.circle.entity.BlogInfo;
 import com.lanqiao.circle.entity.Users;
 import com.lanqiao.circle.mapper.BlogMapper;
@@ -82,11 +83,11 @@ public class UserInfoServiceImpl implements UserInfoService {
             hashMap.put("userName",users.getUserName());
             hashMap.put("avatarUrl",users.getAvatarUrl());
             List<HashMap> allFans = relationShipMapper.getFansByUserId(userId,0,1000);
-            System.out.println(allFans.size());
             hashMap.put("fansNum",String.valueOf(allFans.size()));
             List<HashMap> allBlogger = relationShipMapper.getBloggerByUserId(userId,0,1000);
-            System.out.println(allBlogger.size());
             hashMap.put("bloggerNum",String.valueOf(allBlogger.size()));
+            List<Blog> blogList = blogMapper.getBlogByUserId(userId);
+            hashMap.put("blogNum",String.valueOf(blogList.size()));
             return Result.createSuccessResult(hashMap);
         }catch (Exception e){
             return Result.createByFailure("操作异常，请联系管理人员！");

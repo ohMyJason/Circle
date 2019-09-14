@@ -26,9 +26,11 @@ public interface BlogMapper {
 
     List<HashMap> getUserAllblogByUserId(Integer userId);
 
-    List<BlogInfo> showAllBlog(@Param("pageIndex")int pageIndex,@Param("size")int size);
+    List<BlogInfo> showAllBlog(@Param("pageIndex")Integer pageIndex,@Param("size")Integer size);
 
-    List<BlogInfo> showOriginalBlog(@Param("pageIndex")int pageIndex,@Param("size")int size);
+    List<BlogInfo> showOriginalBlog(@Param("pageIndex")Integer pageIndex,@Param("size")Integer size);
+
+    List<Blog> getBlogByUserId(Integer userId);
 
     List<Blog> normalBlogs(@Param("start") int start, @Param("limit") int limit, @Param("content")  String content);
 
