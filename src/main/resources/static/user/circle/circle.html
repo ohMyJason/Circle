@@ -73,27 +73,23 @@
                 <h1 v-text="circleItem.circleName"></h1>
                 <span class="span-item" v-cloak>帖子：{{circleItem.blogNum}}</span>
             </div>
-
-            <div class="col-md-6 col-md-offset-4"></div>
-            <div class="col-md-2">
-                <a><span class="all-circle">热门排行 ></span></a><br>
-                <a href="createCircle.html"><span class="all-circle">创建圈子 ></span></a>
-            </div>
-            <div class="col-md-3"></div>
+            <div class="col-md-15"></div>
         </div>
         <div class="row title-margin">
             <div class="col-md-3"></div>
             <div class="col-md-8">
                 <span class="black-blue" v-cloak>&nbsp;&nbsp;&nbsp;圈子主题:{{circleItem.circleTitle}}</span>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 col-md-offset-1">
                 <a href=""><span class="black-blue" v-cloak>创建人:{{circleItem.createName}}</span></a>
             </div>
             <div class="col-md-4">
                 <span class="black-blue" v-cloak>创建时间:{{circleItem.createTime}}</span>
             </div>
-            <div class="col-md-1"><a><span class="black-blue">热度</span></a></div>
-            <div class="col-md-2"><a><span class="black-blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发布时间</span></a></div>
+
+            <div class="col-md-2">
+                <a href="createCircle.html"><span class="all-circle">创建圈子 ></span></a>
+            </div>
             <div class="col-md-3"></div>
         </div>
     </div>
@@ -199,7 +195,7 @@
                             <a href="" @click.prevent="like($event,item.blogId)" class="icon icon-thumbs-up a-font-20px" v-cloak>{{item.likeNum}}</a>
                         </div>
                         <div class="col-md-9">
-                            <span class="font-16px" v-cloak>创建时间:{{item.createTime}}</span>
+                            <span class="font-16px" v-cloak>发布时间:{{item.createTime}}</span>
                         </div>
                     </div>
                     <div :class=['row','addForward',selected==i?'':'hidden']>
@@ -220,27 +216,32 @@
                             </div>
                         </div>
 
-                        <div v-if="commentList != null">
+                        <div v-if="commentList != ''" style="border-top: 1px solid silver">
                             <div v-for="comment in commentList">
                                 <div class="row">
-                                    <div class="col-md-1 col-md-offset-1">
+                                    <div class="col-md-1 col-md-offset-1 commentShow">
                                         <img :src="comment.avatarUrl" class="commentHeader">
                                     </div>
-                                    <div class="col-md-21">
+                                    <div class="col-md-21 commentShow">
                                         <span class="black commenter" v-cloak>{{comment.userName}}:</span>
                                         <span class="color#333 commenter" v-text="comment.commentContent"></span>
                                     </div>
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-5 col-md-offset-19">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-17 commentShow"></div>
+                                    <div class="col-md-5 commentShow">
                                         <span v-text="comment.commentTime"></span>
                                     </div>
+                                    <div class="col-md-1"></div>
                                 </div>
                             </div>
                         </div>
-                        <div v-if="commentList == null">
-                            <span>还没有人评论呢，快来评论吧！</span>
+                        <div v-if="commentList == ''" class="row">
+                            <div class="col-md-16 col-md-offset-8">
+                                <span style="font-size: 18px">还没有人评论呢，快来评论吧！</span>
+                            </div>
                         </div>
                     </div>
 
@@ -452,6 +453,7 @@
                     size: this.size
                 },
                 success:function (result) {
+                    vm3.pageNum = '1';
                     if(result.code == 0){
                         vm3.blogInfoList = result.data;
                         vm3.pageNum = parseInt(vm3.pageNum)+1;
