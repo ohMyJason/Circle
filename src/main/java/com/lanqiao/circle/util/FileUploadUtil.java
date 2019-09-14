@@ -4,6 +4,7 @@ import com.lanqiao.circle.config.TempPathConfig;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -25,7 +26,7 @@ public class FileUploadUtil {
      * @param flag  1-blogImg 2-chatImg 3-userImg 4-vedio 5-circle,img
      * @return
      */
-    public String fileUpload(MultipartFile file,Integer flag){
+    public String fileUpload(@RequestParam(name = "file") MultipartFile file, Integer flag){
         try {
             OkHttpClient client = new OkHttpClient();
 
@@ -35,10 +36,10 @@ public class FileUploadUtil {
             //存临时文件
             File f = new File(tempPathConfig.getTempPath()+file.getOriginalFilename());
             file.transferTo(f);
-            RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), f);//将file转换成RequestBody文件
+            RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), f);//将file转换成RequestBody文件
             RequestBody requestBody=new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("file","file",fileBody)
+                    .addFormDataPart("file",f.getName(),fileBody)
                     .addFormDataPart("flag",""+flag)
                     .build();
             Request request = new Request.Builder()
@@ -49,10 +50,9 @@ public class FileUploadUtil {
             String url = Objects.requireNonNull(response.body()).string();
 
             if (f.delete()){
-
                 return url;
             }else {
-                throw new RuntimeException("临时文件上传失败");
+                throw new RuntimeException("临时文件删除失败");
             }
 
         } catch (IOException e) {
