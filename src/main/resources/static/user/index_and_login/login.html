@@ -19,8 +19,15 @@
             display: none;
         }
     </style>
+<!--    <link rel="stylesheet" href="../../node_modules/css/Index.css">-->
+    <style>
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
-<body>
+<body style="background-color:#F1E4ED">
 <div id="app" class="container">
     <div class="row top-header">
         <div class="col-md-3 logo">
@@ -46,7 +53,7 @@
 <div id="contain" >
     <div  class="row circle_frame">
         <div  class="col-md-15" >
-            <div class="dio">
+            <div class="dio" style="background-color: white">
                 <div class="news" style="border: 1px">有什么新鲜事告诉大家？</div>
                 <div class="neiro">
                     <input style="border:1px solid #2b542c;width:100%;height: 100%" id="input">
@@ -73,7 +80,7 @@
                     </div>
                 </div>
             </div>
-            <div class="pol">
+            <div class="pol" style="background-color: white">
                 <div class="pol1">
                     <span name="all">
                         <strong>全部</strong>
@@ -99,12 +106,102 @@
                         <strong>文章</strong>
                     </span>
                 </div>
-                <div class="">
+                <div class="ipu">
+                    <div class="ipu1">
+                        <i class="icon icon-search" style="font-size: 22px;"></i>
+                    </div>
+                    <div class="ipu2">
+                        <input name="search" id="search" style="width: 100%;height: 100%;border: 0px" placeholder="搜索我关注人的微博" onclick="this.placeholder=''">
+
+                    </div>
 
                 </div>
 
 
             </div>
+            <div class="contain-show">
+                <div class=" raw1">
+                    <div class="pho">
+                        <img src="../../node_modules/images/1.jpg" height="70px" width="70px">
+                    </div>
+                    <div class="name">
+                        <span style="color: #c7254e">{{name}}暂定名字</span>
+                    </div>
+                    <div class="lgog">视频</div>
+                </div>
+                <div class="discuss">
+                    迪迦奥特曼
+                </div>
+                <div class="video">
+                    <video style="width: 400px;height: 250px" controls="controls" src="#"></video>
+                </div>
+                <div class="bottom">
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-share">转发</a>
+                    </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-edit">45</a>
+                    </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-thumbs-up">50</a>
+                    </div>
+                    <div class="layday">
+                        <span>创建时间:</span>
+                    </div>
+                </div>
+            </div>
+            <div class="contain-show">
+                <div class=" raw1">
+                    <div class="pho">
+                        <img src="../../node_modules/images/1.jpg" height="70px" width="70px">
+                    </div>
+                    <div class="name">
+                        <span style="color: #c7254e">{{name}}暂定名字</span>
+                    </div>
+                    <div class="lgog">原创</div>
+                </div>
+                <div class="discuss">
+                    迪迦奥特曼
+                </div>
+                <div class="ihl">
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                </div>
+                <div class="ih2">
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                    <div class="ph1">
+                        <img src="#" style="width: 70px;height: 100px">
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-share">转发</a>
+                    </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-edit">45</a>
+                    </div>
+                    <div class="bottom-1">
+                        <a href="#" name="forward" class="icon icon-thumbs-up">50</a>
+                    </div>
+                    <div class="layday">
+                        <span>创建时间:</span>
+                    </div>
+                </div>
+
+            </div>
+
 
         </div>
         <div class="col-md-8">

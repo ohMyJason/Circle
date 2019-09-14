@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author 王昊
@@ -41,6 +43,17 @@ public class CommentsServiceImpl implements CommentsService {
             }
         }catch (Exception e){
             return Result.createByFailure("操作异常，请联系管理人员！");
+        }
+    }
+
+    @Override
+    public Result showComment(int blogId) {
+        try{
+            List<HashMap> hashMapList = commentsMapper.showComments(blogId);
+            return Result.createSuccessResult(hashMapList.size(),hashMapList);
+        }catch (Exception e){
+            return Result.createByFailure("操作异常，请联系管理人员！");
+
         }
     }
 }
