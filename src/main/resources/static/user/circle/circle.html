@@ -73,27 +73,23 @@
                 <h1 v-text="circleItem.circleName"></h1>
                 <span class="span-item" v-cloak>帖子：{{circleItem.blogNum}}</span>
             </div>
-
-            <div class="col-md-6 col-md-offset-4"></div>
-            <div class="col-md-2">
-                <a><span class="all-circle">热门排行 ></span></a><br>
-                <a href="createCircle.html"><span class="all-circle">创建圈子 ></span></a>
-            </div>
-            <div class="col-md-3"></div>
+            <div class="col-md-15"></div>
         </div>
         <div class="row title-margin">
             <div class="col-md-3"></div>
             <div class="col-md-8">
                 <span class="black-blue" v-cloak>&nbsp;&nbsp;&nbsp;圈子主题:{{circleItem.circleTitle}}</span>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 col-md-offset-1">
                 <a href=""><span class="black-blue" v-cloak>创建人:{{circleItem.createName}}</span></a>
             </div>
             <div class="col-md-4">
                 <span class="black-blue" v-cloak>创建时间:{{circleItem.createTime}}</span>
             </div>
-            <div class="col-md-1"><a><span class="black-blue">热度</span></a></div>
-            <div class="col-md-2"><a><span class="black-blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发布时间</span></a></div>
+
+            <div class="col-md-2">
+                <a href="createCircle.html"><span class="all-circle">创建圈子 ></span></a>
+            </div>
             <div class="col-md-3"></div>
         </div>
     </div>
@@ -109,7 +105,7 @@
                             <img :src="item.avatarUrl" class="header-img">
                         </div>
                         <div class="col-md-8">
-                            <a href="#"><span v-text="item.userName" class="black-blue blog-belonger"></span></a>
+                            <a href="#"><span v-text="item.userName" class="black blog-belonger"></span></a>
                         </div>
                         <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 0">
                             <at-tag color="success">原创</at-tag>
@@ -122,7 +118,7 @@
                     <div v-if="item.isRepost == 0">
                         <div class="row">
                             <div class="col-md-18 col-md-offset-3">
-                                <span v-text="item.content"></span>
+                                <span v-text="item.content" class="color#333"></span>
                             </div>
                             <div class="col-md-3"></div>
                         </div>
@@ -146,7 +142,7 @@
                     <div v-if="item.isRepost == 1">
                         <div class="row">
                             <div class="col-md-18 col-md-offset-3">
-                                <span v-text="item.content"></span>
+                                <span v-text="item.content" class="color#333"></span>
                             </div>
                             <div class="col-md-3"></div>
                         </div>
@@ -193,23 +189,13 @@
                             <a href="" class="icon icon-share a-font-20px" @click.prevent="showForward(i)">转发</a>
                         </div>
                         <div class="col-md-5">
-<!--                            <at-popover trigger="click" placement="bottom">-->
-<!--                                <at-button style="width: 100px;height: 30px;border:none;margin-right: 10px" size="small" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</at-button>-->
-<!--                                <template slot="content">-->
-<!--                                    <textarea>123</textarea>-->
-<!--                                    <div style="text-align: right;margin-top: 8px;">-->
-<!--                                        <at-button size="smaller" @click="show=false">取消</at-button>-->
-<!--                                        <at-button size="smaller" type="primary" @click="show=false">评论</at-button>-->
-<!--                                    </div>-->
-<!--                                </template>-->
-<!--                            </at-popover>-->
-                            <a href="" @click.prevent="showReview(i)" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</a>
+                            <a href="" @click.prevent="showReview(i,item.blogId)" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</a>
                         </div>
                         <div class="col-md-5">
                             <a href="" @click.prevent="like($event,item.blogId)" class="icon icon-thumbs-up a-font-20px" v-cloak>{{item.likeNum}}</a>
                         </div>
                         <div class="col-md-9">
-                            <span class="font-16px" v-cloak>创建时间:{{item.createTime}}</span>
+                            <span class="font-16px" v-cloak>发布时间:{{item.createTime}}</span>
                         </div>
                     </div>
                     <div :class=['row','addForward',selected==i?'':'hidden']>
@@ -220,12 +206,42 @@
                             <input type="button" class="forwardButton" value="转发" @click="forwardBlog($event,item.blogId)">
                         </div>
                     </div>
-                    <div :class=['row','addForward',reviewed==i?'':'hidden']>
-                        <div class="col-md-20 col-md-offset-1">
-                            <input type="text" class="forwardInput" v-model="forwardInput">
+                    <div :class=['addForward',reviewed==i?'':'hidden']>
+                        <div class="row">
+                            <div class="col-md-20 col-md-offset-1">
+                                <input type="text" class="forwardInput" v-model="forwardInput">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="button" class="forwardButton" value="发布评论" @click="reviedBlog($event,item.blogId)">
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <input type="button" class="forwardButton" value="发布评论" @click="reviedBlog($event,item.blogId)">
+
+                        <div v-if="commentList != ''" style="border-top: 1px solid silver">
+                            <div v-for="comment in commentList">
+                                <div class="row">
+                                    <div class="col-md-1 col-md-offset-1 commentShow">
+                                        <img :src="comment.avatarUrl" class="commentHeader">
+                                    </div>
+                                    <div class="col-md-21 commentShow">
+                                        <span class="black commenter" v-cloak>{{comment.userName}}:</span>
+                                        <span class="color#333 commenter" v-text="comment.commentContent"></span>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-17 commentShow"></div>
+                                    <div class="col-md-5 commentShow">
+                                        <span v-text="comment.commentTime"></span>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="commentList == ''" class="row">
+                            <div class="col-md-16 col-md-offset-8">
+                                <span style="font-size: 18px">还没有人评论呢，快来评论吧！</span>
+                            </div>
                         </div>
                     </div>
 
@@ -281,6 +297,8 @@
         data: {
             blogInfoList:[
             ],
+            commentList:[
+            ],
             pageNum: '1',
             size: '3',
             forwardInput:'',
@@ -332,14 +350,33 @@
                             })
                             vm3.selected = 'll';
                         }
+                    },error:function () {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg("请先登录!");
+                        })
+                        // window.location.href="../index_and_login/index.html";
+
                     }
                 })
             },
-            showReview(i){
+            showReview(i,blogId){
                 if(this.reviewed != i) {
                     this.reviewed = i;
                     this.forwardInput='';
                     this.selected = 'lll';
+                    $.ajax({
+                        url: "/blog/showComment",
+                        type: "post",
+                        data: {
+                            blogId: blogId,
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                vm3.commentList= result.data;
+                            }
+                        }
+                    })
                 }else {
                     this.reviewed = 'lll';
                 }
@@ -367,6 +404,12 @@
                                 })
                                 vm3.reviewed = 'lll';
                             }
+                        },error:function () {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("请先登录");
+                                // window.location.href="../index_and_login/index.html";
+                            })
                         }
                     })
                 }
@@ -391,6 +434,12 @@
                             })
                             e.target.style.color = "blue";
                         }
+                    },error:function () {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg("请先登录");
+                            // window.location.href="../index_and_login/index.html";
+                        })
                     }
                 })
             }
@@ -404,6 +453,7 @@
                     size: this.size
                 },
                 success:function (result) {
+                    vm3.pageNum = '1';
                     if(result.code == 0){
                         vm3.blogInfoList = result.data;
                         vm3.pageNum = parseInt(vm3.pageNum)+1;

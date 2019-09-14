@@ -47,6 +47,16 @@ public class BlogContoller {
     }
 
     /**
+     * 展示评论
+     * @param blogId
+     * @return
+     */
+    @PostMapping("showComment")
+    public Result showComment(@RequestParam(name = "blogId") int blogId){
+        return commentsService.showComment(blogId);
+    }
+
+    /**
      * 实现点赞功能
      * @param httpServletRequest
      * @param likeKey
@@ -61,7 +71,7 @@ public class BlogContoller {
     }
 
     /**
-     *
+     * 实现转发功能
      * @param httpServletRequest
      * @param repostId
      * @param forwardcontent
