@@ -77,8 +77,8 @@
                                     <p class="member_word">性别：{{item.sex}}</p>
                                     <p class="member_word">感情状况：{{item.isSingle}}</p>
                                 </div>
-                                <at-button type="primary" class="session_btn">私信</at-button>
-                                <at-button class="cancel_btn">取消关注</at-button>
+                                <at-button type="primary" class="session_btn" @click="gotoSession">私信</at-button>
+                                <at-button class="cancel_btn" @click="cancelAttention(index)">取消关注</at-button>
                             </li>
                         </ul>
                     </div>
@@ -102,7 +102,19 @@
             src:'',
             userName:'',
             attentionNum:'',
-            memberList:[]
+            memberList:[],
+            pageNum:'1',
+            pageSize:'10'
+        },
+        methods:{
+            gotoSession:function () {
+                window.location.href = "../../user/letter/session.html";
+                // this.$router.replace({path:'../../user/letter/session.html'})
+                // this.$router.push({path:'../../user/letter/session.html'})
+            },
+            cancelAttention:function (index) {
+                this.memberList[index].splice(index,0);
+            }
         },
         created() {
             //展示自己头像和名字
@@ -125,6 +137,10 @@
                 type:"post",
                 dataType:"json",
                 headers:{'token':$.cookie("token")},
+                data:{
+                    page: this.pageNum,
+                    size: this.pageSize
+                },
                 success:function (result) {
                     if(result.code == 0){
                         vm.attentionNum = result.count;
