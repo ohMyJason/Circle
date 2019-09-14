@@ -177,4 +177,16 @@
     from tb_blog
     where content LIKE concat(concat("%",#{content,jdbcType=VARCHAR}),"%")
   </select>
+
+  <select id="showAllBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
+     select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
+    from index_blog
+    where isDelete = 0 ORDER BY weight DESC LIMIT #{pageIndex},#{size}
+  </select>
+
+  <select id="showOriginalBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
+    select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
+    from index_blog
+    where isDelete = 0 and isRepost = 0 ORDER BY weight DESC LIMIT #{pageIndex},#{size}
+  </select>
 </mapper>

@@ -90,6 +90,27 @@ public class BlogContoller {
         return blogService.forwardBlog(blog);
     }
 
+    /**
+     * 首页展示所有微博
+     * @param page
+     * @param size
+     * @return
+     */
+    @PostMapping("showAllBlog")
+    public Result showAllBlog(@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
+        return blogService.showAllBlog(page,size);
+    }
+
+    /**
+     * 首页展示所有原创微博
+     * @param page
+     * @param size
+     * @return
+     */
+    @PostMapping("showOriginalBlog")
+    public Result showOriginalBlog(@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
+        return blogService.showOriginalBlog(page,size);
+    }
 
     /**
      * 管理员查询用户

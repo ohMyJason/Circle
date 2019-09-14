@@ -1,6 +1,7 @@
 package com.lanqiao.circle.mapper;
 
 import com.lanqiao.circle.entity.Blog;
+import com.lanqiao.circle.entity.BlogInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -25,10 +26,16 @@ public interface BlogMapper {
 
     List<HashMap> getUserAllblogByUserId(Integer userId);
 
+    List<BlogInfo> showAllBlog(@Param("pageIndex")int pageIndex,@Param("size")int size);
+
+    List<BlogInfo> showOriginalBlog(@Param("pageIndex")int pageIndex,@Param("size")int size);
 
     List<Blog> normalBlogs(@Param("start") int start, @Param("limit") int limit, @Param("content")  String content);
+
     int getBlogCount(@Param("content")  String content);
+
     int deleteBlog(Integer blogId);
+
     List<Blog> findBlog(String content);
 
 }
