@@ -56,7 +56,8 @@
             <div class="dio" style="background-color: white">
                 <div class="news" style="border: 1px">有什么新鲜事告诉大家？</div>
                 <div class="neiro">
-                    <input style="border:1px solid #2b542c;width:100%;height: 100%" id="input">
+                    <textarea style="border:1px solid #2b542c;width:100%;height: 100%" id="input"></textarea>
+<!--                    <input style="border:1px solid #2b542c;width:100%;height: 100%" id="input">-->
                 </div>
                 <div class="nima">
                     <div class="emji">
@@ -75,34 +76,35 @@
                         <i class="icon icon-slack" style="color: red" ></i>
                         <span style="font-size: 70%" >圈子</span>
                     </div>
-                    <div class="disu">
+                    <div class="disu" onmousedown="this.style.backgroundColor='red'" onmouseup="this.style.backgroundColor='#f0ad4e'">
                         <span id="disc" name="disc">发布</span>
+<!--                        <input type="submit" value="发布" name="disc" id="disc" style="background-color: none">-->
                     </div>
                 </div>
             </div>
             <div class="pol" style="background-color: white">
-                <div class="pol1">
-                    <span name="all">
+                <div class="pol1" >
+                    <span name="all" onmouseover="this.style.color='green'" >
                         <strong>全部</strong>
                     </span>
                 </div>
                 <div class="pol1">
-                    <span name="yuan">
+                    <span name="yuan" onmouseover="this.style.color='green'">
                         <strong>原创</strong>
                     </span>
                 </div>
                 <div class="pol1">
-                    <span name="photo">
+                    <span name="photo" onmouseover="this.style.color='green'">
                         <strong>图片</strong>
                     </span>
                 </div>
                 <div class="pol1">
-                    <span name="videa">
+                    <span name="videa" onmouseover="this.style.color='green'">
                         <strong>视频</strong>
                     </span>
                 </div>
                 <div class="pol1">
-                    <span name="arti">
+                    <span name="arti" onmouseover="this.style.color='green'">
                         <strong>文章</strong>
                     </span>
                 </div>
