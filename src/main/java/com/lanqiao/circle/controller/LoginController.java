@@ -7,6 +7,7 @@ import com.lanqiao.circle.entity.Users;
 import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.LoginService;
 import com.lanqiao.circle.service.TokenService;
+import com.lanqiao.circle.util.CommentUtil;
 import com.lanqiao.circle.util.Result;
 import com.lanqiao.circle.util.SmsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class LoginController {
 
     @Autowired
     SmsUtils smsUtils;
+
+    @Autowired
+    CommentUtil commentUtil;
     /**
      * 登录 可选择手机号登录，用户名登录，邮箱登录
      * @param loginName
@@ -46,7 +50,7 @@ public class LoginController {
             user.setUserName(loginName);
             user.setEmail(loginName);
             user.setPhone(loginName);
-            user.setPassword(password);
+            user.setPassword(commentUtil.getMd5(password));
             Users baseUser = usersMapper.selectUserByUserNameOrPhoneOrEmailAndPassword(user);
             if (baseUser!=null){
                 String token = tokenService.getToken(baseUser);
@@ -64,12 +68,27 @@ public class LoginController {
     }
 
     /**
-     * @param :phoneNumber （ 手机号码，需要真实有效）
-     * @return:无
+     * 注册接口
+     * @param user
+     * @return
      */
     @PostMapping("/registered")
-    public  Result registered(){
-        return null;
+    public  Result registered(@RequestBody  Users user){
+        try {
+
+            String newPassword = commentUtil.getMd5(user.getPassword());
+            user.setPassword(newPassword);
+            if (usersMapper.getUserByUserName(user.getUserName())==null){
+                usersMapper.insertSelective(user);
+                return Result.createSuccessResult(usersMapper.selectByPrimaryKey(user.getUserId()));
+            }else {
+                return Result.createByFailure("用户名已存在");
+            }
+        }catch (Exception e ){
+            e.printStackTrace();
+            return Result.createByFailure(e.getMessage());
+        }
+
     }
 
 
@@ -91,5 +110,7 @@ public class LoginController {
             return Result.createByFailure();
         }
     }
+
+
 
 }

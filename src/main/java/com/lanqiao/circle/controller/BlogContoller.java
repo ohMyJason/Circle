@@ -79,4 +79,7 @@ public class BlogContoller {
         blog.setContent(forwardcontent);
         return blogService.forwardBlog(blog);
     }
+
+
+
 }
