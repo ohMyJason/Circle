@@ -91,7 +91,6 @@ public class BlogContoller {
     }
 
 
-<<<<<<< HEAD
     /**
      * 管理员查询用户
      */
@@ -116,7 +115,5 @@ public class BlogContoller {
     public Result findBlog(String content){
         return blogService.findBlog(content);
     }
-=======
 
->>>>>>> 686c0aded5a2d62e702910573ef514dcc870e309
 }
