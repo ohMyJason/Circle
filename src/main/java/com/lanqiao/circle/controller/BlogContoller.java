@@ -178,5 +178,29 @@ public class BlogContoller {
 
     }
 
+    /**
+     * 管理员查询用户
+     */
+    @PostMapping("/normalBlogs")
+    public Result normalBlogs(String content,int page,int limit){
+        return blogService.normalBlogs(content,page,limit);
+    }
+
+    /**
+     * 管理员删除用户
+     *
+     */
+    @PostMapping("/deleteBlog")
+    public Result deleteBlog(Integer blogId){
+        return blogService.deleteBlog(blogId);
+    }
+
+    /**
+     * 管理员查询用户
+     */
+    @PostMapping("/findBlog")
+    public Result findBlog(String content){
+        return blogService.findBlog(content);
+    }
 
 }

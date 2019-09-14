@@ -10,4 +10,14 @@ import com.lanqiao.circle.util.Result;
 public interface BlogService {
     //转发微博
     public Result forwardBlog(Blog blog);
+
+
+    //管理员查询用户
+    public Result normalBlogs(String content,int page,int limit);
+
+    //管理员删除用户
+    public Result deleteBlog(Integer blogId);
+
+    //管理员查询用户
+    public Result findBlog(String content);
 }

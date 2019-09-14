@@ -26,8 +26,8 @@ public interface BlogMapper {
     List<HashMap> getUserAllblogByUserId(Integer userId);
 
 
-    List<Blog> normalBlog(@Param("start") int start, @Param("limit") int limit, @Param("content")  String content);
-    int getCount(@Param("content")  String content);
+    List<Blog> normalBlogs(@Param("start") int start, @Param("limit") int limit, @Param("content")  String content);
+    int getBlogCount(@Param("content")  String content);
     int deleteBlog(Integer blogId);
     List<Blog> findBlog(String content);
 

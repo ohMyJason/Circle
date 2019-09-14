@@ -35,11 +35,11 @@ public interface UsersMapper {
 
     BlogInfo getRepostBlog(Integer repostId);
 
-    List<Users> normalUser(@Param("start") int start, @Param("limit") int limit, @Param("userName")  String userName);
+    List<Users> normalUsers(@Param("start") int start, @Param("limit") int limit, @Param("userName")  String userName);
     int getCount(@Param("userName")  String userName);
     int deleteUsers(Integer usersId);
-    int bannedUser(Integer usersId);
-    List<Users> findUser(String userName);
+    int bannedUsers(Integer usersId);
+    List<Users> findUsers(String userName);
 
     Users getUserByUserName(String userName);
 }
