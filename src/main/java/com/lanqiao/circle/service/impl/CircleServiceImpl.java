@@ -1,6 +1,7 @@
 package com.lanqiao.circle.service.impl;
 
 import com.lanqiao.circle.entity.BlogInfo;
+import com.lanqiao.circle.entity.Circles;
 import com.lanqiao.circle.mapper.CirclesMapper;
 import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.CircleService;
@@ -8,6 +9,8 @@ import com.lanqiao.circle.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,6 +56,22 @@ public class CircleServiceImpl implements CircleService {
             return Result.createSuccessResult(blogInfoList.size(),blogInfoList);
         }catch (Exception e){
             return Result.createByFailure("操作异常，请联系管理人员！");
+        }
+    }
+
+    @Override
+    public Result createCircle(Circles circles) {
+        try{
+            String timeStr1= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            circles.setCreateTime(timeStr1);
+            if(circlesMapper.insertSelective(circles) > 0){
+                return Result.createSuccessResult();
+            }else {
+                return Result.createByFailure("插入失败！");
+            }
+        }catch (Exception e){
+            return Result.createByFailure("操作异常，请联系管理人员！");
+
         }
     }
 }
