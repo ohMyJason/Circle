@@ -103,4 +103,8 @@
       comment_time = #{commentTime,jdbcType=VARCHAR}
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
+
+  <select id="showComments" resultType="hashmap" parameterType="java.lang.Integer">
+    select * from all_comment where blogId = #{blogId,jdbcType=INTEGER} order by commentTime DESC
+  </select>
 </mapper>
