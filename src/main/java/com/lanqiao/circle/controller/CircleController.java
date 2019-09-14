@@ -1,12 +1,19 @@
 package com.lanqiao.circle.controller;
 
+import com.lanqiao.circle.annotations.UserLoginToken;
+import com.lanqiao.circle.entity.Circles;
 import com.lanqiao.circle.service.CircleService;
+import com.lanqiao.circle.service.TokenService;
+import com.lanqiao.circle.util.FileUploadUtil;
 import com.lanqiao.circle.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author 王昊
@@ -17,7 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class CircleController {
     @Autowired
     CircleService circleService;
-
+    @Autowired
+    TokenService tokenService;
+    @Autowired
+    FileUploadUtil fileUploadUtil;
     /**
      * 查看圈子基本信息
      * @param circleId
@@ -28,10 +38,27 @@ public class CircleController {
         return circleService.circleInfo(circleId);
     }
 
+    /**
+     * 展示圈子微博
+     * @param circleId
+     * @param page
+     * @param size
+     * @return
+     */
     @PostMapping("circleBlog")
     public Result circleBlog(@RequestParam(name = "circleId") int circleId,@RequestParam(name = "page") int page,
                              @RequestParam(name = "size") int size){
         return circleService.circleBlog(circleId,page,size);
+    }
+
+    @UserLoginToken
+    @PostMapping("createCircle")
+    public Result createCircle(HttpServletRequest httpServletRequest, @RequestParam(name = "file")MultipartFile file, Circles circles){
+        int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        circles.setUserId(userId);
+        String url = fileUploadUtil.fileUpload(file,5);
+        circles.setCircleImgUrl(url);
+        return circleService.createCircle(circles);
     }
 }
 
