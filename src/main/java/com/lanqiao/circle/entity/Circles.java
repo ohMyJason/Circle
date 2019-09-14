@@ -1,6 +1,8 @@
 package com.lanqiao.circle.entity;
 
-public class Circles {
+import java.io.Serializable;
+
+public class Circles implements Serializable {
     private Integer circleId;
 
     private Integer userId;

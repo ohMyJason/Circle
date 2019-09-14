@@ -23,7 +23,7 @@ public interface UsersMapper {
 
     int updateByPrimaryKey(Users record);
 
-    List<HashMap> getAllUser();
+    List<Users> getAllUser();
 
     HashMap selectUserInfo(Integer userId);
 
@@ -41,4 +41,5 @@ public interface UsersMapper {
     int bannedUsers(Integer usersId);
     List<Users> findUsers(String userName);
 
+    Users getUserByUserName(String userName);
 }

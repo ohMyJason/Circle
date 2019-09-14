@@ -3,6 +3,9 @@ package com.lanqiao.circle.mapper;
 import com.lanqiao.circle.entity.Comments;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Repository
 public interface CommentsMapper {
     int deleteByPrimaryKey(Integer commentId);
@@ -16,4 +19,6 @@ public interface CommentsMapper {
     int updateByPrimaryKeySelective(Comments record);
 
     int updateByPrimaryKey(Comments record);
+
+    List<HashMap> showComments(Integer blogId);
 }

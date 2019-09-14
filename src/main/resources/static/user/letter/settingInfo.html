@@ -46,8 +46,9 @@
                     <div class="row first_item">
                         <div class="row avatar_box col-md-11">
                             <span class="text_485X1">用户头像</span>
-                            <img :src="userInfo.avatarUrl" class="avatarUrl">
-                            <span class="text_487X1 flex-center">编辑</span>
+                            <input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">
+                            <label for="file"><img :src="userInfo.avatarUrl" class="avatarUrl"></label>
+                            <label for="file"><span class="text_487X1 flex-center">编辑</span></label>
                         </div>
                         <div class="row account_box col-md-11">
                             <span class="text_485X1">账户状态</span>
@@ -130,16 +131,30 @@
             inputValue4:'',
             userInfo:{}
         },
-        // methods:{
-        //     changeUserName:function () {
-        //         $("#change").css("display","block");
-        //         // userInfo.id = userId;
-        //     },
-        //     submit:function () {
-        //         this.books.splice(id-1,1,this.book);
-        //         $("#change").css("display","none");
-        //     }
-        // },
+        methods:{
+            getFile(e) {
+                let _this = this
+                var files = e.target.files[0]
+                if (!e || !window.FileReader) return  // 看支持不支持FileReader
+                let reader = new FileReader()
+                reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
+                reader.onloadend = function () {
+                    _this.userImgUrl = this.result;
+                    //点击大头像，同时循环给每一个card换头像
+                    for (var i=0; i<Object.keys('myBlogList').length;i++){
+                        _this.myBlogList[i].userImgUrl = this.result;
+                    }
+                }
+            }
+            // changeUserName:function () {
+                //         $("#change").css("display","block");
+                //         // userInfo.id = userId;
+                //     },
+                //     submit:function () {
+                //         this.books.splice(id-1,1,this.book);
+                //         $("#change").css("display","none");
+                //     }
+        },
         created(){
             $.ajax({
                 url:"/userInfo/getUserInfo",

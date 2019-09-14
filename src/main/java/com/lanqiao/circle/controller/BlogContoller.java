@@ -47,6 +47,16 @@ public class BlogContoller {
     }
 
     /**
+     * 展示评论
+     * @param blogId
+     * @return
+     */
+    @PostMapping("showComment")
+    public Result showComment(@RequestParam(name = "blogId") int blogId){
+        return commentsService.showComment(blogId);
+    }
+
+    /**
      * 实现点赞功能
      * @param httpServletRequest
      * @param likeKey
@@ -61,7 +71,7 @@ public class BlogContoller {
     }
 
     /**
-     *
+     * 实现转发功能
      * @param httpServletRequest
      * @param repostId
      * @param forwardcontent
@@ -81,6 +91,7 @@ public class BlogContoller {
     }
 
 
+<<<<<<< HEAD
     /**
      * 管理员查询用户
      */
@@ -105,4 +116,7 @@ public class BlogContoller {
     public Result findBlog(String content){
         return blogService.findBlog(content);
     }
+=======
+
+>>>>>>> 686c0aded5a2d62e702910573ef514dcc870e309
 }

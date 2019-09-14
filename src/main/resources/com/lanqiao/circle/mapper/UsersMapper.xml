@@ -42,7 +42,7 @@
       #{createTime,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, 
       #{address,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Users" >
+  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Users" useGeneratedKeys="true" keyProperty="userId">
     insert into tb_users
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -186,8 +186,8 @@
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 
-  <select id="getAllUser" resultType="hashmap">
-    select user_id as userId,user_name as userName
+  <select id="getAllUser" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
     from  tb_users
   </select>
 
@@ -257,5 +257,11 @@
     select user_name
     from tb_users
     where user_name LIKE concat(concat("%",#{userName,jdbcType=VARCHAR}),"%")
+  </select>
+
+  <select id="getUserByUserName" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_users
+    where user_name = #{userName}
   </select>
 </mapper>

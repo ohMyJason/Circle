@@ -10,4 +10,6 @@ import com.lanqiao.circle.util.Result;
 public interface CommentsService {
     //插入评论
     public Result insertComment(Comments comments);
+    //展示评论
+    public Result showComment(int blogId);
 }
