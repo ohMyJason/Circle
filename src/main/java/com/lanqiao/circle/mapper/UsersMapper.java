@@ -29,7 +29,7 @@ public interface UsersMapper {
 
     Users selectUserByUserNameOrPhoneOrEmailAndPassword(Users user);
 
-    List<BlogInfo> getUserAllBlog(Integer userId);
+    List<BlogInfo> getUserAllBlog(@Param("userId") Integer userId,@Param("pageIndex")Integer pageIndex,@Param("size")Integer size);
 
     List<String> getAllResource(Integer blogId);
 

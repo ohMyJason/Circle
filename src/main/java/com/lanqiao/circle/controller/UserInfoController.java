@@ -58,9 +58,9 @@ public class UserInfoController {
      */
     @UserLoginToken
     @PostMapping("getAllFansSelf")
-    public Result getAllFansToken(HttpServletRequest httpServletRequest) {
+    public Result getAllFansToken(HttpServletRequest httpServletRequest,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size) {
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
-        return userInfoService.getFansByUserId(userId);
+        return userInfoService.getFansByUserId(userId,page,size);
     }
 
     /**
@@ -70,8 +70,8 @@ public class UserInfoController {
      * @Param userId
      */
     @PostMapping("getAllFansOthers")
-    public Result getAllFansByUserId(@RequestParam(name = "userId") int userId) {
-        return userInfoService.getFansByUserId(userId);
+    public Result getAllFansByUserId(@RequestParam(name = "userId") int userId,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size) {
+        return userInfoService.getFansByUserId(userId,page,size);
     }
 
     /**
@@ -82,9 +82,9 @@ public class UserInfoController {
      */
     @UserLoginToken
     @PostMapping("getAllBloggerSelf")
-    public Result getAllBloggerByToken(HttpServletRequest httpServletRequest) {
+    public Result getAllBloggerByToken(HttpServletRequest httpServletRequest,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size) {
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
-        return userInfoService.getBloggerByUserId(userId);
+        return userInfoService.getBloggerByUserId(userId,page,size);
     }
 
     /**
@@ -94,8 +94,8 @@ public class UserInfoController {
      * @Param 头部加token
      */
     @PostMapping("getAllBloggerOthers")
-    public Result getAllBloggerByUserId(@RequestParam(name = "userId") int userId) {
-        return userInfoService.getBloggerByUserId(userId);
+    public Result getAllBloggerByUserId(@RequestParam(name = "userId") int userId,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size) {
+        return userInfoService.getBloggerByUserId(userId,page,size);
     }
 
     /**
@@ -118,9 +118,9 @@ public class UserInfoController {
 
     @UserLoginToken
     @PostMapping("getUserAllBlog")
-    public Result getUserAllBlog(HttpServletRequest httpServletRequest){
+    public Result getUserAllBlog(HttpServletRequest httpServletRequest,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
-        return userInfoService.getUserAllBlog(userId);
+        return userInfoService.getUserAllBlog(userId,page,size);
     }
 
     /**

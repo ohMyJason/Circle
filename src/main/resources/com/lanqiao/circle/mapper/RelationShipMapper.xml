@@ -71,11 +71,11 @@
 
   <select id="getFansByUserId" resultType="hashmap">
     select blogger_id as bloggerId, fans_id as fansId, user_name as fansName, sex ,birthday,is_single as isSingle,address
-    from fans where blogger_id = #{userId,jdbcType=INTEGER}
+    from fans where blogger_id = #{userId,jdbcType=INTEGER} and is_delete = 0 LIMIT #{pageIndex},#{size}
   </select>
 
   <select id="getBloggerByUserId" resultType="hashmap">
     select blogger_id as bloggerId, fans_id as fansId, user_name as bloggerName, sex ,birthday,is_single as isSingle,address
-    from blogger where fans_id = #{userId,jdbcType=INTEGER}
+    from blogger where fans_id = #{userId,jdbcType=INTEGER} and is_delete = 0 LIMIT #{pageIndex},#{size}
   </select>
 </mapper>
