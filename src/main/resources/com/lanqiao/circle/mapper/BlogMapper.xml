@@ -36,7 +36,7 @@
       #{circleId,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Blog" >
+  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Blog"  useGeneratedKeys="true" keyProperty="blogId">
     insert into tb_blog
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="blogId != null" >
