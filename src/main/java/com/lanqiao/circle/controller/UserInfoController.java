@@ -127,8 +127,8 @@ public class UserInfoController {
      * 管理员查询用户信息
      */
     @PostMapping("/getNormalUser")
-    public Result normalUser(String userName, int page, int limit){
-        return userInfoService.normalUser(userName,page,limit);
+    public Result normalUsers(String userName, int page, int limit){
+        return userInfoService.normalUsers(userName,page,limit);
     }
     /**
      * 管理员删除用户
@@ -141,14 +141,14 @@ public class UserInfoController {
      * 管理员封禁用户
      */
     @PostMapping("/banned")
-    public Result bannedUser(Integer usersId){
-        return userInfoService.bannedUser(usersId);
+    public Result bannedUsers(Integer usersId){
+        return userInfoService.bannedUsers(usersId);
     }
     /**
      * 管理员查询用户
      */
     @PostMapping("/find")
-    public Result findUser(String userName){
-        return userInfoService.findUser(userName);
+    public Result findUsers(String userName){
+        return userInfoService.findUsers(userName);
     }
 }

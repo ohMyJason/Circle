@@ -112,7 +112,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public Result normalUser(String userName, int page, int limit) {
+    public Result normalUsers(String userName, int page, int limit) {
         try {
             page = PageCheck.checkPage(page);
             limit = PageCheck.checkLimit(limit);
@@ -144,7 +144,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
     }
     @Override
-    public Result bannedUser(Integer usersId){
+    public Result bannedUsers(Integer usersId){
         try{
             if (usersMapper.bannedUser(usersId)>0){
                 return Result.createSuccessResult();
@@ -157,7 +157,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
     }
     @Override
-    public Result findUser(String userName){
+    public Result findUsers(String userName){
         try {
             List<Users> usersList = usersMapper.findUser(userName);
             return Result.createSuccessResult();

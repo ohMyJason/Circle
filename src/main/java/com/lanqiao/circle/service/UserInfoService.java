@@ -28,14 +28,14 @@ public interface UserInfoService {
     public Result getUserAllBlog(int userId);
 
     //管理员查询用户
-    public Result normalUser(String userName,int page,int limit);
+    public Result normalUsers(String userName,int page,int limit);
 
     //管理员删除用户
     public Result deleteUsers(Integer usersId);
 
     //管理员封禁用户
-    public Result bannedUser(Integer usersId);
+    public Result bannedUsers(Integer usersId);
 
     //管理员查询用户
-    public Result findUser(String userName);
+    public Result findUsers(String userName);
 }
