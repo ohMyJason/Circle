@@ -86,17 +86,18 @@ public class SessionServiceImpl implements SessionService {
         letter.setReceiverId(receiverId);
         letter.setSendTime(data);
 
-        if(letterContent != null)
+        if(resourceUrl != null)
+        {
+            letter.setLetterContent("[图片]");
+            letter.setResourceUrl("//"+resourceUrl);
+            letter.setType(1);
+        }
+        else if(letterContent != null)
         {
             letter.setLetterContent(letterContent);
             letter.setType(0);
         }
-        else if(resourceUrl != null)
-        {
-            letter.setLetterContent("[图片]");
-            letter.setResourceUrl(resourceUrl);
-            letter.setType(1);
-        }
+
 
         int col = letterMapper.insertSelective(letter);
         if(col == 0)

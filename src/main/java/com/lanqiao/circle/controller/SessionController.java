@@ -62,6 +62,8 @@ public class SessionController {
     public Result sendMsg(HttpServletRequest httpServletRequest,String userName,String letterContent,String resourceUrl)
     {
         int senterId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        System.out.println("controller" + resourceUrl);
+//        return Result.createSuccessResult();
         return sessionService.sendMsg(senterId,userName, letterContent,resourceUrl);
     }
 
@@ -70,7 +72,7 @@ public class SessionController {
     public Result test(@RequestParam(name = "file")MultipartFile file)
     {
         String relaPath = fileUploadUtil.fileUpload(file,2);
-        System.out.println(relaPath);
+//        System.out.println(relaPath);
         return Result.createSuccessResult(relaPath);
     }
 }
