@@ -36,7 +36,7 @@
       #{circleId,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Blog" >
+  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Blog"  useGeneratedKeys="true" keyProperty="blogId">
     insert into tb_blog
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="blogId != null" >
@@ -142,5 +142,55 @@
 
   <select id="getUserAllblogByUserId" resultType="hashmap">
         select * from index_blog where userId = #{userId,jdbcType=INTEGER}
+  </select>
+
+  <select id="normalBlogs" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_blog
+    where is_delete = 0
+    <where>
+      <if test="content!=null">
+        content like '%${content}%'
+      </if>
+    </where>
+    LIMIT #{start},#{limit}
+    </select>
+
+  <select id="getBlogCount"  resultType="integer">
+    select count(*)
+    from tb_blog
+    <where>
+      <if test="content!=null">
+        content like '%${content}%'
+      </if>
+    </where>
+  </select>
+
+  <update id="deleteBlog" parameterType="com.lanqiao.circle.entity.Blog" >
+    update tb_blog
+    set is_delete = 1
+    where blog_id = #{blogId}
+  </update>
+
+  <select id="findBlog" resultType="com.lanqiao.circle.entity.Blog" parameterType="java.lang.String">
+    select content
+    from tb_blog
+    where content LIKE concat(concat("%",#{content,jdbcType=VARCHAR}),"%")
+  </select>
+
+  <select id="showAllBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
+     select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
+    from index_blog
+    where isDelete = 0 ORDER BY weight DESC LIMIT #{pageIndex},#{size}
+  </select>
+
+  <select id="showOriginalBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
+    select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
+    from index_blog
+    where isDelete = 0 and isRepost = 0 ORDER BY weight DESC LIMIT #{pageIndex},#{size}
+  </select>
+
+  <select id="getBlogByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from tb_blog where user_id = #{userId,jdbcType=INTEGER} and is_delete = 0
   </select>
 </mapper>

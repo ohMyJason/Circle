@@ -58,9 +58,9 @@ public class UserInfoController {
      */
     @UserLoginToken
     @PostMapping("getAllFansSelf")
-    public Result getAllFansToken(HttpServletRequest httpServletRequest) {
+    public Result getAllFansToken(HttpServletRequest httpServletRequest,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size) {
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
-        return userInfoService.getFansByUserId(userId);
+        return userInfoService.getFansByUserId(userId,page,size);
     }
 
     /**
@@ -70,8 +70,8 @@ public class UserInfoController {
      * @Param userId
      */
     @PostMapping("getAllFansOthers")
-    public Result getAllFansByUserId(@RequestParam(name = "userId") int userId) {
-        return userInfoService.getFansByUserId(userId);
+    public Result getAllFansByUserId(@RequestParam(name = "userId") int userId,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size) {
+        return userInfoService.getFansByUserId(userId,page,size);
     }
 
     /**
@@ -82,9 +82,9 @@ public class UserInfoController {
      */
     @UserLoginToken
     @PostMapping("getAllBloggerSelf")
-    public Result getAllBloggerByToken(HttpServletRequest httpServletRequest) {
+    public Result getAllBloggerByToken(HttpServletRequest httpServletRequest,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size) {
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
-        return userInfoService.getBloggerByUserId(userId);
+        return userInfoService.getBloggerByUserId(userId,page,size);
     }
 
     /**
@@ -94,8 +94,8 @@ public class UserInfoController {
      * @Param 头部加token
      */
     @PostMapping("getAllBloggerOthers")
-    public Result getAllBloggerByUserId(@RequestParam(name = "userId") int userId) {
-        return userInfoService.getBloggerByUserId(userId);
+    public Result getAllBloggerByUserId(@RequestParam(name = "userId") int userId,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size) {
+        return userInfoService.getBloggerByUserId(userId,page,size);
     }
 
     /**
@@ -118,17 +118,17 @@ public class UserInfoController {
 
     @UserLoginToken
     @PostMapping("getUserAllBlog")
-    public Result getUserAllBlog(HttpServletRequest httpServletRequest){
+    public Result getUserAllBlog(HttpServletRequest httpServletRequest,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
-        return userInfoService.getUserAllBlog(userId);
+        return userInfoService.getUserAllBlog(userId,page,size);
     }
 
     /**
      * 管理员查询用户信息
      */
     @PostMapping("/getNormalUser")
-    public Result normalUser(String userName, int page, int limit){
-        return userInfoService.normalUser(userName,page,limit);
+    public Result normalUsers(String userName, int page, int limit){
+        return userInfoService.normalUsers(userName,page,limit);
     }
     /**
      * 管理员删除用户
@@ -141,14 +141,14 @@ public class UserInfoController {
      * 管理员封禁用户
      */
     @PostMapping("/banned")
-    public Result bannedUser(Integer usersId){
-        return userInfoService.bannedUser(usersId);
+    public Result bannedUsers(Integer usersId){
+        return userInfoService.bannedUsers(usersId);
     }
     /**
      * 管理员查询用户
      */
     @PostMapping("/find")
-    public Result findUser(String userName){
-        return userInfoService.findUser(userName);
+    public Result findUsers(String userName){
+        return userInfoService.findUsers(userName);
     }
 }

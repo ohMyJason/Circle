@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 /**
@@ -73,16 +75,19 @@ public class LoginController {
      * @return
      */
     @PostMapping("/registered")
-    public  Result registered(@RequestBody  Users user){
+    public  Result registered(Users user){
         try {
-
+            user.setUserName(user.getPhone());
             String newPassword = commentUtil.getMd5(user.getPassword());
             user.setPassword(newPassword);
+            String timeStr1= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            user.setCreateTime(timeStr1);
+            user.setAvatarUrl("47.98.46.243:8080/userImg/20190915122520_moren.png");
             if (usersMapper.getUserByUserName(user.getUserName())==null){
                 usersMapper.insertSelective(user);
                 return Result.createSuccessResult(usersMapper.selectByPrimaryKey(user.getUserId()));
             }else {
-                return Result.createByFailure("用户名已存在");
+                return Result.createByFailure("手机已经注册过了！");
             }
         }catch (Exception e ){
             e.printStackTrace();
