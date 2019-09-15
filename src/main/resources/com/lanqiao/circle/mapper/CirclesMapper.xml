@@ -124,4 +124,9 @@
     from index_blog
     where circleId = #{circleId} ORDER BY weight DESC LIMIT #{pageIndex},#{size}
   </select>
+
+  <select id="getAllCircle" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_circle
+  </select>
 </mapper>

@@ -27,6 +27,9 @@ public interface CirclesMapper {
 
     List<BlogInfo> getCircleBlogDESCByWeight(@Param("circleId")int circleId,@Param("pageIndex")int pageIndex,@Param("size")int size);
 
+    List<Circles> getAllCircle();
+
+
     List<Circles> normalCircles(@Param("start") int start, @Param("limit") int limit, @Param("circleName")  String circleName);
     int getCirclesCount(@Param("circleName")  String circleName);
     int deleteCircles(Integer circleId);

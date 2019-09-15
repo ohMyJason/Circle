@@ -2,6 +2,7 @@ package com.lanqiao.circle.controller;
 
 import com.lanqiao.circle.annotations.UserLoginToken;
 import com.lanqiao.circle.entity.Circles;
+import com.lanqiao.circle.mapper.CirclesMapper;
 import com.lanqiao.circle.service.CircleService;
 import com.lanqiao.circle.service.TokenService;
 import com.lanqiao.circle.util.FileUploadUtil;
@@ -28,6 +29,14 @@ public class CircleController {
     TokenService tokenService;
     @Autowired
     FileUploadUtil fileUploadUtil;
+    @Autowired
+    CirclesMapper circlesMapper;
+
+
+    @PostMapping("/getAllCircle")
+    public  Result getAllCircle(){
+        return Result.createSuccessResult(circlesMapper.getAllCircle());
+    }
     /**
      * 查看圈子基本信息
      * @param circleId

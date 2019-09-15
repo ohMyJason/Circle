@@ -10,6 +10,7 @@
     <script src="../../node_modules/jQuery/jquery.mousewheel-3.0.6.min.js"></script>
     <script src="../../node_modules/jQuery/emoji_jQuery.min.js"></script>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="../../node_modules/css/circle.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/login.css">
     <link rel="stylesheet" href="../../node_modules/jQuery/jquery.mCustomScrollbar.min.css">
@@ -18,8 +19,14 @@
         [v-cloak] {
             display: none;
         }
+
+        .releaseImg img{
+            width: 75px;
+            height: 75px;
+            margin-right: 5px;
+        }
     </style>
-<!--    <link rel="stylesheet" href="../../node_modules/css/Index.css">-->
+    <!--    <link rel="stylesheet" href="../../node_modules/css/Index.css">-->
     <style>
 
         [v-cloak] {
@@ -27,8 +34,10 @@
         }
     </style>
     <script src="../../node_modules/jQuery/jquery.cookie.js"></script>
+    <link rel="stylesheet" href="../../node_modules/layui/css/layui.css">
+    <script src="../../node_modules/layui/layui.js"></script>
 </head>
-<body style="background-color:#F1E4ED">
+<body>
 <div id="app" class="container">
     <div class="row top-header">
         <div class="col-md-3 logo">
@@ -48,42 +57,56 @@
             <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
         </div>
     </div>
+    <at-card id="releaseImgCard" style="width: 300px;position: absolute;top: 230px;left: 200px;display: none">
+        <h4 slot="title">图片</h4>
+        <div class="releaseImg">
+        </div>
+    </at-card>
 </div>
-<div id="contain" >
-    <div  class="row circle_frame">
-        <div  class="col-md-15" >
-            <div class="dio" style="background-color: white">
-                <div class="news" style="border: 1px">有什么新鲜事告诉大家？</div>
+
+<div id="contain">
+    <div class="row circle_frame">
+        <div class="col-md-15">
+
+            <div class="dio" id="release-blog" style="background-color: white">
+
+                <div class="news" style="border: 1px">圈圈，和志同道合的人交朋友。</div>
                 <div class="neiro">
-                    <textarea style="border:1px solid #2b542c;width:100%;height: 100%" id="input"></textarea>
-<!--                    <input style="border:1px solid #2b542c;width:100%;height: 100%" id="input">-->
+                    <textarea style="border:1px solid #2b542c;width:100%;height: 100%" id="input" ></textarea>
+                    <!--                    <input style="border:1px solid #2b542c;width:100%;height: 100%" id="input">-->
                 </div>
                 <div class="nima">
                     <div class="emji">
                         <i class="icon icon-github" style="color: #f0ad4e" id="btn"></i>
                         <span style="font-size: 70%" id="btn1">表情</span>
                     </div>
-                    <div class="emji">
-                        <i class="icon icon-image" style="color: #449d44" ></i>
-                        <span style="font-size: 70%" >图片</span>
+                    <div class="emji" id="uploadImg">
+                        <i class="icon icon-image" style="color: #449d44"></i>
+                        <span style="font-size: 70%">图片</span>
+                    </div>
+
+                    <div class="emji" id="uploadVideo">
+                        <i class="icon icon-video" style="color: #4878F6"></i>
+                        <span style="font-size: 70%">视频</span>
                     </div>
                     <div class="emji">
-                        <i class="icon icon-video" style="color: #4878F6" ></i>
-                        <span style="font-size: 70%" >视频</span>
+                        <i class="icon icon-slack" style="color: red"></i>
+                        <span style="font-size: 70%">选择圈子：</span>
+
                     </div>
-                    <div class="emji">
-                        <i class="icon icon-slack" style="color: red" ></i>
-                        <span style="font-size: 70%" >圈子</span>
-                    </div>
-                    <div class="disu" onmousedown="this.style.backgroundColor='red'" onmouseup="this.style.backgroundColor='#f0ad4e'">
+                    <at-select id="selectCircle" style="width:100px">
+                        <at-option value="1">深圳</at-option>
+                    </at-select>
+                    <div class="disu" onmousedown="this.style.backgroundColor='red'"
+                         onmouseup="this.style.backgroundColor='#f0ad4e'">
                         <span id="disc" name="disc">发布</span>
-<!--                        <input type="submit" value="发布" name="disc" id="disc" style="background-color: none">-->
+                        <!--                        <input type="submit" value="发布" name="disc" id="disc" style="background-color: none">-->
                     </div>
                 </div>
             </div>
             <div class="pol" style="background-color: white">
-                <div class="pol1" >
-                    <span name="all" onmouseover="this.style.color='green'" >
+                <div class="pol1">
+                    <span name="all" onmouseover="this.style.color='green'">
                         <strong>全部</strong>
                     </span>
                 </div>
@@ -112,7 +135,8 @@
                         <i class="icon icon-search" style="font-size: 22px;"></i>
                     </div>
                     <div class="ipu2">
-                        <input name="search" id="search" style="width: 100%;height: 100%;border: 0px" placeholder="搜索我关注人的微博" onclick="this.placeholder=''">
+                        <input name="search" id="search" style="width: 100%;height: 100%;border: 0px"
+                               placeholder="搜索我关注人的微博" onclick="this.placeholder=''">
 
                     </div>
 
@@ -120,110 +144,196 @@
 
 
             </div>
-            <div class="contain-show">
-                <div class=" raw1">
-                    <div class="pho">
-                        <img src="../../node_modules/images/1.jpg" height="70px" width="70px">
-                    </div>
-                    <div class="name">
-                        <span style="color: #c7254e">{{name}}暂定名字</span>
-                    </div>
-                    <div class="lgog">视频</div>
-                </div>
-                <div class="discuss">
-                    迪迦奥特曼
-                </div>
-                <div class="video">
-                    <video style="width: 400px;height: 250px" controls="controls" src="#"></video>
-                </div>
-                <div class="bottom">
-                    <div class="bottom-1">
-                        <a href="#" name="forward" class="icon icon-share">转发</a>
-                    </div>
-                    <div class="bottom-1">
-                        <a href="#" name="forward" class="icon icon-edit">45</a>
-                    </div>
-                    <div class="bottom-1">
-                        <a href="#" name="forward" class="icon icon-thumbs-up">50</a>
-                    </div>
-                    <div class="layday">
-                        <span>创建时间:</span>
-                    </div>
-                </div>
-            </div>
-            <div class="contain-show">
-                <div class=" raw1">
-                    <div class="pho">
-                        <img src="../../node_modules/images/1.jpg" height="70px" width="70px">
-                    </div>
-                    <div class="name">
-                        <span style="color: #c7254e">{{name}}暂定名字</span>
-                    </div>
-                    <div class="lgog">原创</div>
-                </div>
-                <div class="discuss">
-                    迪迦奥特曼
-                </div>
-                <div class="ihl">
-                    <div class="ph1">
-                        <img src="#" style="width: 70px;height: 100px">
-                    </div>
-                    <div class="ph1">
-                        <img src="#" style="width: 70px;height: 100px">
-                    </div>
-                    <div class="ph1">
-                        <img src="#" style="width: 70px;height: 100px">
-                    </div>
-                </div>
-                <div class="ih2">
-                    <div class="ph1">
-                        <img src="#" style="width: 70px;height: 100px">
-                    </div>
-                    <div class="ph1">
-                        <img src="#" style="width: 70px;height: 100px">
-                    </div>
-                    <div class="ph1">
-                        <img src="#" style="width: 70px;height: 100px">
-                    </div>
-                </div>
-                <div class="bottom">
-                    <div class="bottom-1">
-                        <a href="#" name="forward" class="icon icon-share">转发</a>
-                    </div>
-                    <div class="bottom-1">
-                        <a href="#" name="forward" class="icon icon-edit">45</a>
-                    </div>
-                    <div class="bottom-1">
-                        <a href="#" name="forward" class="icon icon-thumbs-up">50</a>
-                    </div>
-                    <div class="layday">
-                        <span>创建时间:</span>
-                    </div>
-                </div>
+            <div id="blog-content">
 
+                <div class="content-show" style="width: 80%;margin-left: 20%" v-for="(item,i) in blogInfoList">
+                    <!--         控制头           -->
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-1">
+                            <a href="#" @click="jumpPagePerson(item.userId)"><img :src="item.avatarUrl"
+                                                                                  class="header-img"></a>
+                        </div>
+                        <div class="col-md-8">
+                            <a href="#" @click="jumpPagePerson(item.userId)"><span v-text="item.userName"
+                                                                                   class="black blog-belonger"></span></a>
+                        </div>
+                        <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 0">
+                            <at-tag color="success">原创</at-tag>
+                            <at-tag color="info">{{item.circleName}}</at-tag>
+
+                        </div>
+                        <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 1">
+                            <at-tag color="info">转载</at-tag>
+                            <at-tag color="info">{{item.circleName}}</at-tag>
+
+                        </div>
+
+                    </div>
+                    <!--        原创展示            -->
+                    <div v-if="item.isRepost == 0">
+                        <div class="row">
+                            <div class="col-md-18 col-md-offset-3">
+                                <span v-text="item.content" class="color#333"></span>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <div class="row" v-if="item.type == 2">
+                            <div class="col-md-18 col-md-offset-3">
+                                <video :src="item.resourceList[0]" controls="controls" width="100%" height="260px">
+                                    您的浏览器不支持播放该视频！
+                                </video>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <div class="row" v-if="item.type == 1">
+                            <div class="col-md-11 col-md-offset-3">
+                                <div v-for="(urlList,i) in item.resourceList" class="show-img">
+                                    <img :src="urlList" class="all-img">
+                                </div>
+                            </div>
+                            <div class="col-md-10"></div>
+                        </div>
+                    </div>
+                    <!--      转载展示          -->
+
+                    <div v-if="item.isRepost == 1">
+                        <div class="row">
+                            <div class="col-md-18 col-md-offset-3">
+                                <span v-text="item.content" class="color#333"></span>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <!--    原帖展示    -->
+                        <div v-if="item.blogInfo.isRepost == 0" class="row">
+                            <div class="col-md-18 col-md-offset-3 trans-show">
+                                <div class="row">
+                                    <div class="col-md-2 col-md-offset-1">
+                                        <img :src="item.blogInfo.avatarUrl" class="header-img">
+                                    </div>
+                                    <div class="col-md-7 col-md-offset-1">
+                                        <a href="#"><span v-text="item.blogInfo.userName"
+                                                          class="black-blue blog-belonger"></span></a>
+                                    </div>
+                                    <div class="col-md-13"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-18 col-md-offset-3">
+                                        <span v-text="item.blogInfo.content"></span>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                </div>
+                                <div class="row" v-if="item.blogInfo.type == 2">
+                                    <div class="col-md-18 col-md-offset-3">
+                                        <video :src="item.blogInfo.resourceList[0]" controls="controls" width="100%"
+                                               height="260px">您的浏览器不支持播放该视频！
+                                        </video>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                </div>
+                                <div class="row" v-if="item.blogInfo.type == 1">
+                                    <div class="col-md-13 col-md-offset-2">
+                                        <div v-for="(urlList,i) in item.blogInfo.resourceList" class="show-img">
+                                            <img :src="urlList" class="all-img">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+
+                    <!--    评论点赞相关 -->
+                    <div class="row l-c-s">
+                        <div class="col-md-5">
+                            <a href="" class="icon icon-share a-font-20px" @click.prevent="showForward(i)">转发</a>
+                        </div>
+                        <div class="col-md-5">
+                            <a href="" @click.prevent="showReview(i,item.blogId)" class="icon icon-edit a-font-20px"
+                               v-cloak>{{item.commentNum}}</a>
+                        </div>
+                        <div class="col-md-5">
+                            <a href="" @click.prevent="like($event,item.blogId)" class="icon icon-thumbs-up a-font-20px"
+                               v-cloak>{{item.likeNum}}</a>
+                        </div>
+                        <div class="col-md-9">
+                            <span class="font-16px" v-cloak>发布时间:{{item.createTime}}</span>
+                        </div>
+                    </div>
+                    <div :class=['row','addForward',selected==i?'':'hidden']>
+                        <div class="col-md-20 col-md-offset-1">
+                            <input type="text" class="forwardInput" v-model="forwardInput">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="button" class="forwardButton" value="转发"
+                                   @click="forwardBlog($event,item.blogId)">
+                        </div>
+                    </div>
+                    <div :class=['addForward',reviewed==i?'':'hidden']>
+                        <div class="row">
+                            <div class="col-md-20 col-md-offset-1">
+                                <input type="text" class="forwardInput" v-model="forwardInput">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="button" class="forwardButton" value="发布评论"
+                                       @click="reviedBlog($event,item.blogId)">
+                            </div>
+                        </div>
+
+                        <div v-if="commentList != ''" style="border-top: 1px solid silver">
+                            <div v-for="comment in commentList">
+                                <div class="row">
+                                    <div class="col-md-1 col-md-offset-1 commentShow">
+                                        <img :src="comment.avatarUrl" class="commentHeader">
+                                    </div>
+                                    <div class="col-md-21 commentShow">
+                                        <span class="black commenter" v-cloak>{{comment.userName}}:</span>
+                                        <span class="color#333 commenter" v-text="comment.commentContent"></span>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-17 commentShow"></div>
+                                    <div class="col-md-5 commentShow">
+                                        <span v-text="comment.commentTime"></span>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="commentList == ''" class="row">
+                            <div class="col-md-16 col-md-offset-8">
+                                <span style="font-size: 18px">还没有人评论呢，快来评论吧！</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
 
         </div>
         <div class="col-md-8">
-<!--            用户信息-->
+            <!--            用户信息-->
             <div class="lefts">
-                <div class="pph" >
+                <div class="pph">
                     <img src="../../node_modules/images/blue.jpg" height="72px" width="220px"/>
                 </div>
                 <div class="circle">
-<!--                    用户图片-->
-                    <img id="user-photo" src="../../node_modules/images/1.jpg" height="100%" width="100%" style="border-radius: 50%">
+                    <!--                    用户图片-->
+                    <img id="user-photo" src="../../node_modules/images/1.jpg" height="100%" width="100%"
+                         style="border-radius: 50%">
                 </div>
                 <div class="nam">
-<!--                    用户名称-->
+                    <!--                    用户名称-->
                     <span id="username"></span>
                 </div>
-<!--                点赞/粉丝/帖子数-->
+                <!--                点赞/粉丝/帖子数-->
                 <div class="btm">
                     <div class="btm1" style="border-right: 1px  solid  #3B688C">
-                        <div class="bt1" >
-<!--                            关注数-->
+                        <div class="bt1">
+                            <!--                            关注数-->
                             <span name="zanum" id="zanum">
 <!--                                {{zanum}}-->
                                 <strong id="guanzhu">15</strong>
@@ -234,7 +344,7 @@
                         </div>
                     </div>
                     <div class="btm1" style="border-right: 1px  solid  #3B688C">
-<!--                        粉丝数-->
+                        <!--                        粉丝数-->
                         <div class="bt1">
                              <span name="fennum" id="fennum">
 <!--                                {{fennum}}-->
@@ -246,7 +356,7 @@
                         </div>
                     </div>
                     <div class="btm1">
-<!--                        帖子数-->
+                        <!--                        帖子数-->
                         <div class="bt1">
                              <span name="tienum" id="tienum">
 <!--                                {{tienum}}-->
@@ -254,7 +364,7 @@
                             </span>
                         </div>
                         <div class="bt2">
-                            <span>帖子</span>
+                            <span>微博</span>
                         </div>
 
                     </div>
@@ -268,162 +378,315 @@
     </div>
 </div>
 <script>
+    //上传资源
+    layui.use('upload', function () {
+        var upload = layui.upload;
+        var layer = layui.layer;
+        //执行实例
+        var uploadImg = upload.render({
+            elem: '#uploadImg' //绑定元素
+            , url: '/blog/uploadResource/' //上传接口
+            , data: {flag: 1}
+            , before: function () {
+                layer.load(1); //换了种风格
+            }
+            , headers: {token: $.cookie("token")}
+            , done: function (res) {
+                layer.closeAll('loading'); //关闭loading
+                console.log(res.data.resourceUrl);
+                $(".releaseImg").append("<img src=\"//"+res.data.resourceUrl+"\">\n")
+                vm4.itemsId.push(res.data.blogItemId);
+                console.log(vm4.itemsId);
+                $("#releaseImgCard").show(1000);
+                //上传完毕回调
+            }
+            , error: function () {
+                layer.closeAll('loading'); //关闭loading
+                layer.msg("上传错误，请重新上传")
+                //请求异常回调
+            }
+        });
+        //执行实例
+        var uploadVideo = upload.render({
+            elem: '#uploadVideo' //绑定元素
+            , url: '/blog/uploadResource/' //上传接口
+            , data: {flag: 4}
+            , headers: {token: $.cookie("token")}
+            , done: function (res) {
+                layer.closeAll('loading'); //关闭loading
+                //上传完毕回调
+            }
+            , error: function () {
+                layer.closeAll('loading'); //关闭loading
+
+                //请求异常回调
+            }
+        });
+    });
+    var vm4 = new Vue({
+        el: '#release-blog',
+        data: {
+            blogContent: "",
+            circleId: "",
+            itemsId: []
+        },
+        methods: {
+            relealeBlog: function () {
+
+            }
+        }
+        ,created(){
+            $.ajax({
+                url: "/circle/getAllCircle",
+                type: "post",
+                success: function (res) {
+                    if (res.code == 0) {
+                        for (let i = 0; i < res.data.length; i++) {
+                            $("#selectCircle").append("<at-option value=\""+res.data[i].circleId+"\">"+res.data[i].circleName+"</at-option>\n")
+                        }
+                    }
+                }
+            })
+        }
+    })
+    var vm3 = new Vue({
+        el: '#blog-content',
+        data: {
+            blogInfoList: [],
+            commentList: [],
+            pageNum: '1',
+            size: '3',
+            forwardInput: '',
+            selected: 'll',
+            reviewed: 'll',
+        }, methods: {
+            add() {
+
+
+                $.ajax({
+                    url: "/blog/showAllBlog",
+                    type: "post",
+                    data: {
+                        page: this.pageNum,
+                        size: this.size
+                    },
+                    success: function (result) {
+                        if (result.code == 0) {
+                            for (i = 0; i < result.count; i++) {
+                                vm3.blogInfoList.push(result.data[i]);
+                            }
+                            vm3.pageNum = parseInt(vm3.pageNum) + 1;
+                        }
+                    }
+                })
+            },
+            showForward(i) {
+                if (this.selected != i) {
+                    this.selected = i;
+                    this.reviewed = 'll';
+                    this.forwardInput = '';
+                } else {
+                    this.selected = 'lll';
+                }
+            },
+            forwardBlog(e, blogId) {
+                $.ajax({
+                    url: "/blog/forwardBlog",
+                    type: "post",
+                    headers: {'token': $.cookie("token")},
+                    data: {
+                        blogId: blogId,
+                        forwardContent: this.forwardInput
+                    },
+                    success: function (result) {
+                        if (result.code == 0) {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("转发成功");
+                            })
+                            vm3.selected = 'll';
+                        }
+                    }, error: function () {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg("请先登录!");
+                        })
+                        // window.location.href="../index/index.html";
+
+                    }
+                })
+            },
+            showReview(i, blogId) {
+                if (this.reviewed != i) {
+                    this.reviewed = i;
+                    this.forwardInput = '';
+                    this.selected = 'lll';
+                    $.ajax({
+                        url: "/blog/showComment",
+                        type: "post",
+                        data: {
+                            blogId: blogId,
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                vm3.commentList = result.data;
+                            }
+                        }
+                    })
+                } else {
+                    this.reviewed = 'lll';
+                }
+            },
+            reviedBlog(e, blogId) {
+                if (this.forwardInput == '') {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入评论信息！");
+                    })
+                } else {
+                    $.ajax({
+                        url: "/blog/insertComment",
+                        type: "post",
+                        headers: {'token': $.cookie("token")},
+                        data: {
+                            blogId: blogId,
+                            commentContent: this.forwardInput
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer', function () {
+                                    var layer = layui.layer;
+                                    layer.msg("评论成功");
+                                })
+                                vm3.reviewed = 'lll';
+                            }
+                        }, error: function () {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("请先登录");
+                                // window.location.href="../index/index.html";
+                            })
+                        }
+                    })
+                }
+            },
+            like(e, blogId) {
+                $.ajax({
+                    url: "/blog/insertLike",
+                    type: "post",
+                    headers: {'token': $.cookie("token")},
+                    data: {
+                        blogId: blogId
+                    },
+                    success: function (result) {
+                        if (result.code == 0) {
+                            e.target.innerText = parseInt(e.target.innerText) + 1;
+                            e.target.style.color = "blue";
+                        } else {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg(result.msg);
+                            })
+                            e.target.style.color = "blue";
+                        }
+                    }, error: function () {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg("请先登录");
+                            // window.location.href="../index/index.html";
+                        })
+                    }
+                })
+            },
+            jumpPagePerson(userId) {
+                if ($.cookie('token') == null) {
+                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                    window.location.href = "../user-center/personals.html";
+                } else {
+                    $.ajax({
+                        url: "/test/testGetUserIdByToken",
+                        type: "post",
+                        headers: {'token': $.cookie("token")},
+                        success: function (result) {
+                            if (result.code == 0) {
+                                if (userId == result.data) {
+                                    window.location.href = "../user-center/personal.html";
+                                } else {
+                                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                                    window.location.href = "../user-center/personals.html";
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+        }, created() {
+            $.ajax({
+                url: "/blog/showAllBlog",
+                type: "post",
+                data: {
+                    page: this.pageNum,
+                    size: this.size
+                },
+                success: function (result) {
+                    vm3.pageNum = '1';
+                    if (result.code == 0) {
+                        vm3.blogInfoList = result.data;
+                        vm3.pageNum = parseInt(vm3.pageNum) + 1;
+                    }
+                }
+            })
+
+            window.onscroll = function () {
+                //变量scrollTop是滚动条滚动时，距离顶部的距离
+                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                //变量windowHeight是可视区的高度
+                var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+                //变量scrollHeight是滚动条的总高度
+                var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+                //滚动条到底部的条件
+                if (scrollTop + windowHeight == scrollHeight) {
+                    //写后台加载数据的函数
+                    // console.log("距顶部"+scrollTop+"可视区高度"+windowHeight+"滚动条总高度"+scrollHeight);
+                    // //加载层
+                    // layui.use('layer', function () {
+                    //     var layer = layui.layer;
+                    //     var index = layer.load(0, {shade: false,}); //0代表加载的风格，支持0-2
+                    // })
+
+                    vm3.add();
+                }
+            }
+        }
+    })
 
 
     $(function () {
-
         $.ajax({
-            url:"/userInfo/getUserAvatarAndRelation",
-            type:"post",
-            headers:{"token":$.cookie("token")},
+            url: "/userInfo/getUserAvatarAndRelation",
+            type: "post",
+            headers: {"token": $.cookie("token")},
             data: {
                 page: 1,
                 size: 1000,
             },
-            success:function (res) {
-                    if(res.code==0)
-                    {
-                        $("#fensi").text(res.data.fansNum);
-                        $("#guanzhu").text(res.data.bloggerNum);
-                        $("#tiezi").text(res.data.blogNum);
-                        $("#user-photo").attr("src",res.data.avatarUrl);
-                        $("#username").text(res.data.userName);
+            success: function (res) {
+                if (res.code == 0) {
+                    $("#fensi").text(res.data.fansNum);
+                    $("#guanzhu").text(res.data.bloggerNum);
+                    $("#tiezi").text(res.data.blogNum);
+                    $("#user-photo").attr("src", res.data.avatarUrl);
+                    $("#username").text(res.data.userName);
 
 
-                    }
+                }
 
             }
         })
-        // $("#btn  btn1").click(function () {
-        //     $("#btn #btn1").emoji('show');
-        // })
-        // $("#btn #btn1").emoji({
-        //     showTab:true,
-        //     animation:'fade',
-        //     icons: [{
-        //         name: "贴吧表情",
-        //         path: "node_modules/images/",
-        //         maxNum: 50,
-        //         file: ".jpg",
-        //         placeholder: ":{alias}:",
-        //         alias: {
-        //             1: "1",
-        //             2: "1",
-        //             3: "tushe",
-        //             4: "a",
-        //             5: "ku",
-        //             6: "lu",
-        //             7: "kaixin",
-        //             8: "han",
-        //             9: "lei",
-        //             10: "heixian",
-        //             11: "bishi",
-        //             12: "bugaoxing",
-        //             13: "zhenbang",
-        //             14: "qian",
-        //             15: "yiwen",
-        //             16: "yinxian",
-        //             17: "tu",
-        //             18: "yi",
-        //             19: "weiqu",
-        //             20: "huaxin",
-        //             21: "hu",
-        //             22: "xiaonian",
-        //             23: "neng",
-        //             24: "taikaixin",
-        //             25: "huaji",
-        //             26: "mianqiang",
-        //             27: "kuanghan",
-        //             28: "guai",
-        //             29: "shuijiao",
-        //             30: "jinku",
-        //             31: "shengqi",
-        //             32: "jinya",
-        //             33: "pen",
-        //             34: "aixin",
-        //             35: "xinsui",
-        //             36: "meigui",
-        //             37: "liwu",
-        //             38: "caihong",
-        //             39: "xxyl",
-        //             40: "taiyang",
-        //             41: "qianbi",
-        //             42: "dnegpao",
-        //             43: "chabei",
-        //             44: "dangao",
-        //             45: "yinyue",
-        //             46: "haha2",
-        //             47: "shenli",
-        //             48: "damuzhi",
-        //             49: "ruo",
-        //             50: "OK"
-        //         },
-        //         title: {
-        //             1: "呵呵",
-        //             2: "哈哈",
-        //             3: "吐舌",
-        //             4: "啊",
-        //             5: "酷",
-        //             6: "怒",
-        //             7: "开心",
-        //             8: "汗",
-        //             9: "泪",
-        //             10: "黑线",
-        //             11: "鄙视",
-        //             12: "不高兴",
-        //             13: "真棒",
-        //             14: "钱",
-        //             15: "疑问",
-        //             16: "阴脸",
-        //             17: "吐",
-        //             18: "咦",
-        //             19: "委屈",
-        //             20: "花心",
-        //             21: "呼~",
-        //             22: "笑脸",
-        //             23: "冷",
-        //             24: "太开心",
-        //             25: "滑稽",
-        //             26: "勉强",
-        //             27: "狂汗",
-        //             28: "乖",
-        //             29: "睡觉",
-        //             30: "惊哭",
-        //             31: "生气",
-        //             32: "惊讶",
-        //             33: "喷",
-        //             34: "爱心",
-        //             35: "心碎",
-        //             36: "玫瑰",
-        //             37: "礼物",
-        //             38: "彩虹",
-        //             39: "星星月亮",
-        //             40: "太阳",
-        //             41: "钱币",
-        //             42: "灯泡",
-        //             43: "茶杯",
-        //             44: "蛋糕",
-        //             45: "音乐",
-        //             46: "haha",
-        //             47: "胜利",
-        //             48: "大拇指",
-        //             49: "弱",
-        //             50: "OK"
-        //         }
-        //     }, {
-        //         path: "dist/img/qq/",
-        //         maxNum: 91,
-        //         excludeNums: [41, 45, 54],
-        //         file: ".gif",
-        //         placeholder: "#qq_{alias}#"
-        //     }]
-
-
-
 
 
         $(".disu").click(function () {
-            $(this).remove()
+
 
         })
     });
@@ -432,8 +695,8 @@
 <script>
     new Vue({
         el: '#app',
-        data:{
-            inputValue4:''
+        data: {
+            inputValue4: ''
         }
     })
 </script>
