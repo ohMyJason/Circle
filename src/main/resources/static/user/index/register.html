@@ -38,22 +38,35 @@
                     </div>
                     <div class="flag">
                         <div class="flag-1">
-                            <input class="inputMsg" type="text" placeholder="请输入手机号码" v-model="phoneNumber">
+<!--                            <input class="inputMsg" type="text" placeholder="请输入手机号码" v-model="phoneNumber">-->
+                            <at-input class="inputMsg" type="text" placeholder="请输入手机号码" v-model="phoneNumber" size="small" blur="this.placeholder=''"></at-input>
                         </div>
                     </div>
                 </div>
                 <div class="pas">
                     <div class="tid">&nbsp;&nbsp;设置密码:</div>
                     <div class="pascenter">
-                        <input  class="inputMsg" type="password" placeholder="请输入密码" v-model="password">
+<!--                        <input  class="inputMsg" type="password" placeholder="请输入密码" v-model="password">-->
+                        <at-input class="inputMsg" type="password" placeholder="请输入密码" v-model="password" size="small" onclick="this.placeholder=''"></at-input>
                     </div>
                 </div>
                 <div class="choose">
                     <div class="bir">&nbsp;&nbsp;生日:</div>
+
+
                     <select class="year" name="year" v-model="birthYear">
                         <option value="请选择" selected>请选择</option>
                         <option v-for="n in 2019" :value="n" v-text="n" v-if="n > 1900"></option>
-                    </select>年
+                    </select>
+<!--                    <at-dropdown>-->
+<!--                        <at-button size="small">年<i class="icon icon-chevron-down" style="width: 90px"></i></at-button>-->
+<!--                        <at-dropdown-menu slot="menu">-->
+<!--                            <at-dropdown-item v-for="n in  2019":name="n" v-text="n" v-if="n>1900"></at-dropdown-item>-->
+<!--                        </at-dropdown-menu>-->
+<!--                    </at-dropdown>-->
+
+
+                    年
                     <select class="month" name="month" v-model="birthMonth">
                         <option value="请选择" selected>请选择</option>
                         <option v-for="n in 12" :value="n" v-text="n"></option>
@@ -66,10 +79,14 @@
                 <div class="actcode">
                     <div class="send">注册码:</div>
                     <button class="button" @click="sendMsg">免费获取短信激活码</button>
-                    <input type="text" class="codeStyle" v-model="code">
+<!--                    <input type="text" class="codeStyle" v-model="code">-->
+                    <at-input class="codeStyle" type="text"  v-model="code" ></at-input>
+
+
                     <div class="fit" >
-                        <input type="button" value=" 收不到验证码？" style="border: 0px" @click="sendMsg">
+                        <input type="button" value=" 收不到验证码？" style="border: 0px;background-color:  #f1f1f1" @click="sendMsg">
                     </div>
+
                 </div>
                 <div class="rejister">
                     <button @click="registerNow" class="registerNow">立即注册</button>
