@@ -60,6 +60,13 @@ public class CircleController {
         return circleService.circleBlog(circleId,page,size);
     }
 
+    /**
+     * 创建圈子
+     * @param httpServletRequest
+     * @param file
+     * @param circles
+     * @return
+     */
     @UserLoginToken
     @PostMapping("createCircle")
     public Result createCircle(HttpServletRequest httpServletRequest, @RequestParam(name = "file")MultipartFile file, Circles circles){
