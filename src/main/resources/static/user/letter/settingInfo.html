@@ -66,27 +66,21 @@
                         <span class="text_487X1 col-md-2 flex-center" @click="submitName()">确定</span>
                     </div>
 
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">密码</span>
-                        <span id="showPass" class="show_info col-md-15" v-text="userInfo.password"></span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="showPassInput()">编辑</span>
-                    </div>
-                    <div id="changePass" class="row change_info_item" style="display: none">
-                        <span class="text_485X1 col-md-6">修改密码</span>
-                        <input id="changePassInput" type="text" v-model="forwardInput2">
-                        <span class="text_487X1 col-md-2 flex-center" @click="submitPass()">确定</span>
-                    </div>
+                    <!--<div class="row info_item">-->
+                        <!--<span class="text_485X1 col-md-6">密码</span>-->
+                        <!--<span id="showPass" class="show_info col-md-15" v-text="userInfo.password"></span>-->
+                        <!--<span class="text_487X1 col-md-2 flex-center" @click="showPassInput()">编辑</span>-->
+                    <!--</div>-->
+                    <!--<div id="changePass" class="row change_info_item" style="display: none">-->
+                        <!--<span class="text_485X1 col-md-6">修改密码</span>-->
+                        <!--<input id="changePassInput" type="text" v-model="forwardInput2">-->
+                        <!--<span class="text_487X1 col-md-2 flex-center" @click="submitPass()">确定</span>-->
+                    <!--</div>-->
 
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">手机号</span>
-                        <span id="showPhone" class="show_info col-md-15" v-text="userInfo.phone"></span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="showPhoneInput()">编辑</span>
+                        <span class="show_info col-md-15" v-text="userInfo.phone"></span>
                     </div>
-                    <!--<div id="changePhone" class="row change_info_item" style="display: none">-->
-                        <!--<span class="text_485X1 col-md-6">修改手机号</span>-->
-                        <!--<input id="changePhoneInput" type="text" v-model="forwardInput">-->
-                        <!--<span class="text_487X1 col-md-2 flex-center" @click="submitPhone()">确定</span>-->
-                    <!--</div>-->
 
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">邮箱</span>
@@ -95,7 +89,7 @@
                     </div>
                     <div id="changeEmail" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">修改邮箱</span>
-                        <input id="changeEmailInput" type="text" v-model="forwardInput3">
+                        <input id="changeEmailInput" type="text" v-model="forwardInput2">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitEmail()">确定</span>
                     </div>
 
@@ -106,7 +100,8 @@
                     </div>
                     <div id="changeSex" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">设置性别</span>
-                        <input id="changeSexInput" type="text" v-model="forwardInput4">
+                        <input id="changeSexInput" type="text" v-model="forwardInput3">
+                        <em style="color: red">请输入数字：0-保密；1-男；2-女</em>
                         <span class="text_487X1 col-md-2 flex-center" @click="submitSex()">确定</span>
                     </div>
 
@@ -117,7 +112,8 @@
                     </div>
                     <div id="changeSingle" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">修改感情状况</span>
-                        <input id="changeSingleInput" type="text" v-model="forwardInput5">
+                        <input id="changeSingleInput" type="text" v-model="forwardInput4">
+                        <em style="color: red">请输入数字：0-保密；1-单身；2-恋爱</em>
                         <span class="text_487X1 col-md-2 flex-center" @click="submitSingle()">确定</span>
                     </div>
 
@@ -128,14 +124,13 @@
                     </div>
                     <div id="changeBirth" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">设置生日</span>
-                        <input id="changeBirthInput" type="text" v-model="forwardInput6">
+                        <input id="changeBirthInput" type="text" v-model="forwardInput5">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitBirth()">确定</span>
                     </div>
 
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">注册时间</span>
                         <span class="show_info col-md-15" v-text="userInfo.createTime"></span>
-                        <span class="text_487X1 col-md-2 flex-center">这个不能改</span>
                     </div>
 
                     <div class="row info_item">
@@ -145,14 +140,14 @@
                     </div>
                     <div id="changeAddress" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">修改所在地</span>
-                        <input id="changeAddressInput" type="text" v-model="forwardInput7">
+                        <input id="changeAddressInput" type="text" v-model="forwardInput6">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitAddress()">确定</span>
                     </div>
 
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">是否注销</span>
                         <span class="show_info col-md-15" v-text="userInfo.isDelete"></span>
-                        <span class="text_487X1 col-md-2 flex-center">这个能改吗？</span>
+                        <!--<span class="text_487X1 col-md-2 flex-center">这个能改吗？</span>-->
                     </div>
                 </div>
 
@@ -173,8 +168,7 @@
             forwardInput3:'',
             forwardInput4:'',
             forwardInput5:'',
-            forwardInput6:'',
-            forwardInput7:''
+            forwardInput6:''
         },
         methods:{
             getFile(e) {
@@ -193,9 +187,6 @@
             },
             showNameInput(){
                 $("#changeName").css("display","block");
-            },
-            showPassInput(){
-                $("#changePass").css("display","block");
             },
             showEmailInput(){
                 $("#changeEmail").css("display","block");
@@ -229,23 +220,6 @@
                     }
                 })
             },
-            submitPass(userId) {
-                $.ajax({
-                    url:"/userInfo/updateUserInfo",
-                    type:"post",
-                    headers:{'token':$.cookie("token")},
-                    data:{
-                        userId:userId,
-                        password: this.forwardInput2,
-                    },
-                    success:function (result) {
-                        if(result.code == 0){
-                            $("#showPass").html($("#changePassInput").val());
-                            $("#changePass").css("display","none");
-                        }
-                    }
-                })
-            },
             submitEmail(userId) {
                 $.ajax({
                     url:"/userInfo/updateUserInfo",
@@ -253,7 +227,7 @@
                     headers:{'token':$.cookie("token")},
                     data:{
                         userId:userId,
-                        email: this.forwardInput3,
+                        email: this.forwardInput2,
                     },
                     success:function (result) {
                         if(result.code == 0){
@@ -270,11 +244,17 @@
                     headers:{'token':$.cookie("token")},
                     data:{
                         userId:userId,
-                        sex: this.forwardInput4,
+                        sex: this.forwardInput3,
                     },
                     success:function (result) {
                         if(result.code == 0){
-                            $("#showSex").html($("#changeSexInput").val());
+                            if($("#changeSexInput").val()==0){
+                                vm.userInfo.sex = "保密";
+                            }else if ($("#changeSexInput").val()==1) {
+                                vm.userInfo.sex = "男";
+                            }else if ($("#changeSexInput").val()==2) {
+                                vm.userInfo.sex = "女";
+                            }
                             $("#changeSex").css("display","none");
                         }
                     }
@@ -287,12 +267,18 @@
                     headers:{'token':$.cookie("token")},
                     data:{
                         userId:userId,
-                        isSingle: this.forwardInput5,
+                        isSingle: this.forwardInput4,
                     },
                     success:function (result) {
                         if(result.code == 0){
-                            $("#showSingle").html($("#changeSinleInput").val());
-                            $("#changeSinle").css("display","none");
+                            if($("#changeSingleInput").val()==0){
+                                vm.userInfo.isSingle = "保密";
+                            }else if ($("#changeSingleInput").val()==1) {
+                                vm.userInfo.isSingle = "单身";
+                            }else if ($("#changeSingleInput").val()==2) {
+                                vm.userInfo.isSingle = "恋爱";
+                            }
+                            $("#changeSingle").css("display","none");
                         }
                     }
                 })
@@ -304,7 +290,7 @@
                     headers:{'token':$.cookie("token")},
                     data:{
                         userId:userId,
-                        birthday: this.forwardInput6,
+                        birthday: this.forwardInput5,
                     },
                     success:function (result) {
                         if(result.code == 0){
@@ -321,7 +307,7 @@
                     headers:{'token':$.cookie("token")},
                     data:{
                         userId:userId,
-                        address: this.forwardInput7,
+                        address: this.forwardInput6,
                     },
                     success:function (result) {
                         if(result.code == 0){
