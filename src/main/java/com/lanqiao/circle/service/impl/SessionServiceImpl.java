@@ -60,12 +60,6 @@ public class SessionServiceImpl implements SessionService {
         return Result.createSuccessResult(userList.size(),userList);
     }
 
-    //根据senterId和receiverId查询历史消息
-//    public Result selectMessageLog(Letter letter)
-//    {
-//        List<HashMap> messageLog = letterMapper.selectMessageLog(letter);
-//        return Result.createSuccessResult(messageLog.size(),messageLog);
-//    }
     public Result selectMessageLog(int senterId,String userName)
     {
         Integer receiverId = usersMapper.getUserByUserName(userName).getUserId();
@@ -92,17 +86,18 @@ public class SessionServiceImpl implements SessionService {
         letter.setReceiverId(receiverId);
         letter.setSendTime(data);
 
-        if(letterContent != null)
+        if(resourceUrl != null)
+        {
+            letter.setLetterContent("[图片]");
+            letter.setResourceUrl("//"+resourceUrl);
+            letter.setType(1);
+        }
+        else if(letterContent != null)
         {
             letter.setLetterContent(letterContent);
             letter.setType(0);
         }
-        else if(resourceUrl != null)
-        {
-            letter.setLetterContent("[图片]");
-            letter.setResourceUrl(resourceUrl);
-            letter.setType(1);
-        }
+
 
         int col = letterMapper.insertSelective(letter);
         if(col == 0)

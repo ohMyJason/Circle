@@ -65,7 +65,8 @@ public class CircleController {
     public Result createCircle(HttpServletRequest httpServletRequest, @RequestParam(name = "file")MultipartFile file, Circles circles){
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
         circles.setUserId(userId);
-        String url = fileUploadUtil.fileUpload(file,5);
+        String strUrl = fileUploadUtil.fileUpload(file,5);
+        String url = "//" + strUrl;
         circles.setCircleImgUrl(url);
         return circleService.createCircle(circles);
     }
