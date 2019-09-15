@@ -64,7 +64,7 @@
 
                     <div class="fans_card" v-for="(item,index) in fansList">
                         <div class="personal_box row">
-                            <img :src="fansAvatarUrl" class="user_img">
+                            <img :src="item.avatarUrl" class="user_img">
                             <div class="user_info">
                                 <p class="user_nickname">{{item.fansName}}</p>
                                 <p class="user_item">生日 {{item.birthday}}</p>

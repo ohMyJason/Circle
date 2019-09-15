@@ -11,6 +11,7 @@
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
 </head>
 <body>
@@ -51,71 +52,105 @@
                         <div class="row account_box col-md-11">
                             <span class="text_485X1">账户状态</span>
                             <span class="account_status" v-text="userInfo.status"></span>
-                            <span class="text_487X1 flex-center">编辑</span>
                         </div>
                     </div>
 
                     <div class="row info_item">
-                        <span class="text_485X1 col-md-6">登录名</span>
-                        <span class="show_info col-md-15" v-text="userInfo.phone"></span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                        <span class="text_485X1 col-md-6">用户名</span>
+                        <span id="showName" class="show_info col-md-15" v-text="userInfo.userName"></span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="showNameInput()">编辑</span>
                     </div>
-                    <!--<div id="change" class="row info_item" style="display: none">-->
-                        <!--<span class="text_485X1 col-md-6">修改昵称</span>-->
-                        <!--<input type="text" class="changeUserName" v-model="changeUserName">-->
-                        <!--<span class="text_487X1 col-md-2 flex-center" @click="submit()">确定</span>-->
+                    <div id="changeName" class="row change_info_item" style="display: none">
+                        <span class="text_485X1 col-md-6">修改昵称</span>
+                        <input id="changeNameInput" type="text" v-model="forwardInput1">
+                        <span class="text_487X1 col-md-2 flex-center" @click="submitName()">确定</span>
+                    </div>
+
+                    <!--<div class="row info_item">-->
+                        <!--<span class="text_485X1 col-md-6">密码</span>-->
+                        <!--<span id="showPass" class="show_info col-md-15" v-text="userInfo.password"></span>-->
+                        <!--<span class="text_487X1 col-md-2 flex-center" @click="showPassInput()">编辑</span>-->
                     <!--</div>-->
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">昵称</span>
-                        <span class="show_info col-md-15" v-text="userInfo.userName"></span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
-                    </div>
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">密码</span>
-                        <span class="show_info col-md-15" v-text="userInfo.password"></span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
-                    </div>
+                    <!--<div id="changePass" class="row change_info_item" style="display: none">-->
+                        <!--<span class="text_485X1 col-md-6">修改密码</span>-->
+                        <!--<input id="changePassInput" type="text" v-model="forwardInput2">-->
+                        <!--<span class="text_487X1 col-md-2 flex-center" @click="submitPass()">确定</span>-->
+                    <!--</div>-->
+
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">手机号</span>
                         <span class="show_info col-md-15" v-text="userInfo.phone"></span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
+
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">邮箱</span>
-                        <span class="show_info col-md-15" v-text="userInfo.email"></span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                        <span id="showEmail" class="show_info col-md-15" v-text="userInfo.email"></span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="showEmailInput()">编辑</span>
                     </div>
+                    <div id="changeEmail" class="row change_info_item" style="display: none">
+                        <span class="text_485X1 col-md-6">修改邮箱</span>
+                        <input id="changeEmailInput" type="text" v-model="forwardInput2">
+                        <span class="text_487X1 col-md-2 flex-center" @click="submitEmail()">确定</span>
+                    </div>
+
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">性别</span>
                         <span class="show_info col-md-15" v-text="userInfo.sex"></span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="showSexInput()">编辑</span>
                     </div>
+                    <div id="changeSex" class="row change_info_item" style="display: none">
+                        <span class="text_485X1 col-md-6">设置性别</span>
+                        <input id="changeSexInput" type="text" v-model="forwardInput3">
+                        <em style="color: red">请输入数字：0-保密；1-男；2-女</em>
+                        <span class="text_487X1 col-md-2 flex-center" @click="submitSex()">确定</span>
+                    </div>
+
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">感情状况</span>
                         <span class="show_info col-md-15" v-text="userInfo.isSingle"></span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="showSingleInput()">编辑</span>
                     </div>
+                    <div id="changeSingle" class="row change_info_item" style="display: none">
+                        <span class="text_485X1 col-md-6">修改感情状况</span>
+                        <input id="changeSingleInput" type="text" v-model="forwardInput4">
+                        <em style="color: red">请输入数字：0-保密；1-单身；2-恋爱</em>
+                        <span class="text_487X1 col-md-2 flex-center" @click="submitSingle()">确定</span>
+                    </div>
+
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">生日</span>
                         <span class="show_info col-md-15" v-text="userInfo.birthday"></span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="showBirthInput()">编辑</span>
                     </div>
+                    <div id="changeBirth" class="row change_info_item" style="display: none">
+                        <span class="text_485X1 col-md-6">设置生日</span>
+                        <input id="changeBirthInput" type="text" v-model="forwardInput5">
+                        <span class="text_487X1 col-md-2 flex-center" @click="submitBirth()">确定</span>
+                    </div>
+
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">注册时间</span>
                         <span class="show_info col-md-15" v-text="userInfo.createTime"></span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
                     </div>
+
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">所在地</span>
                         <span class="show_info col-md-15" v-text="userInfo.address"></span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="showAddressInput()">编辑</span>
                     </div>
+                    <div id="changeAddress" class="row change_info_item" style="display: none">
+                        <span class="text_485X1 col-md-6">修改所在地</span>
+                        <input id="changeAddressInput" type="text" v-model="forwardInput6">
+                        <span class="text_487X1 col-md-2 flex-center" @click="submitAddress()">确定</span>
+                    </div>
+
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">是否注销</span>
                         <span class="show_info col-md-15" v-text="userInfo.isDelete"></span>
-                        <span class="text_487X1 col-md-2 flex-center">编辑</span>
+                        <!--<span class="text_487X1 col-md-2 flex-center">这个能改吗？</span>-->
                     </div>
                 </div>
+
             </div>
             <div class="col-md-3"></div>
         </div>
@@ -127,7 +162,13 @@
         el: '#app',
         data:{
             inputValue4:'',
-            userInfo:{}
+            userInfo:{},
+            forwardInput1:'',
+            forwardInput2:'',
+            forwardInput3:'',
+            forwardInput4:'',
+            forwardInput5:'',
+            forwardInput6:''
         },
         methods:{
             getFile(e) {
@@ -143,15 +184,141 @@
                         _this.myBlogList[i].userImgUrl = this.result;
                     }
                 }
-            }
-            // changeUserName:function () {
-                //         $("#change").css("display","block");
-                //         // userInfo.id = userId;
-                //     },
-                //     submit:function () {
-                //         this.books.splice(id-1,1,this.book);
-                //         $("#change").css("display","none");
-                //     }
+            },
+            showNameInput(){
+                $("#changeName").css("display","block");
+            },
+            showEmailInput(){
+                $("#changeEmail").css("display","block");
+            },
+            showSexInput(){
+                $("#changeSex").css("display","block");
+            },
+            showSingleInput(){
+                $("#changeSingle").css("display","block");
+            },
+            showBirthInput(){
+                $("#changeBirth").css("display","block");
+            },
+            showAddressInput(){
+                $("#changeAddress").css("display","block");
+            },
+            submitName(userId) {
+                $.ajax({
+                    url:"/userInfo/updateUserInfo",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        userId: userId,
+                        userName: this.forwardInput1,
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            $("#showName").html($("#changeNameInput").val());
+                            $("#changeName").css("display","none");
+                        }
+                    }
+                })
+            },
+            submitEmail(userId) {
+                $.ajax({
+                    url:"/userInfo/updateUserInfo",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        userId:userId,
+                        email: this.forwardInput2,
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            $("#showEmail").html($("#changeEmailInput").val());
+                            $("#changeEmail").css("display","none");
+                        }
+                    }
+                })
+            },
+            submitSex(userId) {
+                $.ajax({
+                    url:"/userInfo/updateUserInfo",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        userId:userId,
+                        sex: this.forwardInput3,
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            if($("#changeSexInput").val()==0){
+                                vm.userInfo.sex = "保密";
+                            }else if ($("#changeSexInput").val()==1) {
+                                vm.userInfo.sex = "男";
+                            }else if ($("#changeSexInput").val()==2) {
+                                vm.userInfo.sex = "女";
+                            }
+                            $("#changeSex").css("display","none");
+                        }
+                    }
+                })
+            },
+            submitSingle(userId) {
+                $.ajax({
+                    url:"/userInfo/updateUserInfo",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        userId:userId,
+                        isSingle: this.forwardInput4,
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            if($("#changeSingleInput").val()==0){
+                                vm.userInfo.isSingle = "保密";
+                            }else if ($("#changeSingleInput").val()==1) {
+                                vm.userInfo.isSingle = "单身";
+                            }else if ($("#changeSingleInput").val()==2) {
+                                vm.userInfo.isSingle = "恋爱";
+                            }
+                            $("#changeSingle").css("display","none");
+                        }
+                    }
+                })
+            },
+            submitBirth(userId) {
+                $.ajax({
+                    url:"/userInfo/updateUserInfo",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        userId:userId,
+                        birthday: this.forwardInput5,
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            $("#showBirth").html($("#changeBirthInput").val());
+                            $("#changeBirth").css("display","none");
+                        }
+                    }
+                })
+            },
+            submitAddress(userId) {
+                $.ajax({
+                    url:"/userInfo/updateUserInfo",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        userId:userId,
+                        address: this.forwardInput6,
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            $("#showAddress").html($("#changeAddressInput").val());
+                            $("#changeAddress").css("display","none");
+                        }
+                    }
+                })
+            },
+
+
         },
         created(){
             $.ajax({

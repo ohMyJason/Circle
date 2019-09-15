@@ -100,10 +100,10 @@
                     <!--         控制头           -->
                     <div class="row">
                         <div class="col-md-2 col-md-offset-1">
-                            <img :src="item.avatarUrl" class="header-img">
+                            <a href="#" @click="jumpPagePerson(item.userId)"><img :src="item.avatarUrl" class="header-img"></a>
                         </div>
                         <div class="col-md-8">
-                            <a href="#"><span v-text="item.userName" class="black blog-belonger"></span></a>
+                            <a href="#" @click="jumpPagePerson(item.userId)"><span v-text="item.userName" class="black blog-belonger"></span></a>
                         </div>
                         <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 0">
                             <at-tag color="success">原创</at-tag>
@@ -411,8 +411,7 @@
                         }
                     })
                 }
-            }
-            ,
+            },
             like(e,blogId){
                 $.ajax({
                     url:"/blog/insertLike",
@@ -440,6 +439,28 @@
                         })
                     }
                 })
+            },
+            jumpPagePerson(userId){
+                if ($.cookie('token') == null){
+                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                    window.location.href="../user-center/personals.html";
+                }else{
+                    $.ajax({
+                        url:"/test/testGetUserIdByToken",
+                        type:"post",
+                        headers:{'token':$.cookie("token")},
+                        success:function (result) {
+                            if(result.code == 0){
+                               if(userId == result.data){
+                                   window.location.href="../user-center/personal.html";
+                               }else {
+                                   $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                                   window.location.href="../user-center/personals.html";
+                               }
+                            }
+                        }
+                    })
+                }
             }
         },created(){
             $.ajax({
