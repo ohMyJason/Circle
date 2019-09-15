@@ -100,8 +100,8 @@
                     <div class="bLogoBox left">
                         <img src="../../node_modules/images/smile.png">
                     </div>
-                    <div class="bLogoBox left" id = "upLoadFile">
-                        <input type="file" id="file" style="display: none" @change = "upLoad($event)">
+                    <div class="bLogoBox left">
+                        <input type="file" id="file" style="display: none" @change="upLoad">
                         <label for="file">
                             <img src="../../node_modules/images/photo.png">
                         </label>
@@ -116,33 +116,6 @@
     </div>
 </div>
 <script>
-    new Vue({
-        el:"#upLoadFile",
-        data:{
-            file:""
-        },
-        methods:{
-            upLoad:function (e) {
-                alert(1)
-                this.file = e.target.files[0];
-                var formData = new FormData();
-                formData.append("file",this.file);
-                $.ajax({
-                    url : "/session/test",
-                    type : 'POST',
-                    data : formData,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    success : function(result) {
-                        alert("成功");
-                    },error:function (){
-                        alert("失败");
-                    }
-                });
-            }
-        }
-    })
 
     //绑定用户信息以及好友列表
     var vm = new Vue({
@@ -166,7 +139,8 @@
                 resourceUrl:"",
                 type:"",
                 sendTime:"", //发送时间
-            }]
+            }],
+            file:''
         },
         methods: {
             getMsg:function(i){
@@ -205,7 +179,26 @@
                 $now.css({"border-right": "2px solid #ff5500"});
                 $now.css({"border-bottom": "1px solid black"});
                 $("#contactName").html($now.find(".userName").html());
-            },
+            },upLoad(e) {
+                this.file = e.target.files[0];
+                var formData = new FormData();
+                formData.append("file",this.file);
+                $.ajax({
+                    url : "/session/test",
+                    type : 'POST',
+                    data : formData,
+                    headers:{'token':$.cookie("token")},
+                    processData: false,
+                    contentType: false,
+                    success : function(result) {
+                        if (result.code==0){
+                            alert("成功");
+                        }
+                    },error:function (){
+                        alert("失败");
+                    }
+                });
+            }
         },
         created(){
             //获取登陆者的用户信息

@@ -71,6 +71,6 @@ public class SessionController {
     {
         String relaPath = fileUploadUtil.fileUpload(file,2);
         System.out.println(relaPath);
-        return Result.createByFailure(relaPath);
+        return Result.createSuccessResult(relaPath);
     }
 }
