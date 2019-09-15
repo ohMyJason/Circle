@@ -20,7 +20,7 @@
             display: none;
         }
 
-        .releaseImg img{
+        .releaseImg img {
             width: 75px;
             height: 75px;
             margin-right: 5px;
@@ -72,7 +72,7 @@
 
                 <div class="news" style="border: 1px">圈圈，和志同道合的人交朋友。</div>
                 <div class="neiro">
-                    <textarea style="border:1px solid #2b542c;width:100%;height: 100%" id="input" ></textarea>
+                    <textarea v-model="blogContent" style="border:1px solid #2b542c;width:100%;height: 100%" id="input"></textarea>
                     <!--                    <input style="border:1px solid #2b542c;width:100%;height: 100%" id="input">-->
                 </div>
                 <div class="nima">
@@ -94,13 +94,14 @@
                         <span style="font-size: 70%">选择圈子：</span>
 
                     </div>
-                    <at-select id="selectCircle" style="width:100px">
-                        <at-option value="1">深圳</at-option>
+                    <at-select id="selectCircle" v-model="circleId" style="width:100px">
+                        <at-option :value="circle.circleId" v-for="circle in circleItem">{{circle.circleName}}
+                        </at-option>
                     </at-select>
                     <div class="disu" onmousedown="this.style.backgroundColor='red'"
                          onmouseup="this.style.backgroundColor='#f0ad4e'">
-                        <span id="disc" name="disc">发布</span>
-                        <!--                        <input type="submit" value="发布" name="disc" id="disc" style="background-color: none">-->
+                        <span id="disc" name="disc" @click="relealeBlog">发布</span>
+                        <!--  <input type="submit" value="发布" name="disc" id="disc" style="background-color: none">-->
                     </div>
                 </div>
             </div>
@@ -379,6 +380,8 @@
 </div>
 <script>
     //上传资源
+    var ifImg =true;
+    var ifVedio = true;
     layui.use('upload', function () {
         var upload = layui.upload;
         var layer = layui.layer;
@@ -391,13 +394,17 @@
                 layer.load(1); //换了种风格
             }
             , headers: {token: $.cookie("token")}
+            ,accept: 'file' //允许上传的文件类型
             , done: function (res) {
                 layer.closeAll('loading'); //关闭loading
                 console.log(res.data.resourceUrl);
-                $(".releaseImg").append("<img src=\"//"+res.data.resourceUrl+"\">\n")
+                //视频设false
+                // ifVedio=false;
+                $(".releaseImg").append("<img src=\"//" + res.data.resourceUrl + "\">\n")
                 vm4.itemsId.push(res.data.blogItemId);
                 console.log(vm4.itemsId);
                 $("#releaseImgCard").show(1000);
+                $("#releaseImgCard h4").text("图片");
                 //上传完毕回调
             }
             , error: function () {
@@ -412,8 +419,19 @@
             , url: '/blog/uploadResource/' //上传接口
             , data: {flag: 4}
             , headers: {token: $.cookie("token")}
+            ,accept: 'file' //允许上传的文件类型
+            , before: function () {
+                layer.load(1); //换了种风格
+            }
             , done: function (res) {
                 layer.closeAll('loading'); //关闭loading
+                $("#releaseImgCard h4").text("视频");
+                // ifImg=false;
+                // ifVedio=false;
+                $(".releaseImg").append("  <video src=\"//"+res.data.resourceUrl+"\" style='width: 100%' controls=\"controls\" >您的浏览器不支持播放该视频！</video>\n\n")
+                $("#releaseImgCard").show(1000);
+                vm4.itemsId.push(res.data.blogItemId);
+
                 //上传完毕回调
             }
             , error: function () {
@@ -428,22 +446,50 @@
         data: {
             blogContent: "",
             circleId: "",
-            itemsId: []
+            itemsId: [],
+            circleItem: [],
         },
         methods: {
             relealeBlog: function () {
-
+                if (this.circleId!=""){
+                    layer.load(1);
+                    $.ajax({
+                        url: "/blog/insertBlog",
+                        type: "post",
+                        headers:{"token":$.cookie("token")},
+                        contentType:"application/json",
+                        data:JSON.stringify({
+                            "blog": {
+                                "content": this.blogContent,
+                                "circleId": this.circleId
+                            },
+                            "itemIds": this.itemsId
+                        }),
+                        success: function (res) {
+                            layer.closeAll('loading');
+                            if (res.code == 0) {
+                                layui.use('layer',function () {
+                                    var layer = layui.layer;
+                                    layer.msg("发表成功");
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    },1000);
+                                })
+                            }
+                        }
+                    })
+                }else {
+                    layer.msg("请选择圈子!!!");
+                }
             }
         }
-        ,created(){
+        , created() {
             $.ajax({
                 url: "/circle/getAllCircle",
                 type: "post",
                 success: function (res) {
                     if (res.code == 0) {
-                        for (let i = 0; i < res.data.length; i++) {
-                            $("#selectCircle").append("<at-option value=\""+res.data[i].circleId+"\">"+res.data[i].circleName+"</at-option>\n")
-                        }
+                        vm4.circleItem = res.data;
                     }
                 }
             })

@@ -140,7 +140,7 @@ public class BlogContoller {
             }
             blogMapper.insertSelective(blog);
             for (Object itemId:itemIds){
-                BlogItem blogItem = blogItemMapper.selectByPrimaryKey(Integer.parseInt((String) itemId));
+                BlogItem blogItem = blogItemMapper.selectByPrimaryKey((Integer)itemId);
                 blogItem.setBlogId(blog.getBlogId());
                 blogItemMapper.updateByPrimaryKeySelective(blogItem);
             }
@@ -168,7 +168,7 @@ public class BlogContoller {
             String url = fileUploadUtil.fileUpload(file, flag);
             if (!url.equals("-2")) {
                 BlogItem blogItem = new BlogItem();
-                blogItem.setResourceUrl(url);
+                blogItem.setResourceUrl("//"+url);
                 if (flag != 4) {
                     blogItem.setType(1);
                 } else {
