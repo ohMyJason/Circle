@@ -4,11 +4,14 @@ import com.lanqiao.circle.annotations.UserLoginToken;
 import com.lanqiao.circle.entity.Letter;
 import com.lanqiao.circle.service.SessionService;
 import com.lanqiao.circle.service.TokenService;
+import com.lanqiao.circle.util.FileUploadUtil;
 import com.lanqiao.circle.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -23,6 +26,9 @@ public class SessionController {
 
     @Autowired
     TokenService tokenService;
+
+    @Autowired
+    FileUploadUtil fileUploadUtil;
 
     //根据userId查询出当前登录用户的信息：userId,userName,avatarUrl
     @UserLoginToken
@@ -41,18 +47,6 @@ public class SessionController {
         return sessionService.selectUserList(userId);
     }
 
-    //根据senterId和receiverId查询历史消息
-//    @UserLoginToken
-//    @PostMapping("/getMessageLog")
-//    public Result selectMessageLog(HttpServletRequest httpServletRequest,Integer receiverId)
-//    {
-//        int senterId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
-//        Letter letter = new Letter();
-//        letter.setSenterId(senterId);
-//        letter.setReceiverId(receiverId);
-//        return sessionService.selectMessageLog(letter);
-//    }
-
     //查询历史消息
     @UserLoginToken
     @PostMapping("/getMessageLog")
@@ -69,5 +63,14 @@ public class SessionController {
     {
         int senterId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
         return sessionService.sendMsg(senterId,userName, letterContent,resourceUrl);
+    }
+
+    @UserLoginToken
+    @PostMapping("/test")
+    public Result test(@RequestParam(name = "file")MultipartFile file)
+    {
+        String relaPath = fileUploadUtil.fileUpload(file,2);
+        System.out.println(relaPath);
+        return Result.createSuccessResult(relaPath);
     }
 }
