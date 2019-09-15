@@ -32,12 +32,10 @@
             </at-input>
         </div>
         <div class="col-md-7 col-md-offset-5">
-            <at-menu mode="horizontal" active-name="0">
-                <at-menu-item name="1"><i class="icon icon-home"></i>首页</at-menu-item>
-                <at-menu-item name="2"><i class="icon icon-aperture"></i>圈子</at-menu-item>
-                <at-menu-item name="3"><i class="icon icon-mail"></i>私信</at-menu-item>
-                <at-menu-item name="4"><i class="icon icon-user"></i>用户</at-menu-item>
-            </at-menu>
+            <a href="../../Index.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
+            <a href="../../user/circle/circle.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
+            <a href="../../user/letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
+            <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
         </div>
     </div>
 
@@ -67,7 +65,7 @@
                     <div class="member_box row">
                         <ul class="member_ul">
                             <li class="member_li S_bg1 row" v-for="(item,index) in memberList">
-                                <img :src="item.memberAvatar" alt="关注用户头像" class="member_avatar">
+                                <img :src="item.avatarUrl" alt="关注用户头像" class="member_avatar">
                                 <div class="box_111X1"></div>
                                 <div class="member_info">
                                     <span class="text_96X1">{{item.bloggerName}}</span>
@@ -77,8 +75,8 @@
                                     <p class="member_word">性别：{{item.sex}}</p>
                                     <p class="member_word">感情状况：{{item.isSingle}}</p>
                                 </div>
-                                <at-button type="primary" class="session_btn">私信</at-button>
-                                <at-button class="cancel_btn">取消关注</at-button>
+                                <at-button type="primary" class="session_btn" @click="gotoSession">私信</at-button>
+                                <at-button class="cancel_btn" @click="cancelAttention(index)">取消关注</at-button>
                             </li>
                         </ul>
                     </div>
@@ -102,7 +100,19 @@
             src:'',
             userName:'',
             attentionNum:'',
-            memberList:[]
+            memberList:[],
+            pageNum:'1',
+            pageSize:'10'
+        },
+        methods:{
+            gotoSession:function () {
+                window.location.href = "../../user/letter/session.html";
+                // this.$router.replace({path:'../../user/letter/session.html'})
+                // this.$router.push({path:'../../user/letter/session.html'})
+            },
+            cancelAttention:function (index) {
+                this.memberList[index].splice(index,0);
+            }
         },
         created() {
             //展示自己头像和名字
@@ -125,6 +135,10 @@
                 type:"post",
                 dataType:"json",
                 headers:{'token':$.cookie("token")},
+                data:{
+                    page: this.pageNum,
+                    size: this.pageSize
+                },
                 success:function (result) {
                     if(result.code == 0){
                         vm.attentionNum = result.count;

@@ -68,9 +68,7 @@ public class SessionServiceImpl implements SessionService {
 //    }
     public Result selectMessageLog(int senterId,String userName)
     {
-        Users users = new Users();
-        users.setUserName(userName);
-        Integer receiverId = usersMapper.selectUserByUserNameOrPhoneOrEmailAndPassword(users).getUserId();
+        Integer receiverId = usersMapper.getUserByUserName(userName).getUserId();
 
         Letter letter = new Letter();
         letter.setSenterId(senterId);
@@ -87,7 +85,7 @@ public class SessionServiceImpl implements SessionService {
 
         Users users = new Users();
         users.setUserName(userName);
-        Integer receiverId = usersMapper.selectUserByUserNameOrPhoneOrEmailAndPassword(users).getUserId();
+        Integer receiverId = usersMapper.getUserByUserName(userName).getUserId();
 
         Letter letter = new Letter();
         letter.setSenterId(senterId);

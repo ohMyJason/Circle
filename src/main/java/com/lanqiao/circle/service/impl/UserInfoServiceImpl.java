@@ -1,5 +1,6 @@
 package com.lanqiao.circle.service.impl;
 
+import com.lanqiao.circle.entity.Blog;
 import com.lanqiao.circle.entity.BlogInfo;
 import com.lanqiao.circle.entity.Users;
 import com.lanqiao.circle.mapper.BlogMapper;
@@ -53,9 +54,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public Result getFansByUserId(int userId) {
+    public Result getFansByUserId(int userId,int page,int size) {
         try{
-            List<HashMap> allFans = relationShipMapper.getFansByUserId(userId);
+            int pageIndex = (page-1) * size;
+            List<HashMap> allFans = relationShipMapper.getFansByUserId(userId,pageIndex,size);
             return Result.createSuccessResult(allFans.size(),allFans);
         }catch (Exception e){
             return Result.createByFailure("操作异常，请联系管理人员！");
@@ -63,9 +65,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public Result getBloggerByUserId(int userId) {
+    public Result getBloggerByUserId(int userId,int page,int size) {
         try{
-            List<HashMap> allBlogger = relationShipMapper.getBloggerByUserId(userId);
+            int pageIndex = (page-1) * size;
+            List<HashMap> allBlogger = relationShipMapper.getBloggerByUserId(userId,pageIndex,size);
             return Result.createSuccessResult(allBlogger.size(),allBlogger);
         }catch (Exception e){
             return Result.createByFailure("操作异常，请联系管理人员！");
@@ -79,10 +82,12 @@ public class UserInfoServiceImpl implements UserInfoService {
             Users users = usersMapper.selectByPrimaryKey(userId);
             hashMap.put("userName",users.getUserName());
             hashMap.put("avatarUrl",users.getAvatarUrl());
-            List<HashMap> allFans = relationShipMapper.getFansByUserId(userId);
+            List<HashMap> allFans = relationShipMapper.getFansByUserId(userId,0,1000);
             hashMap.put("fansNum",String.valueOf(allFans.size()));
-            List<HashMap> allBlogger = relationShipMapper.getBloggerByUserId(userId);
+            List<HashMap> allBlogger = relationShipMapper.getBloggerByUserId(userId,0,1000);
             hashMap.put("bloggerNum",String.valueOf(allBlogger.size()));
+            List<Blog> blogList = blogMapper.getBlogByUserId(userId);
+            hashMap.put("blogNum",String.valueOf(blogList.size()));
             return Result.createSuccessResult(hashMap);
         }catch (Exception e){
             return Result.createByFailure("操作异常，请联系管理人员！");
@@ -91,9 +96,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public Result getUserAllBlog(int userId) {
+    public Result getUserAllBlog(int userId,int page,int size) {
         try{
-            List<BlogInfo> blogInfoList = usersMapper.getUserAllBlog(userId);
+            int pageIndex = (page-1) * size;
+            List<BlogInfo> blogInfoList = usersMapper.getUserAllBlog(userId,pageIndex,size);
             for (BlogInfo blogInfo: blogInfoList) {
                 List<String> resoureList = usersMapper.getAllResource(blogInfo.getBlogId());
                 blogInfo.setResourceList(resoureList);

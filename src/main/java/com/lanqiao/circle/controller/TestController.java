@@ -48,8 +48,7 @@ public class TestController {
     @PostMapping("/testGetUserIdByToken")
     public Result testGetUserIdByToken(HttpServletRequest httpServletRequest) {
         String userId = tokenService.getUserId(httpServletRequest);
-        System.out.println(userId);
-        return Result.createSuccessResult();
+        return Result.createSuccessResult(userId);
     }
 
 

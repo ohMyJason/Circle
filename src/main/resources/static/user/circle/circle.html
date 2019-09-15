@@ -34,12 +34,10 @@
             </at-input>
         </div>
         <div class="col-md-7 col-md-offset-5">
-            <at-menu mode="horizontal" active-name="2">
-                <at-menu-item name="1"><i class="icon icon-home"></i>首页</at-menu-item>
-                <at-menu-item name="2"><i class="icon icon-aperture"></i>圈子</at-menu-item>
-                <at-menu-item name="3"><i class="icon icon-mail"></i>私信</at-menu-item>
-                <at-menu-item name="4"><i class="icon icon-user"></i>用户</at-menu-item>
-            </at-menu>
+            <a href="../../Index.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
+            <a href="../../user/circle/circle.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
+            <a href="../../user/letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
+            <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
         </div>
     </div>
 
@@ -102,10 +100,10 @@
                     <!--         控制头           -->
                     <div class="row">
                         <div class="col-md-2 col-md-offset-1">
-                            <img :src="item.avatarUrl" class="header-img">
+                            <a href="#" @click="jumpPagePerson(item.userId)"><img :src="item.avatarUrl" class="header-img"></a>
                         </div>
                         <div class="col-md-8">
-                            <a href="#"><span v-text="item.userName" class="black blog-belonger"></span></a>
+                            <a href="#" @click="jumpPagePerson(item.userId)"><span v-text="item.userName" class="black blog-belonger"></span></a>
                         </div>
                         <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 0">
                             <at-tag color="success">原创</at-tag>
@@ -413,8 +411,7 @@
                         }
                     })
                 }
-            }
-            ,
+            },
             like(e,blogId){
                 $.ajax({
                     url:"/blog/insertLike",
@@ -442,6 +439,28 @@
                         })
                     }
                 })
+            },
+            jumpPagePerson(userId){
+                if ($.cookie('token') == null){
+                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                    window.location.href="../user-center/personals.html";
+                }else{
+                    $.ajax({
+                        url:"/test/testGetUserIdByToken",
+                        type:"post",
+                        headers:{'token':$.cookie("token")},
+                        success:function (result) {
+                            if(result.code == 0){
+                               if(userId == result.data){
+                                   window.location.href="../user-center/personal.html";
+                               }else {
+                                   $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                                   window.location.href="../user-center/personals.html";
+                               }
+                            }
+                        }
+                    })
+                }
             }
         },created(){
             $.ajax({

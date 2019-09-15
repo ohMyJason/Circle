@@ -177,4 +177,20 @@
     from tb_blog
     where content LIKE concat(concat("%",#{content,jdbcType=VARCHAR}),"%")
   </select>
+
+  <select id="showAllBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
+     select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
+    from index_blog
+    where isDelete = 0 ORDER BY weight DESC LIMIT #{pageIndex},#{size}
+  </select>
+
+  <select id="showOriginalBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
+    select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
+    from index_blog
+    where isDelete = 0 and isRepost = 0 ORDER BY weight DESC LIMIT #{pageIndex},#{size}
+  </select>
+
+  <select id="getBlogByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from tb_blog where user_id = #{userId,jdbcType=INTEGER} and is_delete = 0
+  </select>
 </mapper>

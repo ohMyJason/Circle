@@ -11,6 +11,11 @@ public interface BlogService {
     //转发微博
     public Result forwardBlog(Blog blog);
 
+    //展示所有微博
+    public Result showAllBlog(int page,int size);
+
+    //展示原创微博
+    public Result showOriginalBlog(int page,int size);
 
     //管理员查询用户
     public Result normalBlogs(String content,int page,int limit);

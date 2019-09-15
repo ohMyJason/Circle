@@ -6,6 +6,7 @@
     <title>登陆</title>
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="node_modules/css/top.css">
     <link rel="stylesheet" href="node_modules/css/Index.css">
@@ -16,6 +17,7 @@
             display: none;
         }
     </style>
+    <script src="node_modules/jQuery/jquery.cookie.js"></script>
 </head>
 <body style="background-color:#F1E4ED">
 <div id="app" class="container">
@@ -31,12 +33,10 @@
             </at-input>
         </div>
         <div class="col-md-7 col-md-offset-5">
-            <at-menu mode="horizontal" active-name="0">
-                <at-menu-item name="1"><i class="icon icon-home"></i>首页</at-menu-item>
-                <at-menu-item name="2"><i class="icon icon-aperture"></i>圈子</at-menu-item>
-                <at-menu-item name="3"><i class="icon icon-mail"></i>私信</at-menu-item>
-                <at-menu-item name="4"><i class="icon icon-user"></i>用户</at-menu-item>
-            </at-menu>
+            <a href="../../Index.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
+            <a href="../../user/circle/circle.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
+            <a href="../../user/letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
+            <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
         </div>
     </div>
 </div>
@@ -49,10 +49,10 @@
 <!--            <div class="items" @click="change"><a href="#">圈子</a></div>-->
 <!--            <div class="items" @click="change" ><a href="#">私信</a></div>-->
 <!--            <div class="items" @click="change" ><a href="#">我的</a></div>-->
-<!--&lt;!&ndash;            <at-menu router>&ndash;&gt;-->
-<!--&lt;!&ndash;                <at-menu-item>圈子</at-menu-item>&ndash;&gt;-->
-<!--&lt;!&ndash;            </at-menu>&ndash;&gt;-->
-<!--&lt;!&ndash;            <at-menu-item>圈子</at-menu-item>&ndash;&gt;-->
+<!--            <at-menu router>-->
+<!--                <at-menu-item>圈子</at-menu-item>-->
+<!--            </at-menu>-->
+<!--            <at-menu-item>圈子</at-menu-item>-->
 
 
 <!--        </div>-->
@@ -73,7 +73,7 @@
                         <img src="node_modules/images/1.jpg" height="70px" width="70px">
                     </div>
                     <div class="name">
-                        <span style="color: #c7254e">{{name}}暂定名字</span>
+                        <span style="color: #c7254e">暂定名字</span>
                     </div>
                     <div class="lgog">视频</div>
                 </div>
@@ -88,13 +88,13 @@
                     <a href="#" name="forward" class="icon icon-share">转发</a>
                 </div>
                 <div class="bottom-1">
-                    <a href="#" name="forward" class="icon icon-edit">45{{discuss}}</a>
+                    <a href="#" name="forward" class="icon icon-edit">45</a>
                 </div>
                 <div class="bottom-1">
-                    <a href="#" name="forward" class="icon icon-thumbs-up">50{{upnum}}</a>
+                    <a href="#" name="forward" class="icon icon-thumbs-up">50</a>
                 </div>
                 <div class="layday">
-                    <span>创建时间:{{createTime}}</span>
+                    <span>创建时间:</span>
                 </div>
             </div>
             </div>
@@ -104,7 +104,7 @@
                         <img src="node_modules/images/1.jpg" height="70px" width="70px">
                     </div>
                     <div class="name">
-                        <span style="color: #c7254e">{{name}}暂定名字</span>
+                        <span style="color: #c7254e">暂定名字</span>
                     </div>
                     <div class="lgog">原创</div>
                 </div>
@@ -138,22 +138,20 @@
                         <a href="#" name="forward" class="icon icon-share">转发</a>
                     </div>
                     <div class="bottom-1">
-                        <a href="#" name="forward" class="icon icon-edit">45{{discuss}}</a>
+                        <a href="#" name="forward" class="icon icon-edit">45</a>
                     </div>
                     <div class="bottom-1">
-                        <a href="#" name="forward" class="icon icon-thumbs-up">50{{uum}}</a>
+                        <a href="#" name="forward" class="icon icon-thumbs-up">50</a>
                     </div>
                     <div class="layday">
-                        <span>创建时间:{{createTime}}</span>
+                        <span>创建时间:</span>
                     </div>
                 </div>
-
             </div>
-
         </div>
         <div class="col-md-8">
             <div class="right-top">
-                <div class="login-box">
+                <div class="login-box" id="login-box">
                     <div class="login-inner">
                         <div class="header">账号登陆</div>
                         <hr>
@@ -161,14 +159,14 @@
                             <div class="tag" >
                                 <i class="icon icon-user"></i>
                             </div>
-                            <input type="text" placeholder="请输入账号" onclick="this.placeholder='' " style="width: 200px;height: 28px">
+                            <input type="text" placeholder="请输入账号" onclick="this.placeholder='' " style="width: 200px;height: 28px" v-model="loginName">
 
                         </div>
                         <div class="inputbox">
                             <div class="tag" >
                                 <i class="icon icon-lock"></i>
                             </div>
-                            <input type="text" placeholder="请输入密码" onclick="this.placeholder=''" style="width: 200px;height: 28px">
+                            <input type="password" placeholder="请输入密码" onclick="this.placeholder=''" style="width: 200px;height: 28px" v-model="password">
                         </div>
                         <div class="tip">
                             <input type="checkbox">
@@ -176,8 +174,8 @@
                             <span class="nego">忘记密码</span>
                         </div>
 <!--                        //鼠标放至上面就变色-->
-                        <div class="loginbutton" @blur="turn">
-                            <span style="color: white">立即登陆</span>
+                        <div class="loginbutton">
+                            <span id="login" style="color: white" @click="login">立即登陆</span>
                         </div>
                         <div class="tip">
                             还没有账号？
@@ -202,7 +200,7 @@
                             <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent" >
                         </div>
                         <div class="line2">
-                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px  ;background-color:transparent" >
+                            <input type="text" name="line1" value="点赞" style="border: 0px  ;background-color:transparent" >
                         </div>
                     </div>
 
@@ -216,7 +214,7 @@
                             <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
                         </div>
                         <div class="line2">
-                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                            <input type="text" name="line1" value="点赞" style="border: 0px ;background-color:transparent" >
                         </div>
                     </div>
 
@@ -230,7 +228,7 @@
                             <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
                         </div>
                         <div class="line2">
-                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                            <input type="text" name="line1" value="点赞" style="border: 0px ;background-color:transparent" >
                         </div>
                     </div>
                 </div>
@@ -243,7 +241,7 @@
                             <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
                         </div>
                         <div class="line2">
-                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                            <input type="text" name="line1" value="点赞" style="border: 0px ;background-color:transparent" >
                         </div>
                     </div>
 
@@ -257,7 +255,7 @@
                             <input type="text" name="line1" value="巴拉拉能量五呼啦呼" style="border: 0px ;background-color:transparent">
                         </div>
                         <div class="line2">
-                            <input type="text" name="line1" value="{{sum}}点赞" style="border: 0px ;background-color:transparent" >
+                            <input type="text" name="line1" value="点赞" style="border: 0px ;background-color:transparent" >
                         </div>
                     </div>
 
@@ -272,9 +270,20 @@
 
 </div>
 
-
-
 <script src="node_modules/layui/layui.js" charset="utf-8"></script>
+<script>
+    // $(function () {
+    //     $("login").click(function () {
+    //         $.ajax({
+    //             url:"/userLogin/login"
+    //             data:{
+    //
+    //             }
+    //         })
+    //     })
+    //
+    // })
+</script>
 
 <script>
     layui.use(['carousel', 'form'], function(){
@@ -325,23 +334,56 @@
     });
 </script>
 <script>
-    new Vue({
+    let v1 = new Vue({
         el: '#app',
-        data:{
-            inputValue4:''
+        data: {
+            inputValue4: ''
         }
 
-    })
-    new Vue({
-        el:'#contain',
-        methods:{
-            change:function () {
-                // console.log(this);
-                // $(".items").css({"background-color":"red"});
-            },
-            change1:function () {
+    });
+    let v3=  new Vue({
+        el:'#login-box',
+        data:{
+            loginName:'',
+            password:''
 
-            },
+        },
+        methods:{
+            login:function(){
+                // if (this.loginName==''){
+                //     layui.use('layer',function() {
+                //         var layer = layui.layer;
+                //         layer.msg("请输入手机/用户名/邮箱！");
+                //     })
+                // }else if (this.password==''){
+                //     layui.use('layer',function() {
+                //         var layer = layui.layer;
+                //         layer.msg("请输入密码！");
+                //     })
+                // }else{
+                    $.ajax({
+                        url:"/userLogin/login",
+                        type:"post",
+                        data:{
+                            loginName: this.loginName,
+                            password:this.password,
+                        },
+                        success: function (result){
+                            if(result.code==0)
+                            {
+                                layer.msg("登陆成功！");
+                                window.location.href="/user/index/userIndex.html";
+                                $.cookie("token",result.data.token,{path:"/"});
+                            }
+                            else{
+                                layer.msg("登陆失败！");
+                            }
+                        }
+                    })
+                // }
+                console.log("ssss");
+            }
+
         }
 
     })

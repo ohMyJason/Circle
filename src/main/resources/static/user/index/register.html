@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>注册</title>
     <script src="../../node_modules/vue/dist/vue.js"></script>
@@ -10,6 +11,8 @@
     <link type="text/css" rel="stylesheet" href="../../node_modules/layui/css/layui.css" media="all">
     <link type="text/css" rel="stylesheet" href="../../node_modules/css/register.css">
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
+
 </head>
 <script>
 
@@ -33,98 +36,48 @@
                     </div>
                     <div class="flag">
                         <div class="flag-1">
-                            <input  name=user type="text" placeholder="请输入手机号码" onclick="this.placeholder=''">
+                            <input class="inputMsg" type="text" placeholder="请输入手机号码" v-model="phoneNumber">
                         </div>
-
                     </div>
                 </div>
                 <div class="pas">
                     <div class="tid">&nbsp;&nbsp;设置密码:</div>
                     <div class="pascenter">
-                        <input name="passward" type="text" placeholder="请输入密码" onclick="this.placeholder=''">
+                        <input  class="inputMsg" type="password" placeholder="请输入密码" v-model="password">
                     </div>
                 </div>
                 <div class="choose">
                     <div class="bir">&nbsp;&nbsp;生日:</div>
-                    <select class="year" name="year">
-                        <option value="2002">2002</option>
-                        <option value="2001">2001</option>
-                        <option value="2000">2000</option>
-                        <option value="1999">1999</option>
+                    <select class="year" name="year" v-model="birthYear">
                         <option value="请选择" selected>请选择</option>
-                        <option value="1998">1998</option>
-                        <option value="1997">1997</option>
-                        <option value="1996">1996</option>
-                        <option value="1995">1995</option>
+                        <option v-for="n in 2019" :value="n" v-text="n" v-if="n > 1900"></option>
                     </select>年
-                    <select class="month" name="month">
-                        <option value="12">12</option>
-                        <option value="11">11</option>
-                        <option value="10">10</option>
-                        <option value="9">9</option>
-                        <option value="8">8</option>
-                        <option value="7">7</option>
-                        <option value="6" selected>6</option>
-                        <option value="5">5</option>
-                        <option value="4">4</option>
-                        <option value="3">3</option>
-                        <option value="2">2</option>
-                        <option value="1">1</option>
+                    <select class="month" name="month" v-model="birthMonth">
+                        <option value="请选择" selected>请选择</option>
+                        <option v-for="n in 12" :value="n" v-text="n"></option>
                     </select>月
-                    <select class="day" name="day">
-                        <option value="31">31</option>
-                        <option value="30">30</option>
-                        <option value="29">29</option>
-                        <option value="28">28</option>
-                        <option value="27">27</option>
-                        <option value="26">26</option>
-                        <option value="25">25</option>
-                        <option value="24">24</option>
-                        <option value="23">23</option>
-                        <option value="22">22</option>
-                        <option value="21">21</option>
-                        <option value="20">20</option>
-                        <option value="19">19</option>
-                        <option value="18">18</option>
-                        <option value="17">17</option>
-                        <option value="16">16</option>
-                        <option value="15">15</option>
-                        <option value="14">14</option>
-                        <option value="13">13</option>
-                        <option value="12">12</option>
-                        <option value="11">11</option>
-                        <option value="10">10</option>
-                        <option value="9">9</option>
-                        <option value="8">8</option>
-                        <option value="7">7</option>
-                        <option value="6">6</option>
-                        <option value="5">5</option>
-                        <option value="4">4</option>
-                        <option value="3">3</option>
-                        <option value="2">2</option>
-                        <option value="1">1</option>
-
+                    <select class="day" v-model="birthDay">
+                        <option value="请选择" selected >请选择</option>
+                        <option v-for="n in 31" :value="n" v-text="n"></option>
                     </select>日
                 </div>
                 <div class="actcode">
-                    <div class="send">激活码:</div>
-                    <button class="button" name="send">免费获取短信激活码</button>
-                    <input type="text" name="sendcontain"   style="width: 50px;height: 30px ;border-box:2px ">
+                    <div class="send">注册码:</div>
+                    <button class="button" @click="sendMsg">免费获取短信激活码</button>
+                    <input type="text" class="codeStyle" v-model="code">
                     <div class="fit" >
-                        <input type="text" name="resend" value=" 收不到验证码？" style="border: 0px" @click="resend">
+                        <input type="button" value=" 收不到验证码？" style="border: 0px" @click="sendMsg">
                     </div>
                 </div>
                 <div class="rejister">
-                    <div class="qwe">
-                        <div class="aaa" name="push"  @click="push">立即注册</div>
-                    </div>
+                    <button @click="registerNow" class="registerNow">立即注册</button>
                 </div>
             </div>
             <div class="right-item">
                 <div class="login">
                     <div class="right-item1">
                         已有账号，
-                        <a href="#" style="color: #1E9FFF">直接登陆>></a>
+                        <a href="index.html" style="color: #1E9FFF">直接登陆>></a>
                     </div>
                     <div class="right-item2">圈圈注册帮助</div>
                     <div class="right-item3">
@@ -144,7 +97,123 @@
         </div>
     </div>
 </div>
+<script>
+    var vm = new Vue({
+        el: '#foot',
+        data:{
+            phoneNumber:'',
+            userName:'',
+            password:'',
+            birthYear:"请选择",
+            birthMonth:"请选择",
+            birthDay:"请选择",
+            code:'',
+            resCode:'---res',
+        },methods:{
+          sendMsg(){
+              var reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+              if (this.phoneNumber==''){
+                  layui.use('layer',function() {
+                      var layer = layui.layer;
+                      layer.msg("请输入手机号！");
+                  })
+              }else if (!reg.test(this.phoneNumber)){
+                  layui.use('layer',function() {
+                      var layer = layui.layer;
+                      layer.msg("请输入正确的手机号！");
+                  })
+              }else {
+                  $.ajax({
+                      url: "/userLogin/sendMsg",
+                      type: "post",
+                      data: {
+                          phoneNumber: this.phoneNumber
+                      },
+                      success: function (result) {
+                          layui.use('layer',function() {
+                              var layer = layui.layer;
+                              layer.msg("发送成功，注意接受短信！");
+                          })
+                          if (result.code == 0) {
+                              vm.resCode = result.data;
+                          }
+                      },error:function () {
+                          layui.use('layer',function() {
+                              var layer = layui.layer;
+                              layer.msg("请求失败");
+                          })
+                      }
+                  })
+              }
 
+          },registerNow(){
+                var regpas = /^(\w){6,16}$/;
+                var regpho = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+                if(this.phoneNumber ==''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入手机号！");
+                    })
+                }else if (!regpho.test(this.phoneNumber)) {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入正确的手机号！");
+                    })
+                } else if(this.password==''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("密码不能为空");
+                    })
+                } else if (!regpas.test(this.password)){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入6-16位数字字母下划线组成的密码！");
+                    })
+                }else if(this.birthYear == '请选择' || this.birthDay == '请选择' || this.birthMonth == '请选择'){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请选择出生年月！");
+                    })
+                } else if(this.code!=this.resCode){
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入正确的验证码！");
+                    })
+                }else {
+                    var birthday = this.birthYear+'-'+this.birthMonth+'-'+this.birthDay
+                    $.ajax({
+                        url: "/userLogin/registered",
+                        type: "post",
+                        data: {
+                            phone: this.phoneNumber,
+                            birthday: birthday,
+                            password: this.password
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("注册成功！");
+                                })
+                                window.location.href = "../../index.html";
+                            }else {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg(result.msg);
+                                })
+                            }
+                        },error:function () {
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("请求失败");
+                            })
+                        }
+                    })
+                }
+            }
+        },
+    })
+</script>
 
 </body>
 </html>

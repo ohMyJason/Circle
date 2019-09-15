@@ -16,16 +16,16 @@ public interface UserInfoService {
     public Result updateUserInfo(Users users);
 
     // 查询用户粉丝
-    public Result getFansByUserId(int userId);
+    public Result getFansByUserId(int userId,int page,int size);
 
     // 查询用户关注
-    public Result getBloggerByUserId(int userId);
+    public Result getBloggerByUserId(int userId,int page,int size);
 
     // 查看主页头像和关注
     public Result getUserAvatarAndRelation(int userId);
 
     // 查看主页微博
-    public Result getUserAllBlog(int userId);
+    public Result getUserAllBlog(int userId,int page,int size);
 
     //管理员查询用户
     public Result normalUsers(String userName,int page,int limit);
