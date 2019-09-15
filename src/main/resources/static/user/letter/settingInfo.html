@@ -62,7 +62,7 @@
                     </div>
                     <div id="changeName" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">修改昵称</span>
-                        <input type="text" v-model="forwardInput">
+                        <input id="changeNameInput" type="text" v-model="forwardInput1">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitName()">确定</span>
                     </div>
 
@@ -73,7 +73,7 @@
                     </div>
                     <div id="changePass" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">修改密码</span>
-                        <input type="text" v-model="forwardInput">
+                        <input id="changePassInput" type="text" v-model="forwardInput2">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitPass()">确定</span>
                     </div>
 
@@ -82,11 +82,11 @@
                         <span id="showPhone" class="show_info col-md-15" v-text="userInfo.phone"></span>
                         <span class="text_487X1 col-md-2 flex-center" @click="showPhoneInput()">编辑</span>
                     </div>
-                    <div id="changePhone" class="row change_info_item" style="display: none">
-                        <span class="text_485X1 col-md-6">修改手机号</span>
-                        <input type="text" v-model="forwardInput">
-                        <span class="text_487X1 col-md-2 flex-center" @click="submitPhone()">确定</span>
-                    </div>
+                    <!--<div id="changePhone" class="row change_info_item" style="display: none">-->
+                        <!--<span class="text_485X1 col-md-6">修改手机号</span>-->
+                        <!--<input id="changePhoneInput" type="text" v-model="forwardInput">-->
+                        <!--<span class="text_487X1 col-md-2 flex-center" @click="submitPhone()">确定</span>-->
+                    <!--</div>-->
 
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">邮箱</span>
@@ -95,7 +95,7 @@
                     </div>
                     <div id="changeEmail" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">修改邮箱</span>
-                        <input type="text" v-model="forwardInput">
+                        <input id="changeEmailInput" type="text" v-model="forwardInput3">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitEmail()">确定</span>
                     </div>
 
@@ -106,7 +106,7 @@
                     </div>
                     <div id="changeSex" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">设置性别</span>
-                        <input type="text" v-model="forwardInput">
+                        <input id="changeSexInput" type="text" v-model="forwardInput4">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitSex()">确定</span>
                     </div>
 
@@ -117,7 +117,7 @@
                     </div>
                     <div id="changeSingle" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">修改感情状况</span>
-                        <input type="text" v-model="forwardInput">
+                        <input id="changeSingleInput" type="text" v-model="forwardInput5">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitSingle()">确定</span>
                     </div>
 
@@ -127,8 +127,8 @@
                         <span class="text_487X1 col-md-2 flex-center" @click="showBirthInput()">编辑</span>
                     </div>
                     <div id="changeBirth" class="row change_info_item" style="display: none">
-                        <span class="text_485X1 col-md-6">设置性别</span>
-                        <input type="text" v-model="forwardInput">
+                        <span class="text_485X1 col-md-6">设置生日</span>
+                        <input id="changeBirthInput" type="text" v-model="forwardInput6">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitBirth()">确定</span>
                     </div>
 
@@ -145,7 +145,7 @@
                     </div>
                     <div id="changeAddress" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">修改所在地</span>
-                        <input type="text" v-model="forwardInput">
+                        <input id="changeAddressInput" type="text" v-model="forwardInput7">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitAddress()">确定</span>
                     </div>
 
@@ -168,7 +168,13 @@
         data:{
             inputValue4:'',
             userInfo:{},
-            forwardInput:''
+            forwardInput1:'',
+            forwardInput2:'',
+            forwardInput3:'',
+            forwardInput4:'',
+            forwardInput5:'',
+            forwardInput6:'',
+            forwardInput7:''
         },
         methods:{
             getFile(e) {
@@ -212,13 +218,13 @@
                     type:"post",
                     headers:{'token':$.cookie("token")},
                     data:{
-                        userId:userId,
-                        userName: this.forwardInput,
+                        userId: userId,
+                        userName: this.forwardInput1,
                     },
                     success:function (result) {
                         if(result.code == 0){
-                            $("#showName").html(userName);
-                            $("#change").css("display","none");
+                            $("#showName").html($("#changeNameInput").val());
+                            $("#changeName").css("display","none");
                         }
                     }
                 })
@@ -230,16 +236,102 @@
                     headers:{'token':$.cookie("token")},
                     data:{
                         userId:userId,
-                        password: this.forwardInput,
+                        password: this.forwardInput2,
                     },
                     success:function (result) {
                         if(result.code == 0){
-                            $("#showPass").html(password);
-                            $("#change").css("display","none");
+                            $("#showPass").html($("#changePassInput").val());
+                            $("#changePass").css("display","none");
                         }
                     }
                 })
-            }
+            },
+            submitEmail(userId) {
+                $.ajax({
+                    url:"/userInfo/updateUserInfo",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        userId:userId,
+                        email: this.forwardInput3,
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            $("#showEmail").html($("#changeEmailInput").val());
+                            $("#changeEmail").css("display","none");
+                        }
+                    }
+                })
+            },
+            submitSex(userId) {
+                $.ajax({
+                    url:"/userInfo/updateUserInfo",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        userId:userId,
+                        sex: this.forwardInput4,
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            $("#showSex").html($("#changeSexInput").val());
+                            $("#changeSex").css("display","none");
+                        }
+                    }
+                })
+            },
+            submitSingle(userId) {
+                $.ajax({
+                    url:"/userInfo/updateUserInfo",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        userId:userId,
+                        isSingle: this.forwardInput5,
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            $("#showSingle").html($("#changeSinleInput").val());
+                            $("#changeSinle").css("display","none");
+                        }
+                    }
+                })
+            },
+            submitBirth(userId) {
+                $.ajax({
+                    url:"/userInfo/updateUserInfo",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        userId:userId,
+                        birthday: this.forwardInput6,
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            $("#showBirth").html($("#changeBirthInput").val());
+                            $("#changeBirth").css("display","none");
+                        }
+                    }
+                })
+            },
+            submitAddress(userId) {
+                $.ajax({
+                    url:"/userInfo/updateUserInfo",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        userId:userId,
+                        address: this.forwardInput7,
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            $("#showAddress").html($("#changeAddressInput").val());
+                            $("#changeAddress").css("display","none");
+                        }
+                    }
+                })
+            },
+
 
         },
         created(){
