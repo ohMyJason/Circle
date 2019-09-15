@@ -122,7 +122,7 @@
   <select id="getCircleBlogDESCByWeight" resultType="com.lanqiao.circle.entity.BlogInfo">
     select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
     from index_blog
-    where circleId = #{circleId} ORDER BY weight DESC LIMIT #{pageIndex},#{size}
+    where circleId = #{circleId} ORDER BY weight DESC,createTime DESC LIMIT #{pageIndex},#{size}
   </select>
 
   <select id="getAllCircle" resultMap="BaseResultMap">
