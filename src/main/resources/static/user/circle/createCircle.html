@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/createCircle.css">
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/jQuery/jquery.cookie.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
 </head>
 <body>
 <div id="app" class="container">
@@ -39,9 +42,9 @@
                     圈子名称:<at-input v-model="circleName" placeholder="请输入名称" size="large"></at-input>
                     圈子主题:<at-input v-model="circleTitle" placeholder="一句话描述你的圈子"></at-input>
                     圈子头像:<br>
-                    <input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">
+                    <input type="file" @change="getFile" id="file" style="display: none">
                     <label for="file"><img :src="src" class="img-container"></label><br>
-                    <input type="submit" class="at-btn--primary at-btn--large" value="创建圈子">
+                    <input type="button" class="at-btn--primary at-btn--large" value="创建圈子" @click="createCircle">
                 </form>
                 <div class="rule">
                     <h3>创建须知:</h3>
@@ -60,25 +63,53 @@
     </div>
 </div>
 <script>
-    new Vue({
+    var vm = new Vue({
         el: '#app',
         data:{
             inputValue4:'',
-            src:'node_modules/images/upload.png',
+            src:'',
             circleName:'',
             circleTitle:'',
+            file:''
         },methods: {
             getFile(e) {
-                let _this = this;
+                let _this = this
+                this.file = e.target.files[0];
+                // console.log(this.file);
                 var files = e.target.files[0];
-                if (!e || !window.FileReader) return  ;// 看支持不支持FileReader
-                let reader = new FileReader();
-                reader.readAsDataURL(files);// 这里是最关键的一步，转换就在这里
+                if (!e || !window.FileReader) return  // 看支持不支持FileReader
+                let reader = new FileReader()
+                reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
                 reader.onloadend = function () {
                     _this.src = this.result
                 }
             },createCircle(){
-
+                var myform = new FormData();
+                myform.append('file',this.file);
+                myform.append('circleName',this.circleName);
+                myform.append('circleTitle',this.circleTitle);
+                $.ajax({
+                    url:'/circle/createCircle',
+                    type:'post',
+                    headers:{'token':$.cookie("token")},
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                    data: myform,
+                    success:function (result) {
+                        if (result.code==0){
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("创建成功！");
+                            })
+                            vm.circleName = '';
+                            vm.circleTitle ='';
+                            vm.file='';
+                        }else {
+                            alert(result.msg)
+                        }
+                    }
+                })
             }
         }
     })
