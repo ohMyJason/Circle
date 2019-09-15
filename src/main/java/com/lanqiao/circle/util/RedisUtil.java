@@ -383,6 +383,7 @@ public class RedisUtil {
             return 0;
         }
     }
+
     //===============================list=================================
 
     /**
@@ -535,5 +536,12 @@ public class RedisUtil {
             return 0;
         }
     }
+
+//    // zSet
+//    public long zSet(String key,Long count,Object memeber){
+//        try {
+//            redisTemplate.opsForZSet().
+//        }
+//    }
 
 }
