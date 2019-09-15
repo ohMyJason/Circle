@@ -79,6 +79,7 @@
                         <div class="smallImgBox left" v-show="item.senterId != userInfo.userId">
                             <img :src="item.avatarUrl" alt="用户头像" class="imgSize">
                         </div>
+
                         <!-- 发送消息 -->
                         <div class="messageMiddleBox right" v-show="item.senterId == userInfo.userId">
                             <div class="messageBox right" v-if="item.resourceUrl == null">
