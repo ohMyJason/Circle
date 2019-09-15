@@ -79,10 +79,14 @@
                         <div class="smallImgBox left" v-show="item.senterId != userInfo.userId">
                             <img :src="item.avatarUrl" alt="用户头像" class="imgSize">
                         </div>
+
                         <!-- 发送消息 -->
                         <div class="messageMiddleBox right" v-show="item.senterId == userInfo.userId">
-                            <div class="messageBox right">
+                            <div class="messageBox right" v-if="item.resourceUrl == null">
                                 <p>{{item.letterContent}} </p>
+                            </div>
+                            <div class="messageBox right" v-if="item.resourceUrl != null">
+                                <img :src="item.resourceUrl" style="width: 100px">
                             </div>
                         </div>
                         <!-- 接收消息 -->
@@ -110,11 +114,12 @@
                 <!-- 输入内容 -->
                 <textarea rows="5" cols="91" id="inputText"  onkeypress="back(event);"  placeholder="按下Enter回车键发送内容">
                 </textarea>
-                <img src="../../node_modules/images/1.jpg" id = "test">
             </div>
         </div>
     </div>
 </div>
+
+
 <script>
 
     //绑定用户信息以及好友列表
@@ -179,7 +184,8 @@
                 $now.css({"border-right": "2px solid #ff5500"});
                 $now.css({"border-bottom": "1px solid black"});
                 $("#contactName").html($now.find(".userName").html());
-            },upLoad(e) {
+            },
+            upLoad:function(e) {
                 this.file = e.target.files[0];
                 var formData = new FormData();
                 formData.append("file",this.file);
@@ -191,11 +197,63 @@
                     processData: false,
                     contentType: false,
                     success : function(result) {
-                        if (result.code==0){
-                            alert("成功");
+                        console.log(result.data);
+                        if (result.code == 0){
+                            var userName =$(".choose").find(".userName").html();
+                            if(userName == null)
+                            {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("请先选择联系人");
+                                })
+                            }
+                            else
+                            {
+                                $.ajax({
+                                    url:"/session/sendMsg",
+                                    type:"post",
+                                    dataType:"json",
+                                    headers:{'token':$.cookie("token")},
+                                    data: {
+                                        userName:userName,
+                                        // letterContent:"",
+                                        resourceUrl:result.data                                    },
+                                    success:function (result) {
+                                        if(result.code == 0){
+                                            $("#inputText").val("");
+                                            $.ajax({
+                                                url:"/session/getMessageLog",
+                                                type:"post",
+                                                dataType:"json",
+                                                async:true,
+                                                headers:{'token':$.cookie("token")},
+                                                data:{
+                                                    // receiverId:connectionId
+                                                    userName:userName
+                                                },success:function (result) {
+                                                    if (result.code == 0) {
+                                                        vm.messageList = result.data;
+                                                    }
+                                                }
+                                            })
+                                            // vm.getUserList();
+                                            $.ajax({
+                                                url:"/session/getUserList",
+                                                type:"post",
+                                                dataType:"json",
+                                                headers:{'token':$.cookie("token")},
+                                                success:function (result) {
+                                                    if(result.code == 0){
+                                                        vm.userList = result.data;
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    }
+                                })
+
+                            }
                         }
-                    },error:function (){
-                        alert("失败");
                     }
                 });
             }
@@ -279,7 +337,7 @@
                         data: {
                             userName:userName,
                             letterContent:letterContent,
-                            resourceUrl:""
+                            // resourceUrl:""
                         },
                         success:function (result) {
                             if(result.code == 0){

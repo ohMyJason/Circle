@@ -14,6 +14,7 @@ import com.lanqiao.circle.service.LikeService;
 import com.lanqiao.circle.service.TokenService;
 import com.lanqiao.circle.util.CommentUtil;
 import com.lanqiao.circle.util.FileUploadUtil;
+import com.lanqiao.circle.util.RedisUtil;
 import com.lanqiao.circle.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,8 @@ public class BlogContoller {
     @Autowired
     BlogMapper blogMapper;
 
+    @Autowired
+    RedisUtil redisUtil;
     /**
      * 实现评论功能
      *
@@ -130,6 +133,11 @@ public class BlogContoller {
             blog.setCreateTime(commentUtil.getCurTime());
             blog.setContent(baseBlog.get("content").toString());
             blog.setCircleId(Integer.parseInt(baseBlog.get("circleId").toString()));
+            if (redisUtil.hasKey("circle-"+blog.getCircleId())){
+                redisUtil.incr("circle-"+blog.getCircleId(),1);
+            }else {
+                redisUtil.set("circle-"+blog.getCircleId(),1);
+            }
             blogMapper.insertSelective(blog);
             for (Object itemId:itemIds){
                 BlogItem blogItem = blogItemMapper.selectByPrimaryKey(Integer.parseInt((String) itemId));
@@ -223,5 +231,6 @@ public class BlogContoller {
     public Result findBlog(String content){
         return blogService.findBlog(content);
     }
+
 
 }
