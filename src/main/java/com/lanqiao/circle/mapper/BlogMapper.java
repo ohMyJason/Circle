@@ -30,6 +30,10 @@ public interface BlogMapper {
 
     List<BlogInfo> showOriginalBlog(@Param("pageIndex")Integer pageIndex,@Param("size")Integer size);
 
+    List<BlogInfo> showConcernBlog(@Param("list") List<Integer> userId,@Param("pageIndex")Integer pageIndex,@Param("size")Integer size);
+
+    List<BlogInfo> showBlogByCreateTime(@Param("pageIndex")Integer pageIndex,@Param("size")Integer size);
+
     List<Blog> getBlogByUserId(Integer userId);
 
     List<Blog> normalBlogs(@Param("start") int start, @Param("limit") int limit, @Param("content")  String content);

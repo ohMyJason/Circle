@@ -206,7 +206,7 @@
   <select id="getUserAllBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
     select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
     from index_blog
-    where userId = #{userId} and isDelete = 0 ORDER BY weight DESC,createTime DESC LIMIT #{pageIndex},#{size}
+    where userId = #{userId} and isDelete = 0 ORDER BY createTime DESC LIMIT #{pageIndex},#{size}
   </select>
 
   <select id="getAllResource" resultType="java.lang.String" parameterType="java.lang.Integer">
