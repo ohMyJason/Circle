@@ -249,7 +249,7 @@
             pageSize:'3',
         },
         methods: {
-            showForward(i){
+            showForward:function(i){
                 if(this.selected != i) {
                     this.selected = i;
                     this.reviewed='ll';
@@ -258,7 +258,7 @@
                     this.selected = 'lll';
                 }
             },
-            forwardBlog(e,blogId) {
+            forwardBlog:function(e,blogId) {
                 $.ajax({
                     url:"/blog/forwardBlog",
                     type:"post",
@@ -283,7 +283,7 @@
                     }
                 })
             },
-            showReview(i,blogId){
+            showReview:function(i,blogId){
                 if(this.reviewed != i) {
                     this.reviewed = i;
                     this.forwardInput='';
@@ -304,7 +304,7 @@
                     this.reviewed = 'lll';
                 }
             },
-            reviedBlog(e,blogId){
+            reviedBlog:function(e,blogId){
                 if(this.forwardInput == ''){
                     layui.use('layer',function() {
                         var layer = layui.layer;
@@ -337,7 +337,7 @@
                     })
                 }
             },
-            like(e,blogId){
+            like:function(e,blogId){
                 $.ajax({
                     url:"/blog/insertLike",
                     type:"post",
@@ -365,8 +365,7 @@
                     }
                 })
             },
-
-            gotoPrePage(){
+            gotoPrePage:function(){
                 $.ajax({
                     url:"/userInfo/getUserAllBlog",
                     type:"post",
@@ -385,7 +384,7 @@
                 })
             },
 
-            gotoNextPage(){
+            gotoNextPage:function(){
                 $.ajax({
                     url:"/userInfo/getUserAllBlog",
                     type:"post",

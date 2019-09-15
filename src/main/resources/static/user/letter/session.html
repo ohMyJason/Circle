@@ -61,9 +61,7 @@
                 <!-- 顶部：联系人信息 -->
                 <div id="messageTitle">
                     <span id="contactName" class="left">您还未选中或发起聊天，快去跟好友聊一聊吧</span>
-                    <div class="right" id="messageSetUp">
-                        设置
-                    </div>
+
                 </div>
                 <!-- 历史消息 -->
                 <div id = "msgContent" >
@@ -99,19 +97,53 @@
             <!-- 输入 -->
             <div class="row" id="editBox">
                 <div id="inputLogo">
-                    <div class="bLogoBox left">four</div>
-                    <div class="bLogoBox left">five</div>
-                    <div class="bLogoBox left">six</div>
-                    <div class="bLogoBox left">seven</div>
+                    <div class="bLogoBox left">
+                        <img src="../../node_modules/images/smile.png">
+                    </div>
+                    <div class="bLogoBox left" id = "upLoadFile">
+                        <input type="file" id="file" style="display: none" @change = "upLoad($event)">
+                        <label for="file">
+                            <img src="../../node_modules/images/photo.png">
+                        </label>
+                    </div>
                 </div>
                 <!-- 输入内容 -->
                 <textarea rows="5" cols="91" id="inputText"  onkeypress="back(event);"  placeholder="按下Enter回车键发送内容">
                 </textarea>
+                <img src="../../node_modules/images/1.jpg" id = "test">
             </div>
         </div>
     </div>
 </div>
 <script>
+    new Vue({
+        el:"#upLoadFile",
+        data:{
+            file:""
+        },
+        methods:{
+            upLoad:function (e) {
+                alert(1)
+                this.file = e.target.files[0];
+                var formData = new FormData();
+                formData.append("file",this.file);
+                $.ajax({
+                    url : "/session/test",
+                    type : 'POST',
+                    data : formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success : function(result) {
+                        alert("成功");
+                    },error:function (){
+                        alert("失败");
+                    }
+                });
+            }
+        }
+    })
+
     //绑定用户信息以及好友列表
     var vm = new Vue({
         el:"#top20",
@@ -231,7 +263,6 @@
                 })
             }
             else {
-                //TODO
                 //发送消息
                 //userName,letterContent,resourceUrl
                 var userName =$(".choose").find(".userName").html();
@@ -301,6 +332,8 @@
             return false;
         }
     }
+
+
 </script>
 </body>
 </html>

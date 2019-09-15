@@ -69,11 +69,11 @@
             circleTitle:'',
         },methods: {
             getFile(e) {
-                let _this = this
-                var files = e.target.files[0]
-                if (!e || !window.FileReader) return  // 看支持不支持FileReader
-                let reader = new FileReader()
-                reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
+                let _this = this;
+                var files = e.target.files[0];
+                if (!e || !window.FileReader) return  ;// 看支持不支持FileReader
+                let reader = new FileReader();
+                reader.readAsDataURL(files);// 这里是最关键的一步，转换就在这里
                 reader.onloadend = function () {
                     _this.src = this.result
                 }
