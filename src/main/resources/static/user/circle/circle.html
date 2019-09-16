@@ -387,30 +387,31 @@
                         layer.msg("请输入评论信息！");
                     })
                 }else {
-                    $.ajax({
-                        url: "/blog/insertComment",
-                        type: "post",
-                        headers: {'token': $.cookie("token")},
-                        data: {
-                            blogId: blogId,
-                            commentContent: this.forwardInput
-                        },
-                        success: function (result) {
-                            if (result.code == 0) {
-                                layui.use('layer', function () {
-                                    var layer = layui.layer;
-                                    layer.msg("评论成功");
-                                })
-                                vm3.reviewed = 'lll';
-                            }
-                        },error:function () {
-                            layui.use('layer', function () {
-                                var layer = layui.layer;
-                                layer.msg("请先登录");
-                                // window.location.href="../index/index.html";
-                            })
-                        }
-                    })
+                    console.log(e.target.parentElement);
+                    // $.ajax({
+                    //     url: "/blog/insertComment",
+                    //     type: "post",
+                    //     headers: {'token': $.cookie("token")},
+                    //     data: {
+                    //         blogId: blogId,
+                    //         commentContent: this.forwardInput
+                    //     },
+                    //     success: function (result) {
+                    //         if (result.code == 0) {
+                    //             layui.use('layer', function () {
+                    //                 var layer = layui.layer;
+                    //                 layer.msg("评论成功");
+                    //             })
+                    //             vm3.reviewed = 'lll';
+                    //         }
+                    //     },error:function () {
+                    //         layui.use('layer', function () {
+                    //             var layer = layui.layer;
+                    //             layer.msg("请先登录");
+                    //             // window.location.href="../index/index.html";
+                    //         })
+                    //     }
+                    // })
                 }
             },
             like(e,blogId){
