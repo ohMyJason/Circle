@@ -111,6 +111,16 @@ public class UserInfoController {
     }
 
     /**
+     * 查看别人首页除微博外的东西
+     * @param userId
+     * @return
+     */
+    @PostMapping("getOtherInfo")
+    public Result getOtherInfo(@RequestParam(name = "userId") int userId){
+        return userInfoService.getUserAvatarAndRelation(userId);
+    }
+
+    /**
      * 查看自己主页所有微博
      * @param httpServletRequest
      * @return
@@ -120,6 +130,18 @@ public class UserInfoController {
     @PostMapping("getUserAllBlog")
     public Result getUserAllBlog(HttpServletRequest httpServletRequest,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
         int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        return userInfoService.getUserAllBlog(userId,page,size);
+    }
+
+    /**
+     * 查看别人首页微博
+     * @param userId
+     * @param page
+     * @param size
+     * @return
+     */
+    @PostMapping("getOtherBlog")
+    public Result getOtherBlog(@RequestParam(name = "userId") int userId,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
         return userInfoService.getUserAllBlog(userId,page,size);
     }
 

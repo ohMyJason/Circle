@@ -17,6 +17,12 @@ public interface BlogService {
     //展示原创微博
     public Result showOriginalBlog(int page,int size);
 
+    //展示关注的微博
+    public Result showConcernBlog(int userId,int page,int size);
+
+    //展示最新微博
+    public Result showBlogByCreateTime(int page,int size);
+
     //管理员查询用户
     public Result normalBlogs(String content,int page,int limit);
 
