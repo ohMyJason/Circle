@@ -117,7 +117,7 @@ public class UserInfoController {
      */
     @PostMapping("getOtherInfo")
     public Result getOtherInfo(@RequestParam(name = "userId") int userId){
-        return userInfoService.getUserAvatarAndRelation(userId);
+        return userInfoService.getOthersInfo(userId);
     }
 
     /**
