@@ -48,8 +48,8 @@
                 <div class="first_box flex-center">
                     <img :src="userInfo.avatarUrl" class="icon-head"><br>
                     <span class="nick_name" v-cloak>{{userInfo.userName}}</span><br>
-                    <span id="tag_box1" v-cloak>{{isAttention}}</span>&nbsp;&nbsp;
-                    <span id="tag_box2" v-cloak>发私信</span>
+                    <a id="tag_box1" v-cloak @click="addConcernOrSub">{{isAttention}}</a>&nbsp;&nbsp;
+                    <a id="tag_box2" href="../../user/letter/session.html" v-cloak>发私信</a>
                 </div>
 
                 <div class="second_box row">
@@ -405,6 +405,30 @@
                     }
                 })
             },
+            addConcernOrSub() {
+                $.ajax({
+                    url:"/userInfo/addConcernOrSub",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    dataType:"json",
+                    data:{
+                        userId: $.cookie("userId")
+                    },
+                    success:function (result) {
+                        if (result.code == 0){
+                            if (vm.isAttention == "未关注") {
+                                $("#tag_box1").html("已关注");
+                            } else {
+                                $("#tag_box1").html("未关注");
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("已取消关注！");
+                                })
+                            }
+                        }
+                    }
+                })
+            }
         },
         created() {
             //展示他人除微博外信息
@@ -456,6 +480,7 @@
                     }
                 }
             })
+
         }
     })
 </script>
