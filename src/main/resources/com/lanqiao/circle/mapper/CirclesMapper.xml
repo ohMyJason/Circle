@@ -142,4 +142,40 @@
   <select id="getCircleBlogNum" resultType="hashmap" parameterType="java.lang.Integer">
     SELECT blog_id,circle_id FROM tb_blog WHERE tb_blog.circle_id = #{circleId,jdbcType=INTEGER}
   </select>
+
+
+
+  <select id="normalCircles" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_circle
+    where is_delete = 0
+    <where>
+      <if test="circleName!=null">
+        circle_name like '%${circleName}%'
+      </if>
+    </where>
+    LIMIT #{start},#{limit}
+  </select>
+
+  <select id="getCirclesCount"  resultType="integer">
+    select count(*)
+    from tb_circle
+    <where>
+      <if test="circleName!=null">
+        circle_name like '%${circleName}%'
+      </if>
+    </where>
+  </select>
+
+  <update id="deleteCircles" parameterType="com.lanqiao.circle.entity.Circles" >
+    update tb_circle
+    set is_delete = 1
+    where circle_id = #{circleId}
+  </update>
+
+  <select id="findCircles" resultType="com.lanqiao.circle.entity.Circles" parameterType="java.lang.String">
+    select circle_name
+    from tb_circle
+    where circle_name LIKE concat(concat("%",#{circle_name,jdbcType=VARCHAR}),"%")
+  </select>
 </mapper>

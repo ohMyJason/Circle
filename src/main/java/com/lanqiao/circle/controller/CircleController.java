@@ -88,5 +88,31 @@ public class CircleController {
     public Result showAllCircle(){
         return circleService.showAllCircle();
     }
+
+    /**
+     * 管理员查询全部圈子
+     */
+    @PostMapping("/normalCircles")
+    public Result normalCircles(String circleName,int page,int limit){
+        return circleService.normalCircles(circleName,page,limit);
+    }
+
+    /**
+     * 管理员删除圈子
+     */
+
+    @PostMapping("/deleteCircles")
+    public Result deleteCircles(Integer circleId){
+        return circleService.deleteCircles(circleId);
+    }
+
+    /**
+     * 管理员查询圈子
+     */
+    @PostMapping("/findCircles")
+    public Result findCircles(String circleName){
+        return circleService.findCircles(circleName);
+    }
 }
+
 
