@@ -89,7 +89,7 @@ public class SessionServiceImpl implements SessionService {
         if(resourceUrl != null)
         {
             letter.setLetterContent("[图片]");
-            letter.setResourceUrl("//"+resourceUrl);
+            letter.setResourceUrl(resourceUrl);
             letter.setType(1);
         }
         else if(letterContent != null)
