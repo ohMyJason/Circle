@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>圈子</title>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="../../node_modules/css/top.css">
+    <link rel="stylesheet" href="../../node_modules/css/circleRank.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="container">
+    <div class="row top-header">
+        <div class="col-md-3 logo">
+            <img src="../../node_modules/images/logo.png" class="img-up">
+        </div>
+        <div class="col-md-9"></div>
+        <div class="col-md-7 col-md-offset-5">
+            <a href="#" class="top-font-size"><i class="icon icon-home"></i>首页</a>
+            <a href="#" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
+            <a href="#" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
+            <a href="#" class="top-font-size"><i class="icon icon-user"></i>用户</a>
+        </div>
+    </div>
+    <div class="row search-top">
+        <div class="col-md-3 logo col-md-offset-4">
+            <img src="../../node_modules/images/logo.png" class="img-up">
+        </div>
+        <div class="col-md-11">
+            <at-input v-model="inputValue4" placeholder="搜索圈子" append-button class="top-search">
+                <template slot="append">
+                    <i class="icon icon-search"></i>
+                </template>
+            </at-input>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-18 col-md-offset-3 circleInfo">
+            <div class="row circle-nav">
+                <div class="col-md-6 col-md-offset-1">
+                    <span>Circle</span>
+                </div>
+                <div class="col-md-9 col-md-offset-8">
+                    <span class="circle-time-num" v-cloak>截至：{{nowTime}} &nbsp;&nbsp;共有：{{circleCount}} 个圈子</span>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-offset-1 col-md-22">
+                    <div class="circle-show" v-for="(item,i) in circleList">
+                        <div class="img-border">
+                            <img src="" class="circle-image">
+                        </div>
+                        <div style="float: left">
+                            <at-tag color="error" v-if="item.userNum > 5">火热</at-tag>
+                            <at-tag color="info" v-if="item.userNum < 6">推荐</at-tag>
+                            <a href="#" class="circle-name"><span v-text="item.circleName"></span></a><br>
+                            <span class="circle-title" v-text="item.circleTitle"></span>
+                            <span class="icon icon-user" title="参与人数">{{item.userNum}}</span>
+                            <span class="icon icon-message-circle blog-num-mar" title="微博数量">{{item.blogNum}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-1"></div>
+            </div>
+
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+
+
+
+</div>
+
+
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data:{
+            inputValue4:'',
+            nowTime:'',
+            circleCount:'1',
+            circleList:[
+                {
+                    circleId:'',
+                    circleName:'搞笑圈',
+                    circleTitle:'一句话描述你的圈子',
+                    userNum:'10',
+                    blogNum:'20',
+                },{
+                    circleId:'',
+                    circleName:'搞笑圈',
+                    circleTitle:'一句话描述你的圈子',
+                    userNum:'10',
+                    blogNum:'20',
+                },{
+                    circleId:'',
+                    circleName:'搞笑圈',
+                    circleTitle:'一句话描述你的圈子',
+                    userNum:'10',
+                    blogNum:'20',
+                },{
+                    circleId:'',
+                    circleName:'搞笑圈',
+                    circleTitle:'一句话描述你的圈子',
+                    userNum:'5',
+                    blogNum:'20',
+                },{
+                    circleId:'',
+                    circleName:'搞笑圈',
+                    circleTitle:'一句话描述你的圈子',
+                    userNum:'10',
+                    blogNum:'20',
+                },{
+                    circleId:'',
+                    circleName:'搞笑圈',
+                    circleTitle:'一句话描述你的圈子',
+                    userNum:'10',
+                    blogNum:'20',
+                },{
+                    circleId:'',
+                    circleName:'搞笑圈',
+                    circleTitle:'一句话描述你的圈子',
+                    userNum:'10',
+                    blogNum:'20',
+                },{
+                    circleId:'',
+                    circleName:'搞笑圈',
+                    circleTitle:'一句话描述你的圈子',
+                    userNum:'10',
+                    blogNum:'20',
+                }
+            ],
+        },methods:{
+            addZero(d){
+                if (d < 10) {
+                    return "0" + d;
+                } else {
+                    return d;
+                }
+            },setTime(){
+                var d = new Date();
+                this.nowTime = d.getFullYear() + "-" + vm.addZero((d.getMonth() + 1)) + "-" + vm.addZero(d.getDate()) + " "
+                + vm.addZero(d.getHours()) + ":" + vm.addZero(d.getMinutes()) + ":" + vm.addZero(d.getSeconds());
+            }
+        }
+    })
+    setInterval("vm.setTime()", 1000);
+
+</script>
+</body>
+</html>
