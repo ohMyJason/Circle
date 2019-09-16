@@ -31,5 +31,5 @@ build/
 .vscode/
 
 ### springboot ###
-**/resources/*.properties
+**/resources/temp.properties
 **/resources/generatorConfig.xml

@@ -218,10 +218,10 @@
                             <div v-for="comment in commentList">
                                 <div class="row">
                                     <div class="col-md-1 col-md-offset-1 commentShow">
-                                        <img :src="comment.avatarUrl" class="commentHeader">
+                                        <a href="#" @click="jumpPagePerson(comment.userId)"><img :src="comment.avatarUrl" class="commentHeader"></a>
                                     </div>
                                     <div class="col-md-21 commentShow">
-                                        <span class="black commenter" v-cloak>{{comment.userName}}:</span>
+                                        <a href="#" @click="jumpPagePerson(comment.userId)"><span class="black commenter" v-cloak>{{comment.userName}}:</span></a>
                                         <span class="color#333 commenter" v-text="comment.commentContent"></span>
                                     </div>
                                     <div class="col-md-1"></div>
@@ -402,6 +402,8 @@
                                     layer.msg("评论成功");
                                 })
                                 vm3.reviewed = 'lll';
+                                var x = parseInt(e.target.parentElement.parentElement.parentElement.previousElementSibling.previousElementSibling.firstElementChild.nextElementSibling.firstElementChild.innerHTML);
+                                e.target.parentElement.parentElement.parentElement.previousElementSibling.previousElementSibling.firstElementChild.nextElementSibling.firstElementChild.innerHTML = x + 1;
                             }
                         },error:function () {
                             layui.use('layer', function () {

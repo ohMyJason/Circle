@@ -222,13 +222,13 @@
   <select id="normalUsers" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from tb_users
-    where status = 0 and is_delete = 0
     <where>
       <if test="userName!=null">
         user_name like '%${userName}%'
       </if>
+      and status=0 and is_delete = 0
     </where>
-    LIMIT #{start},#{limit}
+    limit #{start}, #{limit}
   </select>
 
   <select id="getCount"  resultType="integer">
