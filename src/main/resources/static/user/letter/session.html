@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>私信</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="description" content="基于jQuery的表情，QQ表情，贴吧表情，emoji表情">
+    <meta name="keywords" content="jQuery,表情插件，js表情插件，jQuery插件，jQuery表情插件，js">
+
+
     <link type="text/css" rel="stylesheet" href="../../node_modules/css/bootstrap.css">
     <link type="text/css" rel="stylesheet" href="../../node_modules/css/session.css">
     <link rel="stylesheet" href="../../node_modules/layui/css/layui.css">
@@ -10,8 +17,14 @@
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/layui/layui.js"></script>
-    <script src="../../node_modules/js/session.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
+
+
+<!--    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>-->
+    <script type="text/javascript" src="../../node_modules/emoji_jQuery-master/dist/emoji_jQuery.min.js"></script>
+
+
+
 </head>
 <body>
 <div class="container">
@@ -83,7 +96,8 @@
                         <!-- 发送消息 -->
                         <div class="messageMiddleBox right" v-show="item.senterId == userInfo.userId">
                             <div class="messageBox right" v-if="item.resourceUrl == null">
-                                <p>{{item.letterContent}} </p>
+                                <p v-html = "item.letterContent"></p>
+<!--                                <p >{{item.letterContent}} </p>-->
                             </div>
                             <div class="messageBox right" v-if="item.resourceUrl != null">
                                 <img :src="item.resourceUrl" style="width: 100px">
@@ -92,7 +106,7 @@
                         <!-- 接收消息 -->
                         <div class="messageMiddleBox left" v-show="item.senterId != userInfo.userId">
                             <div class="messageBox left">
-                                <p>{{item.letterContent}} </p>
+                                <p v-html = "item.letterContent"></p>
                             </div>
                         </div>
                     </div>
@@ -101,13 +115,13 @@
             <!-- 输入 -->
             <div class="row" id="editBox">
                 <div id="inputLogo">
-                    <div class="bLogoBox left">
-                        <img src="../../node_modules/images/smile.png">
-                    </div>
+<!--                    <div class="bLogoBox left">-->
+<!--                        <img src="../../node_modules/images/smile.png">-->
+<!--                    </div>-->
                     <div class="bLogoBox left">
                         <input type="file" id="file" style="display: none" @change="upLoad">
                         <label for="file">
-                            <img src="../../node_modules/images/photo.png">
+                            <img src="../../node_modules/images/photo.png" style="margin-left: 33px">
                         </label>
                     </div>
                 </div>
@@ -119,8 +133,130 @@
     </div>
 </div>
 
+<!--<div id="test" style="border: 1px solid blue"></div>-->
+<!--<textarea rows="5" cols="91" id="emojiTestInput"> </textarea>-->
+<!--<button id="send">发送</button>-->
+<!--<button id="btn">emojiBtn</button>-->
+<!--<button type="button" class="layui-btn layui-btn-sm layui-btn-primary" id = "qq">-->
+<!--&lt;!&ndash;    <i class="layui-icon">&#x1002;</i>&ndash;&gt;-->
+<!--    <img src="../../node_modules/images/smile.png" style="width: 20px;height: 20px;">-->
+<!--</button>-->
 
+<button  id = "emojiBtn" style="border: none;background-color: white">
+    <img src="../../node_modules/images/smile.png" style="width: 20px;height: 20px;">
+</button>
 <script>
+
+    $.Lemoji({
+        emojiInput: '#inputText',
+        emojiBtn: '#emojiBtn',
+        position: 'LEFTBOTTOM',
+        length: 8,
+        emojis: {
+            emoji: {path: '../../node_modules/emoji_jQuery-master/static/images/emoji', code: ',', name: 'Emoji表情'},
+            qq: {path: '../../node_modules/emoji_jQuery-master/static/images/qq/', code: ':', name: 'QQ表情'},
+            tieba: {path: '../../node_modules/emoji_jQuery-master/static/images/tieba', code: ';', name: "贴吧表情"}
+        }
+    });
+    // $('#send').click(function () {
+    // var letterContent = $('#inputText').val();
+    //     content = $.emojiParse({
+    //     content: letterContent,
+    //     emojis: [
+    //         {path: '../../node_modules/emoji_jQuery-master/static/images/emoji/', code: ',', type: 'emoji'},
+    //         {type: 'qq', path: '../../node_modules/emoji_jQuery-master/static/images/qq/', code: ':'},
+    //         {path: '../../node_modules/emoji_jQuery-master/static/images/tieba/', code: ';', type: 'tieba'}
+    //     ]
+    // });
+    // // $('#test').html(content);
+    // });
+
+    function back(event){
+        event = event || window.event;
+        if(event.keyCode==13){
+            event.returnValue = false;
+            var length = $("#inputText").val().length;
+            if(length == 0){
+                layui.use('layer',function() {
+                    var layer = layui.layer;
+                    layer.msg("发送内容不能为空，请重新输入");
+                })
+            }
+            else {
+                //发送消息
+                //userName,letterContent,resourceUrl
+                var userName =$(".choose").find(".userName").html();
+                if(userName == null)
+                {
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请先选择联系人");
+                    })
+                }
+                else
+                {
+                    var letterContent = $('#inputText').val();
+                    content = $.emojiParse({
+                        content: letterContent,
+                        emojis: [
+                            {path: '../../node_modules/emoji_jQuery-master/static/images/emoji/', code: ',', type: 'emoji'},
+                            {type: 'qq', path: '../../node_modules/emoji_jQuery-master/static/images/qq/', code: ':'},
+                            {path: '../../node_modules/emoji_jQuery-master/static/images/tieba/', code: ';', type: 'tieba'}
+                        ]
+                    });
+                    // var letterContent = $("#inputText").val();
+                    console.log(letterContent);
+                    // console.log(userName);
+                    $.ajax({
+                        url:"/session/sendMsg",
+                        type:"post",
+                        dataType:"json",
+                        headers:{'token':$.cookie("token")},
+                        data: {
+                            userName:userName,
+                            letterContent:content,
+                            // resourceUrl:""
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                $("#inputText").val("");
+                                $.ajax({
+                                    url:"/session/getMessageLog",
+                                    type:"post",
+                                    dataType:"json",
+                                    async:true,
+                                    headers:{'token':$.cookie("token")},
+                                    data:{
+                                        // receiverId:connectionId
+                                        userName:userName
+                                    },success:function (result) {
+                                        if (result.code == 0) {
+                                            vm.messageList = result.data;
+                                        }
+                                    }
+                                })
+                                // vm.getUserList();
+                                $.ajax({
+                                    url:"/session/getUserList",
+                                    type:"post",
+                                    dataType:"json",
+                                    headers:{'token':$.cookie("token")},
+                                    success:function (result) {
+                                        if(result.code == 0){
+                                            vm.userList = result.data;
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+            return false;
+        }
+    }
+
+
 
     //绑定用户信息以及好友列表
     var vm = new Vue({
@@ -152,7 +288,6 @@
                 //当前聊天对象的id
                 var connectionId = vm.userList[i].userId;
                 var userName = vm.userList[i].userName;
-
                 $.ajax({
                     url:"/session/getMessageLog",
                     type:"post",
@@ -168,7 +303,6 @@
                         }
                     }
                 })
-
             },
             clickFriends: function (i) {
                 //先将所有的list的背景颜色初始化，包括去掉右边框
@@ -176,7 +310,6 @@
                 $(".list").removeClass("choose");
                 $(".list").css({"border": "none"});
                 $(".list").css({"border-bottom": "1px solid black"});
-
                 // 将点击的那一个list的div的背景颜色进行更改，加上右边框
                 var $now = $(".list").eq(i);
                 // $now.css({"background-color": "#232212"});
@@ -251,7 +384,6 @@
                                         }
                                     }
                                 })
-
                             }
                         }
                     }
@@ -287,8 +419,6 @@
                 })
             }
             getUserList();
-
-
         }
         ,updated()
         {
@@ -301,90 +431,6 @@
             })
         }
     })
-
-    function back(event){
-        event = event || window.event;
-        if(event.keyCode==13){
-            event.returnValue = false;
-            var length = $("#inputText").val().length;
-            if(length == 0){
-                layui.use('layer',function() {
-                    var layer = layui.layer;
-                    layer.msg("发送内容不能为空，请重新输入");
-                })
-            }
-            else {
-                //发送消息
-                //userName,letterContent,resourceUrl
-                var userName =$(".choose").find(".userName").html();
-                if(userName == null)
-                {
-                    layui.use('layer',function() {
-                        var layer = layui.layer;
-                        layer.msg("请先选择联系人");
-                    })
-                }
-                else
-                {
-                    var letterContent = $("#inputText").val();
-                    console.log(letterContent);
-                    // console.log(userName);
-                    $.ajax({
-                        url:"/session/sendMsg",
-                        type:"post",
-                        dataType:"json",
-                        headers:{'token':$.cookie("token")},
-                        data: {
-                            userName:userName,
-                            letterContent:letterContent,
-                            // resourceUrl:""
-                        },
-                        success:function (result) {
-                            if(result.code == 0){
-                                $("#inputText").val("");
-
-                                $.ajax({
-                                    url:"/session/getMessageLog",
-                                    type:"post",
-                                    dataType:"json",
-                                    async:true,
-                                    headers:{'token':$.cookie("token")},
-                                    data:{
-                                        // receiverId:connectionId
-                                        userName:userName
-                                    },success:function (result) {
-                                        if (result.code == 0) {
-                                            vm.messageList = result.data;
-                                        }
-                                    }
-                                })
-                                // vm.getUserList();
-                                $.ajax({
-                                    url:"/session/getUserList",
-                                    type:"post",
-                                    dataType:"json",
-                                    headers:{'token':$.cookie("token")},
-                                    success:function (result) {
-                                        if(result.code == 0){
-                                            vm.userList = result.data;
-                                        }
-                                    }
-                                })
-                            }
-                        }
-                    })
-
-                }
-
-
-
-
-            }
-            return false;
-        }
-    }
-
-
 </script>
 </body>
 </html>
