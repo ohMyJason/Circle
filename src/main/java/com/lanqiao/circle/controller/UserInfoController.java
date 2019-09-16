@@ -172,11 +172,30 @@ public class UserInfoController {
         return Result.createSuccessResult();
     }
 
+    /**
+     * 判断是否关注
+     * @param httpServletRequest
+     * @param userId
+     * @return
+     */
     @UserLoginToken
     @PostMapping("ifConcern")
     public Result ifConcern(HttpServletRequest httpServletRequest,@RequestParam(name = "userId") int userId){
         int loginUserId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
         return relationShipService.ifConcern(loginUserId,userId);
+    }
+
+    /**
+     * 加关注或者取消关注
+     * @param httpServletRequest
+     * @param userId
+     * @return
+     */
+    @UserLoginToken
+    @PostMapping("addConcernOrSub")
+    public Result addConcernOrSub(HttpServletRequest httpServletRequest,@RequestParam(name = "userId") int userId){
+        int loginUserId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        return relationShipService.addConcernOrSub(loginUserId,userId);
     }
 
     /**

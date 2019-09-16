@@ -9,4 +9,7 @@ import com.lanqiao.circle.util.Result;
 public interface RelationShipService {
     //确认是否关注
     public Result ifConcern(int loginId,int userId);
+
+    //加关注或者取消关注
+    public Result addConcernOrSub(int loginId,int userId);
 }
