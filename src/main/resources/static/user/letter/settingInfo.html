@@ -45,9 +45,6 @@
                     <div class="row first_item">
                         <div class="row avatar_box col-md-11">
                             <span class="text_485X1">用户头像</span>
-                            <!--<input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">-->
-                            <!--<label for="file"><img :src="userInfo.avatarUrl" class="avatarUrl"></label>-->
-                            <!--<label for="file"><span class="text_487X1 flex-center">编辑</span></label>-->
                             <form id="f">
                                 <input type="file" @change="getFile" id="file" style="display: none">
                                 <label for="file"><img :src="src" class="avatarUrl"></label>
@@ -69,6 +66,7 @@
                         <span class="text_485X1 col-md-6">修改昵称</span>
                         <input id="changeNameInput" type="text" v-model="forwardInput1">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitName()">确定</span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="cancelName()">取消</span>
                     </div>
 
                     <div class="row info_item">
@@ -85,6 +83,7 @@
                         <span class="text_485X1 col-md-6">修改邮箱</span>
                         <input id="changeEmailInput" type="text" v-model="forwardInput2">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitEmail()">确定</span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="cancelEmail()">取消</span>
                     </div>
 
                     <div class="row info_item">
@@ -97,6 +96,7 @@
                         <input id="changeSexInput" type="text" v-model="forwardInput3">
                         <em style="color: red">请输入数字：0-保密；1-男；2-女</em>
                         <span class="text_487X1 col-md-2 flex-center" @click="submitSex()">确定</span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="cancelSex()">取消</span>
                     </div>
 
                     <div class="row info_item">
@@ -109,17 +109,31 @@
                         <input id="changeSingleInput" type="text" v-model="forwardInput4">
                         <em style="color: red">请输入数字：0-保密；1-单身；2-恋爱</em>
                         <span class="text_487X1 col-md-2 flex-center" @click="submitSingle()">确定</span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="cancelSingle()">取消</span>
                     </div>
 
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">生日</span>
-                        <span class="show_info col-md-15" v-text="userInfo.birthday"></span>
+                        <span class="show_info col-md-15" v-cloak>{{userInfo.birthday}}</span>
                         <span class="text_487X1 col-md-2 flex-center" @click="showBirthInput()">编辑</span>
                     </div>
                     <div id="changeBirth" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">设置生日</span>
-                        <input id="changeBirthInput" type="text" v-model="forwardInput5">
+                        <select class="year" name="year" v-model="birthYear">
+                            <option value="请选择" selected>请选择</option>
+                            <option v-for="n in 2019" :value="n" v-text="n" v-if="n > 1900"></option>
+                        </select>年
+                        <select class="month" name="month" v-model="birthMonth">
+                            <option value="请选择" selected>请选择</option>
+                            <option v-for="n in 12" :value="n" v-text="n"></option>
+                        </select>月
+                        <select class="day" v-model="birthDay">
+                            <option value="请选择" selected >请选择</option>
+                            <option v-for="n in 31" :value="n" v-text="n"></option>
+                        </select>日
+
                         <span class="text_487X1 col-md-2 flex-center" @click="submitBirth()">确定</span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="cancelBirth()">取消</span>
                     </div>
 
                     <div class="row info_item">
@@ -134,14 +148,14 @@
                     </div>
                     <div id="changeAddress" class="row change_info_item" style="display: none">
                         <span class="text_485X1 col-md-6">修改所在地</span>
-                        <input id="changeAddressInput" type="text" v-model="forwardInput6">
+                        <input id="changeAddressInput" type="text" v-model="forwardInput5">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitAddress()">确定</span>
+                        <span class="text_487X1 col-md-2 flex-center" @click="cancelAddress()">取消</span>
                     </div>
 
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">是否注销</span>
                         <span class="show_info col-md-15" v-text="userInfo.isDelete"></span>
-                        <!--<span class="text_487X1 col-md-2 flex-center">这个能改吗？</span>-->
                     </div>
                 </div>
 
@@ -164,7 +178,9 @@
             forwardInput3:'',
             forwardInput4:'',
             forwardInput5:'',
-            forwardInput6:''
+            birthYear:"请选择",
+            birthMonth:"请选择",
+            birthDay:"请选择"
         },
         methods:{
             getFile(e) {
@@ -196,6 +212,24 @@
             showAddressInput(){
                 $("#changeAddress").css("display","block");
             },
+            cancelName(){
+                $("#changeName").css("display","none");
+            },
+            cancelEmail(){
+                $("#changeEmail").css("display","none");
+            },
+            cancelSex(){
+                $("#changeSex").css("display","none");
+            },
+            cancelSingle(){
+                $("#changeSingle").css("display","none");
+            },
+            cancelBirth(){
+                $("#changeBirth").css("display","none");
+            },
+            cancelAddress(){
+                $("#changeAddress").css("display","none");
+            },
             submitAvatar() {
                 var form = new FormData();
                 form.append('file',this.file);
@@ -218,118 +252,161 @@
                 })
             },
             submitName(userId) {
-                $.ajax({
-                    url:"/userInfo/updateUserInfo",
-                    type:"post",
-                    headers:{'token':$.cookie("token")},
-                    data:{
-                        userId: userId,
-                        userName: this.forwardInput1,
-                    },
-                    success:function (result) {
-                        if(result.code == 0){
-                            $("#showName").html($("#changeNameInput").val());
-                            $("#changeName").css("display","none");
+                if (this.forwardInput1 == "") {
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("用户名不能为空！");
+                    })
+                }else {
+                    $.ajax({
+                        url:"/userInfo/updateUserInfo",
+                        type:"post",
+                        headers:{'token':$.cookie("token")},
+                        data:{
+                            userId: userId,
+                            userName: this.forwardInput1,
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                $("#showName").html($("#changeNameInput").val());
+                                $("#changeName").css("display","none");
+                            }
                         }
-                    }
-                })
+                    })
+                }
             },
             submitEmail(userId) {
-                $.ajax({
-                    url:"/userInfo/updateUserInfo",
-                    type:"post",
-                    headers:{'token':$.cookie("token")},
-                    data:{
-                        userId:userId,
-                        email: this.forwardInput2,
-                    },
-                    success:function (result) {
-                        if(result.code == 0){
-                            $("#showEmail").html($("#changeEmailInput").val());
-                            $("#changeEmail").css("display","none");
+                if (this.forwardInput2 == "") {
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("邮箱不能为空！");
+                    })
+                }else {
+                    $.ajax({
+                        url:"/userInfo/updateUserInfo",
+                        type:"post",
+                        headers:{'token':$.cookie("token")},
+                        data:{
+                            userId:userId,
+                            email: this.forwardInput2,
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                $("#showEmail").html($("#changeEmailInput").val());
+                                $("#changeEmail").css("display","none");
+                            }
                         }
-                    }
-                })
+                    })
+                }
             },
             submitSex(userId) {
-                $.ajax({
-                    url:"/userInfo/updateUserInfo",
-                    type:"post",
-                    headers:{'token':$.cookie("token")},
-                    data:{
-                        userId:userId,
-                        sex: this.forwardInput3,
-                    },
-                    success:function (result) {
-                        if(result.code == 0){
-                            if($("#changeSexInput").val()==0){
-                                vm.userInfo.sex = "保密";
-                            }else if ($("#changeSexInput").val()==1) {
-                                vm.userInfo.sex = "男";
-                            }else if ($("#changeSexInput").val()==2) {
-                                vm.userInfo.sex = "女";
+                if (this.forwardInput3 == "") {
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("输入不能为空！");
+                    })
+                }else {
+                    $.ajax({
+                        url:"/userInfo/updateUserInfo",
+                        type:"post",
+                        headers:{'token':$.cookie("token")},
+                        data:{
+                            userId:userId,
+                            sex: this.forwardInput3,
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                if($("#changeSexInput").val()==0){
+                                    vm.userInfo.sex = "保密";
+                                }else if ($("#changeSexInput").val()==1) {
+                                    vm.userInfo.sex = "男";
+                                }else if ($("#changeSexInput").val()==2) {
+                                    vm.userInfo.sex = "女";
+                                }
+                                $("#changeSex").css("display","none");
                             }
-                            $("#changeSex").css("display","none");
                         }
-                    }
-                })
+                    })
+                }
             },
             submitSingle(userId) {
-                $.ajax({
-                    url:"/userInfo/updateUserInfo",
-                    type:"post",
-                    headers:{'token':$.cookie("token")},
-                    data:{
-                        userId:userId,
-                        isSingle: this.forwardInput4,
-                    },
-                    success:function (result) {
-                        if(result.code == 0){
-                            if($("#changeSingleInput").val()==0){
-                                vm.userInfo.isSingle = "保密";
-                            }else if ($("#changeSingleInput").val()==1) {
-                                vm.userInfo.isSingle = "单身";
-                            }else if ($("#changeSingleInput").val()==2) {
-                                vm.userInfo.isSingle = "恋爱";
+                if (this.forwardInput4 == "") {
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("输入不能为空！");
+                    })
+                }else {
+                    $.ajax({
+                        url:"/userInfo/updateUserInfo",
+                        type:"post",
+                        headers:{'token':$.cookie("token")},
+                        data:{
+                            userId:userId,
+                            isSingle: this.forwardInput4,
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                if($("#changeSingleInput").val()==0){
+                                    vm.userInfo.isSingle = "保密";
+                                }else if ($("#changeSingleInput").val()==1) {
+                                    vm.userInfo.isSingle = "单身";
+                                }else if ($("#changeSingleInput").val()==2) {
+                                    vm.userInfo.isSingle = "恋爱";
+                                }
+                                $("#changeSingle").css("display","none");
                             }
-                            $("#changeSingle").css("display","none");
                         }
-                    }
-                })
+                    })
+                }
             },
             submitBirth(userId) {
-                $.ajax({
-                    url:"/userInfo/updateUserInfo",
-                    type:"post",
-                    headers:{'token':$.cookie("token")},
-                    data:{
-                        userId:userId,
-                        birthday: this.forwardInput5,
-                    },
-                    success:function (result) {
-                        if(result.code == 0){
-                            $("#showBirth").html($("#changeBirthInput").val());
-                            $("#changeBirth").css("display","none");
+                if (this.birthYear == '请选择' || this.birthDay == '请选择' || this.birthMonth == '请选择') {
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请选择出生年月！");
+                    })
+                }else {
+                    var birthday = this.birthYear+'-'+this.birthMonth+'-'+this.birthDay
+                    $.ajax({
+                        url:"/userInfo/updateUserInfo",
+                        type:"post",
+                        headers:{'token':$.cookie("token")},
+                        data:{
+                            userId:userId,
+                            birthday: birthday,
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                vm.userInfo.birthday = birthday;
+                                $("#changeBirth").css("display","none");
+                            }
                         }
-                    }
-                })
+                    })
+                }
             },
             submitAddress(userId) {
-                $.ajax({
-                    url:"/userInfo/updateUserInfo",
-                    type:"post",
-                    headers:{'token':$.cookie("token")},
-                    data:{
-                        userId:userId,
-                        address: this.forwardInput6,
-                    },
-                    success:function (result) {
-                        if(result.code == 0){
-                            $("#showAddress").html($("#changeAddressInput").val());
-                            $("#changeAddress").css("display","none");
+                if (this.forwardInput5 == "") {
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("输入不能为空！");
+                    })
+                }else {
+                    $.ajax({
+                        url:"/userInfo/updateUserInfo",
+                        type:"post",
+                        headers:{'token':$.cookie("token")},
+                        data:{
+                            userId:userId,
+                            address: this.forwardInput5,
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                $("#showAddress").html($("#changeAddressInput").val());
+                                $("#changeAddress").css("display","none");
+                            }
                         }
-                    }
-                })
+                    })
+                }
             },
 
 
