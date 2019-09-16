@@ -2,9 +2,11 @@ package com.lanqiao.circle.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -537,11 +539,54 @@ public class RedisUtil {
         }
     }
 
-//    // zSet
-//    public long zSet(String key,Long count,Object memeber){
-//        try {
-//            redisTemplate.opsForZSet().
-//        }
-//    }
+    // -------------------------------zSet
+    public boolean addZSet(String key,double count,Object memeber){
+        try {
+            redisTemplate.opsForZSet().add(key,memeber,count);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public double updateZet(String key,double count,Object member){
+        try {
+            Double incr = redisTemplate.opsForZSet().incrementScore(key, member, count);
+            return incr;
+        }catch (Exception e ){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public Object getZsetRange(String key){
+        try {
+            Set<ZSetOperations.TypedTuple<Object>> objects = redisTemplate.opsForZSet().reverseRangeWithScores(key, 0, -1);
+            assert objects != null;
+            for (ZSetOperations.TypedTuple<Object> next : objects) {
+                System.out.println(next.getValue() + "-" + next.getScore());
+            }
+            return "success";
+        }catch (Exception e ){
+            e.printStackTrace();
+            return "-1";
+        }
+    }
+
+    public boolean hasMember(String key,Object member){
+        try {
+            Long rank = redisTemplate.opsForZSet().rank(key, member);
+            System.out.println(rank);
+            if (rank==null){
+                return false;
+            }else {
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return true;
+        }
+    }
 
 }

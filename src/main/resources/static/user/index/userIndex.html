@@ -231,12 +231,12 @@
                             <a href="#" @click="jumpPagePerson(item.userId)"><span v-text="item.userName"
                                                                                    class="black blog-belonger"></span></a>
                         </div>
-                        <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 0">
+                        <div class="col-md-2 col-md-offset-9" v-if="item.isRepost == 0">
                             <at-tag color="success" style="margin-bottom: 5px">原创</at-tag>
                             <a style="margin-right: 100px" href="/user/circle/circle.html" @click="toCircle(item.circleId)"><at-tag color="info">{{item.circleName}}</at-tag></a>
 
                         </div>
-                        <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 1">
+                        <div class="col-md-2 col-md-offset-9" v-if="item.isRepost == 1">
                             <at-tag color="info" style="margin-bottom: 5px">转载</at-tag>
                             <a style="margin-right: 100px" href="/user/circle/circle.html" @click="toCircle(item.circleId)"><at-tag color="info">{{item.circleName}}</at-tag></a>
 
@@ -524,7 +524,7 @@
                                     var layer = layui.layer;
                                     layer.msg("发表成功");
                                     setTimeout(function () {
-                                        // window.location.reload();
+                                        window.location.reload();
                                     }, 1000);
                                 })
                             }
