@@ -29,7 +29,7 @@
         </div>
         <div class="col-md-7 col-md-offset-5">
             <a href="/user/index/userIndex.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
-            <a href="../../user/circle/circle.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
+            <a href="../../user/circle/circleRank.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
             <a href="../../user/letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
             <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
         </div>
@@ -50,8 +50,8 @@
                             <!--<label for="file"><span class="text_487X1 flex-center">编辑</span></label>-->
                             <form id="f">
                                 <input type="file" @change="getFile" id="file" style="display: none">
-                                <label for="file"><img :src="userInfo.avatarUrl" class="avatarUrl"></label>
-                                <span class="text_487X1 flex-center" @click="submitAvatar()">编辑</span>
+                                <label for="file"><img :src="src" class="avatarUrl"></label>
+                                <span class="text_487X1 flex-center" @click="submitAvatar()">上传</span>
                             </form>
                         </div>
                         <div class="row account_box col-md-11">
@@ -155,8 +155,8 @@
     var vm = new Vue({
         el: '#app',
         data:{
+            src:'',
             file:'',
-            flag:'false',
             inputValue4:'',
             userInfo:{},
             forwardInput1:'',
@@ -170,8 +170,6 @@
             getFile(e) {
                 let _this = this
                 this.file = e.target.files[0];
-                this.flag = 'true';
-                // console.log(this.file);
                 var files = e.target.files[0];
                 if (!e || !window.FileReader) return  // 看支持不支持FileReader
                 let reader = new FileReader()
@@ -212,6 +210,7 @@
                     success:function (result) {
                         if (result.code == 0) {
                             vm.file='';
+                            window.location.reload();
                         }else{
                             alert(result.msg);
                         }
@@ -372,6 +371,7 @@
                         }else{
                             vm.userInfo.isDelete = "注销";
                         }
+                        vm.src = vm.userInfo.avatarUrl;
                     }
                 }
             })
