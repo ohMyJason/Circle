@@ -4,12 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>其他用户界面</title>
-    <script src="../../node_modules/vue/dist/vue.js"></script>
-    <script src="../../node_modules/at-ui/dist/at.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/personals.css">
+    <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
     <style>
         [v-cloak] {
             display: none;
@@ -43,10 +46,8 @@
             <div class="col-md-18">
 
                 <div class="first_box flex-center">
-                    <input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">
-                    <label for="file"><img :src="userImgUrl" class="icon-head"></label><br>
-                    <span class="nick_name" v-cloak>{{userName}}</span><br>
-                    <span class="sign_name" v-cloak>{{signName}}</span>
+                    <img :src="userInfo.avatarUrl" class="icon-head"><br>
+                    <span class="nick_name" v-cloak>{{userInfo.userName}}</span>
                 </div>
 
                 <div class="second_box row">
@@ -57,82 +58,171 @@
                 </div>
 
                 <div class="row">
-                    <div class="left_box col-md-9">
-                        <div class="left_top_box flex-center">
-                            <at-breadcrumb separator="" class="row sel_list">
-                                <at-breadcrumb-item href="attention.html" class="col-md-offset-1" v-cloak>{{attentionNum}}<br>关注</at-breadcrumb-item>
-                                <div class="box_29X1"></div>
-                                <at-breadcrumb-item href="fans.html" class="col-md-offset-1" v-cloak>{{fansNum}}<br>粉丝</at-breadcrumb-item>
-                                <div class="box_29X1"></div>
-                                <at-breadcrumb-item href="personal.html" class="col-md-offset-1" v-cloak>{{blogNum}}<br>微博</at-breadcrumb-item>
-                            </at-breadcrumb>
+                    <div class="left_box col-md-7">
+                        <div class="left_top_box flex-center row">
+                            <div class="sel_list flex-center" v-cloak>{{userInfo.bloggerNum}} 关注</div>
+                            <div class="box_29X1"></div>
+                            <div class="sel_list flex-center" v-cloak>{{userInfo.fansNum}} 粉丝</div>
+                            <div class="box_29X1"></div>
+                            <div class="sel_list flex-center" v-cloak>{{userInfo.blogNum}} 微博</div>
                         </div>
                         <div class="person_info flex-center">
                             <div class="row info_item">
                                 <div class="text_485X1 col-md-4"><i class="icon icon-map-pin"></i></div>
-                                <div class="show_info col-md-20">{{addressInfo}}</div>
-                            </div>
-                            <div class="box_29X2"></div>
-                            <div class="row info_item">
-                                <span class="text_485X1 col-md-4"><i class="icon icon-heart"></i></span>
-                                <span class="show_info col-md-20">{{singleInfo}}</span>
+                                <span class="show_info col-md-20" v-cloak>地址 {{userInfo.address}}</span>
                             </div>
                             <div class="box_29X2"></div>
                             <div class="row info_item">
                                 <span class="text_485X1 col-md-4"><i class="icon icon-life-buoy"></i></span>
-                                <span class="show_info col-md-20">{{birthInfo}}</span>
+                                <span class="show_info col-md-20" v-cloak>生日 {{userInfo.birthday}}</span>
                             </div>
                             <div class="box_29X2"></div>
                             <div class="row info_item">
                                 <span class="text_485X1 col-md-4"><i class="icon icon-mail"></i></span>
-                                <span class="show_info col-md-20">{{emailInfo}}</span>
+                                <span class="show_info col-md-20" v-cloak>邮箱 {{userInfo.email}}</span>
                             </div>
                             <div class="box_29X2"></div>
                             <div><a href="../../user/letter/settingInfo.html">查看更多<i class="icon icon-chevron-right"></i></a></div>
                         </div>
                     </div>
-                    <div class="right_box col-md-15">
-                        <div class="row nav_bar">
-                            <div class="choose_item col-md-15">
-                                <at-menu mode="horizontal" active-name="0" class="menu_choose">
-                                    <at-menu-item name="1" class="menu_item col-md-offset-2">全部</at-menu-item>
-                                    <at-menu-item name="2" class="menu_item col-md-offset-2">原创</at-menu-item>
-                                    <!--<at-menu-item name="3" class="menu_item col-md-offset-2">更多</at-menu-item>-->
-                                </at-menu>
-                            </div>
-                            <at-input v-model="searchMyBlog" class="nav-search" placeholder="搜索我的微博" prepend-button>
-                                <template slot="prepend">
-                                    <i class="icon icon-search"></i>
-                                </template>
-                            </at-input>
-                        </div>
-                        <div class="personal_card" v-for="(item,index) in myBlogList">
+
+                    <div class="right_box col-md-17">
+                        <div class="row nav_bar flex-center" v-cloak>{{userInfo.userName}}的微博</div>
+
+                        <div class="personal_card" v-for="(item,i) in otherBlogList">
                             <div class="personal_box row">
-                                <img :src="item.userImgUrl" class="user_img">
+                                <img :src="item.avatarUrl" class="user_img">
                                 <div class="user_info">
                                     <span class="user_nickname" v-cloak>{{item.userName}}</span><br>
-                                    <span class="publish_date" v-cloak>{{item.date}}</span>
+                                    <span class="publish_date" v-cloak>{{item.createTime}}</span>
+                                </div>
+                                <at-tag color="warning" v-cloak>{{item.circleName}}</at-tag>
+                            </div>
+                            <!-- 原创展示 -->
+                            <div v-if="item.isRepost == 0">
+                                <div class="row">
+                                    <div class="col-md-18 col-md-offset-3">
+                                        <span v-text="item.content"></span>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                </div>
+                                <div class="row" v-if="item.type == 1">
+                                    <div class="col-md-18 col-md-offset-3">
+                                        <div class="img_list" v-for="(imgUrl,i) in item.resourceList">
+                                            <img :src="imgUrl" class="publish_img">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                </div>
+                                <div class="row" v-if="item.type == 2">
+                                    <div class="col-md-18 col-md-offset-3">
+                                        <video :src="item.resourceList[0]" controls="controls" width="100%" height="260px">您的浏览器不支持播放该视频！</video>
+                                    </div>
+                                    <div class="col-md-3"></div>
                                 </div>
                             </div>
-                            <at-textarea v-model="inputValue2" min-rows="1" max-rows="8" placeholder="这里输入内容，请输入多行" disabled></at-textarea>
-                            <div class="row">
-                                <div class="img_list" v-for="(imgUrl,index) in item.imgUrlList">
-                                    <img :src="imgUrl.img" class="publish_img">
+
+                            <!-- 转载展示 -->
+                            <div v-if="item.isRepost == 1">
+                                <div class="row">
+                                    <div class="col-md-18 col-md-offset-3">
+                                        <span v-text="item.content"></span>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                </div>
+
+                                <div v-if="item.blogInfo.isRepost == 0">
+                                    <div class="col-md-18 col-md-offset-3" style="background-color: #ECECEC">
+                                        <div class="personal_box row">
+                                            <img :src="item.blogInfo.avatarUrl" class="user_img">
+                                            <div class="user_info">
+                                                <span class="user_nickname" v-cloak>{{item.blogInfo.userName}}</span><br>
+                                                <span class="publish_date" v-cloak>{{item.blogInfo.createTime}}</span>
+                                            </div>
+                                            <at-tag color="warning" v-cloak>{{item.blogInfo.circleName}}</at-tag>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-18 col-md-offset-3">
+                                                <span v-text="item.blogInfo.content"></span>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <div class="row" v-if="item.blogInfo.type == 1">
+                                            <div class="col-md-18 col-md-offset-3">
+                                                <div class="img_list" v-for="(imgUrl,i) in item.blogInfo.resourceList">
+                                                    <img :src="imgUrl" class="publish_img">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <div class="row" v-if="item.blogInfo.type == 2">
+                                            <div class="col-md-18 col-md-offset-3">
+                                                <video :src="item.blogInfo.resourceList[0]" controls="controls" width="100%" height="260px">您的浏览器不支持播放该视频！</video>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3"></div>
                                 </div>
                             </div>
+
                             <div class="box_49X1"></div> <!--分隔线-->
-                            <div>
-                                <at-menu mode="horizontal" active-name="0">
-                                    <at-menu-item name="1" class="col-md-offset-2" v-cloak>阅读 {{item.readNum}}</at-menu-item>
-                                    <at-menu-item name="2" class="col-md-offset-2"><i class="icon icon-external-link"></i>转发</at-menu-item>
-                                    <at-menu-item name="3" class="col-md-offset-2"><i class="icon icon-message-square"></i>评论</at-menu-item>
-                                    <at-menu-item name="4" class="col-md-offset-2"><i class="icon icon-thumbs-up"></i>赞</at-menu-item>
-                                </at-menu>
+                            <div class="row flex-center box_19X1">
+                                <div class="col-md-8">
+                                    <a class="icon icon-external-link" @click.prevent="showForward(i)">转发</a>
+                                </div>
+                                <div class="col-md-8">
+                                    <a class="icon icon-message-square" @click.prevent="showReview(i,item.blogId)" v-cloak>评论 {{item.commentNum}}</a>
+                                </div>
+                                <div class="col-md-8">
+                                    <a class="icon icon-thumbs-up" @click.prevent="like($event,item.blogId)" v-cloak>赞 {{item.likeNum}}</a>
+                                </div>
+                            </div>
+
+                            <div :class=['row','addForward',selected==i?'':'hidden']>
+                                <div class="col-md-19 col-md-offset-1">
+                                    <input type="text" class="forwardInput" v-model="forwardInput">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="button" class="forwardButton" value="转发" @click="forwardBlog($event,item.blogId)">
+                                </div>
+                            </div>
+
+                            <div :class=['addForward',reviewed==i?'':'hidden']>
+                                <div class="row">
+                                    <div class="col-md-19 col-md-offset-1">
+                                        <input type="text" class="forwardInput" v-model="forwardInput">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="button" class="forwardButton" value="发布评论" @click="reviedBlog($event,item.blogId)">
+                                    </div>
+                                </div>
+
+                                <div v-if="commentList != ''">
+                                    <div v-for="comment in commentList">
+                                        <div class="row">
+                                            <div class="col-md-2 col-md-offset-1 commentShow">
+                                                <img :src="comment.avatarUrl" class="commentHeader">
+                                            </div>
+                                            <div class="col-md-13 commentShow">
+                                                <span class="black commenter" v-cloak>{{comment.userName}}:</span>
+                                                <span class="commenter" v-text="comment.commentContent"></span>
+                                            </div>
+                                            <div class="col-md-7 commentShow" v-cloak>{{comment.commentTime}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="commentList == ''" class="row">
+                                    <div class="col-md-16 col-md-offset-8">
+                                        <span style="font-size: 18px">还没有人评论呢，快来评论吧！</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="pagination">
-                            <at-pagination :total="100" show-quickjump></at-pagination>
+                        <div class="pagination flex-center">
+                            <input type="button" value="上一页" @click="gotoPrePage()">
+                            <input type="button" value="下一页" @click="gotoNextPage()">
                         </div>
                     </div>
                 </div>
@@ -144,54 +234,206 @@
 </div>
 </body>
 <script>
-    new Vue({
+    var vm = new Vue({
         el: '#app',
         data:{
             inputValue4:'',
-            searchMyBlog:'',
-            userImgUrl:'../../node_modules/images/head.png',
-            userName:'用户昵称69096',
-            signName:'个性签名',
-            attentionNum: '123',
-            fansNum: '1563',
-            blogNum: '152',
-            addressInfo:'北京',
-            singleInfo:'单身',
-            birthInfo:'生日日期',
-            emailInfo:'1216612753@qq.com',
-            myBlogList:[
-                {
-                    userImgUrl: '../../node_modules/images/head.png',
-                    userName:'用户昵称69096',
-                    date:'8月31日 19:30',
-                    inputValue2:'',
-                    imgUrlList:[{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'}],
-                    readNum:'56'
-                },
-                {
-                    userImgUrl: '../../node_modules/images/head.png',
-                    userName:'用户昵称69096',
-                    date:'8月31日 19:30',
-                    inputValue2:'',
-                    imgUrlList:[{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'},{img:'../../node_modules/images/upload.png'}],
-                    readNum:'56'
+            userInfo:{},
+            otherBlogList:[],
+            commentList:[],
+            forwardInput:'',
+            selected:'ll',
+            reviewed:'ll',
+            pageNum:'1',
+            pageSize:'3',
+        },
+        methods:{
+            showForward:function(i){
+                if(this.selected != i) {
+                    this.selected = i;
+                    this.reviewed='ll';
+                    this.forwardInput='';
+                }else {
+                    this.selected = 'lll';
                 }
-            ]
-        },methods: {
-            getFile(e) {
-                let _this = this
-                var files = e.target.files[0]
-                if (!e || !window.FileReader) return  // 看支持不支持FileReader
-                let reader = new FileReader()
-                reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
-                reader.onloadend = function () {
-                    _this.userImgUrl = this.result;
-                    //点击大头像，同时循环给每一个card换头像
-                    for (var i=0; i<Object.keys('myBlogList').length;i++){
-                        _this.myBlogList[i].userImgUrl = this.result;
+            },
+            forwardBlog:function(e,blogId) {
+                $.ajax({
+                    url:"/blog/forwardBlog",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        blogId:blogId,
+                        forwardContent:this.forwardInput
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("转发成功");
+                            })
+                            vm.selected = 'll';
+                        }
+                    },error:function () {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg("请先登录!");
+                        })
+                    }
+                })
+            },
+            showReview:function(i,blogId){
+                if(this.reviewed != i) {
+                    this.reviewed = i;
+                    this.forwardInput='';
+                    this.selected = 'lll';
+                    $.ajax({
+                        url: "/blog/showComment",
+                        type: "post",
+                        data: {
+                            blogId: blogId,
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                vm.commentList= result.data;
+                            }
+                        }
+                    })
+                }else {
+                    this.reviewed = 'lll';
+                }
+            },
+            reviedBlog:function(e,blogId){
+                if(this.forwardInput == ''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入评论信息！");
+                    })
+                }else {
+                    $.ajax({
+                        url: "/blog/insertComment",
+                        type: "post",
+                        headers: {'token': $.cookie("token")},
+                        data: {
+                            blogId: blogId,
+                            commentContent: this.forwardInput
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer', function () {
+                                    var layer = layui.layer;
+                                    layer.msg("评论成功");
+                                })
+                                vm.reviewed = 'lll';
+                            }
+                        },error:function () {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("请先登录");
+                                // window.location.href="../index/index.html";
+                            })
+                        }
+                    })
+                }
+            },
+            like:function(e,blogId){
+                $.ajax({
+                    url:"/blog/insertLike",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        blogId:blogId
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            e.target.innerText = parseInt(e.target.innerText) + 1;
+                            e.target.style.color = "blue";
+                        }else {
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg(result.msg);
+                            })
+                            e.target.style.color = "blue";
+                        }
+                    },error:function () {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg("请先登录");
+                            // window.location.href="../index/index.html";
+                        })
+                    }
+                })
+            },
+            gotoPrePage:function(){
+                $.ajax({
+                    url:"/userInfo/getOtherBlog",
+                    type:"post",
+                    dataType:"json",
+                    data:{
+                        userId: $.cookie("userId"),
+                        page: this.pageNum,
+                        size: this.pageSize
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            vm.otherBlogList = result.data;
+                            vm.pageNum = parseInt(vm.pageNum) > 1 ? parseInt(vm.pageNum) - 1 : 1;
+                        }
+                    }
+                })
+            },
+            gotoNextPage:function(){
+                $.ajax({
+                    url:"/userInfo/getOtherBlog",
+                    type:"post",
+                    dataType:"json",
+                    data:{
+                        userId: $.cookie("userId"),
+                        page: this.pageNum,
+                        size: this.pageSize
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            vm.otherBlogList = result.data;
+                            vm.pageNum = parseInt(vm.pageNum)+1;
+                        }
+                    }
+                })
+            },
+        },
+        created() {
+            //展示他人除微博外信息
+            $.ajax({
+                url:"/userInfo/getOtherInfo",
+                type:"post",
+                dataType:"json",
+                data:{
+                    userId:$.cookie("userId")
+                },
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.userInfo = result.data;
+                        console.log(result.data);
                     }
                 }
-            }
+            })
+
+            //展示他人每条微博信息
+            $.ajax({
+                url:"/userInfo/getOtherBlog",
+                type:"post",
+                dataType:"json",
+                data:{
+                    userId: $.cookie("userId"),
+                    page: this.pageNum,
+                    size: this.pageSize
+                },
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.otherBlogList = result.data;
+                    }
+                }
+            })
         }
     })
 </script>
