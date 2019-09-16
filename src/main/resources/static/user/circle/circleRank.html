@@ -27,8 +27,8 @@
         <div class="col-md-7 col-md-offset-5">
             <a href="#" class="top-font-size"><i class="icon icon-home"></i>首页</a>
             <a href="#" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
-            <a href="#" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
-            <a href="#" class="top-font-size"><i class="icon icon-user"></i>用户</a>
+            <a href="../letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
+            <a href="../user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
         </div>
     </div>
     <div class="row search-top">
@@ -64,7 +64,7 @@
                         <div style="float: left">
                             <at-tag color="error" v-if="item.userNum > 5">火热</at-tag>
                             <at-tag color="info" v-if="item.userNum < 6">推荐</at-tag>
-                            <a href="#" class="circle-name"><span v-text="item.circleName"></span></a><br>
+                            <a href="circle.html" target="_blank" class="circle-name" @click="jumpCircle(item.circleId)"><span v-text="item.circleName"></span></a><br>
                             <span class="circle-title" v-text="item.circleTitle"></span>
                             <span class="icon icon-user" title="参与人数">{{item.userNum}}</span>
                             <span class="icon icon-message-circle blog-num-mar" title="微博数量">{{item.blogNum}}</span>
@@ -91,7 +91,7 @@
         data:{
             inputValue4:'',
             nowTime:'',
-            circleCount:'1',
+            circleCount:'',
             circleList:[
             ],
         },methods:{
@@ -105,6 +105,8 @@
                 var d = new Date();
                 this.nowTime = d.getFullYear() + "-" + vm.addZero((d.getMonth() + 1)) + "-" + vm.addZero(d.getDate()) + " "
                 + vm.addZero(d.getHours()) + ":" + vm.addZero(d.getMinutes()) + ":" + vm.addZero(d.getSeconds());
+            },jumpCircle(id){
+                $.cookie("circleId",id,{path: '/user/circle/circle.html'})
             }
         },created(){
             $.ajax({
