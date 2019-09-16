@@ -16,33 +16,64 @@
 </div>
 <script src="../../node_modules/layui/layui.js"></script>
 <script>
-    layui.use('form', function(){
-       var form = layui.form;
-    });
-
     layui.use('table', function(){
         var table = layui.table;
-        // 第一个实例
+        //第一个实例
         table.render({
-            elem: '#usersInfo'
-            ,width:1045
+            elem: '#user'
+            ,width:965
             ,height: 312
-            ,url: '/demo/table/user/' //数据接口
+            ,url: '/normalBlogs' //数据接口
             ,page: true //开启分页
             ,even:true
             ,limit: 5 //每页默认显示的数量
             ,cols: [[ //表头
-                {field: 'blogId', title: '微博ID', width:80, sort: true, fixed: 'left'}
-                ,{field: 'userId', title: '用户ID',sort:true, width:150}
-                ,{field: 'userName', title: '用户名', width:80, sort: true}
-                ,{field: 'content', title: '微博内容', width:150}
-                ,{field: 'createTime', title: '创建时间', width: 177}
-                ,{field: 'circleName', title: '所属圈子', width: 120, sort: true}
-                ,{field: 'repostId', title: '转载的微博ID', width: 120, sort: true}
-                ,{field: 'weight', title: '权重', width: 60}
-                ,{field: 'isDelete', title: '微博状态', width: 100}
-                // ,{field: 'caozuo', title: '操作', width: 100,toolbar:"#qwe"}
+                {field: 'blogId', title: '用户ID', width:80, sort: true, fixed: 'left'}
+                ,{field: 'content', title: '用户名',sort:true, width:150}
+                ,{field: 'isRepost', title: '性别', width:80, sort: true}
+                ,{field: 'repostId', title: '手机号码', width:150}
+                // ,{field: 'sign', title: '电子邮箱', width: 177}
+                // ,{field: 'experience', title: '账号状态', width: 100, sort: true}
+                // ,{field: 'score', title: '账号创建时间', width: 140, sort: true}
+                // ,{field: 'classify', title: '头像', width: 80}
             ]]
+        });
+
+        table.on('tool(user)',function (obj) {
+            var data = obj.data;
+            //console.log(obj)
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        url: '/deleteBlog'
+                        , method: 'post'
+                        , data: {"blogId": data.blogId}
+                        , datatype: "json",
+                        success: function (data) {
+                            obj.del();
+                            console.log(data.blogId);
+                            layer.close(index);
+                            layer.msg("删除成功", {icon: 6});
+                        },
+                        error: function (data) {
+                            layer.msg("删除失败", {icon: 5});
+                        }
+                    })
+
+                });
+            }
+        })
+
+        $("#search").click(function () {
+            //重新加载表格
+            table.reload('user' ,{
+                where: { //设定异步数据接口的额外参数，任意设
+                    blogContent: $("#usersName").val()
+                },
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
         });
     });
 </script>

@@ -19,4 +19,14 @@ public interface CircleService {
 
     //展示所有圈子
     public Result showAllCircle();
+
+    //管理员查询全部圈子
+    public Result normalCircles(String circleName,int page,int limit);
+
+    //管理员删除圈子
+
+    public Result deleteCircles(Integer circleId);
+
+    //管理员查询圈子
+    public Result findCircles(String circleName);
 }
