@@ -140,6 +140,20 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public Result matchNameAndPhone(String userName, String phone) {
+        try {
+            Users users = usersMapper.getUserByUserName(userName);
+            if(users != null && users.getPhone().equals(phone)){
+                return Result.createSuccessResult(users.getUserId());
+            }else {
+                return Result.createByFailure("用户名与手机号不匹配！");
+            }
+        }catch (Exception e){
+            return Result.createByFailure("操作异常，请联系管理人员！");
+        }
+    }
+
+    @Override
     public Result normalUsers(String userName, int page, int limit) {
         try {
             page = PageCheck.checkPage(page);
