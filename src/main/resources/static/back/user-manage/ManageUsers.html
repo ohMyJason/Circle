@@ -4,23 +4,41 @@
     <meta charset="UTF-8">
     <title>用户管理</title>
     <link rel="stylesheet" href="../../node_modules/layui/css/layui.css">
+    <style>
+        #search{
+            margin-left: 383px;
+            margin-top: -57px;
+        }
+    </style>
 </head>
 <body>
+<div class="demoTable">
 <div style="margin-top: 25px">
     <label class="layui-form-label" style="width: 150px">输入用户名进行筛选：</label>
-    <input type="text" name="title" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input" style="width: 300px">
-
+    <input type="text" name="title" required lay-verify="required" id="usersName" placeholder="请输入标题" autocomplete="off" class="layui-input" style="width: 200px">
+    <button class="layui-btn" data-type="reload" id="search">搜索</button></div>
 </div>
-    <div style="margin-left: 25px;margin-top: 30px">
-        <table id="usersInfo" lay-filter="test"></table>
-    </div>
+    <table class="layui-hide" id="user" lay-filter="user"></table>
+
+    <script id="toolbarDemo" type="text/html">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+            <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+        </div>
+    </script>
+
+    <script id="barDemo" type="text/html">
+        <a class="layui-btn layui-btn-xs" lay-event="banned">封禁</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
 <script src="../../node_modules/layui/layui.js"></script>
 <script>
     layui.use('table', function(){
         var table = layui.table;
         //第一个实例
         table.render({
-            elem: '#usersInfo'
+            elem: '#user'
             ,width:965
             ,height: 312
             ,url: '/getNormalUser' //数据接口
@@ -37,6 +55,62 @@
                 // ,{field: 'score', title: '账号创建时间', width: 140, sort: true}
                 // ,{field: 'classify', title: '头像', width: 80}
             ]]
+        });
+
+    table.on('tool(user)',function (obj) {
+        var data = obj.data;
+        //console.log(obj)
+        if (obj.event === 'del') {
+            layer.confirm('真的删除行么', function (index) {
+                $.ajax({
+                    url: '/delete'
+                    , method: 'post'
+                    , data: {"usersId": data.usersId}
+                    , datatype: "json",
+                    success: function (data) {
+                        obj.del();
+                        console.log(data.usersId);
+                        layer.close(index);
+                        layer.msg("删除成功", {icon: 6});
+                    },
+                    error: function (data) {
+                        layer.msg("删除失败", {icon: 5});
+                    }
+                })
+
+            });
+        } else if (obj.event === 'banned') {
+            layer.confirm('真的封禁吗？', function (index) {
+                $.ajax({
+                    url: '/banned'
+                    , method: 'post'
+                    , data: {"usersId": data.usersId}
+                    , datatype: "json",
+                    success: function (data) {
+                        obj.del();
+                        console.log(data.usersId);
+                        layer.close(index);
+                        layer.msg("封禁成功", {icon: 6});
+                    },
+                    error: function (data) {
+                        layer.msg("封禁失败", {icon: 5});
+                    }
+                })
+
+            });
+        }
+    });
+
+        $("#search").click(function () {
+            //重新加载表格
+            table.reload('user' ,{
+                where: { //设定异步数据接口的额外参数，任意设
+                    userName: $("#usersName").val()
+                },
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
         });
     });
 </script>

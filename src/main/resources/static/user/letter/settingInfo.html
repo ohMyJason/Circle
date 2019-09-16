@@ -45,9 +45,14 @@
                     <div class="row first_item">
                         <div class="row avatar_box col-md-11">
                             <span class="text_485X1">用户头像</span>
-                            <input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">
-                            <label for="file"><img :src="userInfo.avatarUrl" class="avatarUrl"></label>
-                            <label for="file"><span class="text_487X1 flex-center">编辑</span></label>
+                            <!--<input type="file" ref="file" @change="getFile" name="file" id="file" style="display: none">-->
+                            <!--<label for="file"><img :src="userInfo.avatarUrl" class="avatarUrl"></label>-->
+                            <!--<label for="file"><span class="text_487X1 flex-center">编辑</span></label>-->
+                            <form id="f">
+                                <input type="file" @change="getFile" id="file" style="display: none">
+                                <label for="file"><img :src="userInfo.avatarUrl" class="avatarUrl"></label>
+                                <span class="text_487X1 flex-center" @click="submitAvatar()">编辑</span>
+                            </form>
                         </div>
                         <div class="row account_box col-md-11">
                             <span class="text_485X1">账户状态</span>
@@ -65,17 +70,6 @@
                         <input id="changeNameInput" type="text" v-model="forwardInput1">
                         <span class="text_487X1 col-md-2 flex-center" @click="submitName()">确定</span>
                     </div>
-
-                    <!--<div class="row info_item">-->
-                        <!--<span class="text_485X1 col-md-6">密码</span>-->
-                        <!--<span id="showPass" class="show_info col-md-15" v-text="userInfo.password"></span>-->
-                        <!--<span class="text_487X1 col-md-2 flex-center" @click="showPassInput()">编辑</span>-->
-                    <!--</div>-->
-                    <!--<div id="changePass" class="row change_info_item" style="display: none">-->
-                        <!--<span class="text_485X1 col-md-6">修改密码</span>-->
-                        <!--<input id="changePassInput" type="text" v-model="forwardInput2">-->
-                        <!--<span class="text_487X1 col-md-2 flex-center" @click="submitPass()">确定</span>-->
-                    <!--</div>-->
 
                     <div class="row info_item">
                         <span class="text_485X1 col-md-6">手机号</span>
@@ -161,6 +155,8 @@
     var vm = new Vue({
         el: '#app',
         data:{
+            file:'',
+            flag:'false',
             inputValue4:'',
             userInfo:{},
             forwardInput1:'',
@@ -173,16 +169,15 @@
         methods:{
             getFile(e) {
                 let _this = this
-                var files = e.target.files[0]
+                this.file = e.target.files[0];
+                this.flag = 'true';
+                // console.log(this.file);
+                var files = e.target.files[0];
                 if (!e || !window.FileReader) return  // 看支持不支持FileReader
                 let reader = new FileReader()
                 reader.readAsDataURL(files) // 这里是最关键的一步，转换就在这里
                 reader.onloadend = function () {
-                    _this.userImgUrl = this.result;
-                    //点击大头像，同时循环给每一个card换头像
-                    for (var i=0; i<Object.keys('myBlogList').length;i++){
-                        _this.myBlogList[i].userImgUrl = this.result;
-                    }
+                    _this.src = this.result
                 }
             },
             showNameInput(){
@@ -202,6 +197,26 @@
             },
             showAddressInput(){
                 $("#changeAddress").css("display","block");
+            },
+            submitAvatar() {
+                var form = new FormData();
+                form.append('file',this.file);
+                $.ajax({
+                    url:"/userInfo/changeAvatar",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    async: false,
+                    contentType: false,
+                    processData:false,
+                    data: form,
+                    success:function (result) {
+                        if (result.code == 0) {
+                            vm.file='';
+                        }else{
+                            alert(result.msg);
+                        }
+                    }
+                })
             },
             submitName(userId) {
                 $.ajax({

@@ -23,12 +23,12 @@ public interface BlogService {
     //展示最新微博
     public Result showBlogByCreateTime(int page,int size);
 
-    //管理员查询用户
+    //管理员查询全部微博
     public Result normalBlogs(String content,int page,int limit);
 
-    //管理员删除用户
+    //管理员删除微博
     public Result deleteBlog(Integer blogId);
 
-    //管理员查询用户
+    //管理员查询微博
     public Result findBlog(String content);
 }
