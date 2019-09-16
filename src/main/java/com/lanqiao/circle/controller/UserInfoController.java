@@ -124,6 +124,18 @@ public class UserInfoController {
     }
 
     /**
+     * 查看别人首页微博
+     * @param userId
+     * @param page
+     * @param size
+     * @return
+     */
+    @PostMapping("getOtherBlog")
+    public Result getOtherBlog(@RequestParam(name = "userId") int userId,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
+        return userInfoService.getUserAllBlog(userId,page,size);
+    }
+
+    /**
      * 管理员查询用户信息
      */
     @PostMapping("/getNormalUser")
