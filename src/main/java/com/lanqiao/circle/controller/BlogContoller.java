@@ -138,10 +138,10 @@ public class BlogContoller {
             blog.setContent(baseBlog.get("content").toString());
             blog.setCircleId(Integer.parseInt(baseBlog.get("circleId").toString()));
             String circleName = circlesMapper.selectByPrimaryKey(blog.getCircleId()).getCircleName();
-            if (!redisUtil.hasMember("circle-range",circleName)){
-                redisUtil.addZSet("circle-range",1,circleName);
+            if (!redisUtil.hasMember("circle-blog-num",circleName)){
+                redisUtil.addZSet("circle-blog-num",1,circleName);
             }else {
-                redisUtil.updateZet("circle-range",1,circleName);
+                redisUtil.updateZet("circle-blog-num",1,circleName);
             }
             blogMapper.insertSelective(blog);
             for (Object itemId:itemIds){

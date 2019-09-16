@@ -20,6 +20,7 @@
         }
     </style>
     <script src="node_modules/jQuery/jquery.cookie.js"></script>
+    <script src="node_modules/layui/layui.js"></script>
 </head>
 <body>
 <div id="app" class="container">
@@ -253,18 +254,18 @@
                             <input type="password" placeholder="请输入密码" onclick="this.placeholder=''"
                                    style="width: 200px;height: 28px" v-model="password">
                         </div>
-                        <!--<div class="tip">-->
+                        <div class="tip">
                             <!--<input type="checkbox">-->
                             <!--<span>记住我</span>-->
-                            <!--<span class="nego">忘记密码</span>-->
-                        <!--</div>-->
+                            <span class="nego">忘记密码</span>
+                        </div>
                         <!--                        //鼠标放至上面就变色-->
                         <div class="loginbutton">
                             <span id="login" style="color: white;position: center" @click="login">立即登陆</span>
                         </div>
                         <div class="tip">
                             还没有账号？
-                            <span><a href="#" style="color: #c7254e">立刻注册</a></span>
+                            <span><a href="/user/index/newRegister.html" style="color: #c7254e">立刻注册</a></span>
 
                         </div>
 
@@ -272,89 +273,27 @@
 
                 </div>
             </div>
-            <div class="ri-item">
+            <div class="ri-item" id="hotCircle">
                 <div class="hot">
-                    <h2 style="font-weight: bolder">圈圈热门话题</h2>
+                    <h2 style="font-weight: bolder">热门圈子</h2>
                 </div>
-                <div class="circle">
+                <div class="circle" v-for="circle in circleList">
                     <div class="example">
-                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
+                        <img :src="circle.circleImg" height="50px" width="50px">
                     </div>
                     <div class="text">
                         <div class="line1">
-                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼"
+                            <input type="text" name="line1" :value="circle.circleName"
                                    style="border: 0px ;background-color:transparent">
                         </div>
                         <div class="line2">
-                            <input type="text" name="line1" value="点赞"
+                            <input type="text" name="line1" :value="circle.circleScore +'条微博'"
                                    style="border: 0px  ;background-color:transparent">
                         </div>
                     </div>
 
                 </div>
-                <div class="circle">
-                    <div class="example">
-                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
-                    </div>
-                    <div class="text">
-                        <div class="line1">
-                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼"
-                                   style="border: 0px ;background-color:transparent">
-                        </div>
-                        <div class="line2">
-                            <input type="text" name="line1" value="点赞"
-                                   style="border: 0px ;background-color:transparent">
-                        </div>
-                    </div>
 
-                </div>
-                <div class="circle">
-                    <div class="example">
-                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
-                    </div>
-                    <div class="text">
-                        <div class="line1">
-                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼"
-                                   style="border: 0px ;background-color:transparent">
-                        </div>
-                        <div class="line2">
-                            <input type="text" name="line1" value="点赞"
-                                   style="border: 0px ;background-color:transparent">
-                        </div>
-                    </div>
-                </div>
-                <div class="circle">
-                    <div class="example">
-                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
-                    </div>
-                    <div class="text">
-                        <div class="line1">
-                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼"
-                                   style="border: 0px ;background-color:transparent">
-                        </div>
-                        <div class="line2">
-                            <input type="text" name="line1" value="点赞"
-                                   style="border: 0px ;background-color:transparent">
-                        </div>
-                    </div>
-
-                </div>
-                <div class="circle">
-                    <div class="example">
-                        <img src="node_modules/images/1.jpg" height="50px" width="50px">
-                    </div>
-                    <div class="text">
-                        <div class="line1">
-                            <input type="text" name="line1" value="巴拉拉能量五呼啦呼"
-                                   style="border: 0px ;background-color:transparent">
-                        </div>
-                        <div class="line2">
-                            <input type="text" name="line1" value="点赞"
-                                   style="border: 0px ;background-color:transparent">
-                        </div>
-                    </div>
-
-                </div>
 
             </div>
 
@@ -364,10 +303,10 @@
 
 </div>
 
-<script src="node_modules/layui/layui.js" charset="utf-8"></script>
 
 
 <script>
+    //微博加载
     var vm3 = new Vue({
         el: '#blog-content',
         data: {
@@ -729,12 +668,15 @@
 </script>
 <script>
     let v1 = new Vue({
+
         el: '#app',
         data: {
             inputValue4: ''
         }
 
     });
+
+    //登录
     let v3 = new Vue({
         el: '#login-box',
         data: {
@@ -780,7 +722,35 @@
 
     })
 
+    let circle = new Vue({
+        el:"#hotCircle",
+        data:{
+            circleList:[]
+        },
+        methods:{
 
+        },
+        created(){
+            $.ajax({
+                url:"/circle/hotCircle",
+                dataType:"json",
+                type:"post",
+                success:function (res) {
+                    if (res.code==0){
+                        for (let i = 0; i < 5; i++) {
+                            circle.circleList.push(res.data[i]);
+
+                        }
+                    } else {
+                        console.log("热门圈子获取失败");
+                    }
+                },
+                error:function () {
+
+                }
+            })
+        }
+    })
 </script>
 </body>
 </html>

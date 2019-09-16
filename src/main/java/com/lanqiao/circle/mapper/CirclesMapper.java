@@ -40,4 +40,7 @@ public interface CirclesMapper {
     int deleteCircles(Integer circleId);
     List<Circles> findCircles(String circleName);
 
+
+    //根据名字精确查找圈子-刘佳昇
+    Circles getCircleByName(@Param("circleName") String circleName);
 }

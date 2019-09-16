@@ -560,17 +560,13 @@ public class RedisUtil {
         }
     }
 
-    public Object getZsetRange(String key){
+    public Set<ZSetOperations.TypedTuple<Object>> getZsetRange(String key){
         try {
             Set<ZSetOperations.TypedTuple<Object>> objects = redisTemplate.opsForZSet().reverseRangeWithScores(key, 0, -1);
-            assert objects != null;
-            for (ZSetOperations.TypedTuple<Object> next : objects) {
-                System.out.println(next.getValue() + "-" + next.getScore());
-            }
-            return "success";
+            return objects;
         }catch (Exception e ){
             e.printStackTrace();
-            return "-1";
+            return null;
         }
     }
 
