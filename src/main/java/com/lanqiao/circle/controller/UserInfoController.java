@@ -3,14 +3,17 @@ package com.lanqiao.circle.controller;
 
 import com.lanqiao.circle.annotations.UserLoginToken;
 import com.lanqiao.circle.entity.Users;
+import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.TokenService;
 import com.lanqiao.circle.service.UserInfoService;
+import com.lanqiao.circle.util.FileUploadUtil;
 import com.lanqiao.circle.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,7 +24,10 @@ public class UserInfoController {
     UserInfoService userInfoService;
     @Autowired
     TokenService tokenService;
-
+    @Autowired
+    FileUploadUtil fileUploadUtil;
+    @Autowired
+    UsersMapper usersMapper;
 
     /**
      * 查询用户基本信息
@@ -117,7 +123,7 @@ public class UserInfoController {
      */
     @PostMapping("getOtherInfo")
     public Result getOtherInfo(@RequestParam(name = "userId") int userId){
-        return userInfoService.getUserAvatarAndRelation(userId);
+        return userInfoService.getOthersInfo(userId);
     }
 
     /**
@@ -143,6 +149,18 @@ public class UserInfoController {
     @PostMapping("getOtherBlog")
     public Result getOtherBlog(@RequestParam(name = "userId") int userId,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
         return userInfoService.getUserAllBlog(userId,page,size);
+    }
+
+    @UserLoginToken
+    @PostMapping("changeAvatar")
+    public Result changeAvatar(HttpServletRequest httpServletRequest,@RequestParam(name = "file") MultipartFile file){
+        int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        String newUrl = "//" + fileUploadUtil.fileUpload(file,3);
+        Users users = new Users();
+        users.setUserId(userId);
+        users.setAvatarUrl(newUrl);
+        usersMapper.updateByPrimaryKeySelective(users);
+        return Result.createSuccessResult();
     }
 
     /**

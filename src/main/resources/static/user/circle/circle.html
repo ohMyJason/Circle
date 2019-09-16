@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>圈子</title>
+    <title>进入圈子</title>
     <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
@@ -35,7 +35,7 @@
         </div>
         <div class="col-md-7 col-md-offset-5">
             <a href="/user/index/userIndex.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
-            <a href="../../user/circle/circle.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
+            <a href="../../user/circle/circleRank.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
             <a href="../../user/letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
             <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
         </div>
@@ -116,7 +116,7 @@
                     <div v-if="item.isRepost == 0">
                         <div class="row">
                             <div class="col-md-18 col-md-offset-3">
-                                <span v-text="item.content" class="color#333"></span>
+                                <span v-html="item.content" class="color#333"></span>
                             </div>
                             <div class="col-md-3"></div>
                         </div>
@@ -158,7 +158,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-18 col-md-offset-3">
-                                        <span v-text="item.blogInfo.content"></span>
+                                        <span v-html="item.blogInfo.content"></span>
                                     </div>
                                     <div class="col-md-3"></div>
                                 </div>
@@ -277,7 +277,7 @@
                 type:"post",
                 dataType:"json",
                 data:{
-                  circleId : 1
+                  circleId : $.cookie("circleId")
                 },
                 success:function (result) {
                     if(result.code == 0){
@@ -308,7 +308,7 @@
                     url:"/circle/circleBlog",
                     type:"post",
                     data:{
-                        circleId : 1,
+                        circleId : $.cookie("circleId"),
                         page: this.pageNum,
                         size: this.size
                     },
@@ -467,7 +467,7 @@
                 url:"/circle/circleBlog",
                 type:"post",
                 data:{
-                    circleId : 1,
+                    circleId : $.cookie("circleId"),
                     page: this.pageNum,
                     size: this.size
                 },

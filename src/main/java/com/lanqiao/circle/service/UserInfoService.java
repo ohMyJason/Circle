@@ -27,6 +27,9 @@ public interface UserInfoService {
     // 查看主页微博
     public Result getUserAllBlog(int userId,int page,int size);
 
+    //查看别人主页基本信息
+    public Result getOthersInfo(int userId);
+
     //管理员查询用户
     public Result normalUsers(String userName,int page,int limit);
 

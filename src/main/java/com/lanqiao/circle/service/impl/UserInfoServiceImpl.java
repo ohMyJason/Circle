@@ -118,6 +118,28 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public Result getOthersInfo(int userId) {
+        try {
+            HashMap<String,String> hashMap= new HashMap<>();
+            Users users = usersMapper.selectByPrimaryKey(userId);
+            hashMap.put("userName",users.getUserName());
+            hashMap.put("avatarUrl",users.getAvatarUrl());
+            hashMap.put("email",users.getEmail());
+            hashMap.put("birthday",users.getBirthday());
+            hashMap.put("address",users.getAddress());
+            List<HashMap> allFans = relationShipMapper.getFansByUserId(userId,0,1000);
+            hashMap.put("fansNum",String.valueOf(allFans.size()));
+            List<HashMap> allBlogger = relationShipMapper.getBloggerByUserId(userId,0,1000);
+            hashMap.put("bloggerNum",String.valueOf(allBlogger.size()));
+            List<Blog> blogList = blogMapper.getBlogByUserId(userId);
+            hashMap.put("blogNum",String.valueOf(blogList.size()));
+            return Result.createSuccessResult(hashMap);
+        }catch (Exception e){
+            return Result.createByFailure("操作异常，请联系管理人员！");
+        }
+    }
+
+    @Override
     public Result normalUsers(String userName, int page, int limit) {
         try {
             page = PageCheck.checkPage(page);
