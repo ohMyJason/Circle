@@ -8,7 +8,6 @@
     <script src="../../node_modules/at-ui/dist/at.js"></script>
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <script src="../../node_modules/jQuery/jquery.mousewheel-3.0.6.min.js"></script>
-    <script src="../../node_modules/jQuery/emoji_jQuery.min.js"></script>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/circle.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
@@ -46,6 +45,7 @@
     <script src="../../node_modules/jQuery/jquery.cookie.js"></script>
     <link rel="stylesheet" href="../../node_modules/layui/css/layui.css">
     <script src="../../node_modules/layui/layui.js"></script>
+    <!--<script src="../../node_modules/emoji_jQuery-master/dist/emoji_jQuery.min.js"></script>-->
 </head>
 <body>
 <div id="app" class="container">
@@ -67,7 +67,7 @@
             <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
         </div>
     </div>
-    <at-card id="releaseImgCard" style="width: 300px;position: absolute;top: 230px;left: 200px;display: none">
+    <at-card id="releaseImgCard" style="width: 300px;position: absolute;top: 330px;left: 200px;display: none">
         <h4 slot="title"></h4>
         <div class="releaseImg">
         </div>
@@ -82,15 +82,15 @@
 
                 <div class="news" style="border: 1px">圈圈，和志同道合的人交朋友。</div>
                 <div class="neiro">
-                    <textarea v-model="blogContent" style="border:1px solid #2b542c;width:100%;height: 100%"
+                    <textarea  style="border:1px solid #2b542c;width:100%;height: 100%"
                               id="input"></textarea>
-                    <!--                    <input style="border:1px solid #2b542c;width:100%;height: 100%" id="input">-->
+                    <!--<input style="border:1px solid #2b542c;width:100%;height: 100%" id="input">-->
                 </div>
                 <div class="nima">
-                    <div class="emji">
-                        <i class="icon icon-github" style="color: #f0ad4e" id="btn"></i>
-                        <span style="font-size: 70%" id="btn1">表情</span>
-                    </div>
+                    <!--<div class="emji" id="emji">-->
+                        <!--<i class="icon icon-github" style="color: #f0ad4e" ></i>-->
+                        <!--<span style="font-size: 70%" id="btn1">表情</span>-->
+                    <!--</div>-->
                     <div class="emji" id="uploadImg">
                         <i class="icon icon-image" style="color: #449d44"></i>
                         <span style="font-size: 70%">图片</span>
@@ -109,9 +109,9 @@
                         <at-option :value="circle.circleId" v-for="circle in circleItem">{{circle.circleName}}
                         </at-option>
                     </at-select>
-                    <div class="disu" onmousedown="this.style.backgroundColor='red'"
+                    <div class="disu" id="disc" onmousedown="this.style.backgroundColor='red'"
                          onmouseup="this.style.backgroundColor='#f0ad4e'">
-                        <span id="disc" name="disc" @click="relealeBlog">发布</span>
+                        <span  name="disc" >发布</span>
                         <!--  <input type="submit" value="发布" name="disc" id="disc" style="background-color: none">-->
                     </div>
                 </div>
@@ -158,8 +158,8 @@
                 </div>
                 <div class="circle">
                     <!--                    用户图片-->
-                    <img id="user-photo" src="../../node_modules/images/1.jpg" height="100%" width="100%"
-                         style="border-radius: 50%">
+                    <a href="../../user/user-center/personal.html"><img id="user-photo" src="../../node_modules/images/1.jpg" height="100%" width="100%"
+                                                                        style="border-radius: 50%"></a>
                 </div>
                 <div class="nam">
                     <!--                    用户名称-->
@@ -243,7 +243,7 @@
                     <div v-if="item.isRepost == 0">
                         <div class="row">
                             <div class="col-md-18 col-md-offset-3">
-                                <span v-text="item.content" class="color#333" style="font-size: 16px"></span>
+                                <span v-html="item.content" class="color#333" style="font-size: 16px"></span>
                             </div>
                             <div class="col-md-3"></div>
                         </div>
@@ -269,7 +269,7 @@
                     <div v-if="item.isRepost == 1">
                         <div class="row">
                             <div class="col-md-18 col-md-offset-3">
-                                <span v-text="item.content" class="color#333" style="font-size: 16px"></span>
+                                <span v-html="item.content" class="color#333" style="font-size: 16px"></span>
                             </div>
                             <div class="col-md-3"></div>
                         </div>
@@ -288,7 +288,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-18 col-md-offset-3" style="padding-bottom: 10px;padding-left: 27px">
-                                        <span v-text="item.blogInfo.content"></span>
+                                        <span v-html="item.blogInfo.content"></span>
                                     </div>
                                     <div class="col-md-3"></div>
                                 </div>
@@ -392,6 +392,22 @@
 
 </div>
 <script>
+    //表情
+    // $.Lemoji({
+    //     emojiInput: '#input',
+    //     emojiBtn: '#emji',
+    //     position: 'LEFTBOTTOM',
+    //     length: 8,
+    //     emojis: {
+    //         qq: {path: 'static/images/qq/', code: ':', name: 'QQ表情'},
+    //         tieba: {path: 'static/images/tieba', code: ';', name: "贴吧表情"},
+    //         emoji: {path: 'static/images/emoji', code: ',', name: 'Emoji表情'}
+    //     }
+    // });
+
+
+
+
     //上传资源
     var ifImg = true;
     var ifVedio = true;
@@ -470,7 +486,7 @@
     });
 
 
-
+    //发微博部分
     var vm4 = new Vue({
         el: '#release-blog',
         data: {
@@ -503,7 +519,7 @@
                                     var layer = layui.layer;
                                     layer.msg("发表成功");
                                     setTimeout(function () {
-                                        window.location.reload();
+                                        // window.location.reload();
                                     }, 1000);
                                 })
                             }
@@ -515,6 +531,22 @@
             }
         }
         , created() {
+            layui.use('layedit', function(){
+                var layedit = layui.layedit;
+                var index = layedit.build('input',{
+                    height:140,
+                    tool: ['face']
+                }); //建立编辑器
+                $("#disc").click(function () {
+                    vm4.blogContent=layedit.getContent(index);
+                    console.log(layedit.getContent(index));
+                    console.log(vm4.blogContent);
+                    vm4.relealeBlog();
+
+                })
+
+
+            });
             $.ajax({
                 url: "/circle/getAllCircle",
                 type: "post",
@@ -752,6 +784,7 @@
                         size: 3
                     },
                     success: function (result) {
+                        vm3.selectType='0'; //流加载判断这个
                         vm3.pageNum = '1';
                         if (result.code == 0) {
                             vm3.blogInfoList = result.data;
@@ -785,7 +818,7 @@
             })
             
             $("#on-time").click(function () {
-                $("#on-hot").css("color","blcak");
+                $("#on-hot").css("color","black");
                 $("#on-time").css("color","green");
                 $("#on-focus").css("color","black");
                 $.ajax({
@@ -827,7 +860,7 @@
 
                     //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
                     //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
-                    next(lis.join(''), page < 1000); //假设总页数为 10
+                    next(lis.join(''), page < 10000); //假设总页数为 10
                     vm3.add();
                 }, 500);
 
