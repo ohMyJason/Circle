@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @Author 王昊
@@ -35,7 +36,8 @@ public class CircleController {
 
     @PostMapping("/getAllCircle")
     public  Result getAllCircle(){
-        return Result.createSuccessResult(circlesMapper.getAllCircle());
+        List<Circles> circlesList = circlesMapper.getAllCircle();
+        return Result.createSuccessResult(circlesList.size(),circlesList);
     }
     /**
      * 查看圈子基本信息
@@ -78,5 +80,13 @@ public class CircleController {
         return circleService.createCircle(circles);
     }
 
+    /**
+     * 展示所有圈子
+     * @return
+     */
+    @PostMapping("showAllCircle")
+    public Result showAllCircle(){
+        return circleService.showAllCircle();
+    }
 }
 

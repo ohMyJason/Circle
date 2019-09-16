@@ -74,4 +74,20 @@ public class CircleServiceImpl implements CircleService {
 
         }
     }
+
+    @Override
+    public Result showAllCircle() {
+        try{
+            List<HashMap> hashMapList = circlesMapper.getAllCirclesInfo();
+            for (HashMap hashMap:hashMapList) {
+                List<HashMap> hashMaps1 = circlesMapper.getCircleUserNum((Integer)hashMap.get("circleId"));
+                hashMap.put("userNum",hashMaps1.size());
+                List<HashMap> hashMaps2 = circlesMapper.getCircleBlogNum((Integer)hashMap.get("circleId"));
+                hashMap.put("blogNum",hashMaps2.size());
+            }
+            return Result.createSuccessResult(hashMapList);
+        }catch (Exception e){
+            return Result.createByFailure("操作异常，请联系管理人员！");
+        }
+    }
 }

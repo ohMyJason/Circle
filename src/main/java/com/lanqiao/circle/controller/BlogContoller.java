@@ -208,6 +208,32 @@ public class BlogContoller {
     }
 
     /**
+     * 展示关注人的微博
+     * @param httpServletRequest
+     * @param page
+     * @param size
+     * @return
+     */
+    @UserLoginToken
+    @PostMapping("showConcernBlog")
+    public Result showConcernBlog(HttpServletRequest httpServletRequest,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
+        int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        return blogService.showConcernBlog(userId,page,size);
+    }
+
+    /**
+     * 展示最新微博
+     * @param page
+     * @param size
+     * @return
+     */
+    @PostMapping("showBlogByCreateTime")
+    public Result showBlogByCreateTime(@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
+        return blogService.showBlogByCreateTime(page,size);
+    }
+
+
+    /**
      * 管理员查询用户
      */
     @PostMapping("/normalBlogs")

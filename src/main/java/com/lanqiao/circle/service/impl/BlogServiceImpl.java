@@ -3,6 +3,7 @@ package com.lanqiao.circle.service.impl;
 import com.lanqiao.circle.entity.Blog;
 import com.lanqiao.circle.entity.BlogInfo;
 import com.lanqiao.circle.mapper.BlogMapper;
+import com.lanqiao.circle.mapper.RelationShipMapper;
 import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.BlogService;
 import com.lanqiao.circle.util.PageCheck;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class BlogServiceImpl implements BlogService {
     BlogMapper blogMapper;
     @Autowired
     UsersMapper usersMapper;
+    @Autowired
+    RelationShipMapper relationShipMapper;
 
     @Override
     public Result forwardBlog(Blog blog) {
@@ -91,6 +95,54 @@ public class BlogServiceImpl implements BlogService {
           return Result.createByFailure("操作异常，请联系管理人员！");
 
       }
+    }
+
+    @Override
+    public Result showConcernBlog(int userId, int page, int size) {
+        try{
+            int pageIndex = (page-1) * size;
+            List<HashMap> allBlogger = relationShipMapper.getBloggerByUserId(userId,pageIndex,size);
+            List<Integer> integers = new ArrayList<>();
+            for (HashMap hashMap:allBlogger) {
+                integers.add((Integer) hashMap.get("bloggerId"));
+            }
+            List<BlogInfo> blogInfoList = blogMapper.showConcernBlog(integers,pageIndex,size);
+            for (BlogInfo blogInfo: blogInfoList) {
+                List<String> resoureList = usersMapper.getAllResource(blogInfo.getBlogId());
+                blogInfo.setResourceList(resoureList);
+                if(blogInfo.getIsRepost() != 0) {
+                    BlogInfo blogInfo1 = usersMapper.getRepostBlog(blogInfo.getRepostId());
+                    List<String> resourceList1 = usersMapper.getAllResource(blogInfo1.getBlogId());
+                    blogInfo1.setResourceList(resourceList1);
+                    blogInfo.setBlogInfo(blogInfo1);
+                }
+            }
+            return Result.createSuccessResult(blogInfoList.size(),blogInfoList);
+        }catch (Exception e){
+            return Result.createByFailure("操作异常，请联系管理人员！");
+
+        }
+    }
+
+    @Override
+    public Result showBlogByCreateTime(int page, int size) {
+        try {
+            int pageIndex = (page - 1) * size;
+            List<BlogInfo> blogInfoList = blogMapper.showBlogByCreateTime(pageIndex, size);
+            for (BlogInfo blogInfo : blogInfoList) {
+                List<String> resoureList = usersMapper.getAllResource(blogInfo.getBlogId());
+                blogInfo.setResourceList(resoureList);
+                if (blogInfo.getIsRepost() != 0) {
+                    BlogInfo blogInfo1 = usersMapper.getRepostBlog(blogInfo.getRepostId());
+                    List<String> resourceList1 = usersMapper.getAllResource(blogInfo1.getBlogId());
+                    blogInfo1.setResourceList(resourceList1);
+                    blogInfo.setBlogInfo(blogInfo1);
+                }
+            }
+            return Result.createSuccessResult(blogInfoList.size(), blogInfoList);
+        }catch (Exception e){
+            return Result.createByFailure("操作异常，请联系管理人员！");
+        }
     }
 
 
