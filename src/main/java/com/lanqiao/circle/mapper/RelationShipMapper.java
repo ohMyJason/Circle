@@ -20,6 +20,8 @@ public interface RelationShipMapper {
 
     RelationShip selectByPrimaryKey(RelationShipKey key);
 
+    RelationShip selectByPrimaryKeyNoLimit(RelationShipKey key);
+
     int updateByPrimaryKeySelective(RelationShip record);
 
     int updateByPrimaryKey(RelationShip record);

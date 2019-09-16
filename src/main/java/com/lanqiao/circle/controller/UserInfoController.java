@@ -4,6 +4,7 @@ package com.lanqiao.circle.controller;
 import com.lanqiao.circle.annotations.UserLoginToken;
 import com.lanqiao.circle.entity.Users;
 import com.lanqiao.circle.mapper.UsersMapper;
+import com.lanqiao.circle.service.RelationShipService;
 import com.lanqiao.circle.service.TokenService;
 import com.lanqiao.circle.service.UserInfoService;
 import com.lanqiao.circle.util.FileUploadUtil;
@@ -28,6 +29,8 @@ public class UserInfoController {
     FileUploadUtil fileUploadUtil;
     @Autowired
     UsersMapper usersMapper;
+    @Autowired
+    RelationShipService relationShipService;
 
     /**
      * 查询用户基本信息
@@ -151,6 +154,12 @@ public class UserInfoController {
         return userInfoService.getUserAllBlog(userId,page,size);
     }
 
+    /**
+     * 修改用户头像
+     * @param httpServletRequest
+     * @param file
+     * @return
+     */
     @UserLoginToken
     @PostMapping("changeAvatar")
     public Result changeAvatar(HttpServletRequest httpServletRequest,@RequestParam(name = "file") MultipartFile file){
@@ -161,6 +170,32 @@ public class UserInfoController {
         users.setAvatarUrl(newUrl);
         usersMapper.updateByPrimaryKeySelective(users);
         return Result.createSuccessResult();
+    }
+
+    /**
+     * 判断是否关注
+     * @param httpServletRequest
+     * @param userId
+     * @return
+     */
+    @UserLoginToken
+    @PostMapping("ifConcern")
+    public Result ifConcern(HttpServletRequest httpServletRequest,@RequestParam(name = "userId") int userId){
+        int loginUserId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        return relationShipService.ifConcern(loginUserId,userId);
+    }
+
+    /**
+     * 加关注或者取消关注
+     * @param httpServletRequest
+     * @param userId
+     * @return
+     */
+    @UserLoginToken
+    @PostMapping("addConcernOrSub")
+    public Result addConcernOrSub(HttpServletRequest httpServletRequest,@RequestParam(name = "userId") int userId){
+        int loginUserId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        return relationShipService.addConcernOrSub(loginUserId,userId);
     }
 
     /**
