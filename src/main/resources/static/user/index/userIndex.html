@@ -109,7 +109,7 @@
                         <span style="font-size: 70%">圈子：</span>
 
                     </div>
-                    <at-select id="selectCircle" v-model="circleId" style="width:100px">
+                    <at-select id="selectCircle" v-model="circleId" style="width:30%">
                         <at-option :value="circle.circleId" v-for="circle in circleItem">{{circle.circleName}}
                         </at-option>
                     </at-select>
@@ -801,7 +801,7 @@
                     }
                 })
             })
-            
+
             $("#on-focus").click(function () {
                 $("#on-hot").css("color","black");
                 $("#on-time").css("color","black");
@@ -824,7 +824,7 @@
                     }
                 })
             })
-            
+
             $("#on-time").click(function () {
                 $("#on-hot").css("color","black");
                 $("#on-time").css("color","green");
@@ -846,8 +846,8 @@
                     }
                 })
             })
-            
-            
+
+
 
         }
     })
