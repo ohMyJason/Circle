@@ -28,7 +28,7 @@
         </div>
         <div class="col-md-7 col-md-offset-5">
             <a href="/user/index/userIndex.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
-            <a href="../../user/circle/circle.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
+            <a href="../../user/circle/circleRank.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
             <a href="../../user/letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
             <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
         </div>
@@ -67,14 +67,16 @@
         el: '#app',
         data:{
             inputValue4:'',
-            src:'',
+            src:'../../node_modules/images/upload.png',
             circleName:'',
             circleTitle:'',
+            flag:'false',
             file:''
         },methods: {
             getFile(e) {
                 let _this = this
                 this.file = e.target.files[0];
+                this.flag = 'true';
                 // console.log(this.file);
                 var files = e.target.files[0];
                 if (!e || !window.FileReader) return  // 看支持不支持FileReader
@@ -84,32 +86,48 @@
                     _this.src = this.result
                 }
             },createCircle(){
-                var myform = new FormData();
-                myform.append('file',this.file);
-                myform.append('circleName',this.circleName);
-                myform.append('circleTitle',this.circleTitle);
-                $.ajax({
-                    url:'/circle/createCircle',
-                    type:'post',
-                    headers:{'token':$.cookie("token")},
-                    async: false,
-                    contentType: false,
-                    processData: false,
-                    data: myform,
-                    success:function (result) {
-                        if (result.code==0){
-                            layui.use('layer',function() {
-                                var layer = layui.layer;
-                                layer.msg("创建成功！");
-                            })
-                            vm.circleName = '';
-                            vm.circleTitle ='';
-                            vm.file='';
-                        }else {
-                            alert(result.msg)
+                if (this.circleName==''){
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入圈子名称");
+                    })
+                }else if(this.circleName.length > 10){
+                    layer.msg("圈子名长度不得超过10")
+                }else if(this.circleTitle==''){
+                    layer.msg("请输入圈子主题");
+                }else if(this.circleTitle.length > 20){
+                    layer.msg("圈子描述长度不得超过20");
+                }else if(this.flag=='false'){
+                    layer.msg("请选择图片");
+                }else{
+                    var myform = new FormData();
+                    myform.append('file',this.file);
+                    myform.append('circleName',this.circleName);
+                    myform.append('circleTitle',this.circleTitle);
+                    $.ajax({
+                        url:'/circle/createCircle',
+                        type:'post',
+                        headers:{'token':$.cookie("token")},
+                        async: false,
+                        contentType: false,
+                        processData: false,
+                        data: myform,
+                        success:function (result) {
+                            if (result.code==0){
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("创建成功！");
+                                    window.location.href="/user/circle/circleRank.html"
+                                })
+                                vm.circleName = '';
+                                vm.circleTitle ='';
+                                vm.file='';
+                            }else {
+                                alert(result.msg)
+                            }
                         }
-                    }
-                })
+                    })
+                }
             }
         }
     })

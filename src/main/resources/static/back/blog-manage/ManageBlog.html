@@ -4,16 +4,34 @@
     <meta charset="UTF-8">
     <title>微博</title>
     <link rel="stylesheet" href="../../node_modules/layui/css/layui.css">
+    <style>
+        #search{
+            margin-left: 383px;
+            margin-top: -57px;
+        }
+    </style>
 </head>
 <body>
-<div style="margin-top: 25px">
-<label class="layui-form-label" style="width: 160px">输入微博内容进行筛选：</label>
-<input type="text" name="title" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input" style="width: 300px">
+<div class="demoTable">
+    <div style="margin-top: 25px">
+        <label class="layui-form-label" style="width: 150px">输入微博进行筛选：</label>
+        <input type="text" name="title" required lay-verify="required" id="usersName" placeholder="请输入标题" autocomplete="off" class="layui-input" style="width: 200px">
+        <button class="layui-btn" data-type="reload" id="search">搜索</button></div>
+</div>
+<table class="layui-hide" id="user" lay-filter="user"></table>
 
-</div>
-<div style="margin-left: 25px;margin-top: 30px">
-    <table id="usersInfo" lay-filter="test"></table>
-</div>
+<script id="toolbarDemo" type="text/html">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    </div>
+</script>
+
+<script id="barDemo" type="text/html">
+    <a class="layui-btn layui-btn-xs" lay-event="banned">封禁</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
 <script src="../../node_modules/layui/layui.js"></script>
 <script>
     layui.use('table', function(){
@@ -68,7 +86,7 @@
             //重新加载表格
             table.reload('user' ,{
                 where: { //设定异步数据接口的额外参数，任意设
-                    blogContent: $("#usersName").val()
+                    content: $("#usersName").val()
                 },
                 page: {
                     curr: 1 //重新从第 1 页开始
