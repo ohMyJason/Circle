@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/login.css">
     <link rel="stylesheet" href="../../node_modules/jQuery/jquery.mCustomScrollbar.min.css">
+
+<!--    <link rel="shortcut icon" href="../../../static/favicon.ico"/>-->
+<!--    <link rel="bookmark" href="../../../static/favicon.ico"/>-->
+<!--    <link rel="icon" type="image/x-icon" href="../../../static/favicon.ico">-->
     <style>
 
         [v-cloak] {
@@ -229,12 +233,13 @@
                         </div>
                         <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 0">
                             <at-tag color="success" style="margin-bottom: 5px">原创</at-tag>
-                            <at-tag color="info">{{item.circleName}}</at-tag>
+                            <a style="margin-right: 100px" href="/user/circle/circle.html" @click="toCircle(item.circleId)"><at-tag color="info">{{item.circleName}}</at-tag></a>
 
                         </div>
                         <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 1">
                             <at-tag color="info" style="margin-bottom: 5px">转载</at-tag>
-                            <at-tag color="info">{{item.circleName}}</at-tag>
+                            <a style="margin-right: 100px" href="/user/circle/circle.html" @click="toCircle(item.circleId)"><at-tag color="info">{{item.circleName}}</at-tag></a>
+
 
                         </div>
 
@@ -570,6 +575,9 @@
             reviewed: 'll',
             selectType:"0"  //0-热度 1-关注 2-实时
         }, methods: {
+            toCircle(circleId){
+                $.cookie("circleId",circleId,{path: '/user/circle/circle.html'})
+            },
             add() {
                 if (this.selectType==0){
                     $.ajax({
