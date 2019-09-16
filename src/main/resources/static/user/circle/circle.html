@@ -244,8 +244,9 @@
                     </div>
 
                 </div>
-
             </div>
+            <ul class="flow-default" style="height: 300px; margin-left: 50%" id="LAY_demo2"></ul>
+
             <div class="col-md-3"></div>
         </div>
     </div>
@@ -480,22 +481,32 @@
                 }
             })
 
-            window.onscroll = function(){
-                //变量scrollTop是滚动条滚动时，距离顶部的距离
-                var scrollTop = document.documentElement.scrollTop||document.body.scrollTop;
-                //变量windowHeight是可视区的高度
-                var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
-                //变量scrollHeight是滚动条的总高度
-                var scrollHeight = document.documentElement.scrollHeight||document.body.scrollHeight;
-                //滚动条到底部的条件
-                if(scrollTop+windowHeight==scrollHeight){
-                    //写后台加载数据的函数
-                    // console.log("距顶部"+scrollTop+"可视区高度"+windowHeight+"滚动条总高度"+scrollHeight);
-                    vm3.add();
-                }
-            }
+
         }
     })
+
+    layui.use('flow', function () {
+        var flow = layui.flow;
+
+        flow.load({
+            elem: '#LAY_demo2' //流加载容器
+            , done: function (page, next) { //执行下一页的回调
+                //模拟数据插入
+                setTimeout(function () {
+                    var lis = [];
+                    // for(var i = 0; i < 8; i++){
+                    //     lis.push('<li>'+ ( (page-1)*8 + i + 1 ) +'</li>')
+                    // }
+
+                    //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                    //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                    next(lis.join(''), page < 10000); //假设总页数为 10
+                    vm3.add();
+                }, 500);
+
+            }
+        });
+    });
 
 
 </script>
