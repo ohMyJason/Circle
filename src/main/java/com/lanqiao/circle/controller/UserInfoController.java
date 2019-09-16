@@ -111,6 +111,16 @@ public class UserInfoController {
     }
 
     /**
+     * 查看别人首页除微博外的东西
+     * @param userId
+     * @return
+     */
+    @PostMapping("getOtherInfo")
+    public Result getOtherInfo(@RequestParam(name = "userId") int userId){
+        return userInfoService.getUserAvatarAndRelation(userId);
+    }
+
+    /**
      * 查看自己主页所有微博
      * @param httpServletRequest
      * @return
