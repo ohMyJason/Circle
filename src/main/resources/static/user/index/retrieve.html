@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>找回密码</title>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link type="text/css" rel="stylesheet" href="../../node_modules/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../node_modules/css/top.css">
+    <script src="../../node_modules/layui/layui.js"></script>
+
+    <style>
+        .verifyCode{
+            padding: 4px 5px;
+            outline-style: none;
+            border-radius: 5px;
+            width: 50px;
+            border: 1px solid #C5D9E8;
+        }
+        .sendCode{
+            height: 31px;
+            padding: 0px 5px;
+            color: white;
+            background-color: #6190E8;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <div class="row top-header">
+        <div class="col-md-3 logo">
+            <a href="#">
+                <img src="../../node_modules/images/logo.png" class="img-up">
+            </a>
+        </div>
+        <div class="col-md-9"></div>
+        <div class="col-md-7 col-md-offset-5">
+            <a href="../..//user/index/userIndex.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
+            <a href="../../user/circle/circleRank.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
+            <a href="../../user/letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
+            <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
+        </div>
+    </div>
+    <div class="row" style="margin: 30px 0px">
+        <div class="col-md-10 col-md-offset-4">
+            <h1>找回密码</h1>
+        </div>
+        <div class="col-md-10"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-6 col-md-12">
+            <form>
+                用户名:<input type="text" name="userName" v-model="userName" placeholder="请输入用户名" class="at-input__original"><br>
+                手机号:<input type="text" name="phone" v-model="phone" placeholder="请输入手机号" class="at-input__original"><br>
+                验证码: <input type="text" class="verifyCode" v-model="code">
+                <input type="button" class="sendCode" style="margin-left: 10px" @click="sendMsg" value="获取验证码"><br>
+                <input type="button" class="sendCode" @click="changePassword" value="修改密码">
+            </form>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-16 col-md-offset-4">
+<!--            <at-progress :percent="percent"></at-progress>-->
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+<script>
+    var vm =new Vue({
+        el: '#app',
+        data: {
+            userName:'',
+            phone:'',
+            userId:'',
+            flag:'false',
+            percent:'10',
+            resCode:'lll',
+            code:''
+        },methods:{
+            sendMsg() {
+                var regpho = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+                if(this.userName==''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入正确的用户名");
+                    })
+                }else if(!regpho.test(this.phone)){
+                    layer.msg("请输入正确的手机号");
+                }else {
+                    $.ajax({
+                        url:'/userInfo/matchNameAndPhone',
+                        type:'post',
+                        data:{
+                            userName: this.userName,
+                            phone: this.phone
+                        },success:function (result) {
+                            if(result.code==0){
+                                vm.userId = result.data;
+                                vm.flag = 'true';
+                                $.ajax({
+                                    url: "/userLogin/sendMsg",
+                                    type: "post",
+                                    data: {
+                                        phoneNumber: vm.phone
+                                    },
+                                    success: function (result) {
+                                        layui.use('layer',function() {
+                                            var layer = layui.layer;
+                                            layer.msg("发送成功，注意接受短信！");
+                                        })
+                                        if (result.code == 0) {
+                                            vm.resCode = result.data;
+                                        }
+                                    }, error: function () {
+                                        layui.use('layer', function () {
+                                            var layer = layui.layer;
+                                            layer.msg("请求失败");
+                                        })
+                                    }
+                                })
+                            }else {
+                                layer.msg(result.msg);
+                            }
+                        }
+                    })
+                }
+            },changePassword(){
+
+            }
+
+
+
+        }
+    })
+</script>
+</body>
+</html>
