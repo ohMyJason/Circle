@@ -129,4 +129,17 @@
     select <include refid="Base_Column_List"/>
     from tb_circle
   </select>
+
+  <select id="getAllCirclesInfo" resultType="hashmap">
+    select circle_id as circleId,circle_name as circleName,circle_title as circleTitle,circle_img_url as circleImgUrl
+    from tb_circle
+  </select>
+
+  <select id="getCircleUserNum" resultType="hashmap" parameterType="java.lang.Integer">
+    SELECT DISTINCT user_id,circle_id FROM tb_blog WHERE tb_blog.circle_id = #{circleId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getCircleBlogNum" resultType="hashmap" parameterType="java.lang.Integer">
+    SELECT blog_id,circle_id FROM tb_blog WHERE tb_blog.circle_id = #{circleId,jdbcType=INTEGER}
+  </select>
 </mapper>

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/circleRank.css">
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
     <style>
         [v-cloak] {
             display: none;
@@ -57,7 +59,7 @@
                 <div class="col-md-offset-1 col-md-22">
                     <div class="circle-show" v-for="(item,i) in circleList">
                         <div class="img-border">
-                            <img src="" class="circle-image">
+                            <img :src="item.circleImgUrl" class="circle-image">
                         </div>
                         <div style="float: left">
                             <at-tag color="error" v-if="item.userNum > 5">火热</at-tag>
@@ -91,55 +93,6 @@
             nowTime:'',
             circleCount:'1',
             circleList:[
-                {
-                    circleId:'',
-                    circleName:'搞笑圈',
-                    circleTitle:'一句话描述你的圈子',
-                    userNum:'10',
-                    blogNum:'20',
-                },{
-                    circleId:'',
-                    circleName:'搞笑圈',
-                    circleTitle:'一句话描述你的圈子',
-                    userNum:'10',
-                    blogNum:'20',
-                },{
-                    circleId:'',
-                    circleName:'搞笑圈',
-                    circleTitle:'一句话描述你的圈子',
-                    userNum:'10',
-                    blogNum:'20',
-                },{
-                    circleId:'',
-                    circleName:'搞笑圈',
-                    circleTitle:'一句话描述你的圈子',
-                    userNum:'5',
-                    blogNum:'20',
-                },{
-                    circleId:'',
-                    circleName:'搞笑圈',
-                    circleTitle:'一句话描述你的圈子',
-                    userNum:'10',
-                    blogNum:'20',
-                },{
-                    circleId:'',
-                    circleName:'搞笑圈',
-                    circleTitle:'一句话描述你的圈子',
-                    userNum:'10',
-                    blogNum:'20',
-                },{
-                    circleId:'',
-                    circleName:'搞笑圈',
-                    circleTitle:'一句话描述你的圈子',
-                    userNum:'10',
-                    blogNum:'20',
-                },{
-                    circleId:'',
-                    circleName:'搞笑圈',
-                    circleTitle:'一句话描述你的圈子',
-                    userNum:'10',
-                    blogNum:'20',
-                }
             ],
         },methods:{
             addZero(d){
@@ -153,6 +106,25 @@
                 this.nowTime = d.getFullYear() + "-" + vm.addZero((d.getMonth() + 1)) + "-" + vm.addZero(d.getDate()) + " "
                 + vm.addZero(d.getHours()) + ":" + vm.addZero(d.getMinutes()) + ":" + vm.addZero(d.getSeconds());
             }
+        },created(){
+            $.ajax({
+                url:"/circle/showAllCircle",
+                type:"post",
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.circleList = result.data;
+                    }
+                }
+            })
+            $.ajax({
+                url:"/circle/getAllCircle",
+                type:"post",
+                success:function (result) {
+                    if(result.code == 0){
+                        vm.circleCount = result.count;
+                    }
+                }
+            })
         }
     })
     setInterval("vm.setTime()", 1000);

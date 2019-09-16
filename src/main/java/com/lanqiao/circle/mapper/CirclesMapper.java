@@ -29,6 +29,11 @@ public interface CirclesMapper {
 
     List<Circles> getAllCircle();
 
+    List<HashMap> getAllCirclesInfo();
+
+    List<HashMap> getCircleUserNum(Integer circleId);
+
+    List<HashMap> getCircleBlogNum(Integer circleId);
 
     List<Circles> normalCircles(@Param("start") int start, @Param("limit") int limit, @Param("circleName")  String circleName);
     int getCirclesCount(@Param("circleName")  String circleName);
