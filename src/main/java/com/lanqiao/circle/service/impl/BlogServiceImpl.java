@@ -119,6 +119,7 @@ public class BlogServiceImpl implements BlogService {
             }
             return Result.createSuccessResult(blogInfoList.size(),blogInfoList);
         }catch (Exception e){
+            e.printStackTrace();
             return Result.createByFailure("操作异常，请联系管理人员！");
 
         }
