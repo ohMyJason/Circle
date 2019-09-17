@@ -136,6 +136,87 @@
 </button>
 <script>
     var flag = 1;
+
+    $(document).ready(function() {
+        var url =decodeURI(location.search);
+        console.log(url);
+        if(url == ""||url==null)
+        {
+            console.log("非页面间传值");
+        }
+        else {
+            console.log(url);
+            var sendName = url.substr(10);
+            // var sendName = url;
+            console.log(sendName);
+            //查询是否存在记录
+            $.ajax({
+                url:"/session/selectSession",
+                type:"post",
+                dataType:"json",
+                headers:{'token':$.cookie("token")},
+                data: {
+                    userName:sendName
+                },
+                success:function (result) {
+                    if(result.data == 0)
+                    {
+                        $.ajax({
+                            url:"/session/sendMsg",
+                            type:"post",
+                            dataType:"json",
+                            headers:{'token':$.cookie("token")},
+                            data: {
+                                userName:sendName,
+                                letterContent:"你好呀",
+                                // resourceUrl:""
+                            },
+                            success:function (result) {
+                                window.location.href="/user/letter/session.html";
+                                if(result.code == 0){
+                                    $("#inputText").val("");
+                                    $.ajax({
+                                        url:"/session/getMessageLog",
+                                        type:"post",
+                                        dataType:"json",
+                                        async:true,
+                                        headers:{'token':$.cookie("token")},
+                                        data:{
+                                            // receiverId:connectionId
+                                            userName:sendName
+                                        },success:function (result) {
+                                            if (result.code == 0) {
+                                                vm.messageList = result.data;
+                                            }
+                                        }
+                                    })
+                                    // vm.getUserList();
+                                    $.ajax({
+                                        url:"/session/getUserList",
+                                        type:"post",
+                                        dataType:"json",
+                                        headers:{'token':$.cookie("token")},
+                                        success:function (result) {
+                                            if(result.code == 0){
+                                                vm.userList = result.data;
+                                            }
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                    }
+                    else if(result.data == 1){
+                        console.log(1);
+                        window.location.href="/user/letter/session.html";
+                    }
+                }
+            })
+
+        }
+    });
+
+
     $.Lemoji({
         emojiInput: '#inputText',
         emojiBtn: '#emojiBtn',
@@ -417,37 +498,36 @@
             if(flag === 1)
             {
                 flag = 2;
-                var userName = vm.userList[0].userName;
-                console.log("userName1" + userName);
-                // vm.getMsg(0);
-                //当前聊天对象的id
-                // var connectionId = vm.userList[0].userId;
-                // var userName = $(".list").eq(0).children().eq(1).children().text();
-                // var userName = $(".list").children().eq(1).children().css("border","2px solid red");
-                // console.log("userName" + userName);
+                if(vm.userList[0].userName != null)
+                {
+                    var userName = vm.userList[0].userName;
+                    // console.log("userName1" + userName);
 
+                }
             }
             else if (flag === 2){
                 vm.clickFriends(0);
-
-                var userName = vm.userList[0].userName;
-                console.log("userName2" + userName);
-                $.ajax({
-                    url:"/session/getMessageLog",
-                    type:"post",
-                    dataType:"json",
-                    // async:true,
-                    headers:{'token':$.cookie("token")},
-                    data:{
-                        // receiverId:connectionId
-                        userName:userName
-                    },success:function (result) {
-                        if (result.code == 0) {
-                            vm.messageList = result.data;
+                if(vm.userList[0] != null){
+                    var userName = vm.userList[0].userName;
+                    // console.log("userName2" + userName);
+                    $.ajax({
+                        url:"/session/getMessageLog",
+                        type:"post",
+                        dataType:"json",
+                        // async:true,
+                        headers:{'token':$.cookie("token")},
+                        data:{
+                            // receiverId:connectionId
+                            userName:userName
+                        },success:function (result) {
+                            if (result.code == 0) {
+                                vm.messageList = result.data;
+                            }
                         }
-                    }
-                })
+                    })
+                }
                 flag=3;
+
             }
             // flag = false;
         }

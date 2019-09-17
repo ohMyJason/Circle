@@ -72,6 +72,18 @@ public class SessionController {
         return sessionService.sendMsg(senterId,userName, letterContent,resourceUrl);
     }
 
+    //查询两人是否已经建立会话
+//    @UserLoginToken
+    @PostMapping("/selectSession")
+    public Result selectSession(HttpServletRequest httpServletRequest,String userName)
+    {
+        int senterId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        return sessionService.selectSession(senterId,userName);
+    }
+
+
+
+
     @UserLoginToken
     @PostMapping("/test")
     public Result test(@RequestParam(name = "file")MultipartFile file)
@@ -101,4 +113,6 @@ public class SessionController {
 //        }
 
     }
+
+
 }
