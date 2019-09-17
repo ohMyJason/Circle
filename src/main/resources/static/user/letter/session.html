@@ -62,7 +62,7 @@
                 </div>
                 <!-- 消息概况 -->
                 <div>
-                    <span class="listText left" v-text = "item.letterContent"></span>
+                    <span class="listText left" v-html = "item.letterContent"></span>
                 </div>
             </div>
         </div>
@@ -74,7 +74,6 @@
                 <!-- 顶部：联系人信息 -->
                 <div id="messageTitle">
                     <span id="contactName" class="left">您还未选中或发起聊天，快去跟好友聊一聊吧</span>
-
                 </div>
                 <!-- 历史消息 -->
                 <div id = "msgContent" >
@@ -132,21 +131,11 @@
         </div>
     </div>
 </div>
-
-<!--<div id="test" style="border: 1px solid blue"></div>-->
-<!--<textarea rows="5" cols="91" id="emojiTestInput"> </textarea>-->
-<!--<button id="send">发送</button>-->
-<!--<button id="btn">emojiBtn</button>-->
-<!--<button type="button" class="layui-btn layui-btn-sm layui-btn-primary" id = "qq">-->
-<!--&lt;!&ndash;    <i class="layui-icon">&#x1002;</i>&ndash;&gt;-->
-<!--    <img src="../../node_modules/images/smile.png" style="width: 20px;height: 20px;">-->
-<!--</button>-->
-
 <button  id = "emojiBtn" style="border: none;background-color: white">
     <img src="../../node_modules/images/smile.png" style="width: 20px;height: 20px;">
 </button>
 <script>
-
+    var flag = 1;
     $.Lemoji({
         emojiInput: '#inputText',
         emojiBtn: '#emojiBtn',
@@ -158,18 +147,6 @@
             tieba: {path: '../../node_modules/emoji_jQuery-master/static/images/tieba', code: ';', name: "贴吧表情"}
         }
     });
-    // $('#send').click(function () {
-    // var letterContent = $('#inputText').val();
-    //     content = $.emojiParse({
-    //     content: letterContent,
-    //     emojis: [
-    //         {path: '../../node_modules/emoji_jQuery-master/static/images/emoji/', code: ',', type: 'emoji'},
-    //         {type: 'qq', path: '../../node_modules/emoji_jQuery-master/static/images/qq/', code: ':'},
-    //         {path: '../../node_modules/emoji_jQuery-master/static/images/tieba/', code: ';', type: 'tieba'}
-    //     ]
-    // });
-    // // $('#test').html(content);
-    // });
 
     function back(event){
         event = event || window.event;
@@ -256,8 +233,6 @@
         }
     }
 
-
-
     //绑定用户信息以及好友列表
     var vm = new Vue({
         el:"#top20",
@@ -292,7 +267,7 @@
                     url:"/session/getMessageLog",
                     type:"post",
                     dataType:"json",
-                    async:true,
+                    // async:true,
                     headers:{'token':$.cookie("token")},
                     data:{
                         // receiverId:connectionId
@@ -317,6 +292,7 @@
                 $now.css({"border-right": "2px solid #ff5500"});
                 $now.css({"border-bottom": "1px solid black"});
                 $("#contactName").html($now.find(".userName").html());
+
             },
             upLoad:function(e) {
                 this.file = e.target.files[0];
@@ -417,8 +393,14 @@
                         }
                     }
                 })
+                // $(".list").eq(0).css("border","5px solid red");
+
+                // $(".list").eq(0).addClass("choose");
+                // vm.clickFriends(0);
+                // vm.getMsg(0);
             }
             getUserList();
+
         }
         ,updated()
         {
@@ -428,7 +410,46 @@
                 if (content != null) {
                     content.scrollTop = content.scrollHeight;
                 }
+
             })
+
+            // console.log("1"+vm.userList[0].userName);
+            if(flag === 1)
+            {
+                flag = 2;
+                var userName = vm.userList[0].userName;
+                console.log("userName1" + userName);
+                // vm.getMsg(0);
+                //当前聊天对象的id
+                // var connectionId = vm.userList[0].userId;
+                // var userName = $(".list").eq(0).children().eq(1).children().text();
+                // var userName = $(".list").children().eq(1).children().css("border","2px solid red");
+                // console.log("userName" + userName);
+
+            }
+            else if (flag === 2){
+                vm.clickFriends(0);
+
+                var userName = vm.userList[0].userName;
+                console.log("userName2" + userName);
+                $.ajax({
+                    url:"/session/getMessageLog",
+                    type:"post",
+                    dataType:"json",
+                    // async:true,
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        // receiverId:connectionId
+                        userName:userName
+                    },success:function (result) {
+                        if (result.code == 0) {
+                            vm.messageList = result.data;
+                        }
+                    }
+                })
+                flag=3;
+            }
+            // flag = false;
         }
     })
 </script>
