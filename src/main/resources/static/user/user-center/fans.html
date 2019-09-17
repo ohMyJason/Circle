@@ -73,7 +73,8 @@
                                 <p class="user_item" v-cloak>感情状况 {{item.isSingle}}</p>
                             </div>
                             <div class="focus_btn col-md-2">
-                                <a href="../../user/letter/session.html"><at-button type="warning">私信</at-button></a>
+<!--                                <a href="../../user/letter/session.html"><at-button type="warning">私信</at-button></a>-->
+                                <a href="#" @click = "sendSession(index)" id = "sendS"><at-button type="warning" >私信</at-button></a>
                             </div>
                             <div class="concern_btn col-md-3">
                                 <a id="tag_box1" v-cloak @click="addConcernOrSub">{{isAttention}}</a>
@@ -155,6 +156,12 @@
                         },1000)
                     }
                 })
+            },
+            sendSession:function(index){
+                var userName = vm.fansList[index].fansName;
+                window.location.href="/user/letter/session.html?userName="+ userName;
+
+                // $('#sendS').attr("href","../../user/letter/session.html?userName=" + userName);
             }
         },
         created() {
