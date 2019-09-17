@@ -101,7 +101,7 @@ public class BlogServiceImpl implements BlogService {
     public Result showConcernBlog(int userId, int page, int size) {
         try{
             int pageIndex = (page-1) * size;
-            List<HashMap> allBlogger = relationShipMapper.getBloggerByUserId(userId,pageIndex,size);
+            List<HashMap> allBlogger = relationShipMapper.getAllBloggerUserId(userId);
             List<Integer> integers = new ArrayList<>();
             for (HashMap hashMap:allBlogger) {
                 integers.add((Integer) hashMap.get("bloggerId"));

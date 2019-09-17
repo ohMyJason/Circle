@@ -29,4 +29,6 @@ public interface RelationShipMapper {
     List<HashMap> getFansByUserId(@Param("userId") Integer userId, @Param("pageIndex")Integer pageIndex, @Param("size")Integer size);
 
     List<HashMap> getBloggerByUserId(@Param("userId") Integer userId,@Param("pageIndex")Integer pageIndex,@Param("size")Integer size);
+
+    List<HashMap> getAllBloggerUserId(Integer userId);
 }
