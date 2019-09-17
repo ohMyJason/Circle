@@ -151,4 +151,10 @@ on a.senterId = b.user_id
   </select>
 
 
+  <select id = "selectSession" resultType="hashmap" parameterType="com.lanqiao.circle.entity.Letter">
+    select user_id as 'userId',user_name as 'userName',avatar_url as 'avatarUrl' from tb_users where user_id in
+(select receiver_id from tb_letter where senter_id =#{senterId,jdbcType=INTEGER} UNION
+select senter_id from tb_letter where receiver_id =#{senterId,jdbcType=INTEGER}) and user_id = #{receiverId,jdbcType=INTEGER};
+  </select>
+
 </mapper>

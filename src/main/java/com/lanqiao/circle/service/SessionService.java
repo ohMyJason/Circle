@@ -21,4 +21,7 @@ public interface SessionService {
 
     //发送信息
     public Result sendMsg(Integer senterId,String userName,String  letterContent,String  resourceUrl);
+
+    //查询两人是否已经建立会话
+    public Result selectSession(Integer senterId, String userName);
 }

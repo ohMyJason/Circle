@@ -16,7 +16,7 @@
 <div class="demoTable">
 <div style="margin-top: 25px">
     <label class="layui-form-label" style="width: 150px">输入用户名进行筛选：</label>
-    <input type="text" name="title" required lay-verify="required" id="usersName" placeholder="请输入标题" autocomplete="off" class="layui-input" style="width: 200px">
+    <input type="text" name="title" required lay-verify="required" id="usersName" placeholder="请输入搜索内容" autocomplete="off" class="layui-input" style="width: 200px">
     <button class="layui-btn" data-type="reload" id="search">搜索</button></div>
 </div>
     <table class="layui-hide" id="user" lay-filter="user"></table>
@@ -60,7 +60,7 @@
                             return "女";
                         }
                     }}
-                ,{field: 'phone', title: '手机号码', width: 150}
+                ,{field: 'phone', title: '手机号码', width: 160}
                 ,{field: 'email', title: '电子邮箱', width: 170, sort: true}
                 ,{field: 'isSingle', title: '是否单身', width: 80,templet:function (d) {
                         if(d.isSingle==0){

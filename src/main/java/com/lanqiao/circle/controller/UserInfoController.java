@@ -154,7 +154,7 @@ public class UserInfoController {
      * @return
      */
     @PostMapping("getOtherBlog")
-    public Result getOtherBlog(@RequestParam(name = "userId") int userId,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
+    public Result getOtherBlog(@RequestParam(name = "userId") Integer userId,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
         return userInfoService.getUserAllBlog(userId,page,size);
     }
 
