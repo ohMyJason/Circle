@@ -50,13 +50,7 @@
                     <span class="nick_name" v-cloak>{{userName}}</span><br>
                 </div>
 
-                <div class="row second_box flex-center">
-                    我的粉丝页
-                    <!--<at-menu mode="horizontal" active-name="0" class="col-md-24">-->
-                        <!--<at-menu-item name="1" class="col-md-offset-5">我的主页</at-menu-item>-->
-                        <!--&lt;!&ndash;<at-menu-item name="2" class="col-md-offset-8">我的相册</at-menu-item>&ndash;&gt;-->
-                    <!--</at-menu>-->
-                </div>
+                <div class="row second_box flex-center">我的粉丝页</div>
 
                 <div class="third_box">
                     <div class="row">
@@ -75,25 +69,13 @@
                                 <p class="user_item" v-cloak>感情状况 {{item.isSingle}}</p>
                             </div>
                             <div class="focus_btn col-md-2">
-<!--                                <a href="../../user/letter/session.html"><at-button type="warning">私信</at-button></a>-->
-                                <a href="#" @click = "sendSession(index)" id = "sendS"><at-button type="warning" >私信</at-button></a>
+                                <a href="../../user/letter/session.html"><at-button type="warning" >私信</at-button></a>
+                                <!--<a id ="sendS" @click = "sendSession(index)"><at-button type="warning" >私信</at-button></a>-->
                             </div>
                             <div class="concern_btn col-md-3">
-                                <a id="tag_box1" v-cloak @click="addConcernOrSub()">{{isAttention}}</a>
+                                <a id="tag_box1" v-cloak @click="show(index)"></a>
                             </div>
-<!--                            <div class="select_more">-->
-<!--                                <at-dropdown @on-dropdown-command="handleCommand">-->
-<!--                                    <i class="icon icon-list"></i>-->
-<!--                                    <at-dropdown-menu slot="menu">-->
-<!--                                        <at-dropdown-item name="session" href="../../user/letter/session.html">私信</at-dropdown-item>-->
-<!--                                        <at-dropdown-item>悄悄关注</at-dropdown-item>-->
-<!--                                        <at-dropdown-item>分享到微博</at-dropdown-item>-->
-<!--                                        <at-dropdown-item>移除粉丝</at-dropdown-item>-->
-<!--                                        <at-dropdown-item>加入黑名单</at-dropdown-item>-->
-<!--                                        <at-dropdown-item>投诉他</at-dropdown-item>-->
-<!--                                    </at-dropdown-menu>-->
-<!--                                </at-dropdown>-->
-<!--                            </div>-->
+
                         </div>
 
                     </div>
@@ -119,44 +101,44 @@
             fansNum: '',
             fansList:[],
             pageNum:'1',
-            pageSize:'10',
-            isAttention:''
+            pageSize:'10'
         },
         methods:{
-            addConcernOrSub(e,userId) {
-                $.ajax({
-                    url:"/userInfo/addConcernOrSub",
-                    type:"post",
-                    headers:{'token':$.cookie("token")},
-                    dataType:"json",
-                    data:{
-                        userId: userId
-                    },
-                    success:function (result) {
-                        if (result.code == 0){
-                            e.target.innerHTML= '已关注';
-                            layui.use('layer',function() {
-                                var layer = layui.layer;
-                                layer.msg("关注成功！");
-                            })
-                        }else{
-                            e.target.innerHTML = '未关注';
-                            layui.use('layer',function() {
-                                var layer = layui.layer;
-                                layer.msg("取消关注!");
-                            })
-                        }
-                    },error:function () {
-                        layui.use('layer',function() {
-                            var layer = layui.layer;
-                            layer.msg("请登录！");
-                        })
-                        setTimeout(function () {
-                            window.location.href="../../index.html";
-                        },1000)
-                    }
-                })
-            },ifConcern(userId){
+            // addConcernOrSub(e,userId) {
+            //     $.ajax({
+            //         url:"/userInfo/addConcernOrSub",
+            //         type:"post",
+            //         headers:{'token':$.cookie("token")},
+            //         dataType:"json",
+            //         data:{
+            //             userId: userId
+            //         },
+            //         success:function (result) {
+            //             if (result.code == 0){
+            //                 e.target.innerHTML= '已关注';
+            //                 layui.use('layer',function() {
+            //                     var layer = layui.layer;
+            //                     layer.msg("关注成功！");
+            //                 })
+            //             }else{
+            //                 e.target.innerHTML = '未关注';
+            //                 layui.use('layer',function() {
+            //                     var layer = layui.layer;
+            //                     layer.msg("取消关注!");
+            //                 })
+            //             }
+            //         },error:function () {
+            //             layui.use('layer',function() {
+            //                 var layer = layui.layer;
+            //                 layer.msg("请登录！");
+            //             })
+            //             setTimeout(function () {
+            //                 window.location.href="../../index.html";
+            //             },1000)
+            //         }
+            //     })
+            // },
+            ifConcern(userId){
                 $.ajax({
                     url:"/userInfo/ifConcern",
                     type:"post",
@@ -175,7 +157,43 @@
                         vm.isAttention = "未关注"
                     }
                 })
-            }
+            },
+            // show:function(e,index){
+            //     var f = this.fansList[index].fansId;
+            //     console.log(f);
+            //     $.ajax({
+            //         url:"/userInfo/addConcernOrSub",
+            //         type:"post",
+            //         headers:{'token':$.cookie("token")},
+            //         dataType:"json",
+            //         data:{
+            //             userId: f
+            //         },
+            //         success:function (result) {
+            //             if (result.code == 0){
+            //                 e.target.innerHTML= '已关注';
+            //                 layui.use('layer',function() {
+            //                     var layer = layui.layer;
+            //                     layer.msg("关注成功！");
+            //                 })
+            //             }else{
+            //                 this.html = '未关注';
+            //                 layui.use('layer',function() {
+            //                     var layer = layui.layer;
+            //                     layer.msg("取消关注!");
+            //                 })
+            //             }
+            //         },error:function () {
+            //             layui.use('layer',function() {
+            //                 var layer = layui.layer;
+            //                 layer.msg("请登录！");
+            //             })
+            //             setTimeout(function () {
+            //                 window.location.href="../../index.html";
+            //             },1000)
+            //         }
+            //     })
+            // }
         },
         created() {
             //展示自己头像和名字
