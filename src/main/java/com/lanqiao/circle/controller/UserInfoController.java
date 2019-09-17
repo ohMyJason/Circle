@@ -129,8 +129,8 @@ public class UserInfoController {
      * @return
      */
     @PostMapping("getOtherInfo")
-    public Result getOtherInfo(@RequestParam(name = "userId") int userId){
-        return userInfoService.getOthersInfo(userId);
+    public Result getOtherInfo(@RequestParam(name = "userId") String userId){
+        return userInfoService.getOthersInfo(Integer.parseInt(userId));
     }
 
     /**
@@ -154,7 +154,7 @@ public class UserInfoController {
      * @return
      */
     @PostMapping("getOtherBlog")
-    public Result getOtherBlog(@RequestParam(name = "userId") int userId,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
+    public Result getOtherBlog(@RequestParam(name = "userId") Integer userId,@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
         return userInfoService.getUserAllBlog(userId,page,size);
     }
 

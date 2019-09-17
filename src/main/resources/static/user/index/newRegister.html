@@ -29,8 +29,8 @@
             </div>
         </div>
         <div class="main row">
-            <div class="col-md-7"></div>
-            <div class="col-md-10">
+            <div class="col-md-5"></div>
+            <div class="col-md-14">
                 <div class="layui-form-item">
                     <at-input v-model="phoneNumber" placeholder="请输入11位手机号" prepend-button>
                         <template slot="prepend">
@@ -39,7 +39,7 @@
                     </at-input>
                 </div>
                 <div class="layui-form-item">
-                    <at-input  v-model="password" type="password" placeholder="请输入您的密码" prepend-button>
+                    <at-input v-model="password" type="password" placeholder="请输入您的密码" prepend-button>
                         <template slot="prepend">
                             <span><i class="icon icon-alert-triangle"></i>设置密码</span>
                         </template>
@@ -65,29 +65,30 @@
                 </div>
                 <div class="layui-form-item">
 
+
+                    <at-button type="success" hollow @click="sendMsg">点击获取短信激活码</at-button>
+                    <at-button type="error" @click="sendMsg">收不到验证码？</at-button>
+                </div>
+                <div class="layui-form-item">
                     <div class="layui-input-inline">
-                        <at-input v-model="code" style="width: 200px" placeholder="请输入内容" prepend-button>
+                        <at-input v-model="code" style="width: 200px" maxLength="200px" placeholder="请输入内容"
+                                  prepend-button>
                             <template slot="prepend">
                                 <span><i class="icon icon-edit-2"></i>验证码</span>
                             </template>
                         </at-input>
                     </div>
-                    <div class="layui-input-inline" style="margin-left: 10px">
-                        <at-button type="success" hollow @click="sendMsg">点击获取短信激活码</at-button>
-                    </div>
-                </div>
-                <div class="layui-form-item">
+                    <div class="layui-input-inline" style="padding-right:200px ">
 
-                    <at-button type="error" @click="sendMsg">收不到验证码？</at-button>
-
-                </div>
-                <div class="layui-form-item">
-                    <div style="margin-left: 40%">
                         <at-button @click="registerNow" type="primary" size="large">立即注册</at-button>
+
                     </div>
+                </div>
+                <div class="layui-form-item">
+
                 </div>
             </div>
-            <div class="col-md-7"></div>
+            <div class="col-md-5"></div>
 
 
         </div>

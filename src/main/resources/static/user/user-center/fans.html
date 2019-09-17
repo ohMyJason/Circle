@@ -65,15 +65,18 @@
                     <div class="fans_card" v-for="(item,index) in fansList">
                         <div class="personal_box row">
                             <img :src="item.avatarUrl" class="user_img">
-                            <div class="user_info">
+                            <div class="user_info col-md-15">
                                 <p class="user_nickname" v-cloak>{{item.fansName}}</p>
                                 <p class="user_item" v-cloak>生日 {{item.birthday}}</p>
                                 <p class="user_item" v-cloak>地址 {{item.address}}</p>
                                 <p class="user_item" v-cloak>性别 {{item.sex}}</p>
                                 <p class="user_item" v-cloak>感情状况 {{item.isSingle}}</p>
                             </div>
-                            <div class="focus_btn">
+                            <div class="focus_btn col-md-2">
                                 <a href="../../user/letter/session.html"><at-button type="warning">私信</at-button></a>
+                            </div>
+                            <div class="concern_btn col-md-3">
+                                <a id="tag_box1" v-cloak @click="addConcernOrSub">{{isAttention}}</a>
                             </div>
 <!--                            <div class="select_more">-->
 <!--                                <at-dropdown @on-dropdown-command="handleCommand">-->
@@ -113,7 +116,46 @@
             fansNum: '',
             fansList:[],
             pageNum:'1',
-            pageSize:'10'
+            pageSize:'10',
+            isAttention:''
+        },
+        methods:{
+            addConcernOrSub() {
+                $.ajax({
+                    url:"/userInfo/addConcernOrSub",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    dataType:"json",
+                    data:{
+                        userId: $.cookie("userId")
+                    },
+                    success:function (result) {
+                        if (result.code == 0){
+                            vm.isAttention=="已关注";
+                            $("#tag_box1").html("已关注");
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("关注成功！");
+                            })
+                        }else{
+                            vm.isAttention=="未关注";
+                            $("#tag_box1").html("未关注");
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("取消关注!");
+                            })
+                        }
+                    },error:function () {
+                        layui.use('layer',function() {
+                            var layer = layui.layer;
+                            layer.msg("请登录！");
+                        })
+                        setTimeout(function () {
+                            window.location.href="../../index.html";
+                        },1000)
+                    }
+                })
+            }
         },
         created() {
             //展示自己头像和名字
@@ -164,6 +206,26 @@
                             }
                         }
                     }
+                }
+            })
+
+            //判断是否关注
+            $.ajax({
+                url:"/userInfo/ifConcern",
+                type:"post",
+                headers:{'token':$.cookie("token")},
+                dataType:"json",
+                data:{
+                    userId: $.cookie("userId")
+                },
+                success:function (result) {
+                    if (result.code == 0){
+                        vm.isAttention = "已关注"
+                    } else {
+                        vm.isAttention = "未关注"
+                    }
+                },error:function () {
+                    vm.isAttention = "未关注"
                 }
             })
         }
