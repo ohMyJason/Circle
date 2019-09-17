@@ -100,7 +100,7 @@ public class CircleServiceImpl implements CircleService {
             limit = PageCheck.checkLimit(limit);
             int start = PageCheck.calculateStart(page,limit);
             int count = circlesMapper.getCirclesCount(circleName);
-            List<Circles> circlesList = circlesMapper.normalCircles(start, limit, circleName);
+            List<HashMap> circlesList = circlesMapper.normalCircles(start, limit, circleName);
             if (count>0){
                 return Result.createSuccessResult(count,circlesList);
             }else {
