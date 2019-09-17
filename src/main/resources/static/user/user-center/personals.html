@@ -49,7 +49,8 @@
                     <img :src="userInfo.avatarUrl" class="icon-head"><br>
                     <span class="nick_name" v-cloak>{{userInfo.userName}}</span><br>
                     <a id="tag_box1" v-cloak @click="addConcernOrSub">{{isAttention}}</a>&nbsp;&nbsp;
-                    <a id="tag_box2" href="../../user/letter/session.html" v-cloak>发私信</a>
+<!--                    <a id="tag_box2" href="../../user/letter/session.html" v-cloak>发私信</a>-->
+                    <a id="tag_box2" href="#" @click = "sendSession" v-cloak>发私信</a>
                 </div>
 
                 <div class="second_box row">
@@ -238,6 +239,7 @@
 </div>
 </body>
 <script>
+
     var vm = new Vue({
         el: '#app',
         data:{
@@ -405,7 +407,7 @@
                     }
                 })
             },
-            addConcernOrSub() {
+            addConcernOrSub:function() {
                 $.ajax({
                     url:"/userInfo/addConcernOrSub",
                     type:"post",
@@ -440,6 +442,10 @@
                         },1000)
                     }
                 })
+            },
+            sendSession:function () {
+                var userName = vm.userInfo.userName;
+                $('#tag_box2').attr("href","../../user/letter/session.html?userName=" + userName);
             }
         },
         created() {

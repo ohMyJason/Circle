@@ -106,4 +106,25 @@ public class SessionServiceImpl implements SessionService {
         }
         return Result.createSuccessResult();
     }
+
+    @Override
+    public Result selectSession(Integer senterId,String userName) {
+        Integer receiverId = usersMapper.getUserByUserName(userName).getUserId();
+        Letter letter = new Letter();
+        letter.setSenterId(senterId);
+        letter.setReceiverId(receiverId);
+        HashMap res = letterMapper.selectSession(letter);
+        if(res == null)
+        {
+            return Result.createSuccessResult(0);
+        }
+        else if(res != null)
+        {
+            return Result.createSuccessResult(1);
+        }
+        else
+        {
+            return Result.createByFailure("未知错误，联系管理员");
+        }
+    }
 }
