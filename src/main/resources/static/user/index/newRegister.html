@@ -47,18 +47,18 @@
                 </div>
                 <div class="layui-form-item">
                     <at-tag>生日：</at-tag>
-                    <at-select v-model="birthYear" size="normal" style="width: 100px">
+                    <at-select v-model="birthYear" size="normal" style="width: 92px">
                         <at-option v-for="n in 2019" :value="n" v-text="n" v-if="n > 1980"></at-option>
-
                     </at-select>
                     <at-tag>年</at-tag>
-                    <at-select v-model="birthMonth" size="normal" style="width: 100px">
+
+                    <at-select v-model="birthMonth" size="normal" style="width: 90px">
                         <at-option v-for="n in 12" :value="n" v-text="n" v-if="n < 13"></at-option>
                     </at-select>
                     <at-tag>月</at-tag>
-                    <at-select v-model="birthDay" size="normal" style="width: 100px">
-                        <at-option v-for="n in 31" :value="n" v-text="n" v-if="n < 32"></at-option>
 
+                    <at-select v-model="birthDay" size="normal" style="width: 90px">
+                        <at-option v-for="n in 31" :value="n" v-text="n" v-if="n < 32"></at-option>
                     </at-select>
                     <at-tag>日</at-tag>
 
@@ -66,16 +66,14 @@
                 <div class="layui-form-item">
 
                     <div class="layui-input-inline">
-
-                        <at-button type="success" hollow @click="sendMsg">点击获取短信激活码</at-button>
-                    </div>
-                    <div class="layui-input-inline">
-
                         <at-input v-model="code" style="width: 200px" placeholder="请输入内容" prepend-button>
                             <template slot="prepend">
                                 <span><i class="icon icon-edit-2"></i>验证码</span>
                             </template>
                         </at-input>
+                    </div>
+                    <div class="layui-input-inline" style="margin-left: 10px">
+                        <at-button type="success" hollow @click="sendMsg">点击获取短信激活码</at-button>
                     </div>
                 </div>
                 <div class="layui-form-item">

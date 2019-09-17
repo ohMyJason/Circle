@@ -42,4 +42,6 @@ public interface UsersMapper {
     List<Users> findUsers(String userName);
 
     Users getUserByUserName(String userName);
+
+    Users getUsersByPhone(String phone);
 }

@@ -264,4 +264,10 @@
     from tb_users
     where user_name = #{userName}
   </select>
+
+  <select id="getUsersByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List"/>
+    from tb_users
+    where  phone = #{phone,jdbcType=VARCHAR}
+  </select>
 </mapper>
