@@ -153,7 +153,7 @@ public class BlogServiceImpl implements BlogService {
             limit = PageCheck.checkLimit(limit);
             int start = PageCheck.calculateStart(page,limit);
             int count = blogMapper.getBlogCount(content);
-            List<Blog> blogList = blogMapper.normalBlogs(start, limit, content);
+            List<HashMap> blogList = blogMapper.normalBlogs(start, limit, content);
             if (count>0){
                 return Result.createSuccessResult(count,blogList);
             }else {
@@ -188,6 +188,21 @@ public class BlogServiceImpl implements BlogService {
                 return Result.createByFailure("ERROR");
             }
         }catch (Exception e){
+            System.out.println(e.getCause());
+            return Result.createByFailure("异常");
+        }
+    }
+    @Override
+    public Result editWeight(Integer blogId,Integer weight){
+        try {
+            if(blogMapper.editWeight(blogId,weight) > 0){
+                return Result.createSuccessResult();
+            }
+            else{
+                return Result.createByFailure("数据库错误");
+            }
+        }
+        catch (Exception e){
             System.out.println(e.getCause());
             return Result.createByFailure("异常");
         }

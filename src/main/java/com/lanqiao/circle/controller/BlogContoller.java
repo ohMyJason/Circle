@@ -8,6 +8,7 @@ import com.lanqiao.circle.entity.Comments;
 import com.lanqiao.circle.entity.LikeKey;
 import com.lanqiao.circle.mapper.BlogItemMapper;
 import com.lanqiao.circle.mapper.BlogMapper;
+import com.lanqiao.circle.mapper.CirclesMapper;
 import com.lanqiao.circle.service.BlogService;
 import com.lanqiao.circle.service.CommentsService;
 import com.lanqiao.circle.service.LikeService;
@@ -57,6 +58,9 @@ public class BlogContoller {
 
     @Autowired
     RedisUtil redisUtil;
+
+    @Autowired
+    CirclesMapper circlesMapper;
     /**
      * 实现评论功能
      *
@@ -133,10 +137,11 @@ public class BlogContoller {
             blog.setCreateTime(commentUtil.getCurTime());
             blog.setContent(baseBlog.get("content").toString());
             blog.setCircleId(Integer.parseInt(baseBlog.get("circleId").toString()));
-            if (redisUtil.hasKey("circle-"+blog.getCircleId())){
-                redisUtil.incr("circle-"+blog.getCircleId(),1);
+            String circleName = circlesMapper.selectByPrimaryKey(blog.getCircleId()).getCircleName();
+            if (!redisUtil.hasMember("circle-blog-num",circleName)){
+                redisUtil.addZSet("circle-blog-num",1,circleName);
             }else {
-                redisUtil.set("circle-"+blog.getCircleId(),1);
+                redisUtil.updateZet("circle-blog-num",1,circleName);
             }
             blogMapper.insertSelective(blog);
             for (Object itemId:itemIds){
@@ -256,6 +261,13 @@ public class BlogContoller {
     @PostMapping("/setWeight")
     public Result setWeight(Integer blogId){
         return blogService.setWeight(blogId);
+    }
+    /**
+     * 管理员修改权重
+     */
+    @PostMapping("/editWeight")
+    public Result editWeight(Integer blogId,Integer weight){
+        return blogService.editWeight(blogId,weight);
     }
     /**
      * 管理员查询用户

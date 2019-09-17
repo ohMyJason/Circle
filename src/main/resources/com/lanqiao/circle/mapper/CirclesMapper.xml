@@ -178,4 +178,10 @@
     from tb_circle
     where circle_name LIKE concat(concat("%",#{circle_name,jdbcType=VARCHAR}),"%")
   </select>
+
+  <select id="getCircleByName" parameterType="string" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_circle
+    where circle_name = #{circleName}
+  </select>
 </mapper>

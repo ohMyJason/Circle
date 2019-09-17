@@ -244,7 +244,7 @@
   <update id="deleteUsers" parameterType="com.lanqiao.circle.entity.Users" >
     update tb_users
     set is_delete = 1
-    where user_id = #{userId}
+    where userId = #{userId}
   </update>
 
   <update id="bannedUsers" parameterType="com.lanqiao.circle.entity.Users" >

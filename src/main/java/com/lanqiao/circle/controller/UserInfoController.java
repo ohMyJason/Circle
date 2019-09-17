@@ -198,6 +198,11 @@ public class UserInfoController {
         return relationShipService.addConcernOrSub(loginUserId,userId);
     }
 
+    @PostMapping("matchNameAndPhone")
+    public Result matchNameAndPhone(@RequestParam(name = "userName") String userName,@RequestParam(name = "phone") String phone){
+        return userInfoService.matchNameAndPhone(userName,phone);
+    }
+
     /**
      * 管理员查询用户信息
      */

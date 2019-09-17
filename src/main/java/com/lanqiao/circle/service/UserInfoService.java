@@ -30,6 +30,9 @@ public interface UserInfoService {
     //查看别人主页基本信息
     public Result getOthersInfo(int userId);
 
+    //找回密码匹配手机号和账号
+    public Result matchNameAndPhone(String userName,String phone);
+
     //管理员查询用户
     public Result normalUsers(String userName,int page,int limit);
 

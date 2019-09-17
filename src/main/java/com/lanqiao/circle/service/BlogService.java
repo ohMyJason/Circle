@@ -31,6 +31,10 @@ public interface BlogService {
 
     //管理员设置权重
     public Result setWeight(Integer blogId);
+
+    //管理员修改权重
+    public Result editWeight(Integer blogId,Integer weight);
+
     //管理员查询微博
     public Result findBlog(String content);
 }

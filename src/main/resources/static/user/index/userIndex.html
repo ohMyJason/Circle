@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>登陆后首页</title>
+    <title>首页</title>
     <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
@@ -38,8 +38,13 @@
             padding-top: 10px;
             /*background-color: #ffffee;*/
         }
+
+        .circleItemStyle {
+            margin-left: 50px;
+            margin-bottom: 30px;
+        }
     </style>
-    <!--    <link rel="stylesheet" href="../../node_modules/css/Index.css">-->
+        <!--<link rel="stylesheet" href="../../node_modules/css/Index.css">-->
     <style>
 
         [v-cloak] {
@@ -109,7 +114,7 @@
                         <span style="font-size: 70%">圈子：</span>
 
                     </div>
-                    <at-select id="selectCircle" v-model="circleId" style="width:100px">
+                    <at-select id="selectCircle" v-model="circleId" style="width:30%">
                         <at-option :value="circle.circleId" v-for="circle in circleItem">{{circle.circleName}}
                         </at-option>
                     </at-select>
@@ -154,7 +159,7 @@
 
 
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8" id="fixDiv">
             <!--            用户信息-->
             <div class="lefts">
                 <div class="pph">
@@ -213,9 +218,54 @@
 
 
             </div>
+            <div class="lefts" style="margin-top: 20px">
+
+            <at-card id="hotCircle" >
+                <h4 slot="title">热门圈子</h4>
+                <div>
+                    <div class="circleItemStyle" v-for="circle,index in circleList">
+                        <a href="" @click.prevent="toCircle(circle.circleId)">
+                        <div >
+                            <img :src="circle.circleImg" height="50px" width="50px" style="border-radius: 50%">
+                        </div>
+                        <div >
+                            <div style="margin-top: 5px">
+                                <at-tag color="info">{{circle.circleName}}</at-tag>
+                                <at-badge value="hot!" v-if="index<3"></at-badge>
+
+                            </div>
+                            <div >
+                                <input type="text" name="line1" :value="circle.circleScore +'条微博'"
+                                       style="border: 0px  ;background-color:transparent">
+                                <!--<at-badge :value="circle.circleScore +'条微博'"></at-badge>-->
+                            </div>
+                        </div>
+                        </a>
+
+                    </div>
+                </div>
+            </at-card>
+            </div>
 
         </div>
     </div>
+    <script>
+        //移动到顶部时固定
+        $(function () {
+            var ie6 = document.all;
+            var dv = $('#fixDiv'), st;
+            dv.attr('otop', dv.offset().top); //存储原来的距离顶部的距离
+            $(window).scroll(function () {
+                st = Math.max(document.body.scrollTop || document.documentElement.scrollTop);
+                if (st > parseInt(dv.attr('otop'))) {
+                    if (ie6) {//IE6不支持fixed属性，所以只能靠设置position为absolute和top实现此效果
+                        dv.css({ position: 'absolute', top: st });
+                    }
+                    else if (dv.css('position') != 'fixed') dv.css({ 'position': 'fixed', top: 0,left:'65%' });
+                } else if (dv.css('position') != 'static') dv.css({ 'position': 'static' });
+            });
+        })
+    </script>
     <div id="circle-content">
         <div class="row content-margin">
             <div class="col-md-3"></div>
@@ -231,12 +281,12 @@
                             <a href="#" @click="jumpPagePerson(item.userId)"><span v-text="item.userName"
                                                                                    class="black blog-belonger"></span></a>
                         </div>
-                        <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 0">
+                        <div class="col-md-2 col-md-offset-9" v-if="item.isRepost == 0">
                             <at-tag color="success" style="margin-bottom: 5px">原创</at-tag>
                             <a style="margin-right: 100px" href="/user/circle/circle.html" @click="toCircle(item.circleId)"><at-tag color="info">{{item.circleName}}</at-tag></a>
 
                         </div>
-                        <div class="col-md-2 col-md-offset-11" v-if="item.isRepost == 1">
+                        <div class="col-md-2 col-md-offset-9" v-if="item.isRepost == 1">
                             <at-tag color="info" style="margin-bottom: 5px">转载</at-tag>
                             <a style="margin-right: 100px" href="/user/circle/circle.html" @click="toCircle(item.circleId)"><at-tag color="info">{{item.circleName}}</at-tag></a>
 
@@ -397,6 +447,39 @@
 
 </div>
 <script>
+   // 热门圈子
+    let circle = new Vue({
+        el:"#hotCircle",
+        data:{
+            circleList:[]
+        },
+        methods:{
+            toCircle(circleId){
+                $.cookie("circleId",circleId,{path:"/user/circle/circle.html"});
+                window.location.href="/user/circle/circle.html";
+            }
+        },
+        created(){
+            $.ajax({
+                url:"/circle/hotCircle",
+                dataType:"json",
+                type:"post",
+                success:function (res) {
+                    if (res.code==0){
+                        for (let i = 0; i < 5; i++) {
+                            circle.circleList.push(res.data[i]);
+
+                        }
+                    } else {
+                        console.log("热门圈子获取失败");
+                    }
+                },
+                error:function () {
+
+                }
+            })
+        }
+    })
     //表情
     // $.Lemoji({
     //     emojiInput: '#input',
@@ -524,7 +607,7 @@
                                     var layer = layui.layer;
                                     layer.msg("发表成功");
                                     setTimeout(function () {
-                                        // window.location.reload();
+                                        window.location.reload();
                                     }, 1000);
                                 })
                             }
@@ -803,7 +886,7 @@
                     }
                 })
             })
-            
+
             $("#on-focus").click(function () {
                 $("#on-hot").css("color","black");
                 $("#on-time").css("color","black");
@@ -826,7 +909,7 @@
                     }
                 })
             })
-            
+
             $("#on-time").click(function () {
                 $("#on-hot").css("color","black");
                 $("#on-time").css("color","green");
@@ -848,8 +931,8 @@
                     }
                 })
             })
-            
-            
+
+
 
         }
     })

@@ -144,14 +144,14 @@
         select * from index_blog where userId = #{userId,jdbcType=INTEGER}
   </select>
 
-  <select id="normalBlogs" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from tb_blog
+  <select id="normalBlogs" resultType="hashmap">
+    select  b.content,u.user_name as userName,b.weight,b.is_repost as isRepost,b.circle_id as circleId,b.create_time as createTime,b.blog_id as blogId
+    from tb_blog b,tb_users u
     <where>
       <if test="content!=null">
-        content like '%${content}%'
+        b.content like '%${content}%'
       </if>
-      and is_delete = 0
+      and b.is_delete = 0 and b.user_id = u.user_id
     </where>
     LIMIT #{start},#{limit}
     </select>
@@ -176,6 +176,14 @@
     update tb_blog
     set weight = 10000
     where blog_id = #{blogId}
+  </update>
+
+  <update id="editWeight" parameterType="com.lanqiao.circle.entity.Blog" >
+    update tb_blog
+    <set>
+        weight = #{weight,jdbcType=INTEGER},
+    </set>
+    where blog_id = #{blogId,jdbcType=INTEGER}
   </update>
 
   <select id="findBlog" resultType="com.lanqiao.circle.entity.Blog" parameterType="java.lang.String">

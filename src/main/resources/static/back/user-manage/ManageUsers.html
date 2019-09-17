@@ -117,7 +117,8 @@
                     , data: {"userId": data.userId}
                     , datatype: "json",
                     success: function (data) {
-                        obj.del();
+                        // obj.del();
+                        $(".layui-laypage-btn")[0].click();
                         console.log(data.userId);
                         layer.close(index);
                         layer.msg("封禁成功", {icon: 6});
@@ -126,7 +127,6 @@
                         layer.msg("封禁失败", {icon: 5});
                     }
                 })
-
             });
         }else if (obj.event==='unblock') {
             layer.confirm('是否解禁吗？', function (index) {
@@ -136,7 +136,7 @@
                     , data: {"userId": data.userId}
                     , datatype: "json",
                     success: function (data) {
-                        obj.del();
+                        $(".layui-laypage-btn")[0].click();
                         console.log(data.userId);
                         layer.close(index);
                         layer.msg("解封成功", {icon: 6});

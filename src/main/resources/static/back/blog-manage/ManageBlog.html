@@ -31,6 +31,7 @@
 
 <script id="barDemo" type="text/html">
     <a class="layui-btn layui-btn-xs" lay-event="edit">修改权重</a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="up">置顶微博</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script src="../../node_modules/layui/layui.js"></script>
@@ -48,10 +49,9 @@
             ,even:true
             ,limit: 5 //每页默认显示的数量
             ,cols: [[ //表头
-                {field: 'blogId', title: '微博ID', width:80, sort: true, fixed: 'left'}
-                ,{field: 'userId', title: '用户ID',sort:true, width:80}
-                ,{field: 'createTime', title: '创建时间', width:180, sort: true}
+                {field: 'blogId', title: '创建时间', width:180, sort: true}
                 ,{field: 'content', title: '微博内容', width:250, sort: true}
+                ,{field: 'createTime', title: '创建时间', width:180, sort: true}
                 ,{field: 'isRepost', title: '是否原创', width:100,templet:function (d) {
                         if(d.isRepost==0){
                             return "原创";
@@ -61,7 +61,8 @@
                     }}
                 ,{field: 'circleId', title: '圈子ID', width: 100, sort: true}
                 ,{field: 'weight', title: '权重', width: 100, sort: true}
-                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
+                ,{field: 'userName', title: '用户名字', width: 100, sort: true}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 250}
             ]]
         });
 
@@ -88,11 +89,55 @@
 
                 });
             }
-            else if (obj.event === 'edit') {
+            else if (obj.event === 'up') {
+                layer.confirm('是否置顶微博？', function (index) {
+                    $.ajax({
+                        url: '/blog/setWeight'
+                        , method: 'post'
+                        , data: {"blogId": data.blogId}
+                        , datatype: "json",
+                        success: function (data) {
+                            $(".layui-laypage-btn")[0].click();
+                            console.log(data.blogId);
+                            layer.close(index);
+                            layer.msg("置顶成功", {icon: 6});
+                        },
+                        error: function (data) {
+                            layer.msg("置顶失败", {icon: 5});
+                        }
+                    })
+                });
+                }else if (obj.event==='edit') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.weight
+                }, function (value, index) {
+                    EditBlog(data,value,index,obj);
+                });
+            }
+            });
 
+        function EditBlog(data,value,index,obj){
+            data.weight=value;
+            $.ajax({
+                url: '/blog/editWeight'
+                ,type:'POST'
+                , method: 'post'
+                , data:{"blogId": data.blogId,"weight":data.weight}
+                , datatype: "json",
+                success: function (data) {
+                        layer.closeAll();
+                    obj.update({
+                        weight: value
+                    });
+                    layer.msg("成功", {icon: 6});
+                },
+                error: function (data) {
+                    layer.msg("失败", {icon: 5});
                 }
             })
 
+        }
 
         $("#search").click(function () {
             //重新加载表格

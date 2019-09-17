@@ -36,13 +36,14 @@ public interface BlogMapper {
 
     List<Blog> getBlogByUserId(Integer userId);
 
-    List<Blog> normalBlogs(@Param("start") int start, @Param("limit") int limit, @Param("content")  String content);
+    List<HashMap> normalBlogs(@Param("start") int start, @Param("limit") int limit, @Param("content")  String content);
 
     int getBlogCount(@Param("content")  String content);
 
     int deleteBlog(Integer blogId);
 
     int setWeight(Integer blogId);
+    int editWeight(Integer blogId,Integer weight);
 
     List<Blog> findBlog(String content);
 

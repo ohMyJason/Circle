@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link type="text/css" rel="stylesheet" href="../../node_modules/layui/css/layui.css" media="all">
+    <link type="text/css" rel="stylesheet" href="../../node_modules/css/register.css">
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
+
+</head>
+<script>
+
+</script>
+<body>
+<div id="foot">
+    <div class="head">
+        <img src="../../node_modules/images/logo.png" height="100%" width="100%"/>
+    </div>
+    <div id="contain">
+        <div class="line">
+            <div class="wenzi">
+                <a href="#"><h1>个人注册</h1></a>
+            </div>
+        </div>
+        <div class="main row">
+            <div class="col-md-7"></div>
+            <div class="col-md-10">
+                <div class="layui-form-item">
+                    <at-input v-model="phoneNumber" placeholder="请输入11位手机号" prepend-button>
+                        <template slot="prepend">
+                            <span><i class="icon icon-smartphone"></i>您的手机</span>
+                        </template>
+                    </at-input>
+                </div>
+                <div class="layui-form-item">
+                    <at-input  v-model="password" type="password" placeholder="请输入您的密码" prepend-button>
+                        <template slot="prepend">
+                            <span><i class="icon icon-alert-triangle"></i>设置密码</span>
+                        </template>
+                    </at-input>
+                </div>
+                <div class="layui-form-item">
+                    <at-tag>生日：</at-tag>
+                    <at-select v-model="birthYear" size="normal" style="width: 100px">
+                        <at-option v-for="n in 2019" :value="n" v-text="n" v-if="n > 1980"></at-option>
+
+                    </at-select>
+                    <at-tag>年</at-tag>
+                    <at-select v-model="birthMonth" size="normal" style="width: 100px">
+                        <at-option v-for="n in 12" :value="n" v-text="n" v-if="n < 13"></at-option>
+                    </at-select>
+                    <at-tag>月</at-tag>
+                    <at-select v-model="birthDay" size="normal" style="width: 100px">
+                        <at-option v-for="n in 31" :value="n" v-text="n" v-if="n < 32"></at-option>
+
+                    </at-select>
+                    <at-tag>日</at-tag>
+
+                </div>
+                <div class="layui-form-item">
+
+                    <div class="layui-input-inline">
+
+                        <at-button type="success" hollow @click="sendMsg">点击获取短信激活码</at-button>
+                    </div>
+                    <div class="layui-input-inline">
+
+                        <at-input v-model="code" style="width: 200px" placeholder="请输入内容" prepend-button>
+                            <template slot="prepend">
+                                <span><i class="icon icon-edit-2"></i>验证码</span>
+                            </template>
+                        </at-input>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+
+                    <at-button type="error" @click="sendMsg">收不到验证码？</at-button>
+
+                </div>
+                <div class="layui-form-item">
+                    <div style="margin-left: 40%">
+                        <at-button @click="registerNow" type="primary" size="large">立即注册</at-button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7"></div>
+
+
+        </div>
+    </div>
+</div>
+<script>
+    var vm = new Vue({
+        el: '#foot',
+        data: {
+            phoneNumber: '',
+            userName: '',
+            password: '',
+            birthYear: "请选择",
+            birthMonth: "请选择",
+            birthDay: "请选择",
+            code: '',
+            resCode: '---res',
+        }, methods: {
+            sendMsg() {
+                var reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+                if (this.phoneNumber == '') {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入手机号！");
+                    })
+                } else if (!reg.test(this.phoneNumber)) {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入正确的手机号！");
+                    })
+                } else {
+                    $.ajax({
+                        url: "/userLogin/sendMsg",
+                        type: "post",
+                        data: {
+                            phoneNumber: this.phoneNumber
+                        },
+                        success: function (result) {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("发送成功，注意接受短信！");
+                            })
+                            if (result.code == 0) {
+                                vm.resCode = result.data;
+                            }
+                        }, error: function () {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("请求失败");
+                            })
+                        }
+                    })
+                }
+
+            }, registerNow() {
+                var regpas = /^(\w){6,16}$/;
+                var regpho = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+                if (this.phoneNumber == '') {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入手机号！");
+                    })
+                } else if (!regpho.test(this.phoneNumber)) {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入正确的手机号！");
+                    })
+                } else if (this.password == '') {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("密码不能为空");
+                    })
+                } else if (!regpas.test(this.password)) {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入6-16位数字字母下划线组成的密码！");
+                    })
+                } else if (this.birthYear == '请选择' || this.birthDay == '请选择' || this.birthMonth == '请选择') {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请选择出生年月！");
+                    })
+                } else if (this.code != this.resCode) {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入正确的验证码！");
+                    })
+                } else {
+                    var birthday = this.birthYear + '-' + this.birthMonth + '-' + this.birthDay
+                    $.ajax({
+                        url: "/userLogin/registered",
+                        type: "post",
+                        data: {
+                            phone: this.phoneNumber,
+                            birthday: birthday,
+                            password: this.password
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer', function () {
+                                    var layer = layui.layer;
+                                    layer.msg("注册成功！");
+                                })
+                                window.location.href = "../../index.html";
+                            } else {
+                                layui.use('layer', function () {
+                                    var layer = layui.layer;
+                                    layer.msg(result.msg);
+                                })
+                            }
+                        }, error: function () {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("请求失败");
+                            })
+                        }
+                    })
+                }
+            }
+        },
+    })
+</script>
+
+</body>
+</html>
