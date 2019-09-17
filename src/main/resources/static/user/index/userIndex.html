@@ -14,9 +14,9 @@
     <link rel="stylesheet" href="../../node_modules/css/login.css">
     <link rel="stylesheet" href="../../node_modules/jQuery/jquery.mCustomScrollbar.min.css">
 
-<!--    <link rel="shortcut icon" href="../../../static/favicon.ico"/>-->
-<!--    <link rel="bookmark" href="../../../static/favicon.ico"/>-->
-<!--    <link rel="icon" type="image/x-icon" href="../../../static/favicon.ico">-->
+    <!--    <link rel="shortcut icon" href="../../../static/favicon.ico"/>-->
+    <!--    <link rel="bookmark" href="../../../static/favicon.ico"/>-->
+    <!--    <link rel="icon" type="image/x-icon" href="../../../static/favicon.ico">-->
     <style>
 
         [v-cloak] {
@@ -44,28 +44,25 @@
             margin-bottom: 30px;
         }
 
-        .pol1:hover
-        {
-            cursor: pointer;
-        }
-        .emji span:hover
-        {
+        .pol1:hover {
             cursor: pointer;
         }
 
-        .emji i:hover
-        {
+        .emji span:hover {
             cursor: pointer;
         }
 
-        #disc:hover
-        {
+        .emji i:hover {
+            cursor: pointer;
+        }
+
+        #disc:hover {
             cursor: pointer;
         }
 
 
     </style>
-        <!--<link rel="stylesheet" href="../../node_modules/css/Index.css">-->
+    <!--<link rel="stylesheet" href="../../node_modules/css/Index.css">-->
     <style>
 
         [v-cloak] {
@@ -97,7 +94,7 @@
             <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
         </div>
     </div>
-    <at-card id="releaseImgCard" style="width: 300px;position: absolute;top: 330px;left: 200px;display: none">
+    <at-card id="releaseImgCard" style="width: 300px;position: absolute;top: 362px;left: 150px;display: none">
         <h4 slot="title"></h4>
         <div class="releaseImg">
         </div>
@@ -112,14 +109,14 @@
 
                 <div class="news" style="border: 1px">圈圈，和志同道合的人交朋友。</div>
                 <div class="neiro">
-                    <textarea  style="border:1px solid #2b542c;width:100%;height: 100%"
+                    <textarea style="border:1px solid #2b542c;width:100%;height: 100%"
                               id="input"></textarea>
                     <!--<input style="border:1px solid #2b542c;width:100%;height: 100%" id="input">-->
                 </div>
                 <div class="nima">
                     <!--<div class="emji" id="emji">-->
-                        <!--<i class="icon icon-github" style="color: #f0ad4e" ></i>-->
-                        <!--<span style="font-size: 70%" id="btn1">表情</span>-->
+                    <!--<i class="icon icon-github" style="color: #f0ad4e" ></i>-->
+                    <!--<span style="font-size: 70%" id="btn1">表情</span>-->
                     <!--</div>-->
                     <div class="emji" id="uploadImg">
                         <i class="icon icon-image" style="color: #449d44"></i>
@@ -141,7 +138,7 @@
                     </at-select>
                     <div class="disu" id="disc" onmousedown="this.style.backgroundColor='red'"
                          onmouseup="this.style.backgroundColor='#f0ad4e'">
-                        <span  name="disc" >发布</span>
+                        <span name="disc">发布</span>
                         <!--  <input type="submit" value="发布" name="disc" id="disc" style="background-color: none">-->
                     </div>
                 </div>
@@ -153,12 +150,12 @@
                     </span>
                 </div>
                 <div class="pol1">
-                    <span id="on-focus" >
+                    <span id="on-focus">
                         <strong>关注</strong>
                     </span>
                 </div>
                 <div class="pol1">
-                    <span id="on-time" >
+                    <span id="on-time">
                         <strong>实时</strong>
                     </span>
                 </div>
@@ -193,12 +190,18 @@
                                 </div>
                                 <div class="col-md-2 col-md-offset-9" v-if="item.isRepost == 0">
                                     <at-tag color="success" style="margin-bottom: 5px">原创</at-tag>
-                                    <a style="margin-right: 100px" href="/user/circle/circle.html" @click="toCircle(item.circleId)"><at-tag color="info">{{item.circleName}}</at-tag></a>
+                                    <a style="margin-right: 100px" href="/user/circle/circle.html"
+                                       @click="toCircle(item.circleId)">
+                                        <at-tag color="info">{{item.circleName}}</at-tag>
+                                    </a>
 
                                 </div>
                                 <div class="col-md-2 col-md-offset-9" v-if="item.isRepost == 1">
                                     <at-tag color="info" style="margin-bottom: 5px">转载</at-tag>
-                                    <a style="margin-right: 100px" href="/user/circle/circle.html" @click="toCircle(item.circleId)"><at-tag color="info">{{item.circleName}}</at-tag></a>
+                                    <a style="margin-right: 100px" href="/user/circle/circle.html"
+                                       @click="toCircle(item.circleId)">
+                                        <at-tag color="info">{{item.circleName}}</at-tag>
+                                    </a>
 
 
                                 </div>
@@ -214,7 +217,8 @@
                                 </div>
                                 <div class="row" v-if="item.type == 2">
                                     <div class="col-md-18 col-md-offset-3">
-                                        <video :src="item.resourceList[0]" controls="controls" width="100%" height="260px">
+                                        <video :src="item.resourceList[0]" controls="controls" width="100%"
+                                               height="260px">
                                             您的浏览器不支持播放该视频！
                                         </video>
                                     </div>
@@ -223,7 +227,19 @@
                                 <div class="row" v-if="item.type == 1">
                                     <div class="col-md-11 col-md-offset-3">
                                         <div v-for="(urlList,i) in item.resourceList" class="show-img">
-                                            <img :src="urlList" class="all-img">
+                                            <div>
+                                                <img :src="urlList"  v-if="i<3" class="all-img">
+                                            </div>
+                                            <div>
+                                                <img :src="urlList" v-if="3<i&&i<6" class="all-img">
+                                            </div>
+                                            <div>
+                                                <img :src="urlList" v-if="6<i&&i<9" class="all-img">
+
+                                            </div>
+                                            <!--<div v-if="i%3==0">-->
+                                            <!--<img :src="urlList"  class="all-img">-->
+                                            <!--</div>-->
                                         </div>
                                     </div>
                                     <div class="col-md-10"></div>
@@ -252,21 +268,24 @@
                                             <div class="col-md-13"></div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-18 col-md-offset-3" style="padding-bottom: 10px;padding-left: 27px">
+                                            <div class="col-md-18 col-md-offset-3"
+                                                 style="padding-bottom: 10px;padding-left: 27px">
                                                 <span v-html="item.blogInfo.content"></span>
                                             </div>
                                             <div class="col-md-3"></div>
                                         </div>
                                         <div class="row" v-if="item.blogInfo.type == 2">
                                             <div class="col-md-18 col-md-offset-3">
-                                                <video :src="item.blogInfo.resourceList[0]" controls="controls" width="100%"
+                                                <video :src="item.blogInfo.resourceList[0]" controls="controls"
+                                                       width="100%"
                                                        height="260px">您的浏览器不支持播放该视频！
                                                 </video>
                                             </div>
                                             <div class="col-md-3"></div>
                                         </div>
                                         <div class="row" v-if="item.blogInfo.type == 1">
-                                            <div class="col-md-13 col-md-offset-2" style="margin-left: 90px;margin-bottom: 8px">
+                                            <div class="col-md-13 col-md-offset-2"
+                                                 style="margin-left: 90px;margin-bottom: 8px">
                                                 <div v-for="(urlList,i) in item.blogInfo.resourceList" class="show-img"
                                                      style="margin:0">
                                                     <img :src="urlList" class="all-img"
@@ -283,14 +302,17 @@
                             <!--    评论点赞相关 -->
                             <div class="row l-c-s">
                                 <div class="col-md-5">
-                                    <a href="" class="icon icon-share a-font-20px" @click.prevent="showForward(i)">转发</a>
+                                    <a href="" class="icon icon-share a-font-20px"
+                                       @click.prevent="showForward(i)">转发</a>
                                 </div>
                                 <div class="col-md-5">
-                                    <a href="" @click.prevent="showReview(i,item.blogId)" class="icon icon-edit a-font-20px"
+                                    <a href="" @click.prevent="showReview(i,item.blogId)"
+                                       class="icon icon-edit a-font-20px"
                                        v-cloak>{{item.commentNum}}</a>
                                 </div>
                                 <div class="col-md-5">
-                                    <a href="" @click.prevent="like($event,item.blogId)" class="icon icon-thumbs-up a-font-20px"
+                                    <a href="" @click.prevent="like($event,item.blogId)"
+                                       class="icon icon-thumbs-up a-font-20px"
                                        v-cloak>{{item.likeNum}}</a>
                                 </div>
                                 <div class="col-md-9">
@@ -321,11 +343,14 @@
                                     <div v-for="comment in commentList">
                                         <div class="row">
                                             <div class="col-md-1 col-md-offset-1 commentShow">
-                                                <a href="#" @click="jumpPagePerson(comment.userId)"><img :src="comment.avatarUrl" class="commentHeader"></a>
+                                                <a href="#" @click="jumpPagePerson(comment.userId)"><img
+                                                        :src="comment.avatarUrl" class="commentHeader"></a>
                                             </div>
                                             <div class="col-md-21 commentShow">
-                                                <a href="#" @click="jumpPagePerson(comment.userId)"><span class="black commenter" v-cloak>{{comment.userName}}:</span></a>
-                                                <span class="color#333 commenter" v-text="comment.commentContent"></span>
+                                                <a href="#" @click="jumpPagePerson(comment.userId)"><span
+                                                        class="black commenter" v-cloak>{{comment.userName}}:</span></a>
+                                                <span class="color#333 commenter"
+                                                      v-text="comment.commentContent"></span>
                                             </div>
                                             <div class="col-md-1"></div>
                                         </div>
@@ -363,7 +388,9 @@
                 </div>
                 <div class="circle">
                     <!--                    用户图片-->
-                    <a href="../../user/user-center/personal.html"><img id="user-photo" src="../../node_modules/images/1.jpg" height="100%" width="100%"
+                    <a href="../../user/user-center/personal.html"><img id="user-photo"
+                                                                        src="../../node_modules/images/1.jpg"
+                                                                        height="100%" width="100%"
                                                                         style="border-radius: 50%"></a>
                 </div>
                 <div class="nam">
@@ -416,31 +443,31 @@
             </div>
             <div class="lefts" style="margin-top: 20px">
 
-            <at-card id="hotCircle" >
-                <h4 slot="title">热门圈子</h4>
-                <div>
-                    <div class="circleItemStyle" v-for="circle,index in circleList">
-                        <a href="" @click.prevent="toCircle(circle.circleId)">
-                        <div >
-                            <img :src="circle.circleImg" height="50px" width="50px" style="border-radius: 50%">
-                        </div>
-                        <div >
-                            <div style="margin-top: 5px">
-                                <at-tag color="info">{{circle.circleName}}</at-tag>
-                                <at-badge value="hot!" v-if="index<3"></at-badge>
+                <at-card id="hotCircle">
+                    <h4 slot="title">热门圈子</h4>
+                    <div>
+                        <div class="circleItemStyle" v-for="circle,index in circleList">
+                            <a href="" @click.prevent="toCircle(circle.circleId)">
+                                <div>
+                                    <img :src="circle.circleImg" height="50px" width="50px" style="border-radius: 50%">
+                                </div>
+                                <div>
+                                    <div style="margin-top: 5px">
+                                        <at-tag color="info">{{circle.circleName}}</at-tag>
+                                        <at-badge value="hot!" v-if="index<3"></at-badge>
 
-                            </div>
-                            <div >
-                                <input type="text" name="line1" :value="circle.circleScore +'条微博'"
-                                       style="border: 0px  ;background-color:transparent">
-                                <!--<at-badge :value="circle.circleScore +'条微博'"></at-badge>-->
-                            </div>
-                        </div>
-                        </a>
+                                    </div>
+                                    <div>
+                                        <input type="text" name="line1" :value="circle.circleScore +'条微博'"
+                                               style="border: 0px  ;background-color:transparent">
+                                        <!--<at-badge :value="circle.circleScore +'条微博'"></at-badge>-->
+                                    </div>
+                                </div>
+                            </a>
 
+                        </div>
                     </div>
-                </div>
-            </at-card>
+                </at-card>
             </div>
 
         </div>
@@ -455,38 +482,35 @@
                 st = Math.max(document.body.scrollTop || document.documentElement.scrollTop);
                 if (st > parseInt(dv.attr('otop'))) {
                     if (ie6) {//IE6不支持fixed属性，所以只能靠设置position为absolute和top实现此效果
-                        dv.css({ position: 'absolute', top: st });
-                    }
-                    else if (dv.css('position') != 'fixed') dv.css({ 'position': 'fixed', top: 0,right:'0%' });
-                } else if (dv.css('position') != 'static') dv.css({ 'position': 'static' });
+                        dv.css({position: 'absolute', top: st});
+                    } else if (dv.css('position') != 'fixed') dv.css({'position': 'fixed', top: 0, right: '0%'});
+                } else if (dv.css('position') != 'static') dv.css({'position': 'static'});
             });
         })
     </script>
 
 
-
-
 </div>
 <script>
-   // 热门圈子
+    // 热门圈子
     let circle = new Vue({
-        el:"#hotCircle",
-        data:{
-            circleList:[]
+        el: "#hotCircle",
+        data: {
+            circleList: []
         },
-        methods:{
-            toCircle(circleId){
-                $.cookie("circleId",circleId,{path:"/user/circle/circle.html"});
-                window.location.href="/user/circle/circle.html";
+        methods: {
+            toCircle(circleId) {
+                $.cookie("circleId", circleId, {path: "/user/circle/circle.html"});
+                window.location.href = "/user/circle/circle.html";
             }
         },
-        created(){
+        created() {
             $.ajax({
-                url:"/circle/hotCircle",
-                dataType:"json",
-                type:"post",
-                success:function (res) {
-                    if (res.code==0){
+                url: "/circle/hotCircle",
+                dataType: "json",
+                type: "post",
+                success: function (res) {
+                    if (res.code == 0) {
                         for (let i = 0; i < 4; i++) {
                             circle.circleList.push(res.data[i]);
 
@@ -495,7 +519,7 @@
                         console.log("热门圈子获取失败");
                     }
                 },
-                error:function () {
+                error: function () {
 
                 }
             })
@@ -515,8 +539,6 @@
     // });
 
 
-
-
     //上传资源
     var ifImg = true;
     var ifVedio = true;
@@ -531,7 +553,7 @@
             , data: {flag: 1}
             , before: function () {
                 layer.load(1); //换了种风格
-                if (ifImg==false){
+                if (ifImg == false) {
                     layer.alert("你不能同时上传视频和图片");
                     layer.closeAll('loading'); //关闭loading
                     return false;
@@ -549,7 +571,7 @@
                 console.log(vm4.itemsId);
                 $("#releaseImgCard").show(1000);
                 $("#releaseImgCard h4").text("图片");
-                ifVedio=false;
+                ifVedio = false;
                 //上传完毕回调
             }
             , error: function () {
@@ -568,7 +590,7 @@
             , accept: 'file' //允许上传的文件类型
             , before: function () {
                 layer.load(1); //换了种风格
-                if(ifVedio==false){
+                if (ifVedio == false) {
                     layer.alert("你不能同时上传视频和图片");
                     layer.closeAll('loading'); //关闭loading
                     return false;
@@ -582,7 +604,7 @@
                 $(".releaseImg").append("  <video src=\"//" + res.data.resourceUrl + "\" style='width: 100%' controls=\"controls\" >您的浏览器不支持播放该视频！</video>\n\n")
                 $("#releaseImgCard").show(1000);
                 vm4.itemsId.push(res.data.blogItemId);
-                ifImg=false;
+                ifImg = false;
                 //上传完毕回调
             }
             , error: function () {
@@ -640,14 +662,14 @@
             }
         }
         , created() {
-            layui.use('layedit', function(){
+            layui.use('layedit', function () {
                 var layedit = layui.layedit;
-                var index = layedit.build('input',{
-                    height:140,
+                var index = layedit.build('input', {
+                    height: 140,
                     tool: ['face']
                 }); //建立编辑器
                 $("#disc").click(function () {
-                    vm4.blogContent=layedit.getContent(index);
+                    vm4.blogContent = layedit.getContent(index);
                     console.log(layedit.getContent(index));
                     console.log(vm4.blogContent);
                     vm4.relealeBlog();
@@ -677,13 +699,13 @@
             forwardInput: '',
             selected: 'll',
             reviewed: 'll',
-            selectType:"0"  //0-热度 1-关注 2-实时
+            selectType: "0"  //0-热度 1-关注 2-实时
         }, methods: {
-            toCircle(circleId){
-                $.cookie("circleId",circleId,{path: '/user/circle/circle.html'})
+            toCircle(circleId) {
+                $.cookie("circleId", circleId, {path: '/user/circle/circle.html'})
             },
             add() {
-                if (this.selectType==0){
+                if (this.selectType == 0) {
                     $.ajax({
                         url: "/blog/showAllBlog",
                         type: "post",
@@ -700,11 +722,11 @@
                             }
                         }
                     })
-                }else  if (this.selectType==1){
+                } else if (this.selectType == 1) {
                     $.ajax({
                         url: "/blog/showConcernBlog",
                         type: "post",
-                        headers:{"token":$.cookie("token")},
+                        headers: {"token": $.cookie("token")},
                         data: {
                             page: this.pageNum,
                             size: this.size
@@ -719,11 +741,11 @@
                             }
                         }
                     })
-                }else if (this.selectType==2){
+                } else if (this.selectType == 2) {
                     $.ajax({
                         url: "/blog/showBlogByCreateTime",
                         type: "post",
-                        headers:{"token":$.cookie("token")},
+                        headers: {"token": $.cookie("token")},
 
                         data: {
                             page: this.pageNum,
@@ -774,8 +796,8 @@
                         })
                         setTimeout(function () {
 
-                            window.location.href="../index/index.html";
-                        },2000);
+                            window.location.href = "../index/index.html";
+                        }, 2000);
 
                     }
                 })
@@ -832,8 +854,8 @@
                                 layer.msg("请先登录");
                                 setTimeout(function () {
 
-                                    window.location.href="../index/index.html";
-                                },2000);
+                                    window.location.href = "../index/index.html";
+                                }, 2000);
                             })
                         }
                     })
@@ -893,19 +915,19 @@
 
             $("#on-hot").click();
             $("#on-hot").click(function () {
-                $("#on-hot").css("color","green");
-                $("#on-time").css("color","black");
-                $("#on-focus").css("color","black");
+                $("#on-hot").css("color", "green");
+                $("#on-time").css("color", "black");
+                $("#on-focus").css("color", "black");
                 $.ajax({
                     url: "/blog/showAllBlog",
                     type: "post",
-                    headers:{"token":$.cookie("token")},
+                    headers: {"token": $.cookie("token")},
                     data: {
                         page: 1,
                         size: 3
                     },
                     success: function (result) {
-                        vm3.selectType='0'; //流加载判断这个
+                        vm3.selectType = '0'; //流加载判断这个
                         vm3.pageNum = '1';
                         if (result.code == 0) {
                             vm3.blogInfoList = result.data;
@@ -916,19 +938,19 @@
             })
 
             $("#on-focus").click(function () {
-                $("#on-hot").css("color","black");
-                $("#on-time").css("color","black");
-                $("#on-focus").css("color","green");
+                $("#on-hot").css("color", "black");
+                $("#on-time").css("color", "black");
+                $("#on-focus").css("color", "green");
                 $.ajax({
                     url: "/blog/showConcernBlog",
                     type: "post",
-                    headers:{"token":$.cookie("token")},
+                    headers: {"token": $.cookie("token")},
                     data: {
                         page: 1,
                         size: 3
                     },
                     success: function (result) {
-                        vm3.selectType='1'; //流加载判断这个
+                        vm3.selectType = '1'; //流加载判断这个
                         vm3.pageNum = '1';
                         if (result.code == 0) {
                             vm3.blogInfoList = result.data;
@@ -939,9 +961,9 @@
             })
 
             $("#on-time").click(function () {
-                $("#on-hot").css("color","black");
-                $("#on-time").css("color","green");
-                $("#on-focus").css("color","black");
+                $("#on-hot").css("color", "black");
+                $("#on-time").css("color", "green");
+                $("#on-focus").css("color", "black");
                 $.ajax({
                     url: "/blog/showBlogByCreateTime",
                     type: "post",
@@ -950,7 +972,7 @@
                         size: 3
                     },
                     success: function (result) {
-                        vm3.selectType='2';
+                        vm3.selectType = '2';
                         vm3.pageNum = '1';
                         if (result.code == 0) {
                             vm3.blogInfoList = result.data;
@@ -959,7 +981,6 @@
                     }
                 })
             })
-
 
 
         }
