@@ -42,6 +42,8 @@ public interface BlogMapper {
 
     int deleteBlog(Integer blogId);
 
+    int setWeight(Integer blogId);
+
     List<Blog> findBlog(String content);
 
 }

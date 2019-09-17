@@ -10,6 +10,7 @@
             margin-top: -57px;
         }
     </style>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
 </head>
 <body>
 <div class="demoTable">
@@ -29,7 +30,8 @@
     </script>
 
     <script id="barDemo" type="text/html">
-        <a class="layui-btn layui-btn-xs" lay-event="banned">封禁</a>
+        <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="banned">封禁</a>
+        <a class="layui-btn layui-btn-xs" lay-event="unblock">解封</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 <script src="../../node_modules/layui/layui.js"></script>
@@ -39,21 +41,48 @@
         //第一个实例
         table.render({
             elem: '#user'
-            ,width:965
+            ,width:'100%'
             ,height: 312
-            ,url: '/getNormalUser' //数据接口
+            ,method: 'post'
+            ,url: '/userInfo/getNormalUser' //数据接口
             ,page: true //开启分页
             ,even:true
             ,limit: 5 //每页默认显示的数量
             ,cols: [[ //表头
                 {field: 'userId', title: '用户ID', width:80, sort: true, fixed: 'left'}
                 ,{field: 'userName', title: '用户名',sort:true, width:150}
-                ,{field: 'sex', title: '性别', width:80, sort: true}
-                ,{field: 'password', title: '手机号码', width:150}
-                // ,{field: 'sign', title: '电子邮箱', width: 177}
-                // ,{field: 'experience', title: '账号状态', width: 100, sort: true}
-                // ,{field: 'score', title: '账号创建时间', width: 140, sort: true}
-                // ,{field: 'classify', title: '头像', width: 80}
+                ,{field: 'sex', title: '性别', width:80, sort: true, templet:function (d) {
+                        if (d.sex==0){
+                            return "保密";
+                        } else if (d.sex==1){
+                            return "男";
+                        }else if (d.sex==2){
+                            return "女";
+                        }
+                    }}
+                ,{field: 'phone', title: '手机号码', width: 150}
+                ,{field: 'email', title: '电子邮箱', width: 170, sort: true}
+                ,{field: 'isSingle', title: '是否单身', width: 80,templet:function (d) {
+                        if(d.isSingle==0){
+                            return "保密";
+                        }else if (d.isSingle==1){
+                            return "单身";
+                        }  else if ((d.isSingle==2)) {
+                            return "恋爱";
+                        }
+                    }}
+                ,{field: 'birthday', title: '生日', width:150, sort: true}
+                ,{field: 'status', title: '封禁状态', width:80,templet:function (d) {
+                        if(d.status==0){
+                            return "正常";
+                        }else if (d.status==1){
+                            return "封禁";
+                        }
+                        }
+                }
+                ,{field: 'createTime', title: '创建时间', width: 120}
+                ,{field: 'address', title: '地址', width: 80}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
             ]]
         });
 
@@ -62,14 +91,15 @@
         //console.log(obj)
         if (obj.event === 'del') {
             layer.confirm('真的删除行么', function (index) {
+                console.log(data.userId)
                 $.ajax({
-                    url: '/delete'
+                    url: '/userInfo/delete'
                     , method: 'post'
-                    , data: {"usersId": data.usersId}
+                    , data: {"usersId": data.userId}
                     , datatype: "json",
                     success: function (data) {
                         obj.del();
-                        console.log(data.usersId);
+                        console.log(data.userId);
                         layer.close(index);
                         layer.msg("删除成功", {icon: 6});
                     },
@@ -82,13 +112,13 @@
         } else if (obj.event === 'banned') {
             layer.confirm('真的封禁吗？', function (index) {
                 $.ajax({
-                    url: '/banned'
+                    url: '/userInfo/banned'
                     , method: 'post'
-                    , data: {"usersId": data.usersId}
+                    , data: {"userId": data.userId}
                     , datatype: "json",
                     success: function (data) {
                         obj.del();
-                        console.log(data.usersId);
+                        console.log(data.userId);
                         layer.close(index);
                         layer.msg("封禁成功", {icon: 6});
                     },
@@ -98,9 +128,27 @@
                 })
 
             });
+        }else if (obj.event==='unblock') {
+            layer.confirm('是否解禁吗？', function (index) {
+                $.ajax({
+                    url: '/userInfo/unblock'
+                    , method: 'post'
+                    , data: {"userId": data.userId}
+                    , datatype: "json",
+                    success: function (data) {
+                        obj.del();
+                        console.log(data.userId);
+                        layer.close(index);
+                        layer.msg("解封成功", {icon: 6});
+                    },
+                    error: function (data) {
+                        layer.msg("解封失败", {icon: 5});
+                    }
+                })
+
+            });
         }
     });
-
         $("#search").click(function () {
             //重新加载表格
             table.reload('user' ,{

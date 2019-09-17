@@ -251,6 +251,13 @@ public class BlogContoller {
     }
 
     /**
+     * 管理员设置权重
+     */
+    @PostMapping("/setWeight")
+    public Result setWeight(Integer blogId){
+        return blogService.setWeight(blogId);
+    }
+    /**
      * 管理员查询用户
      */
     @PostMapping("/findBlog")

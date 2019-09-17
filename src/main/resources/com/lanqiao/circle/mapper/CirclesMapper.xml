@@ -148,11 +148,11 @@
   <select id="normalCircles" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from tb_circle
-    where is_delete = 0
     <where>
       <if test="circleName!=null">
         circle_name like '%${circleName}%'
       </if>
+      and is_delete = 0
     </where>
     LIMIT #{start},#{limit}
   </select>

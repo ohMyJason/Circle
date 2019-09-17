@@ -209,15 +209,22 @@ public class UserInfoController {
      * 管理员删除用户
      */
     @PostMapping("/delete")
-    public Result deleteUsers(Integer usersId){
-        return userInfoService.deleteUsers(usersId);
+    public Result deleteUsers(Integer userId){
+        return userInfoService.deleteUsers(userId);
     }
     /**
      * 管理员封禁用户
      */
     @PostMapping("/banned")
-    public Result bannedUsers(Integer usersId){
-        return userInfoService.bannedUsers(usersId);
+    public Result bannedUsers(Integer userId){
+        return userInfoService.bannedUsers(userId);
+    }
+    /**
+     *
+     */
+    @PostMapping("/unblock")
+    public Result unblockUsers(Integer userId){
+        return userInfoService.unblockUsers(userId);
     }
     /**
      * 管理员查询用户

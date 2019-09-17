@@ -147,11 +147,11 @@
   <select id="normalBlogs" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from tb_blog
-    where is_delete = 0
     <where>
       <if test="content!=null">
         content like '%${content}%'
       </if>
+      and is_delete = 0
     </where>
     LIMIT #{start},#{limit}
     </select>
@@ -169,6 +169,12 @@
   <update id="deleteBlog" parameterType="com.lanqiao.circle.entity.Blog" >
     update tb_blog
     set is_delete = 1
+    where blog_id = #{blogId}
+  </update>
+
+  <update id="setWeight" parameterType="com.lanqiao.circle.entity.Blog" >
+    update tb_blog
+    set weight = 10000
     where blog_id = #{blogId}
   </update>
 

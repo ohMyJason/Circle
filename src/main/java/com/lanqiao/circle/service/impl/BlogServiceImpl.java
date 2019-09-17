@@ -180,6 +180,19 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public Result setWeight(Integer blogId){
+        try {
+            if (blogMapper.setWeight(blogId)>0){
+                return Result.createSuccessResult();
+            }else {
+                return Result.createByFailure("ERROR");
+            }
+        }catch (Exception e){
+            System.out.println(e.getCause());
+            return Result.createByFailure("异常");
+        }
+    }
+    @Override
     public Result findBlog(String content){
         try {
             List<Blog> blogList = blogMapper.findBlog(content);

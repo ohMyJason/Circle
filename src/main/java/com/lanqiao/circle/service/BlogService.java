@@ -29,6 +29,8 @@ public interface BlogService {
     //管理员删除微博
     public Result deleteBlog(Integer blogId);
 
+    //管理员设置权重
+    public Result setWeight(Integer blogId);
     //管理员查询微博
     public Result findBlog(String content);
 }

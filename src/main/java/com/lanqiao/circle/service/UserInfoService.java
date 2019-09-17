@@ -34,10 +34,13 @@ public interface UserInfoService {
     public Result normalUsers(String userName,int page,int limit);
 
     //管理员删除用户
-    public Result deleteUsers(Integer usersId);
+    public Result deleteUsers(Integer userId);
 
     //管理员封禁用户
-    public Result bannedUsers(Integer usersId);
+    public Result bannedUsers(Integer userId);
+
+    //管理员解封用户
+    public Result unblockUsers(Integer userId);
 
     //管理员查询用户
     public Result findUsers(String userName);

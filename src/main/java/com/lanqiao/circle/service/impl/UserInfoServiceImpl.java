@@ -159,9 +159,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     }
     @Override
-    public Result deleteUsers(Integer usersId){
+    public Result deleteUsers(Integer userId){
         try{
-            if (usersMapper.deleteUsers(usersId)>0){
+            if (usersMapper.deleteUsers(userId)>0){
                 return Result.createSuccessResult();
             }else {
                 return Result.createByFailure("ERROR");
@@ -172,9 +172,22 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
     }
     @Override
-    public Result bannedUsers(Integer usersId){
+    public Result bannedUsers(Integer userId){
         try{
-            if (usersMapper.bannedUsers(usersId)>0){
+            if (usersMapper.bannedUsers(userId)>0){
+                return Result.createSuccessResult();
+            }else {
+                return Result.createByFailure("ERROR");
+            }
+        }catch (Exception e){
+            System.out.println(e.getCause());
+            return Result.createByFailure("异常");
+        }
+    }
+    @Override
+    public Result unblockUsers(Integer userId){
+        try {
+            if (usersMapper.unblockUsers(userId)>0){
                 return Result.createSuccessResult();
             }else {
                 return Result.createByFailure("ERROR");
