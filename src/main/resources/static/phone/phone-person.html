@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人界面</title>
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="node_modules/css/phone-index.css">
+</head>
+<body>
+<header class="bar bar-nav">
+    <a class="icon icon-me pull-left"></a>
+
+    <a class="icon icon-settings pull-right"></a>
+    <h1 class="title">个人主页</h1>
+</header>
+<div class="content">
+<!--    头像-->
+    <div style="width: 3rem;height: 3rem;border-radius: 50%;background-color: #B0C8F4;position: relative;
+margin-left: auto;margin-right: auto">
+        <img src="../node_modules/images/1.jpg" height="100%" width="100%"style="border-radius: 50%" />
+    </div>
+<!--    个人信息-->
+    <div style="width: 100%;height: 5rem;text-align: center">
+        <div  style="width: 100%;height: 1.5rem;">
+        <span id="name">sfasfa</span><br>
+        </div >
+
+        <div style="width: 100%;height: 1rem;">
+            <div style="height: 100%;float: left;;width: 15%;font-size: 0.7rem;border-right: 1px solid #dddddd;position: relative;margin-left: 35%;margin-right: auto">
+                <span>关注</span>&nbsp;<span>51</span>
+            </div>
+            <div style="height: 100%;float: left;width: 20%;font-size: 0.7rem;position: relative;margin-left: auto;margin-right: auto">
+                &nbsp;<span>被关注</span> &nbsp;<span>51</span>
+            </div>
+        </div>
+
+    </div>
+    <hr>
+    <div class="card facebook-card" style="margin-left: 2rem; margin-right: 2rem">
+        <div class="card-header no-border">
+            <div class="facebook-avatar"><img src="../node_modules/images/1.jpg" height="144" width="138" style="border-radius: 50%"></div>
+            <div class="facebook-name" style="height: 2rem;font-size: 1.5rem;margin-top: 1rem;">夜萧</div>
+            <div class="facebook-date" style="height: 2rem;font-size: 1rem;margin-top: 1rem">星期一 3:47pm</div>
+        </div>
+
+        <div class="card-content" style="height: 60px;width: 100%;margin-top: 10px;padding-left: 2rem;padding-right: 2rem" >
+            <div style="height: 100%;width: 80%">
+                        <span style="font-size: 1rem">
+                            尼玛炸了
+                        </span>
+
+            </div>
+        </div>
+
+        <!--                图片模块-->
+        <div class="card-content" style="width: 100%;margin-top: 10px" >
+            <div style="width: 100%;height: 200px ">
+                <div style="height: 100%;width: 20%;position: relative;float: left ;margin-left: 10%">
+                    <img src="../node_modules/images/11144.png" height="90%" width="100%"/>
+                </div>
+                <div style="height: 100%;width: 20%;position: relative;float: left ;margin-left: 10%">
+                    <img src="../node_modules/images/11144.png" height="90%" width="100%"/>
+                </div>
+                <div style="height: 100%;width: 20%;position: relative;float: left ;margin-left: 10%">
+                    <img src="../node_modules/images/11144.png" height="90%" width="100%"/>
+                </div>
+            </div>
+
+            <div style="width: 100%;height: 200px ">
+                <div style="height: 100%;width: 20%;position: relative;float: left ;margin-left: 10%">
+                    <img src="../node_modules/images/11144.png" height="90%" width="100%"/>
+                </div>
+                <div style="height: 100%;width: 20%;position: relative;float: left ;margin-left: 10%">
+                    <img src="../node_modules/images/11144.png" height="90%" width="100%"/>
+                </div>
+                <div style="height: 100%;width: 20%;position: relative;float: left ;margin-left: 10%">
+                    <img src="../node_modules/images/11144.png" height="90%" width="100%"/>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer no-border">
+            <a href="#" class="link">
+                赞:&nbsp;<strong>8</strong>
+            </a>
+            <a href="#" class="link">评论:&nbsp;
+                <strong>23</strong>
+            </a>
+            <a href="#" class="link">分享</a>
+        </div>
+    </div>
+
+    <!--            视频模块-->
+    <div class="card facebook-card" style="margin-left: 2rem; margin-right: 2rem">
+        <div class="card-header no-border">
+            <div class="facebook-avatar"><img src="../node_modules/images/1.jpg" height="144" width="138"/></div>
+            <div class="facebook-name" style="height: 2rem;font-size: 1.5rem;margin-top: 1rem;">夜萧</div>
+            <div class="facebook-date" style="height: 2rem;font-size: 1rem;margin-top: 1rem">星期一 3:47pm</div>
+        </div>
+        <!--                评论-->
+        <div class="card-content" style="height: 60px;width: 100%;margin-top: 10px;padding-left: 2rem;padding-right: 2rem" >
+            <div style="height: 100%;width: 80%">
+                        <span style="font-size: 1rem">
+                            尼玛炸了
+                        </span>
+            </div>
+        </div>
+
+        <div class="card-content" style="width: 100%;margin-top: 10px" >
+            <div style="width: 100%;height: 300px  ;padding-left: 2rem;padding-right: 2rem">
+                <!--                        视频-->
+                <video style="width: 100%;height: 100%"  controls="controls" src="#">
+                </video>
+            </div>
+        </div>
+        <div class="card-footer no-border">
+            <a href="#" class="link">
+                赞:&nbsp;<strong>8</strong>
+            </a>
+            <a href="#" class="link">评论:&nbsp;
+                <strong>23</strong>
+            </a>
+            <a href="#" class="link">分享</a>
+        </div>
+    </div>
+
+
+    <!--            转发模块-->
+    <div class="card facebook-card" style="margin-left: 2rem; margin-right: 2rem">
+        <div class="card-header no-border">
+            <div class="facebook-avatar"><img src="../node_modules/images/1.jpg" height="144" width="138"/></div>
+            <div class="facebook-name" style="height: 2rem;font-size: 1.5rem;margin-top: 1rem;">夜萧</div>
+            <div class="facebook-date" style="height: 2rem;font-size: 1rem;margin-top: 1rem">星期一 3:47pm</div>
+        </div>
+        <!--                评论-->
+        <div class="card-content" style="height: 60px;width: 100%;margin-top: 10px;padding-left: 2rem;padding-right: 2rem" >
+            <div style="height: 100%;width: 80%">
+                        <span style="font-size: 1rem">
+                            尼玛炸了
+                        </span>
+            </div>
+        </div>
+
+
+        <div class="card-content" style="width: 100%;margin-top: 10px" >
+            <div style="width: 100%;height: 300px  ;padding-left: 2rem;padding-right: 2rem ">
+                <div style="background-color: #dddddd;width: 100%;height: 100% ;border-radius: 10px">
+                    <!--                            转发中对话-->
+                    <div style="position: relative;width: 90%;height: 70% ;margin-left: 5%;margin-top: 5%;border-bottom: 1px solid #bbbbbb;" >
+                        <div style="position: relative;float: left;height: 80%;width: 25%;margin-top: 3%">
+                            <img src="../node_modules/images/ceshi1.png" height="100%" width="100%"/>
+                        </div>
+                        <div style="position: relative;height: 30%;width: 70%;float: right;margin-top: 5%">
+                                  <span>
+                                      <strong style="font-size: 2rem">王某:</strong>
+                                  </span>
+                        </div>
+                        <div style="position: relative;height: 30%;width: 70%;float: right;margin-top: 3%">
+                                  <span style="font-size: 1.5rem">
+                                      埃弗拉会发生卡
+                                  </span>
+                        </div>
+                    </div>
+
+                    <!--                            圈子类型显示-->
+
+                    <div style="position: relative;width: 90%;height: 20%; margin-left: 5%;margin-top: 1%">
+                        <div style="position: relative;float: right;text-align: center ;width: 30%;height: 100%;">
+                                    <span style="margin-top: 2%">
+                                        <strong style="font-size: 1.5rem">
+                                            搞笑圈
+                                        </strong>
+                                    </span>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer no-border">
+            <a href="#" class="link">
+                赞:&nbsp;<strong>8</strong>
+            </a>
+            <a href="#" class="link">评论:&nbsp;
+                <strong>23</strong>
+            </a>
+            <a href="#" class="link">分享:&nbsp;
+                <strong>45</strong>
+            </a>
+        </div>
+    </div>
+
+
+
+</div>
+
+</body>
+</html>

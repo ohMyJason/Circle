@@ -75,10 +75,11 @@
                                 <p class="user_item" v-cloak>感情状况 {{item.isSingle}}</p>
                             </div>
                             <div class="focus_btn col-md-2">
-                                <a href="../../user/letter/session.html"><at-button type="warning">私信</at-button></a>
+<!--                                <a href="../../user/letter/session.html"><at-button type="warning">私信</at-button></a>-->
+                                <a href="#" @click = "sendSession(index)" id = "sendS"><at-button type="warning" >私信</at-button></a>
                             </div>
                             <div class="concern_btn col-md-3">
-                                <a id="tag_box1" @click="addConcernOrSub($event,item.fansId)"><span>x</span></a>
+                                <a id="tag_box1" v-cloak @click="addConcernOrSub()">{{isAttention}}</a>
                             </div>
 <!--                            <div class="select_more">-->
 <!--                                <at-dropdown @on-dropdown-command="handleCommand">-->
@@ -230,6 +231,24 @@
                 }
             })
 
+            $.ajax({
+                url:"/userInfo/ifConcern",
+                type:"post",
+                headers:{'token':$.cookie("token")},
+                dataType:"json",
+                data:{
+                    userId: $.cookie("userId")
+                },
+                success:function (result) {
+                    if (result.code == 0){
+                        vm.isAttention = "已关注"
+                    } else {
+                        vm.isAttention = "未关注"
+                    }
+                },error:function () {
+                    vm.isAttention = "未关注"
+                }
+            })
         }
     })
 </script>
