@@ -145,13 +145,13 @@
   </select>
 
   <select id="normalBlogs" resultType="hashmap">
-    select  b.content,u.user_name as userName,b.weight,b.is_repost as isRepost,b.circle_id as circleId,b.create_time as createTime,b.blog_id as blogId
-    from tb_blog b,tb_users u
+    select  b.content,u.user_name as userName,b.weight,b.is_repost as isRepost,b.circle_id as circleId,b.create_time as createTime,b.blog_id as blogId,c.circle_name as circleName
+    from tb_blog b,tb_users u,tb_circle c
     <where>
       <if test="content!=null">
         b.content like '%${content}%'
       </if>
-      and b.is_delete = 0 and b.user_id = u.user_id
+      and b.is_delete = 0 and b.user_id = u.user_id and u.user_id = c.user_id
     </where>
     LIMIT #{start},#{limit}
     </select>
