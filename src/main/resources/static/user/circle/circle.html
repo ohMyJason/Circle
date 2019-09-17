@@ -79,7 +79,7 @@
                 <span class="black-blue" v-cloak>&nbsp;&nbsp;&nbsp;圈子主题:{{circleItem.circleTitle}}</span>
             </div>
             <div class="col-md-3 col-md-offset-1">
-                <a href=""><span class="black-blue" v-cloak>创建人:{{circleItem.createName}}</span></a>
+                <a href="" @click="jumpPagePerson1(circleItem.userId)"><span class="black-blue" v-cloak>创建人:{{circleItem.createName}}</span></a>
             </div>
             <div class="col-md-4">
                 <span class="black-blue" v-cloak>创建时间:{{circleItem.createTime}}</span>
@@ -98,7 +98,7 @@
             <div class="col-md-18">
                 <div class="content-show" v-for="(item,i) in blogInfoList">
                     <!--         控制头           -->
-                    <div class="row">
+                    <div class="row" style="padding: 10px">
                         <div class="col-md-2 col-md-offset-1">
                             <a href="#" @click="jumpPagePerson(item.userId)"><img :src="item.avatarUrl" class="header-img"></a>
                         </div>
@@ -218,10 +218,10 @@
                             <div v-for="comment in commentList">
                                 <div class="row">
                                     <div class="col-md-1 col-md-offset-1 commentShow">
-                                        <img :src="comment.avatarUrl" class="commentHeader">
+                                        <a href="#" @click="jumpPagePerson(comment.userId)"><img :src="comment.avatarUrl" class="commentHeader"></a>
                                     </div>
                                     <div class="col-md-21 commentShow">
-                                        <span class="black commenter" v-cloak>{{comment.userName}}:</span>
+                                        <a href="#" @click="jumpPagePerson(comment.userId)"><span class="black commenter" v-cloak>{{comment.userName}}:</span></a>
                                         <span class="color#333 commenter" v-text="comment.commentContent"></span>
                                     </div>
                                     <div class="col-md-1"></div>
@@ -271,6 +271,29 @@
         el: '#mid-title',
         data: {
             circleItem: {
+            }
+        },methods:{
+            jumpPagePerson1(userId){
+                if ($.cookie('token') == null){
+                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                    window.location.href="../user-center/personals.html";
+                }else{
+                    $.ajax({
+                        url:"/test/testGetUserIdByToken",
+                        type:"post",
+                        headers:{'token':$.cookie("token")},
+                        success:function (result) {
+                            if(result.code == 0){
+                                if(userId == result.data){
+                                    window.location.href="../user-center/personal.html";
+                                }else {
+                                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                                    window.location.href="../user-center/personals.html";
+                                }
+                            }
+                        }
+                    })
+                }
             }
         },created(){
             $.ajax({
@@ -402,6 +425,8 @@
                                     layer.msg("评论成功");
                                 })
                                 vm3.reviewed = 'lll';
+                                var x = parseInt(e.target.parentElement.parentElement.parentElement.previousElementSibling.previousElementSibling.firstElementChild.nextElementSibling.firstElementChild.innerHTML);
+                                e.target.parentElement.parentElement.parentElement.previousElementSibling.previousElementSibling.firstElementChild.nextElementSibling.firstElementChild.innerHTML = x + 1;
                             }
                         },error:function () {
                             layui.use('layer', function () {

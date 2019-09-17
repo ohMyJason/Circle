@@ -83,7 +83,8 @@ public class LoginController {
             String timeStr1= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             user.setCreateTime(timeStr1);
             user.setAvatarUrl("//47.98.46.243:8080/userImg/20190915122520_moren.png");
-            if (usersMapper.getUserByUserName(user.getUserName())==null){
+//            if (usersMapper.getUserByUserName(user.getUserName())==null){
+            if (usersMapper.getUsersByPhone(user.getPhone())==null){
                 usersMapper.insertSelective(user);
                 return Result.createSuccessResult(usersMapper.selectByPrimaryKey(user.getUserId()));
             }else {

@@ -4,10 +4,13 @@ package com.lanqiao.circle.controller;
 import com.lanqiao.circle.annotations.UserLoginToken;
 import com.lanqiao.circle.entity.Users;
 import com.lanqiao.circle.mapper.UsersMapper;
+import com.lanqiao.circle.service.RelationShipService;
 import com.lanqiao.circle.service.TokenService;
 import com.lanqiao.circle.service.UserInfoService;
+import com.lanqiao.circle.util.CommentUtil;
 import com.lanqiao.circle.util.FileUploadUtil;
 import com.lanqiao.circle.util.Result;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,10 @@ public class UserInfoController {
     FileUploadUtil fileUploadUtil;
     @Autowired
     UsersMapper usersMapper;
+    @Autowired
+    RelationShipService relationShipService;
+    @Autowired
+    CommentUtil commentUtil;
 
     /**
      * 查询用户基本信息
@@ -122,8 +129,8 @@ public class UserInfoController {
      * @return
      */
     @PostMapping("getOtherInfo")
-    public Result getOtherInfo(@RequestParam(name = "userId") int userId){
-        return userInfoService.getOthersInfo(userId);
+    public Result getOtherInfo(@RequestParam(name = "userId") String userId){
+        return userInfoService.getOthersInfo(Integer.parseInt(userId));
     }
 
     /**
@@ -151,6 +158,12 @@ public class UserInfoController {
         return userInfoService.getUserAllBlog(userId,page,size);
     }
 
+    /**
+     * 修改用户头像
+     * @param httpServletRequest
+     * @param file
+     * @return
+     */
     @UserLoginToken
     @PostMapping("changeAvatar")
     public Result changeAvatar(HttpServletRequest httpServletRequest,@RequestParam(name = "file") MultipartFile file){
@@ -164,6 +177,56 @@ public class UserInfoController {
     }
 
     /**
+     * 判断是否关注
+     * @param httpServletRequest
+     * @param userId
+     * @return
+     */
+    @UserLoginToken
+    @PostMapping("ifConcern")
+    public Result ifConcern(HttpServletRequest httpServletRequest,@RequestParam(name = "userId") int userId){
+        int loginUserId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        return relationShipService.ifConcern(loginUserId,userId);
+    }
+
+    /**
+     * 加关注或者取消关注
+     * @param httpServletRequest
+     * @param userId
+     * @return
+     */
+    @UserLoginToken
+    @PostMapping("addConcernOrSub")
+    public Result addConcernOrSub(HttpServletRequest httpServletRequest,@RequestParam(name = "userId") int userId){
+        int loginUserId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        return relationShipService.addConcernOrSub(loginUserId,userId);
+    }
+
+    /**
+     * 用户名与手机匹配
+     * @param userName
+     * @param phone
+     * @return
+     */
+    @PostMapping("matchNameAndPhone")
+    public Result matchNameAndPhone(@RequestParam(name = "userName") String userName,@RequestParam(name = "phone") String phone){
+        return userInfoService.matchNameAndPhone(userName,phone);
+    }
+
+    /**
+     * 密码重置
+     * @param users
+     * @return
+     */
+    @PostMapping("newPassword")
+    public Result newPassword(Users users){
+        String newPassword = users.getPassword();
+        String password = commentUtil.getMd5(newPassword);
+        users.setPassword(password);
+        usersMapper.updateByPrimaryKeySelective(users);
+        return Result.createSuccessResult();
+    }
+    /**
      * 管理员查询用户信息
      */
     @PostMapping("/getNormalUser")
@@ -174,15 +237,22 @@ public class UserInfoController {
      * 管理员删除用户
      */
     @PostMapping("/delete")
-    public Result deleteUsers(Integer usersId){
-        return userInfoService.deleteUsers(usersId);
+    public Result deleteUsers(Integer userId){
+        return userInfoService.deleteUsers(userId);
     }
     /**
      * 管理员封禁用户
      */
     @PostMapping("/banned")
-    public Result bannedUsers(Integer usersId){
-        return userInfoService.bannedUsers(usersId);
+    public Result bannedUsers(Integer userId){
+        return userInfoService.bannedUsers(userId);
+    }
+    /**
+     *
+     */
+    @PostMapping("/unblock")
+    public Result unblockUsers(Integer userId){
+        return userInfoService.unblockUsers(userId);
     }
     /**
      * 管理员查询用户

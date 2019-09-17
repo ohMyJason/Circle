@@ -222,11 +222,11 @@
   <select id="normalUsers" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from tb_users
-    where status = 0 and is_delete = 0
     <where>
       <if test="userName!=null">
         user_name like '%${userName}%'
       </if>
+      and is_delete = 0
     </where>
     LIMIT #{start},#{limit}
   </select>
@@ -250,9 +250,15 @@
   <update id="bannedUsers" parameterType="com.lanqiao.circle.entity.Users" >
     update tb_users
     set status = 1
-    where userId = #{userId}
+    where user_id = #{userId}
   </update>
-  
+
+  <update id="unblockUsers" parameterType="com.lanqiao.circle.entity.Users" >
+    update tb_users
+    set status = 0
+    where user_id = #{userId}
+  </update>
+
   <select id="findUsers" resultType="com.lanqiao.circle.entity.Users" parameterType="java.lang.String">
     select user_name
     from tb_users
@@ -263,5 +269,11 @@
     select <include refid="Base_Column_List"/>
     from tb_users
     where user_name = #{userName}
+  </select>
+
+  <select id="getUsersByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List"/>
+    from tb_users
+    where  phone = #{phone,jdbcType=VARCHAR}
   </select>
 </mapper>

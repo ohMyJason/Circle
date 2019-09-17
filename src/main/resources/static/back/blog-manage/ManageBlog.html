@@ -10,15 +10,16 @@
             margin-top: -57px;
         }
     </style>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
 </head>
 <body>
 <div class="demoTable">
     <div style="margin-top: 25px">
         <label class="layui-form-label" style="width: 150px">输入微博进行筛选：</label>
-        <input type="text" name="title" required lay-verify="required" id="usersName" placeholder="请输入标题" autocomplete="off" class="layui-input" style="width: 200px">
+        <input type="text" name="title" required lay-verify="required" id="blogName" placeholder="请输入标题" autocomplete="off" class="layui-input" style="width: 200px">
         <button class="layui-btn" data-type="reload" id="search">搜索</button></div>
 </div>
-<table class="layui-hide" id="user" lay-filter="user"></table>
+<table class="layui-hide" id="blog" lay-filter="blog"></table>
 
 <script id="toolbarDemo" type="text/html">
     <div class="layui-btn-container">
@@ -29,7 +30,8 @@
 </script>
 
 <script id="barDemo" type="text/html">
-    <a class="layui-btn layui-btn-xs" lay-event="banned">封禁</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">修改权重</a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="up">置顶微博</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script src="../../node_modules/layui/layui.js"></script>
@@ -38,32 +40,40 @@
         var table = layui.table;
         //第一个实例
         table.render({
-            elem: '#user'
-            ,width:965
+            elem: '#blog'
+            ,width:'100%'
             ,height: 312
-            ,url: '/normalBlogs' //数据接口
+            ,method:'post'
+            ,url: '/blog/normalBlogs' //数据接口
             ,page: true //开启分页
             ,even:true
             ,limit: 5 //每页默认显示的数量
             ,cols: [[ //表头
-                {field: 'blogId', title: '用户ID', width:80, sort: true, fixed: 'left'}
-                ,{field: 'content', title: '用户名',sort:true, width:150}
-                ,{field: 'isRepost', title: '性别', width:80, sort: true}
-                ,{field: 'repostId', title: '手机号码', width:150}
-                // ,{field: 'sign', title: '电子邮箱', width: 177}
-                // ,{field: 'experience', title: '账号状态', width: 100, sort: true}
-                // ,{field: 'score', title: '账号创建时间', width: 140, sort: true}
-                // ,{field: 'classify', title: '头像', width: 80}
+                {field: 'blogId', title: '创建时间', width:180, sort: true}
+                ,{field: 'content', title: '微博内容', width:250, sort: true}
+                ,{field: 'createTime', title: '创建时间', width:180, sort: true}
+                ,{field: 'isRepost', title: '是否原创', width:100,templet:function (d) {
+                        if(d.isRepost==0){
+                            return "原创";
+                        }else if (d.isRepost==1){
+                            return "转载";
+                        }
+                    }
+                    }
+                ,{field: 'weight', title: '权重', width: 100, sort: true}
+                ,{field: 'userName', title: '用户名字', width: 100, sort: true}
+                ,{field: 'circleName', title: '圈子名字', width: 100, sort: true}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 250}
             ]]
         });
 
-        table.on('tool(user)',function (obj) {
+        table.on('tool(blog)',function (obj) {
             var data = obj.data;
             //console.log(obj)
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     $.ajax({
-                        url: '/deleteBlog'
+                        url: '/blog/deleteBlog'
                         , method: 'post'
                         , data: {"blogId": data.blogId}
                         , datatype: "json",
@@ -80,13 +90,61 @@
 
                 });
             }
-        })
+            else if (obj.event === 'up') {
+                layer.confirm('是否置顶微博？', function (index) {
+                    $.ajax({
+                        url: '/blog/setWeight'
+                        , method: 'post'
+                        , data: {"blogId": data.blogId}
+                        , datatype: "json",
+                        success: function (data) {
+                            $(".layui-laypage-btn")[0].click();
+                            console.log(data.blogId);
+                            layer.close(index);
+                            layer.msg("置顶成功", {icon: 6});
+                        },
+                        error: function (data) {
+                            layer.msg("置顶失败", {icon: 5});
+                        }
+                    })
+                });
+                }else if (obj.event==='edit') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.weight
+                }, function (value, index) {
+                    EditBlog(data,value,index,obj);
+                });
+            }
+            });
+
+        function EditBlog(data,value,index,obj){
+            data.weight=value;
+            $.ajax({
+                url: '/blog/editWeight'
+                ,type:'POST'
+                , method: 'post'
+                , data:{"blogId": data.blogId,"weight":data.weight}
+                , datatype: "json",
+                success: function (data) {
+                        layer.closeAll();
+                    obj.update({
+                        weight: value
+                    });
+                    layer.msg("成功", {icon: 6});
+                },
+                error: function (data) {
+                    layer.msg("失败", {icon: 5});
+                }
+            })
+
+        }
 
         $("#search").click(function () {
             //重新加载表格
-            table.reload('user' ,{
+            table.reload('blog' ,{
                 where: { //设定异步数据接口的额外参数，任意设
-                    content: $("#usersName").val()
+                    content: $("#blogName").val()
                 },
                 page: {
                     curr: 1 //重新从第 1 页开始

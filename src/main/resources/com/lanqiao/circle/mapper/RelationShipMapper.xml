@@ -14,8 +14,17 @@
     <include refid="Base_Column_List" />
     from tb_relation
     where blogger_id = #{bloggerId,jdbcType=INTEGER}
-      and fans_id = #{fansId,jdbcType=INTEGER}
+      and fans_id = #{fansId,jdbcType=INTEGER} and is_delete = 0
   </select>
+
+  <select id="selectByPrimaryKeyNoLimit" resultMap="BaseResultMap" parameterType="com.lanqiao.circle.entity.RelationShipKey" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_relation
+    where blogger_id = #{bloggerId,jdbcType=INTEGER}
+    and fans_id = #{fansId,jdbcType=INTEGER}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="com.lanqiao.circle.entity.RelationShipKey" >
     delete from tb_relation
     where blogger_id = #{bloggerId,jdbcType=INTEGER}
@@ -77,5 +86,10 @@
   <select id="getBloggerByUserId" resultType="hashmap">
     select blogger_id as bloggerId, fans_id as fansId, user_name as bloggerName, sex ,birthday,is_single as isSingle,address,avatar_url as avatarUrl
     from blogger where fans_id = #{userId,jdbcType=INTEGER} and is_delete = 0 LIMIT #{pageIndex},#{size}
+  </select>
+
+  <select id="getAllBloggerUserId" resultType="hashmap" parameterType="java.lang.Integer">
+    select blogger_id as bloggerId, fans_id as fansId, user_name as bloggerName, sex ,birthday,is_single as isSingle,address,avatar_url as avatarUrl
+    from blogger where fans_id = #{userId,jdbcType=INTEGER} and is_delete = 0
   </select>
 </mapper>

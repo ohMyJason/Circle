@@ -53,20 +53,32 @@ public class TestController {
 
 
     @PostMapping("/testSetRedis")
-    public Result testRedis() {
-        if (redisUtil.hasKey("testString2")) {
-            redisUtil.incr("testString", 3);
-        } else {
-            redisUtil.set("testString2", 1);
-        }
+    public Result testRedis(String key,String member,Double count) {
+        redisUtil.addZSet(key,count,member);
         return Result.createSuccessResult();
     }
 
     @PostMapping("/testGetRedis")
-    public Result testGetRedis() {
-        String testString = (String) redisUtil.get("testString");
-        return Result.createSuccessResult(testString);
+    public Result testGetRedis(String key) {
+        System.out.println(redisUtil.getZsetRange(key));
+        return Result.createSuccessResult();
     }
+
+    @PostMapping("/testIncrRedis")
+    public  Result testIncrRedis(){
+        System.out.println(redisUtil.updateZet("circle-range",1,"搞笑圈"));
+        return Result.createSuccessResult();
+    }
+
+    @PostMapping("/testHashKey")
+    public  Result testHashKey(String member){
+        if (redisUtil.hasMember("circle-range",member)){
+            return Result.createSuccessResult("有");
+        }else {
+            return Result.createSuccessResult("没有");
+        }
+    }
+
 
     @PostMapping("/toMd5")
     public Result toMd5() {

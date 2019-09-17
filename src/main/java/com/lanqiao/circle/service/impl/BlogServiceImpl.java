@@ -101,7 +101,7 @@ public class BlogServiceImpl implements BlogService {
     public Result showConcernBlog(int userId, int page, int size) {
         try{
             int pageIndex = (page-1) * size;
-            List<HashMap> allBlogger = relationShipMapper.getBloggerByUserId(userId,pageIndex,size);
+            List<HashMap> allBlogger = relationShipMapper.getAllBloggerUserId(userId);
             List<Integer> integers = new ArrayList<>();
             for (HashMap hashMap:allBlogger) {
                 integers.add((Integer) hashMap.get("bloggerId"));
@@ -119,6 +119,7 @@ public class BlogServiceImpl implements BlogService {
             }
             return Result.createSuccessResult(blogInfoList.size(),blogInfoList);
         }catch (Exception e){
+            e.printStackTrace();
             return Result.createByFailure("操作异常，请联系管理人员！");
 
         }
@@ -153,7 +154,7 @@ public class BlogServiceImpl implements BlogService {
             limit = PageCheck.checkLimit(limit);
             int start = PageCheck.calculateStart(page,limit);
             int count = blogMapper.getBlogCount(content);
-            List<Blog> blogList = blogMapper.normalBlogs(start, limit, content);
+            List<HashMap> blogList = blogMapper.normalBlogs(start, limit, content);
             if (count>0){
                 return Result.createSuccessResult(count,blogList);
             }else {
@@ -179,6 +180,34 @@ public class BlogServiceImpl implements BlogService {
         }
     }
 
+    @Override
+    public Result setWeight(Integer blogId){
+        try {
+            if (blogMapper.setWeight(blogId)>0){
+                return Result.createSuccessResult();
+            }else {
+                return Result.createByFailure("ERROR");
+            }
+        }catch (Exception e){
+            System.out.println(e.getCause());
+            return Result.createByFailure("异常");
+        }
+    }
+    @Override
+    public Result editWeight(Integer blogId,Integer weight){
+        try {
+            if(blogMapper.editWeight(blogId,weight) > 0){
+                return Result.createSuccessResult();
+            }
+            else{
+                return Result.createByFailure("数据库错误");
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getCause());
+            return Result.createByFailure("异常");
+        }
+    }
     @Override
     public Result findBlog(String content){
         try {

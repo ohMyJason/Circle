@@ -37,9 +37,12 @@ public interface UsersMapper {
 
     List<Users> normalUsers(@Param("start") int start, @Param("limit") int limit, @Param("userName")  String userName);
     int getCount(@Param("userName")  String userName);
-    int deleteUsers(Integer usersId);
-    int bannedUsers(Integer usersId);
+    int deleteUsers(Integer userId);
+    int bannedUsers(Integer userId);
+    int unblockUsers(Integer userId);
     List<Users> findUsers(String userName);
 
     Users getUserByUserName(String userName);
+
+    Users getUsersByPhone(String phone);
 }

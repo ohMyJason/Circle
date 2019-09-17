@@ -1,13 +1,17 @@
 package com.lanqiao.circle.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.lanqiao.circle.annotations.UserLoginToken;
 import com.lanqiao.circle.entity.Circles;
 import com.lanqiao.circle.mapper.CirclesMapper;
 import com.lanqiao.circle.service.CircleService;
 import com.lanqiao.circle.service.TokenService;
 import com.lanqiao.circle.util.FileUploadUtil;
+import com.lanqiao.circle.util.RedisUtil;
 import com.lanqiao.circle.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author 王昊
@@ -32,8 +38,8 @@ public class CircleController {
     FileUploadUtil fileUploadUtil;
     @Autowired
     CirclesMapper circlesMapper;
-
-
+    @Autowired
+    RedisUtil redisUtil;
     @PostMapping("/getAllCircle")
     public  Result getAllCircle(){
         List<Circles> circlesList = circlesMapper.getAllCircle();
@@ -112,6 +118,29 @@ public class CircleController {
     @PostMapping("/findCircles")
     public Result findCircles(String circleName){
         return circleService.findCircles(circleName);
+    }
+
+
+    @PostMapping("/hotCircle")
+    public Result hotCIrcle(){
+        try {
+            Set<ZSetOperations.TypedTuple<Object>> zsetRange = redisUtil.getZsetRange("circle-blog-num");
+            Iterator<ZSetOperations.TypedTuple<Object>> iterator = zsetRange.iterator();
+            JSONArray datas = new JSONArray();
+            while (iterator.hasNext()){
+                ZSetOperations.TypedTuple<Object> next = iterator.next();
+                JSONObject data = new JSONObject();
+                data.put("circleName",next.getValue());
+                data.put("circleScore",next.getScore());
+                data.put("circleImg",circlesMapper.getCircleByName((String) next.getValue()).getCircleImgUrl());
+                data.put("circleId",circlesMapper.getCircleByName((String) next.getValue()).getCircleId());
+                datas.add(data);
+            }
+            return Result.createSuccessResult(datas.size(),datas);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.createByFailure(e.getMessage());
+        }
     }
 }
 

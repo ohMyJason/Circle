@@ -47,7 +47,9 @@
 
                 <div class="first_box flex-center">
                     <img :src="userInfo.avatarUrl" class="icon-head"><br>
-                    <span class="nick_name" v-cloak>{{userInfo.userName}}</span>
+                    <span class="nick_name" v-cloak>{{userInfo.userName}}</span><br>
+                    <a id="tag_box1" v-cloak @click="addConcernOrSub">{{isAttention}}</a>&nbsp;&nbsp;
+                    <a id="tag_box2" href="../../user/letter/session.html" v-cloak>发私信</a>
                 </div>
 
                 <div class="second_box row">
@@ -82,7 +84,7 @@
                                 <span class="show_info col-md-20" v-cloak>邮箱 {{userInfo.email}}</span>
                             </div>
                             <div class="box_29X2"></div>
-                            <div><a href="../../user/letter/settingInfo.html">查看更多<i class="icon icon-chevron-right"></i></a></div>
+                            <div style="margin-top: 10px"></div>
                         </div>
                     </div>
 
@@ -102,13 +104,13 @@
                             <div v-if="item.isRepost == 0">
                                 <div class="row">
                                     <div class="col-md-18 col-md-offset-3">
-                                        <span v-text="item.content"></span>
+                                        <span v-html="item.content"></span>
                                     </div>
                                     <div class="col-md-3"></div>
                                 </div>
                                 <div class="row" v-if="item.type == 1">
                                     <div class="col-md-18 col-md-offset-3">
-                                        <div class="img_list" v-for="(imgUrl,i) in item.resourceList">
+                                        <div class="img_list" v-for="(imgUrl) in item.resourceList">
                                             <img :src="imgUrl" class="publish_img">
                                         </div>
                                     </div>
@@ -126,7 +128,7 @@
                             <div v-if="item.isRepost == 1">
                                 <div class="row">
                                     <div class="col-md-18 col-md-offset-3">
-                                        <span v-text="item.content"></span>
+                                        <span v-html="item.content"></span>
                                     </div>
                                     <div class="col-md-3"></div>
                                 </div>
@@ -143,12 +145,12 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-18 col-md-offset-3">
-                                                <span v-text="item.blogInfo.content"></span>
+                                                <span v-html="item.blogInfo.content"></span>
                                             </div>
                                             <div class="col-md-3"></div>
                                         </div>
                                         <div class="row" v-if="item.blogInfo.type == 1">
-                                            <div class="col-md-18 col-md-offset-3">
+                                            <div class="col-md-19 col-md-offset-3">
                                                 <div class="img_list" v-for="(imgUrl,i) in item.blogInfo.resourceList">
                                                     <img :src="imgUrl" class="publish_img">
                                                 </div>
@@ -175,16 +177,18 @@
                                     <a class="icon icon-message-square" @click.prevent="showReview(i,item.blogId)" v-cloak>评论 {{item.commentNum}}</a>
                                 </div>
                                 <div class="col-md-8">
-                                    <a class="icon icon-thumbs-up" @click.prevent="like($event,item.blogId)" v-cloak>赞 {{item.likeNum}}</a>
+                                    <a class="icon icon-thumbs-up" @click.prevent="like($event,item.blogId)" v-cloak>{{item.likeNum}}</a>
                                 </div>
                             </div>
 
-                            <div :class=['row','addForward',selected==i?'':'hidden']>
-                                <div class="col-md-19 col-md-offset-1">
-                                    <input type="text" class="forwardInput" v-model="forwardInput">
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="button" class="forwardButton" value="转发" @click="forwardBlog($event,item.blogId)">
+                            <div :class=['addForward',selected==i?'':'hidden']>
+                                <div class="row">
+                                    <div class="col-md-20 col-md-offset-1">
+                                        <input type="text" class="forwardInput" v-model="forwardInput">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="button" class="forwardButton" value="转发" @click="forwardBlog($event,item.blogId)">
+                                    </div>
                                 </div>
                             </div>
 
@@ -246,6 +250,7 @@
             reviewed:'ll',
             pageNum:'1',
             pageSize:'3',
+            isAttention:''
         },
         methods:{
             showForward:function(i){
@@ -400,6 +405,42 @@
                     }
                 })
             },
+            addConcernOrSub() {
+                $.ajax({
+                    url:"/userInfo/addConcernOrSub",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    dataType:"json",
+                    data:{
+                        userId: $.cookie("userId")
+                    },
+                    success:function (result) {
+                        if (result.code == 0){
+                            vm.isAttention=="已关注";
+                            $("#tag_box1").html("已关注");
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("关注成功！");
+                            })
+                        }else{
+                            vm.isAttention=="未关注";
+                            $("#tag_box1").html("未关注");
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("取消关注!");
+                            })
+                        }
+                    },error:function () {
+                        layui.use('layer',function() {
+                            var layer = layui.layer;
+                            layer.msg("请登录！");
+                        })
+                        setTimeout(function () {
+                            window.location.href="../../index.html";
+                        },1000)
+                    }
+                })
+            }
         },
         created() {
             //展示他人除微博外信息
@@ -433,6 +474,27 @@
                     }
                 }
             })
+
+            //判断是否关注
+            $.ajax({
+                url:"/userInfo/ifConcern",
+                type:"post",
+                headers:{'token':$.cookie("token")},
+                dataType:"json",
+                data:{
+                    userId: $.cookie("userId")
+                },
+                success:function (result) {
+                    if (result.code == 0){
+                        vm.isAttention = "已关注"
+                    } else {
+                        vm.isAttention = "未关注"
+                    }
+                },error:function () {
+                    vm.isAttention = "未关注"
+                }
+            })
+
         }
     })
 </script>

@@ -20,6 +20,8 @@ public interface RelationShipMapper {
 
     RelationShip selectByPrimaryKey(RelationShipKey key);
 
+    RelationShip selectByPrimaryKeyNoLimit(RelationShipKey key);
+
     int updateByPrimaryKeySelective(RelationShip record);
 
     int updateByPrimaryKey(RelationShip record);
@@ -27,4 +29,6 @@ public interface RelationShipMapper {
     List<HashMap> getFansByUserId(@Param("userId") Integer userId, @Param("pageIndex")Integer pageIndex, @Param("size")Integer size);
 
     List<HashMap> getBloggerByUserId(@Param("userId") Integer userId,@Param("pageIndex")Integer pageIndex,@Param("size")Integer size);
+
+    List<HashMap> getAllBloggerUserId(Integer userId);
 }
