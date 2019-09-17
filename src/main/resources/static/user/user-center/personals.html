@@ -84,7 +84,7 @@
                                 <span class="show_info col-md-20" v-cloak>邮箱 {{userInfo.email}}</span>
                             </div>
                             <div class="box_29X2"></div>
-                            <div><a href="../../user/letter/settingInfo.html">查看更多<i class="icon icon-chevron-right"></i></a></div>
+                            <div style="margin-top: 10px"></div>
                         </div>
                     </div>
 
@@ -416,16 +416,28 @@
                     },
                     success:function (result) {
                         if (result.code == 0){
-                            if (vm.isAttention == "未关注") {
-                                $("#tag_box1").html("已关注");
-                            } else {
-                                $("#tag_box1").html("未关注");
-                                layui.use('layer',function() {
-                                    var layer = layui.layer;
-                                    layer.msg("已取消关注！");
-                                })
-                            }
+                            vm.isAttention=="已关注";
+                            $("#tag_box1").html("已关注");
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("关注成功！");
+                            })
+                        }else{
+                            vm.isAttention=="未关注";
+                            $("#tag_box1").html("未关注");
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("取消关注!");
+                            })
                         }
+                    },error:function () {
+                        layui.use('layer',function() {
+                            var layer = layui.layer;
+                            layer.msg("请登录！");
+                        })
+                        setTimeout(function () {
+                            window.location.href="../../index.html";
+                        },1000)
                     }
                 })
             }
@@ -478,6 +490,8 @@
                     } else {
                         vm.isAttention = "未关注"
                     }
+                },error:function () {
+                    vm.isAttention = "未关注"
                 }
             })
 

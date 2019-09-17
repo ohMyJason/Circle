@@ -122,7 +122,10 @@
                         layer.msg("请输入正确的用户名");
                     })
                 }else if(!regpho.test(this.phone)){
-                    layer.msg("请输入正确的手机号");
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入正确的手机号");
+                    })
                 }else {
                     $.ajax({
                         url:'/userInfo/matchNameAndPhone',

@@ -45,15 +45,18 @@ public class RelationShipServiceImpl implements RelationShipService {
                 newRelationship.setBloggerId(userId);
                 newRelationship.setFansId(loginId);
                 relationShipMapper.insertSelective(newRelationship);
+                return Result.createSuccessResult();
             }else {
                 if (relationShip.getIsDelete()==0){
                     relationShip.setIsDelete(1);
+                    relationShipMapper.updateByPrimaryKeySelective(relationShip);
+                    return Result.createByFailure("取消关注");
                 }else {
                     relationShip.setIsDelete(0);
+                    relationShipMapper.updateByPrimaryKeySelective(relationShip);
+                    return Result.createSuccessResult();
                 }
-                relationShipMapper.updateByPrimaryKeySelective(relationShip);
             }
-            return Result.createSuccessResult();
         }catch (Exception e){
             return Result.createByFailure("操作异常，请联系管理人员！");
         }
