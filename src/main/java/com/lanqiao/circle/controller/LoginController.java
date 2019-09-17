@@ -111,6 +111,7 @@ public class LoginController {
             System.out.println("Message=" + sendSms.getMessage());
             System.out.println("RequestId=" + sendSms.getRequestId());
             System.out.println("BizId=" + sendSms.getBizId());
+            System.out.println(code);
             return Result.createSuccessResult(code);
         }catch(Exception e){
             return Result.createByFailure();
