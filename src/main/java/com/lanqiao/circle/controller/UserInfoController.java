@@ -7,8 +7,10 @@ import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.RelationShipService;
 import com.lanqiao.circle.service.TokenService;
 import com.lanqiao.circle.service.UserInfoService;
+import com.lanqiao.circle.util.CommentUtil;
 import com.lanqiao.circle.util.FileUploadUtil;
 import com.lanqiao.circle.util.Result;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,8 @@ public class UserInfoController {
     UsersMapper usersMapper;
     @Autowired
     RelationShipService relationShipService;
+    @Autowired
+    CommentUtil commentUtil;
 
     /**
      * 查询用户基本信息
@@ -198,11 +202,30 @@ public class UserInfoController {
         return relationShipService.addConcernOrSub(loginUserId,userId);
     }
 
+    /**
+     * 用户名与手机匹配
+     * @param userName
+     * @param phone
+     * @return
+     */
     @PostMapping("matchNameAndPhone")
     public Result matchNameAndPhone(@RequestParam(name = "userName") String userName,@RequestParam(name = "phone") String phone){
         return userInfoService.matchNameAndPhone(userName,phone);
     }
 
+    /**
+     * 密码重置
+     * @param users
+     * @return
+     */
+    @PostMapping("newPassword")
+    public Result newPassword(Users users){
+        String newPassword = users.getPassword();
+        String password = commentUtil.getMd5(newPassword);
+        users.setPassword(password);
+        usersMapper.updateByPrimaryKeySelective(users);
+        return Result.createSuccessResult();
+    }
     /**
      * 管理员查询用户信息
      */
