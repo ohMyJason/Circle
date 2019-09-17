@@ -80,7 +80,10 @@ public class SessionServiceImpl implements SessionService {
         Users users = new Users();
         users.setUserName(userName);
         Integer receiverId = usersMapper.getUserByUserName(userName).getUserId();
-
+        if(senterId == receiverId)
+        {
+            return Result.createByFailure("不能和自己聊天噢");
+        }
         Letter letter = new Letter();
         letter.setSenterId(senterId);
         letter.setReceiverId(receiverId);
@@ -107,9 +110,14 @@ public class SessionServiceImpl implements SessionService {
         return Result.createSuccessResult();
     }
 
+    //查找两个人是否又聊天信息
     @Override
     public Result selectSession(Integer senterId,String userName) {
         Integer receiverId = usersMapper.getUserByUserName(userName).getUserId();
+//        if(senterId == receiverId)
+//        {
+//            return Result.createByFailure("不能和自己聊天噢");
+//        }
         Letter letter = new Letter();
         letter.setSenterId(senterId);
         letter.setReceiverId(receiverId);
