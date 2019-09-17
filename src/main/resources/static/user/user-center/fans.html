@@ -11,6 +11,7 @@
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
     <style>
         [v-cloak] {
@@ -49,11 +50,12 @@
                     <span class="nick_name" v-cloak>{{userName}}</span><br>
                 </div>
 
-                <div class="row second_box">
-                    <at-menu mode="horizontal" active-name="0" class="col-md-24">
-                        <at-menu-item name="1" class="col-md-offset-5">我的主页</at-menu-item>
-                        <at-menu-item name="2" class="col-md-offset-8">我的相册</at-menu-item>
-                    </at-menu>
+                <div class="row second_box flex-center">
+                    我的粉丝页
+                    <!--<at-menu mode="horizontal" active-name="0" class="col-md-24">-->
+                        <!--<at-menu-item name="1" class="col-md-offset-5">我的主页</at-menu-item>-->
+                        <!--&lt;!&ndash;<at-menu-item name="2" class="col-md-offset-8">我的相册</at-menu-item>&ndash;&gt;-->
+                    <!--</at-menu>-->
                 </div>
 
                 <div class="third_box">
@@ -77,7 +79,7 @@
                                 <a href="#" @click = "sendSession(index)" id = "sendS"><at-button type="warning" >私信</at-button></a>
                             </div>
                             <div class="concern_btn col-md-3">
-                                <a id="tag_box1" v-cloak @click="addConcernOrSub">{{isAttention}}</a>
+                                <a id="tag_box1" v-cloak @click="addConcernOrSub()">{{isAttention}}</a>
                             </div>
 <!--                            <div class="select_more">-->
 <!--                                <at-dropdown @on-dropdown-command="handleCommand">-->
@@ -216,7 +218,6 @@
                 }
             })
 
-            //判断是否关注
             $.ajax({
                 url:"/userInfo/ifConcern",
                 type:"post",

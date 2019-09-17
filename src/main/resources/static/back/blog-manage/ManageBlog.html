@@ -16,7 +16,7 @@
 <div class="demoTable">
     <div style="margin-top: 25px">
         <label class="layui-form-label" style="width: 150px">输入微博进行筛选：</label>
-        <input type="text" name="title" required lay-verify="required" id="blogName" placeholder="请输入标题" autocomplete="off" class="layui-input" style="width: 200px">
+        <input type="text" name="title" required lay-verify="required" id="blogName" placeholder="请输入搜索内容" autocomplete="off" class="layui-input" style="width: 200px">
         <button class="layui-btn" data-type="reload" id="search">搜索</button></div>
 </div>
 <table class="layui-hide" id="blog" lay-filter="blog"></table>
@@ -49,7 +49,7 @@
             ,even:true
             ,limit: 5 //每页默认显示的数量
             ,cols: [[ //表头
-                {field: 'blogId', title: '创建时间', width:180, sort: true}
+                {field: 'blogId', title: '微博ID', width:180, sort: true}
                 ,{field: 'content', title: '微博内容', width:250, sort: true}
                 ,{field: 'createTime', title: '创建时间', width:180, sort: true}
                 ,{field: 'isRepost', title: '是否原创', width:100,templet:function (d) {
@@ -61,7 +61,7 @@
                     }
                     }
                 ,{field: 'weight', title: '权重', width: 100, sort: true}
-                ,{field: 'userName', title: '用户名字', width: 100, sort: true}
+                ,{field: 'userName', title: '用户名字', width: 150, sort: true}
                 ,{field: 'circleName', title: '圈子名字', width: 100, sort: true}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 250}
             ]]
