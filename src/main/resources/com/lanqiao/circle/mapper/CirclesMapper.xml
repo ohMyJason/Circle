@@ -145,14 +145,14 @@
 
 
 
-  <select id="normalCircles" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from tb_circle
+  <select id="normalCircles" resultType="hashmap">
+    select c.circle_id as circleId,u.user_name as userName,c.circle_name as circleName,c.circle_title as circleTitle,c.create_time as createTime
+    from tb_circle c,tb_users u
     <where>
       <if test="circleName!=null">
-        circle_name like '%${circleName}%'
+        c.circle_name like '%${circleName}%'
       </if>
-      and is_delete = 0
+      and c.is_delete = 0 and c.user_id = u.user_id
     </where>
     LIMIT #{start},#{limit}
   </select>

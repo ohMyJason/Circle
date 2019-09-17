@@ -377,7 +377,9 @@
                             var layer = layui.layer;
                             layer.msg("请先登录!");
                         })
-                        // window.location.href="../index/index.html";
+                        setTimeout(function () {
+                            window.location.href="../index/index.html";
+                        },1000)
 
                     }
                 })
@@ -432,8 +434,10 @@
                             layui.use('layer', function () {
                                 var layer = layui.layer;
                                 layer.msg("请先登录");
-                                // window.location.href="../index/index.html";
                             })
+                            setTimeout(function () {
+                                window.location.href="../index/index.html";
+                            },1000)
                         }
                     })
                 }
@@ -461,8 +465,10 @@
                         layui.use('layer', function () {
                             var layer = layui.layer;
                             layer.msg("请先登录");
-                            // window.location.href="../index/index.html";
                         })
+                        setTimeout(function () {
+                            window.location.href="../index/index.html";
+                        },1000)
                     }
                 })
             },

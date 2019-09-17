@@ -29,4 +29,6 @@ public interface LetterMapper {
 
     List<HashMap> selectMessageLog(Letter letter);
 
+    HashMap selectSession(Letter letter);
+
 }

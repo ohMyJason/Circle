@@ -16,7 +16,7 @@
 <div class="demoTable">
     <div style="margin-top: 25px">
         <label class="layui-form-label" style="width: 150px">输入圈子名进行筛选：</label>
-        <input type="text" name="title" required lay-verify="required" id="circleName" placeholder="请输入标题" autocomplete="off" class="layui-input" style="width: 200px">
+        <input type="text" name="title" required lay-verify="required" id="circleName" placeholder="请输入搜索内容" autocomplete="off" class="layui-input" style="width: 200px">
         <button class="layui-btn" data-type="reload" id="search">搜索</button></div>
 </div>
 <table class="layui-hide" id="circle" lay-filter="circle"></table>
@@ -48,10 +48,10 @@
             ,limit: 5 //每页默认显示的数量
             ,cols: [[ //表头
                 {field: 'circleId', title: '圈子ID', width:80, sort: true, fixed: 'left'}
-                ,{field: 'userId', title: '用户ID',sort:true, width:80}
-                ,{field: 'circleName', title: '圈子名字', width:180, sort: true}
-                ,{field: 'circleTitle', title: '圈子描述', width:250, sort: true}
-                ,{field: 'createTime', title: '创建时间', width:170}
+                ,{field: 'userName', title: '用户名',sort:true, width:200}
+                ,{field: 'circleName', title: '圈子名字', width:280, sort: true}
+                ,{field: 'circleTitle', title: '圈子描述', width:280, sort: true}
+                ,{field: 'createTime', title: '创建时间', width:280}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 80}
             ]]
         });
