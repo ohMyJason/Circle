@@ -123,26 +123,24 @@
             isAttention:''
         },
         methods:{
-            addConcernOrSub() {
+            addConcernOrSub(e,userId) {
                 $.ajax({
                     url:"/userInfo/addConcernOrSub",
                     type:"post",
                     headers:{'token':$.cookie("token")},
                     dataType:"json",
                     data:{
-                        userId: $.cookie("userId")
+                        userId: userId
                     },
                     success:function (result) {
                         if (result.code == 0){
-                            vm.isAttention=="已关注";
-                            $("#tag_box1").html("已关注");
+                            e.target.innerHTML= '已关注';
                             layui.use('layer',function() {
                                 var layer = layui.layer;
                                 layer.msg("关注成功！");
                             })
                         }else{
-                            vm.isAttention=="未关注";
-                            $("#tag_box1").html("未关注");
+                            e.target.innerHTML = '未关注';
                             layui.use('layer',function() {
                                 var layer = layui.layer;
                                 layer.msg("取消关注!");
@@ -158,12 +156,25 @@
                         },1000)
                     }
                 })
-            },
-            sendSession:function(index){
-                var userName = vm.fansList[index].fansName;
-                window.location.href="/user/letter/session.html?userName="+ userName;
-
-                // $('#sendS').attr("href","../../user/letter/session.html?userName=" + userName);
+            },ifConcern(userId){
+                $.ajax({
+                    url:"/userInfo/ifConcern",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    dataType:"json",
+                    data:{
+                        userId: userId
+                    },
+                    success:function (result) {
+                        if (result.code == 0){
+                            vm.isAttention = "已关注"
+                        } else {
+                            vm.isAttention = "未关注"
+                        }
+                    },error:function () {
+                        vm.isAttention = "未关注"
+                    }
+                })
             }
         },
         created() {
@@ -213,6 +224,8 @@
                             }else if(result.data[i].isSingle == 2){
                                 vm.fansList[i].isSingle = "恋爱";
                             }
+                            vm.ifConcern(result.data[i].fansId);
+
                         }
                     }
                 }
