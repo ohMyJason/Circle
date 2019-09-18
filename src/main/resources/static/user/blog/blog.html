@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>搜索展示</title>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="../../node_modules/css/circle.css">
+    <link rel="stylesheet" href="../../node_modules/css/circleRank.css">
+    <link rel="stylesheet" href="../../node_modules/css/top.css">
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="search-blog">
+        <div class="row top-header">
+            <div class="col-md-3 logo">
+                <img src="../../node_modules/images/logo.png" class="img-up">
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-7 col-md-offset-5">
+                <a href="../index/userIndex.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
+                <a href="../circle/circleRank.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
+                <a href="../letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
+                <a href="../user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
+            </div>
+        </div>
+
+        <div class="row search-top">
+            <div class="col-md-3 logo col-md-offset-5">
+                <img src="../../node_modules/images/logo.png" class="img-up">
+            </div>
+            <div class="col-md-11">
+                <at-input v-model="inputValue4" placeholder="搜索微博" append-button class="top-search">
+                    <template slot="append">
+                        <i class="icon icon-search"></i>
+                    </template>
+                </at-input>
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+
+        <div class="row" style="margin: 10px 0">
+            <div class="col-md-offset-4 col-md-20">
+                <h1 v-cloak>圈圈为您找到相关搜索结果约:{{blogInfoList.length}}个</h1>
+            </div>
+        </div>
+
+        <div>
+            <div class="row content-margin">
+                <div class="col-md-4"></div>
+                <div class="col-md-17">
+                    <div class="content-show" v-for="(item,i) in blogInfoList">
+                        <!--         控制头           -->
+                        <div class="row" style="padding: 10px">
+                            <div class="col-md-2 col-md-offset-1">
+                                <a href="#" @click="jumpPagePerson(item.userId)"><img :src="item.avatarUrl" class="header-img"></a>
+                            </div>
+                            <div class="col-md-8">
+                                <a href="#" @click="jumpPagePerson(item.userId)"><span v-text="item.userName" class="black blog-belonger"></span></a>
+                            </div>
+                            <div class="col-md-2 col-md-offset-11">
+                                <at-tag color="success" v-if="item.isRepost == 0">原创</at-tag>
+                                <at-tag color="info" v-if="item.isRepost == 1">转载</at-tag>
+                                <at-tag color="error" v-cloak>{{item.circleName}}</at-tag>
+                            </div>
+                        </div>
+                        <!--        原创展示            -->
+                        <div v-if="item.isRepost == 0">
+                            <div class="row">
+                                <div class="col-md-18 col-md-offset-3">
+                                    <span v-html="item.content" class="color#333"></span>
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                            <div class="row" v-if="item.type == 2">
+                                <div class="col-md-18 col-md-offset-3">
+                                    <video :src="item.resourceList[0]" controls="controls" width="100%" height="260px">您的浏览器不支持播放该视频！</video>
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                            <div class="row" v-if="item.type == 1">
+                                <div class="col-md-11 col-md-offset-3">
+                                    <div v-for="(urlList,i) in item.resourceList" class="show-img" >
+                                        <img :src="urlList" class="all-img">
+                                    </div>
+                                </div>
+                                <div class="col-md-10"></div>
+                            </div>
+                        </div>
+                        <!--      转载展示          -->
+
+                        <div v-if="item.isRepost == 1">
+                            <div class="row">
+                                <div class="col-md-18 col-md-offset-3">
+                                    <span v-text="item.content" class="color#333"></span>
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                            <!--    原帖展示    -->
+                            <div v-if="item.blogInfo.isRepost == 0" class="row">
+                                <div class="col-md-18 col-md-offset-3 trans-show">
+                                    <div class="row">
+                                        <div class="col-md-2 col-md-offset-1">
+                                            <img :src="item.blogInfo.avatarUrl" class="header-img">
+                                        </div>
+                                        <div class="col-md-7 col-md-offset-1">
+                                            <a href="#"><span v-text="item.blogInfo.userName" class="black-blue blog-belonger"></span></a>
+                                        </div>
+                                        <div class="col-md-13"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-18 col-md-offset-3">
+                                            <span v-html="item.blogInfo.content"></span>
+                                        </div>
+                                        <div class="col-md-3"></div>
+                                    </div>
+                                    <div class="row" v-if="item.blogInfo.type == 2">
+                                        <div class="col-md-18 col-md-offset-3">
+                                            <video :src="item.blogInfo.resourceList[0]" controls="controls" width="100%" height="260px">您的浏览器不支持播放该视频！</video>
+                                        </div>
+                                        <div class="col-md-3"></div>
+                                    </div>
+                                    <div class="row" v-if="item.blogInfo.type == 1">
+                                        <div class="col-md-14 col-md-offset-2">
+                                            <div v-for="(urlList,i) in item.blogInfo.resourceList" class="show-img" >
+                                                <img :src="urlList" class="all-img">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                        </div>
+
+                        <!--    评论点赞相关 -->
+                        <div class="row l-c-s">
+                            <div class="col-md-5">
+                                <a href="" class="icon icon-share a-font-20px" @click.prevent="showForward(i)">转发</a>
+                            </div>
+                            <div class="col-md-5">
+                                <a href="" @click.prevent="showReview(i,item.blogId)" class="icon icon-edit a-font-20px" v-cloak>{{item.commentNum}}</a>
+                            </div>
+                            <div class="col-md-5">
+                                <a href="" @click.prevent="like($event,item.blogId)" class="icon icon-thumbs-up a-font-20px" v-cloak>{{item.likeNum}}</a>
+                            </div>
+                            <div class="col-md-9">
+                                <span class="font-16px" v-cloak>发布时间:{{item.createTime}}</span>
+                            </div>
+                        </div>
+                        <div :class=['row','addForward',selected==i?'':'hidden']>
+                            <div class="col-md-20 col-md-offset-1">
+                                <input type="text" class="forwardInput" v-model="forwardInput">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="button" class="forwardButton" value="转发" @click="forwardBlog($event,item.blogId)">
+                            </div>
+                        </div>
+                        <div :class=['addForward',reviewed==i?'':'hidden']>
+                            <div class="row">
+                                <div class="col-md-20 col-md-offset-1">
+                                    <input type="text" class="forwardInput" v-model="forwardInput">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="button" class="forwardButton" value="发布评论" @click="reviedBlog($event,item.blogId)">
+                                </div>
+                            </div>
+
+                            <div v-if="commentList != ''" style="border-top: 1px solid silver">
+                                <div v-for="comment in commentList">
+                                    <div class="row">
+                                        <div class="col-md-1 col-md-offset-1 commentShow">
+                                            <a href="#" @click="jumpPagePerson(comment.userId)"><img :src="comment.avatarUrl" class="commentHeader"></a>
+                                        </div>
+                                        <div class="col-md-21 commentShow">
+                                            <a href="#" @click="jumpPagePerson(comment.userId)"><span class="black commenter" v-cloak>{{comment.userName}}:</span></a>
+                                            <span class="color#333 commenter" v-text="comment.commentContent"></span>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-17 commentShow"></div>
+                                        <div class="col-md-5 commentShow">
+                                            <span v-text="comment.commentTime"></span>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="commentList == ''" class="row">
+                                <div class="col-md-16 col-md-offset-8">
+                                    <span style="font-size: 18px">还没有人评论呢，快来评论吧！</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <ul class="flow-default" style="height: 300px; margin-left: 50%" id="LAY_demo2"></ul>
+
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+    </div>
+<script>
+    var vm3 = new Vue({
+        el: '#search-blog',
+        data: {
+            inputValue4:'',
+            blogInfoList:[
+            ],
+            commentList:[
+            ],
+            forwardInput:'',
+            selected: 'll',
+            reviewed:'ll'
+        },methods:{
+            showForward(i){
+                if(this.selected != i) {
+                    this.selected = i;
+                    this.reviewed='ll';
+                    this.forwardInput='';
+                }else {
+                    this.selected = 'lll';
+                }
+            },
+            forwardBlog(e,blogId){
+                $.ajax({
+                    url:"/blog/forwardBlog",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        blogId:blogId,
+                        forwardContent: this.forwardInput
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("转发成功");
+                            })
+                            vm3.selected = 'll';
+                        }
+                    },error:function () {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg("请先登录!");
+                        })
+                        setTimeout(function () {
+                            window.location.href="../../../index.html";
+                        },1000)
+
+                    }
+                })
+            },
+            showReview(i,blogId){
+                if(this.reviewed != i) {
+                    this.reviewed = i;
+                    this.forwardInput='';
+                    this.selected = 'lll';
+                    $.ajax({
+                        url: "/blog/showComment",
+                        type: "post",
+                        data: {
+                            blogId: blogId,
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                vm3.commentList= result.data;
+                            }
+                        }
+                    })
+                }else {
+                    this.reviewed = 'lll';
+                }
+            },
+            reviedBlog(e,blogId){
+                if(this.forwardInput == ''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入评论信息！");
+                    })
+                }else {
+                    $.ajax({
+                        url: "/blog/insertComment",
+                        type: "post",
+                        headers: {'token': $.cookie("token")},
+                        data: {
+                            blogId: blogId,
+                            commentContent: this.forwardInput
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer', function () {
+                                    var layer = layui.layer;
+                                    layer.msg("评论成功");
+                                })
+                                vm3.reviewed = 'lll';
+                                var x = parseInt(e.target.parentElement.parentElement.parentElement.previousElementSibling.previousElementSibling.firstElementChild.nextElementSibling.firstElementChild.innerHTML);
+                                e.target.parentElement.parentElement.parentElement.previousElementSibling.previousElementSibling.firstElementChild.nextElementSibling.firstElementChild.innerHTML = x + 1;
+                            }
+                        },error:function () {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("请先登录");
+                            })
+                            setTimeout(function () {
+                                window.location.href="../../../index.html";
+                            },1000)
+                        }
+                    })
+                }
+            },
+            like(e,blogId){
+                $.ajax({
+                    url:"/blog/insertLike",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        blogId:blogId
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            e.target.innerText = parseInt(e.target.innerText) + 1;
+                            e.target.style.color = "blue";
+                        }else {
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg(result.msg);
+                            })
+                            e.target.style.color = "blue";
+                        }
+                    },error:function () {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg("请先登录");
+                        })
+                        setTimeout(function () {
+                            window.location.href="../../../index.html";
+                        },1000)
+                    }
+                })
+            },
+            jumpPagePerson(userId){
+                if ($.cookie('token') == null){
+                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                    window.location.href="../user-center/personals.html";
+                }else{
+                    $.ajax({
+                        url:"/test/testGetUserIdByToken",
+                        type:"post",
+                        headers:{'token':$.cookie("token")},
+                        success:function (result) {
+                            if(result.code == 0){
+                                if(userId == result.data){
+                                    window.location.href="../user-center/personal.html";
+                                }else {
+                                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                                    window.location.href="../user-center/personals.html";
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+        },created(){
+            $.ajax({
+                url:"/circle/circleBlog",
+                type:"post",
+                data:{
+                    circleId : 1,
+                    page: 1,
+                    size: 10
+                },
+                success:function (result) {
+                    if(result.code == 0){
+                        vm3.blogInfoList = result.data;
+                    }
+                }
+            })
+
+
+        }
+    })
+
+</script>
+</body>
+</html>
