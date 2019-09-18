@@ -14,7 +14,8 @@
 <header class="bar bar-nav" >
     <button class="button button-link button-nav pull-left">
         <span class="icon icon-left"></span>
-        返回
+        <a href="phone-index.html"> 返回</a>
+
     </button>
     <button class="button pull-right">
         发送
@@ -24,20 +25,22 @@
 <div class="content">
 <!--    发表框-->
     <div style="width: 98%;height: 17rem;margin-left: 1%; margin-top:1rem;background-color: #B0C8F4;border-radius: 20px">
-        <textarea style="width: 100%;height: 75%;border-top-left-radius: 20px;border-top-right-radius: 20px">
+        <textarea  type="file"  multiple  style="width: 100%;height: 75%;border-top-left-radius: 20px;border-top-right-radius: 20px">
 
         </textarea>
-        <div style="position: relative;height: 25%;width: 100%;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;
+        <div   style="position: relative;height: 25%;width: 100%;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;
         text-align: center;font-size: 2rem;">
-            <h>
+            <button id="uploadImg"  style="background-color: #B0C8F4; border: 0px">
                 +&nbsp;添加图片/视频/链接
-            </h>
+            </button>
+<!--            <input class="uploadImg" type="file" name="file" multiple id="file" value="sdasda">-->
+
         </div>
     </div>
     <div class="card" style="border-radius: 10px">
-        <div class="card-content" style="width: 100%;height: 5rem;border-radius: 10px">
+        <div class="card-content" style="width: 100%;height: 5rem;border-radius: 10px" id="add">
             <button class="button pull-right" style="font-size: 2rem;height: 5rem;width: 5rem;border: 0px">
-                <span class="icon icon-right"></span>
+                <span class="icon icon-right"  id="turn"></span>
             </button>
             <button class="button pull-left" style="font-size: 2rem;height: 5rem;width: 5rem;border: 0px">
                 <span class="icon icon-browser"></span>
@@ -55,9 +58,45 @@
     </div>
 </div>
 <script>
-    new Vue{
+   $(function () {
+       var layer=$.layer;
+       var upload=$.upload;
+       $("#add").click(function () {
+           $("#turn").attr("class","icon icon-down");
+       })
 
-    }
+       // $("#uploadImg").click(function () {
+       //     var $input=$("#file");
+       //     $input.on("change" ,function () {
+       //         var files=this.files;
+       //         var length=files.length;
+       //         console.log("选择了" +length+"张图片");
+       //         for(var i=0;i<length;i++){
+       //             var fr=new FileReader();
+       //             div=document.createElement("div");
+       //             img =document.createElement("img");
+       //             div.className='pic';
+       //             fr.onload=function (e) {
+       //                 console.log("回显图片");
+       //                 img.src=this.result;
+       //                 div.appendChild(img)
+       //                 document.body.appendChild(div);
+       //             }
+       //             fr.readAsDataURL(files[i]);
+       //         }
+       //
+       //     })
+       // })
+
+
+
+
+       // upload.render({
+       //
+       // })
+
+
+   })
 </script>
 </body>
 </html>

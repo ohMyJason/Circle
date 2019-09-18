@@ -10,7 +10,6 @@ import com.lanqiao.circle.service.UserInfoService;
 import com.lanqiao.circle.util.CommentUtil;
 import com.lanqiao.circle.util.FileUploadUtil;
 import com.lanqiao.circle.util.Result;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

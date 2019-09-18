@@ -291,6 +291,11 @@
                                     window.location.href="../user-center/personals.html";
                                 }
                             }
+                        },error:function () {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("请先登录!");
+                            })
                         }
                     })
                 }
