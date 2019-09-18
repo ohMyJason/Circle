@@ -7,6 +7,11 @@ import com.lanqiao.circle.service.TokenService;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * @author 刘佳昇
@@ -20,12 +25,23 @@ public class TokenServiceImpl implements TokenService {
      * @param user
      * @return
      */
+//    @Override
+//    public String getToken(Users user) {
+//        String token = "";
+//        token = JWT.create().withAudience(""+user.getUserId()).sign(Algorithm.HMAC256(user.getPassword()));
+//        return token;
+//    }
+
+
     @Override
     public String getToken(Users user) {
+        String localTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String Msg = localTime +'/' + user.getUserId();
         String token = "";
-        token = JWT.create().withAudience(""+user.getUserId()).sign(Algorithm.HMAC256(user.getPassword()));
+        token = JWT.create().withAudience(Msg).sign(Algorithm.HMAC256(user.getPassword()));
         return token;
     }
+
 
 
     /**
@@ -36,7 +52,8 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public String getUserId(HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("token");
-        String userId = JWT.decode(token).getAudience().get(0);
-        return userId;
+        String Msg = JWT.decode(token).getAudience().get(0);
+        String []str =Msg.split("/");
+        return str[1];
     }
 }
