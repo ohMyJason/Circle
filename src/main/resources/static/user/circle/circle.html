@@ -291,6 +291,11 @@
                                     window.location.href="../user-center/personals.html";
                                 }
                             }
+                        },error:function () {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("请先登录!");
+                            })
                         }
                     })
                 }
@@ -378,7 +383,7 @@
                             layer.msg("请先登录!");
                         })
                         setTimeout(function () {
-                            window.location.href="../index/index.html";
+                            window.location.href="../../../index.html";
                         },1000)
 
                     }
@@ -436,7 +441,7 @@
                                 layer.msg("请先登录");
                             })
                             setTimeout(function () {
-                                window.location.href="../index/index.html";
+                                window.location.href="../../../index.html";
                             },1000)
                         }
                     })
@@ -467,7 +472,7 @@
                             layer.msg("请先登录");
                         })
                         setTimeout(function () {
-                            window.location.href="../index/index.html";
+                            window.location.href="../../../index.html";
                         },1000)
                     }
                 })

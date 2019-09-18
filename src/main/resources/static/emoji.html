@@ -9,63 +9,138 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
     <script type="text/javascript" src="node_modules/emoji_jQuery-master/dist/emoji_jQuery.min.js"></script>
     <style type="text/css">
-        #test {
-            width: 360px;
-            height: 50px;
-            margin: 0 auto;
-        }
-        #div-emoji {
-            width: 420px;
-            margin: 0 auto;
-            padding-top: 120px;
-            margin-top: 50px;
+        /*#test {*/
+        /*    width: 360px;*/
+        /*    height: 50px;*/
+        /*    margin: 0 auto;*/
+        /*}*/
+        /*#div-emoji {*/
+        /*    width: 420px;*/
+        /*    margin: 0 auto;*/
+        /*    padding-top: 120px;*/
+        /*    margin-top: 50px;*/
+        /*}*/
+
+        /*#div-emoji input:nth-child(1) {*/
+        /*    width: 100%;*/
+        /*}*/
+
+        /*#div-emoji button {*/
+        /*    float: right;*/
+        /*    margin-left: 3px;*/
+        /*    color: white;*/
+        /*    background-color: blue;*/
+        /*    padding: 5px;*/
+        /*    height: 30px;*/
+        /*}*/
+        .uploadImgBtn {
+
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            position: relative;
+            /*background: url("img/plus.png") no-repeat;*/
+            background-color: #F1E4ED;
+            -webkit-background-size: cover;
+            background-size: cover;
         }
 
-        #div-emoji input:nth-child(1) {
+        .uploadImgBtn .uploadImg {
+            position: absolute;
+            right: 0;
+            top:0;
             width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
         }
-
-        #div-emoji button {
-            float: right;
-            margin-left: 3px;
-            color: white;
-            background-color: blue;
-            padding: 5px;
-            height: 30px;
+        /*这是一个用做回显的盒子的样式*/
+          .pic{
+              width: 100px;
+              height: 100px;
+          }
+        .pic img {
+            width: 100%;
+            height: 100%;
         }
     </style>
 
 
 </head>
 <body>
-<div id="test" style="border: 1px solid blue"></div>
-<div id="div-emoji">
-    <input id="input" type="text" style="border: 1px solid red">
-    <button id="send">发送</button>
-    <button id="btn">emojiBtn</button>
+<!--<div id="test" style="border: 1px solid blue"></div>-->
+<!--<div id="div-emoji">-->
+<!--    <input id="input" type="text" style="border: 1px solid red">-->
+<!--    <button id="send">发送</button>-->
+<!--    <button id="btn">emojiBtn</button>-->
+<!--</div>-->
+
+
+<div class="uploadImgBtn" id="uploadImgBtn">
+    <input class="uploadImg" type="file" name="file" multiple id="file">
 </div>
+
+
+
 <script>
-    $.Lemoji({
-        emojiInput: '#input',
-        emojiBtn: '#btn',
-        position: 'LEFTBOTTOM',
-        length: 8,
-        emojis: {
-            qq: {path: 'node_modules/emoji_jQuery-master/static/images/qq/', code: ':', name: 'QQ表情'},
-            tieba: {path: 'node_modules/emoji_jQuery-master/static/images/tieba', code: ';', name: "贴吧表情"},
-            emoji: {path: 'node_modules/emoji_jQuery-master/static/images/emoji', code: ',', name: 'Emoji表情'}
-        }
-    });
-    $('#send').click(function () {
-        var content = $('#input').val();
-        content = $.emojiParse({
-            content: content,
-            emojis: [
-                {type: 'qq', path: 'node_modules/emoji_jQuery-master/static/images/qq/', code: ':'},
-                {path: 'node_modules/emoji_jQuery-master/static/images/tieba/', code: ';', type: 'tieba'},
-                {path: 'node_modules/emoji_jQuery-master/static/images/emoji/', code: ',', type: 'emoji'}]
-        });
-        $('#test').html(content);
-    });</script>
+    // $.Lemoji({
+    //     emojiInput: '#input',
+    //     emojiBtn: '#btn',
+    //     position: 'LEFTBOTTOM',
+    //     length: 8,
+    //     emojis: {
+    //         qq: {path: 'node_modules/emoji_jQuery-master/static/images/qq/', code: ':', name: 'QQ表情'},
+    //         tieba: {path: 'node_modules/emoji_jQuery-master/static/images/tieba', code: ';', name: "贴吧表情"},
+    //         emoji: {path: 'node_modules/emoji_jQuery-master/static/images/emoji', code: ',', name: 'Emoji表情'}
+    //     }
+    // });
+    // $('#send').click(function () {
+    //     var content = $('#input').val();
+    //     content = $.emojiParse({
+    //         content: content,
+    //         emojis: [
+    //             {type: 'qq', path: 'node_modules/emoji_jQuery-master/static/images/qq/', code: ':'},
+    //             {path: 'node_modules/emoji_jQuery-master/static/images/tieba/', code: ';', type: 'tieba'},
+    //             {path: 'node_modules/emoji_jQuery-master/static/images/emoji/', code: ',', type: 'emoji'}]
+    //     });
+    //     $('#test').html(content);
+    // });
+
+    $(document).ready(function(){
+        //为外面的盒子绑定一个点击事件
+        $("#uploadImgBtn").click(function(){
+            /*
+            1、先获取input标签
+            2、给input标签绑定change事件
+            3、把图片回显
+             */
+//      1、先回去input标签
+            var $input = $("#file");
+//      2、给input标签绑定change事件
+            $input.on("change" , function(){
+                //补充说明：因为我们给input标签设置multiple属性，因此一次可以上传多个文件
+                //获取选择图片的个数
+                var files = this.files;
+                var length = files.length;
+                console.log("选择了"+length+"张图片");
+                //3、回显
+                for( var i = 0 ; i < length ; i++ ){
+                    var fr = new FileReader(),
+                        div = document.createElement("div"),
+                        img = document.createElement("img");
+                    div.className = 'pic';
+                    fr.onload = function(e){
+                        console.log("回显了图片")
+                        img.src = this.result;
+                        div.appendChild(img)
+                        document.body.appendChild(div);
+                    }
+                    fr.readAsDataURL(files[i]);//读取文件
+                }
+            })
+        })
+    })
+
+</script>
 </body>
 </html>
