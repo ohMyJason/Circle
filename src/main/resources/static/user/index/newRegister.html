@@ -22,42 +22,48 @@
     <div class="head">
         <img src="../../node_modules/images/logo.png" height="100%" width="100%"/>
     </div>
-    <div id="contain">
+
+    <div id="contain"><br>
         <div class="line">
             <div class="wenzi">
                 <a href="#"><h1>个人注册</h1></a>
             </div>
-        </div>
-        <div class="main row">
+        </div><br><br>
+        <div class="main row" style="margin-left: 13vh">
             <div class="col-md-5"></div>
             <div class="col-md-14">
-                <div class="layui-form-item">
-                    <at-input v-model="phoneNumber" placeholder="请输入11位手机号" prepend-button>
+                <div class="layui-form-item" style="width: 430px">
+                    <at-input v-model="phoneNumber" size="large" placeholder="请输入11位手机号" prepend-button>
                         <template slot="prepend">
                             <span><i class="icon icon-smartphone"></i>您的手机</span>
                         </template>
                     </at-input>
                 </div>
-                <div class="layui-form-item">
-                    <at-input v-model="password" type="password" placeholder="请输入您的密码" prepend-button>
+                <div class="layui-form-item" style="width: 430px">
+                    <at-input v-model="password"   size="large"  type="password" placeholder="请输入您的密码" prepend-button>
                         <template slot="prepend">
-                            <span><i class="icon icon-alert-triangle"></i>设置密码</span>
+                            <span><i class="icon icon-alert-triangle" ></i>设置密码</span>
                         </template>
                     </at-input>
                 </div>
                 <div class="layui-form-item">
-                    <at-tag>生日：</at-tag>
-                    <at-select v-model="birthYear" size="normal" style="width: 92px">
+                    <span style="border: 1px solid #C5D9E8;background-color: #f7f7f7;font-size:12px;color: #9B9B9B;padding: 6px 16px 8px 10px;border-radius: 3px 0 0 3
+px">
+                        <img src="../../node_modules/images/cake.png" style="width: 12px">
+                        生&nbsp;&nbsp;&nbsp;日
+                    </span>
+<!--                    <at-tag style="color: #9B9B9B;height: 30px;margin-right: 0">&ensp;&nbsp;&nbsp;生&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;</at-tag>-->
+                    <at-select v-model="birthYear" size="large" style="width: 80px" style="margin-top: 20px;padding: 0">
                         <at-option v-for="n in 2019" :value="n" v-text="n" v-if="n > 1980"></at-option>
                     </at-select>
                     <at-tag>年</at-tag>
 
-                    <at-select v-model="birthMonth" size="normal" style="width: 90px">
+                    <at-select v-model="birthMonth" size="large" style="width: 80px">
                         <at-option v-for="n in 12" :value="n" v-text="n" v-if="n < 13"></at-option>
                     </at-select>
                     <at-tag>月</at-tag>
 
-                    <at-select v-model="birthDay" size="normal" style="width: 90px">
+                    <at-select v-model="birthDay" size="large" style="width: 80px">
                         <at-option v-for="n in 31" :value="n" v-text="n" v-if="n < 32"></at-option>
                     </at-select>
                     <at-tag>日</at-tag>
@@ -66,22 +72,21 @@
                 <div class="layui-form-item">
 
 
-                    <at-button type="success" hollow @click="sendMsg">点击获取短信激活码</at-button>
-                    <at-button type="error" @click="sendMsg">收不到验证码？</at-button>
+
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-input-inline">
-                        <at-input v-model="code" style="width: 200px" maxLength="200px" placeholder="请输入内容"
+                        <at-input v-model="code"  size="large"  style="width: 200px"  placeholder="请输入内容"
                                   prepend-button>
                             <template slot="prepend">
-                                <span><i class="icon icon-edit-2"></i>验证码</span>
+                                <span><i class="icon icon-edit-2"></i>&nbsp;验证码&nbsp;&nbsp;</span>
                             </template>
                         </at-input>
                     </div>
-                    <div class="layui-input-inline" style="padding-right:200px ">
-
-                        <at-button @click="registerNow" type="primary" size="large">立即注册</at-button>
-
+                    <at-button type="info" hollow @click="sendMsg" style="margin-left: 10px;width: 220px">点击获取短信激活码</at-button>
+<!--                    <at-button type="error" @click="sendMsg">收不到验证码？</at-button>--><br><br>
+                    <div class="layui-input-inline">
+                        <at-button @click="registerNow"  size="large" style="margin-left: 0;background-color:#397F7C;margin-top: 20px;width: 430px;font-size: 18px;color: white;">立即注册</at-button>
                     </div>
                 </div>
                 <div class="layui-form-item">

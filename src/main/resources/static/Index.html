@@ -18,6 +18,10 @@
         [v-cloak] {
             display: none;
         }
+        .loginbutton:hover
+        {
+            cursor: pointer;
+        }
     </style>
     <script src="node_modules/jQuery/jquery.cookie.js"></script>
     <script src="node_modules/layui/layui.js"></script>
@@ -258,7 +262,7 @@
                         <div class="tip">
                             <!--<input type="checkbox">-->
                             <!--<span>记住我</span>-->
-                            <span class="nego">忘记密码</span>
+                            <a href="/user/index/retrieve.html"><span class="nego">忘记密码</span></a>
                         </div>
                         <!--                        //鼠标放至上面就变色-->
                         <div class="loginbutton">
@@ -691,7 +695,7 @@
                 //     layui.use('layer',function() {
                 //         var layer = layui.layer;
                 //         layer.msg("请输入手机/用户名/邮箱！");
-                //     })
+                //    })
                 // }else if (this.password==''){
                 //     layui.use('layer',function() {
                 //         var layer = layui.layer;
