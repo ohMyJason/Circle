@@ -6,6 +6,7 @@ import com.lanqiao.circle.entity.Users;
 import com.lanqiao.circle.mapper.BlogMapper;
 import com.lanqiao.circle.mapper.RelationShipMapper;
 import com.lanqiao.circle.mapper.UsersMapper;
+import com.lanqiao.circle.service.RelationShipService;
 import com.lanqiao.circle.service.UserInfoService;
 import com.lanqiao.circle.util.PageCheck;
 import com.lanqiao.circle.util.Result;
@@ -25,6 +26,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     BlogMapper blogMapper;
+
+    @Autowired
+    RelationShipService relationShipService;
 
     @Override
     public Result getUserInfoByUserId(int userId) {
@@ -58,6 +62,14 @@ public class UserInfoServiceImpl implements UserInfoService {
         try{
             int pageIndex = (page-1) * size;
             List<HashMap> allFans = relationShipMapper.getFansByUserId(userId,pageIndex,size);
+            for (HashMap hashMap:allFans) {
+                Result result = relationShipService.ifConcern((Integer)hashMap.get("bloggerId"),(Integer) hashMap.get("fansId"));
+                if (result.getCode() == 0){
+                    hashMap.put("flag",0);
+                }else {
+                    hashMap.put("flag",1);
+                }
+            }
             return Result.createSuccessResult(allFans.size(),allFans);
         }catch (Exception e){
             return Result.createByFailure("操作异常，请联系管理人员！");
