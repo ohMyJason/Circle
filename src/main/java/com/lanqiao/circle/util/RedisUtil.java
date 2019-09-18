@@ -574,11 +574,7 @@ public class RedisUtil {
         try {
             Long rank = redisTemplate.opsForZSet().rank(key, member);
             System.out.println(rank);
-            if (rank==null){
-                return false;
-            }else {
-                return true;
-            }
+            return rank != null;
         }catch (Exception e){
             e.printStackTrace();
             return true;
