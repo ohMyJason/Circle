@@ -11,6 +11,7 @@
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
     <style>
         [v-cloak] {
@@ -32,7 +33,7 @@
             </at-input>
         </div>
         <div class="col-md-7 col-md-offset-5">
-            <a href="/user/index/userIndex.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
+            <a href="../../user/index/userIndex.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
             <a href="../../user/circle/circleRank.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
             <a href="../../user/letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
             <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
@@ -49,12 +50,7 @@
                     <span class="nick_name" v-cloak>{{userName}}</span><br>
                 </div>
 
-                <div class="row second_box">
-                    <at-menu mode="horizontal" active-name="0" class="col-md-24">
-                        <at-menu-item name="1" class="col-md-offset-5">我的主页</at-menu-item>
-                        <at-menu-item name="2" class="col-md-offset-8">我的相册</at-menu-item>
-                    </at-menu>
-                </div>
+                <div class="row second_box flex-center">我的关注页</div>
 
                 <div class="third_box">
                     <div class="row">
@@ -75,14 +71,10 @@
                                     <p class="member_word">性别：{{item.sex}}</p>
                                     <p class="member_word">感情状况：{{item.isSingle}}</p>
                                 </div>
-                                <a href="#"  @click="sendSession(index)" id = "sendSS"> <at-button type="primary" class="session_btn">私信</at-button></a>
-                                <at-button class="cancel_btn" @click="cancelAttention(index)">取消关注</at-button>
+                                <a id = "sendSS" @click="sendSession(index)"><at-button type="primary" class="session_btn">私信</at-button></a>
+                                <a id="cancel_btn" @click="addConcernOrSub($event,item.bloggerId)">取消关注</a>
                             </li>
                         </ul>
-                    </div>
-
-                    <div class="row flex-center">
-                        <at-pagination :total="100" class="pagination"></at-pagination>
                     </div>
                 </div>
 
@@ -102,16 +94,50 @@
             attentionNum:'',
             memberList:[],
             pageNum:'1',
-            pageSize:'10'
+            pageSize:'1000'
         },
         methods:{
             sendSession:function(index){
                 var userName = vm.memberList[index].bloggerName;
                 window.location.href="/user/letter/session.html?userName="+ userName;
             },
-            cancelAttention:function (index) {
-                this.memberList[index].splice(index,0);
-            }
+            // del:function (index) {
+            //     this.memberList.splice(index,0);
+            // },
+            addConcernOrSub(e,userId) {
+                $.ajax({
+                    url:"/userInfo/addConcernOrSub",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    dataType:"json",
+                    data:{
+                        userId: userId
+                    },
+                    success:function (result) {
+                        if (result.code == 0){
+                            e.target.innerHTML= '已关注';
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("关注成功！");
+                            })
+                        }else{
+                            e.target.innerHTML = '取消关注';
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg("取消关注!");
+                            })
+                        }
+                    },error:function () {
+                        layui.use('layer',function() {
+                            var layer = layui.layer;
+                            layer.msg("请登录！");
+                        })
+                        setTimeout(function () {
+                            // window.location.href="../../index.html";
+                        },1000)
+                    }
+                })
+            },
         },
         created() {
             //展示自己头像和名字
@@ -143,7 +169,7 @@
                         vm.attentionNum = result.count;
                         for(i=0;i<result.count;i++){
                             vm.memberList[i] = result.data[i];
-                            console.log(result.data[i].sex)
+                            console.log(result.data[i].bloggerId)
                             //判断性别
                             if(result.data[i].sex == 0){
                                 vm.memberList[i].sex = "保密";

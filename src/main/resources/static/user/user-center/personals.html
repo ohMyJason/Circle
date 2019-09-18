@@ -53,12 +53,8 @@
                     <a id="tag_box2" href="#" @click = "sendSession" v-cloak>发私信</a>
                 </div>
 
-                <div class="second_box row">
-                    我的主页
-                    <!--<at-menu mode="horizontal" active-name="0" class="col-md-24">-->
-                        <!--<at-menu-item name="1" class="col-md-offset-5">我的主页</at-menu-item>-->
-                        <!--<at-menu-item name="2" class="col-md-offset-8">我的相册</at-menu-item>-->
-                    <!--</at-menu>-->
+                <div class="second_box row flex-center">
+                    {{userInfo.userName}}&nbsp;&nbsp;<b>的主页</b>
                 </div>
 
                 <div class="row">
@@ -91,7 +87,7 @@
                     </div>
 
                     <div class="right_box col-md-17">
-                        <div class="row nav_bar flex-center" v-cloak>{{userInfo.userName}}的微博</div>
+                        <div class="row nav_bar flex-center" v-cloak>{{userInfo.userName}}&nbsp;&nbsp;&nbsp;&nbsp;<b>的微博</b></div>
 
                         <div class="personal_card" v-for="(item,i) in otherBlogList">
                             <div class="personal_box row">
