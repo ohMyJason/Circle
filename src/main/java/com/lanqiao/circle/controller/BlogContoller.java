@@ -13,12 +13,8 @@ import com.lanqiao.circle.service.BlogService;
 import com.lanqiao.circle.service.CommentsService;
 import com.lanqiao.circle.service.LikeService;
 import com.lanqiao.circle.service.TokenService;
-import com.lanqiao.circle.util.CommentUtil;
-import com.lanqiao.circle.util.FileUploadUtil;
-import com.lanqiao.circle.util.RedisUtil;
-import com.lanqiao.circle.util.Result;
+import com.lanqiao.circle.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,7 +60,8 @@ public class BlogContoller {
     CirclesMapper circlesMapper;
 
     @Autowired
-    SolrTemplate solrTemplate;
+    SolrUtil solrUtil;
+
     /**
      * 实现评论功能
      *
@@ -202,7 +199,15 @@ public class BlogContoller {
 
     }
 
-
+    /**
+     * 查询微博
+     * @param content
+     * @return
+     */
+    @PostMapping("searchBlogByContent")
+    public Result searchBlogByContent(@RequestParam(name = "content")String content){
+        return blogService.searchBlogByContent(solrUtil.selectByContent(content));
+    }
 
 
 

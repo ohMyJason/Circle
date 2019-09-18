@@ -35,7 +35,7 @@
         <div class="col-md-9">
             <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
                 <template slot="append">
-                    <i class="icon icon-search"></i>
+                    <i class="icon icon-search" @click="searchBlog"></i>
                 </template>
             </at-input>
         </div>
@@ -677,6 +677,10 @@
         el: '#app',
         data: {
             inputValue4: ''
+        },methods:{
+            searchBlog(){
+                window.location.href="/user/blog/blog.html?content="+this.inputValue4
+            }
         }
 
     });

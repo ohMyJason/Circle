@@ -411,6 +411,14 @@
                     if(result.code == 0){
                         vm.userInfo = result.data;
                     }
+                },error:function () {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请先登录");
+                    })
+                    setTimeout(function () {
+                        window.location.href = "../../index.html"
+                    },1000)
                 }
             })
 

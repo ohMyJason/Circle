@@ -41,7 +41,7 @@
             <div class="col-md-11">
                 <at-input v-model="inputValue4" placeholder="搜索微博" append-button class="top-search">
                     <template slot="append">
-                        <i class="icon icon-search"></i>
+                        <i class="icon icon-search" @click="searchBlogByContent"></i>
                     </template>
                 </at-input>
             </div>
@@ -213,10 +213,17 @@
         </div>
     </div>
 <script>
+    $(document).ready(function() {
+        var url =decodeURI(location.search);
+        var content = url.substr(9);
+        vm3.searchBlog = content
+    })
+
     var vm3 = new Vue({
         el: '#search-blog',
         data: {
             inputValue4:'',
+            searchBlog:'',
             blogInfoList:[
             ],
             commentList:[
@@ -225,6 +232,25 @@
             selected: 'll',
             reviewed:'ll'
         },methods:{
+            searchBlogByContent(){
+                if (this.inputValue4==''){
+                }else {
+                    $.ajax({
+                        url:"/blog/searchBlogByContent",
+                        type:"post",
+                        data:{
+                            content : this.inputValue4,
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                vm3.blogInfoList = result.data;
+                                vm3.inputValue4='';
+                            }
+                        },error:function () {
+                        }
+                    })
+                }
+            },
             showForward(i){
                 if(this.selected != i) {
                     this.selected = i;
@@ -373,24 +399,21 @@
                     })
                 }
             }
-        },created(){
-            $.ajax({
-                url:"/circle/circleBlog",
-                type:"post",
-                data:{
-                    circleId : 1,
-                    page: 1,
-                    size: 10
-                },
-                success:function (result) {
-                    if(result.code == 0){
-                        vm3.blogInfoList = result.data;
-                    }
-                }
-            })
-
-
         }
+        // ,created(){
+        //     $.ajax({
+        //         url:"/blog/searchBlogByContent",
+        //         type:"post",
+        //         data:{
+        //             content : this.searchBlog,
+        //         },
+        //         success:function (result) {
+        //             if(result.code == 0){
+        //                 vm3.blogInfoList = result.data;
+        //             }
+        //         }
+        //     })
+        // }
     })
 
 </script>
