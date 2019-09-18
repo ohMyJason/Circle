@@ -18,6 +18,7 @@ import com.lanqiao.circle.util.FileUploadUtil;
 import com.lanqiao.circle.util.RedisUtil;
 import com.lanqiao.circle.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,6 +62,9 @@ public class BlogContoller {
 
     @Autowired
     CirclesMapper circlesMapper;
+
+    @Autowired
+    SolrTemplate solrTemplate;
     /**
      * 实现评论功能
      *
@@ -123,6 +127,13 @@ public class BlogContoller {
         return blogService.forwardBlog(blog);
     }
 
+    /**
+     * 发微博接口
+     * @param httpServletRequest
+     * @param map
+     * @return
+     * 刘佳昇
+     */
     @UserLoginToken
     @PostMapping("/insertBlog")
     @Transactional
@@ -160,7 +171,7 @@ public class BlogContoller {
 
     /**
      * 发微博 图片或视频上传接口
-     *
+     * 刘佳昇
      * @param file
      * @param flag
      * @return
@@ -190,6 +201,13 @@ public class BlogContoller {
         }
 
     }
+
+
+
+
+
+
+
     /**
      * 首页展示所有微博
      * @param page
