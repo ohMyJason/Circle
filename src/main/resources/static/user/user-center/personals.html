@@ -176,7 +176,7 @@
                                     <a class="icon icon-external-link" @click.prevent="showForward(i)">转发</a>
                                 </div>
                                 <div class="col-md-8">
-                                    <a class="icon icon-message-square" @click.prevent="showReview(i,item.blogId)" v-cloak>评论 {{item.commentNum}}</a>
+                                    <a class="icon icon-message-square" @click.prevent="showReview(i,item.blogId)" v-text="item.commentNum"></a>
                                 </div>
                                 <div class="col-md-8">
                                     <a class="icon icon-thumbs-up" @click.prevent="like($event,item.blogId)" v-cloak>{{item.likeNum}}</a>
@@ -227,8 +227,8 @@
                         </div>
 
                         <div class="pagination flex-center">
-                            <input type="button" value="上一页" @click="gotoPrePage()">
-                            <input type="button" value="下一页" @click="gotoNextPage()">
+                            <input type="button" class="page-btn" value="上一页" @click="gotoPrePage()">
+                            <input type="button" class="page-btn" value="下一页" @click="gotoNextPage()">
                         </div>
                     </div>
                 </div>
@@ -252,7 +252,6 @@
             selected:'ll',
             reviewed:'ll',
             pageNum:'1',
-            pageSize:'3',
             isAttention:''
         },
         methods:{
@@ -333,6 +332,8 @@
                                     layer.msg("评论成功");
                                 })
                                 vm.reviewed = 'lll';
+                                var x = parseInt(e.target.parentElement.parentElement.parentElement.previousElementSibling.previousElementSibling.firstElementChild.nextElementSibling.firstElementChild.innerHTML);
+                                e.target.parentElement.parentElement.parentElement.previousElementSibling.previousElementSibling.firstElementChild.nextElementSibling.firstElementChild.innerHTML = x + 1;
                             }
                         },error:function () {
                             layui.use('layer', function () {
@@ -373,40 +374,45 @@
                 })
             },
             gotoPrePage:function(){
-                $.ajax({
-                    url:"/userInfo/getOtherBlog",
-                    type:"post",
-                    dataType:"json",
-                    data:{
-                        userId: $.cookie("userId"),
-                        page: this.pageNum,
-                        size: this.pageSize
-                    },
-                    success:function (result) {
-                        if(result.code == 0){
-                            vm.otherBlogList = result.data;
-                            vm.pageNum = parseInt(vm.pageNum) > 1 ? parseInt(vm.pageNum) - 1 : 1;
+                if (parseInt(this.pageNum) > 1) {
+                    vm.pageNum = parseInt(vm.pageNum) - 1;
+                    $.ajax({
+                        url: "/userInfo/getOtherBlog",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            userId: $.cookie("userId"),
+                            page: this.pageNum,
+                            size: 3
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                vm.otherBlogList = result.data;
+                            }
                         }
-                    }
-                })
+                    })
+                }
             },
             gotoNextPage:function(){
-                $.ajax({
-                    url:"/userInfo/getOtherBlog",
-                    type:"post",
-                    dataType:"json",
-                    data:{
-                        userId: $.cookie("userId"),
-                        page: this.pageNum,
-                        size: this.pageSize
-                    },
-                    success:function (result) {
-                        if(result.code == 0){
-                            vm.otherBlogList = result.data;
-                            vm.pageNum = parseInt(vm.pageNum)+1;
+                var maxPage = parseInt(this.userInfo.blogNum / 3);
+                if (parseInt(this.pageNum) < (maxPage + 1)) {
+                    vm.pageNum = parseInt(vm.pageNum) + 1;
+                    $.ajax({
+                        url: "/userInfo/getOtherBlog",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            userId: $.cookie("userId"),
+                            page: this.pageNum,
+                            size: 3
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                vm.otherBlogList = result.data;
+                            }
                         }
-                    }
-                })
+                    })
+                }
             },
             addConcernOrSub:function() {
                 $.ajax({
@@ -473,7 +479,7 @@
                 data:{
                     userId: $.cookie("userId"),
                     page: this.pageNum,
-                    size: this.pageSize
+                    size: 3
                 },
                 success:function (result) {
                     if(result.code == 0){
