@@ -86,7 +86,8 @@ public class LoginController {
 //            if (usersMapper.getUserByUserName(user.getUserName())==null){
             if (usersMapper.getUsersByPhone(user.getPhone())==null){
                 usersMapper.insertSelective(user);
-                return Result.createSuccessResult(usersMapper.selectByPrimaryKey(user.getUserId()));
+                String token = tokenService.getToken(user);
+                return Result.createSuccessResult(token);
             }else {
                 return Result.createByFailure("手机已经注册过了！");
             }

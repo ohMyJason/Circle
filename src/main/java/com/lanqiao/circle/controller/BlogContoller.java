@@ -210,6 +210,11 @@ public class BlogContoller {
         return blogService.searchBlogByContent(solrUtil.selectByContent(content));
     }
 
+    @PostMapping("searchBlogInCircle")
+    public Result searchBlogInCircle(@RequestParam(name = "content")String content,@RequestParam(name = "circleId")String circleId){
+        return blogService.searchBlogByContent(solrUtil.selectByContent(content,circleId));
+    }
+
 
 
 
