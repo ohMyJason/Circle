@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="../../node_modules/css/personals.css">
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
 
-    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
     <script src="../../node_modules/layui/layui.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
@@ -248,7 +248,8 @@
             selected:'ll',
             reviewed:'ll',
             pageNum:'1',
-            isAttention:''
+            isAttention:'',
+            userId1:''
         },
         methods:{
             searchBlog(){
@@ -387,7 +388,7 @@
                         type: "post",
                         dataType: "json",
                         data: {
-                            userId: $.cookie("userId"),
+                            userId: this.userId1,
                             page: this.pageNum,
                             size: 3
                         },
@@ -408,7 +409,7 @@
                         type: "post",
                         dataType: "json",
                         data: {
-                            userId: $.cookie("userId"),
+                            userId: this.userId1,
                             page: this.pageNum,
                             size: 3
                         },
@@ -427,7 +428,7 @@
                     headers:{'token':$.cookie("token")},
                     dataType:"json",
                     data:{
-                        userId: $.cookie("userId")
+                        userId: this.userId1
                     },
                     success:function (result) {
                         if (result.code == 0){
@@ -460,15 +461,18 @@
                 var userName = vm.userInfo.userName;
                 $('#tag_box2').attr("href","../../user/letter/session.html?userName=" + userName);
             }
-        },
-        created() {
+        }, created() {
+            var url =decodeURI(location.search);
+            var conte = url.substr(8);
+            this.userId1 = conte
+            console.log(this.userId1);
             //展示他人除微博外信息
             $.ajax({
                 url:"/userInfo/getOtherInfo",
                 type:"post",
                 dataType:"json",
                 data:{
-                    userId:$.cookie("userId")
+                    userId:this.userId1
                 },
                 success:function (result) {
                     if(result.code == 0){
@@ -483,7 +487,7 @@
                 type:"post",
                 dataType:"json",
                 data:{
-                    userId: $.cookie("userId"),
+                    userId: this.userId1,
                     page: this.pageNum,
                     size: 3
                 },
@@ -501,7 +505,7 @@
                 headers:{'token':$.cookie("token")},
                 dataType:"json",
                 data:{
-                    userId: $.cookie("userId")
+                    userId: this.userId1
                 },
                 success:function (result) {
                     if (result.code == 0){

@@ -505,8 +505,8 @@
             },
             jumpPagePerson(userId) {
                 if ($.cookie('token') == null) {
-                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                    window.location.href = "/user/user-center/personals.html";
+                    // $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                    window.location.href = "/user/user-center/personals.html?userId=" + userId;
                 } else {
                     $.ajax({
                         url: "/test/testGetUserIdByToken",
@@ -517,8 +517,8 @@
                                 if (userId == result.data) {
                                     window.location.href = "/user/user-center/personal.html";
                                 } else {
-                                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                                    window.location.href = "/user/user-center/personals.html";
+                                    // $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                                    window.location.href = "/user/user-center/personals.html?userId="+userId;
                                 }
                             }
                         }

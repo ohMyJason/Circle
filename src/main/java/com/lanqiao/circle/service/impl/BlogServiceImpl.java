@@ -43,7 +43,12 @@ public class BlogServiceImpl implements BlogService {
                     String content1 = blog.getContent();
                     String content2 = blog1.getContent();
                     String name = usersMapper.selectByPrimaryKey(blog1.getUserId()).getUserName();
-                    String content = content1 + " //@" + name +" " +content2;
+                    String content = "";
+                    if (blog.getUserId()==blog1.getUserId()){
+                        content = content1 + "//<a href=\"/user/user-center/personal.html\">@" + name +"</a>" + content2;
+                    }else {
+                        content = content1 + "//<a href=\"/user/user-center/personals.html?userId=" + blog1.getUserId() +"\">@"+ name + "</a>" + content2;
+                    }
                     blog.setContent(content);
                     blog.setRepostId(blog1.getRepostId());
                 }else {}

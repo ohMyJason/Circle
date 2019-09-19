@@ -140,7 +140,7 @@
                     <div v-if="item.isRepost == 1">
                         <div class="row">
                             <div class="col-md-18 col-md-offset-3">
-                                <span v-text="item.content" class="color#333"></span>
+                                <span v-html="item.content" class="color#333"></span>
                             </div>
                             <div class="col-md-3"></div>
                         </div>
@@ -286,8 +286,7 @@
         },methods:{
             jumpPagePerson1(userId){
                 if ($.cookie('token') == null){
-                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                    window.location.href="../user-center/personals.html";
+                window.location.href = "/user/user-center/personals.html?userId=" + userId;
                 }else{
                     $.ajax({
                         url:"/test/testGetUserIdByToken",
@@ -298,8 +297,7 @@
                                 if(userId == result.data){
                                     window.location.href="../user-center/personal.html";
                                 }else {
-                                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                                    window.location.href="../user-center/personals.html";
+                                    window.location.href = "/user/user-center/personals.html?userId=" + userId;
                                 }
                             }
                         },error:function () {
@@ -490,8 +488,7 @@
             },
             jumpPagePerson(userId){
                 if ($.cookie('token') == null){
-                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                    window.location.href="../user-center/personals.html";
+                    window.location.href = "/user/user-center/personals.html?userId=" + userId;
                 }else{
                     $.ajax({
                         url:"/test/testGetUserIdByToken",
@@ -502,8 +499,7 @@
                                if(userId == result.data){
                                    window.location.href="../user-center/personal.html";
                                }else {
-                                   $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                                   window.location.href="../user-center/personals.html";
+                                   window.location.href = "/user/user-center/personals.html?userId=" + userId;
                                }
                             }
                         }
