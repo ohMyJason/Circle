@@ -27,6 +27,7 @@ public class ConsumerService {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(consumerGroup);
         consumer.setNamesrvAddr(namesrvAddr);
         try {
+            //订阅testTopic
             consumer.subscribe("testTopic", "push");
 
             // 如果是第一次启动，从队列头部开始消费

@@ -42,6 +42,7 @@ public class ProducerService {
     public String send(String topic, String tags, String msg) {
         SendResult result = null;
         try {
+            //在producer中使用Topic
             Message message = new Message(topic, tags, msg.getBytes(RemotingHelper.DEFAULT_CHARSET));
             result = producer.send(message,10000);
             System.out.println("[Producer] msgID(" + result.getMsgId() + ") " + result.getSendStatus());
