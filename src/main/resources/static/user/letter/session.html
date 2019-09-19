@@ -24,7 +24,6 @@
     <script type="text/javascript" src="../../node_modules/emoji_jQuery-master/dist/emoji_jQuery.min.js"></script>
 
 
-
 </head>
 <body>
 <div class="container">
@@ -276,6 +275,31 @@
                             console.log(result);
                         }
                     })
+
+                    //websorck发送消息---------------------------------------------------------
+                    var myUserName;
+                    $.ajax({
+                        url:"/userInfo/getUserInfo",
+                        headers:{"token":$.cookie("token")},
+                        dataType:"json",
+                        type:"post",
+                        async:false,
+                        success:function (res) {
+                            if (res.code==0){
+                                myUserName=res.data.userName;
+                                console.log(myUserName);
+                            }
+                        },
+                        error:function () {
+                            layer.msg("未登录或登录过期，请重新登录");
+                            setTimeout(function () {
+                                window.location.href="/"
+                            },1000);
+                        }
+                    })
+                    websocket.send(JSON.stringify({userName:userName,senterName:myUserName}));
+                   //---------------------------------------------------------------------------
+
                     $.ajax({
                         url:"/session/sendMsg",
                         type:"post",
@@ -385,6 +409,26 @@
                 $now.css({"border-bottom": "1px solid black"});
                 $("#contactName").html($now.find(".userName").html());
 
+            },
+            //获取发送者的消息 （在线聊天用）
+            getOnlineMsg:function(senterName){
+                //当前聊天对象的id
+                var userName = senterName;
+                $.ajax({
+                    url:"/session/getMessageLog",
+                    type:"post",
+                    dataType:"json",
+                    // async:true,
+                    headers:{'token':$.cookie("token")},
+                    data:{
+                        // receiverId:connectionId
+                        userName:userName
+                    },success:function (result) {
+                        if (result.code == 0) {
+                            vm.messageList = result.data;
+                        }
+                    }
+                })
             },
             upLoad:function(e) {
                 this.file = e.target.files[0];
@@ -543,6 +587,9 @@
             // flag = false;
         }
     })
+
+
 </script>
+<script src="../../node_modules/js/websocket.js"></script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.lanqiao.circle.config;
 
+import org.springframework.stereotype.Component;
+
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @Date 2019/9/19 23:00
  */
 @ServerEndpoint(value = "/websocket")
+@Component
 public class WebSocket {
     private static int onlineCount  = 0;
 
