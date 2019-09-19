@@ -33,3 +33,4 @@ build/
 ### springboot ###
 **/resources/temp.properties
 **/resources/generatorConfig.xml
+**/.DS_Store

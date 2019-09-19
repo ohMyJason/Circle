@@ -46,6 +46,8 @@
         form.on('submit(login)',function (obj) {
             var data = obj.field;
             // alert(data);
+            var loginName = data.loginName;
+            // alert(loginName);
             function fun(res){
                 if (res.code==0) {
                         window.location.href = "/back/backstageManagement.html";
@@ -54,17 +56,25 @@
                 }
 
             }
-            $.ajax({
-                url: "/userLogin/login",
-                type: "post",
-                dataType: "json",
-                data: data,
-                // contentType:"application/json",
-                success:fun,
-                error:function () {
-                    
-                }
-            })
+            if(loginName == "admin")
+            {
+                // alert(1);
+                $.ajax({
+                    url: "/userLogin/login",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    // contentType:"application/json",
+                    success:fun,
+                    error:function () {
+                    }
+                })
+            }
+            else
+            {
+                layer.msg("抱歉，您没有权限登录此系统");
+            }
+
         });
     });
 </script>

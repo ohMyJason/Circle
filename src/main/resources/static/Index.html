@@ -35,7 +35,7 @@
         <div class="col-md-9">
             <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
                 <template slot="append">
-                    <i class="icon icon-search"></i>
+                    <i class="icon icon-search" @click="searchBlog"></i>
                 </template>
             </at-input>
         </div>
@@ -50,22 +50,13 @@
 <div id="contain">
     <div class="row circle_frame">
         <div class="col-md-16">
-            <!--<div class="photo">-->
-            <!--<div class="layui-carousel" id="test10" class="photo-size">-->
-            <!--<div carousel-item="">-->
-            <!--<div><img src="node_modules/images/1111.png"></div>-->
-            <!--<div><img src="node_modules/images/2222.png"></div>-->
-            <!--<div><img src="node_modules/images/3333.png"></div>-->
-            <!--<div><img src="node_modules/images/beijing.jpg"></div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
             <div id="blog-content">
                 <div class="content-show" style="width: 800px" v-for="(item,i) in blogInfoList">
                     <!--         控制头           -->
                     <div class="row" style="padding: 10px">
                         <div class="col-md-2 col-md-offset-1">
                             <a href="#" @click="jumpPagePerson(item.userId)"><img :src="item.avatarUrl"
+
                                                                                   class="header-img"></a>
                         </div>
                         <div class="col-md-8">
@@ -504,8 +495,8 @@
             },
             jumpPagePerson(userId) {
                 if ($.cookie('token') == null) {
-                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                    window.location.href = "/user/user-center/personals.html";
+                    // $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                    window.location.href = "/user/user-center/personals.html?userId=" + userId;
                 } else {
                     $.ajax({
                         url: "/test/testGetUserIdByToken",
@@ -516,8 +507,8 @@
                                 if (userId == result.data) {
                                     window.location.href = "/user/user-center/personal.html";
                                 } else {
-                                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                                    window.location.href = "/user/user-center/personals.html";
+                                    // $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                                    window.location.href = "/user/user-center/personals.html?userId="+userId;
                                 }
                             }
                         }
@@ -676,6 +667,17 @@
         el: '#app',
         data: {
             inputValue4: ''
+        },methods:{
+            searchBlog(){
+                if (this.inputValue4==''){
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("搜索不能为空");
+                    })
+                }else {
+                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue4
+                }
+            }
         }
 
     });

@@ -18,6 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * @author 刘佳昇
@@ -54,23 +59,39 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 }
                 // 获取 token 中的 user id
                 String userId;
+                String Msg;
                 try {
-                    userId = JWT.decode(token).getAudience().get(0);
+//                    userId = JWT.decode(token).getAudience().get(0);
+                    Msg = JWT.decode(token).getAudience().get(0);
+                    String []str =Msg.split("/");
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date d1 = df.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    Date d2 = df.parse(str[0]);
+                    long diff = d1.getTime() - d2.getTime();
+                    if (diff > 3600000){
+                        userId = null;
+                    }else {
+                        userId = str[1];
+                    }
                 } catch (JWTDecodeException j) {
                     throw new RuntimeException("401");
                 }
-                Users user = userService.findUserById(Integer.parseInt(userId));
-                if (user == null) {
-                    throw new RuntimeException("用户不存在，请重新登录");
+                if (userId == null){
+                    throw  new RuntimeException("用户身份过期，请重新登录");
+                }else {
+                    Users user = userService.findUserById(Integer.parseInt(userId));
+                    if (user == null) {
+                        throw new RuntimeException("用户不存在，请重新登录");
+                    }
+                    // 验证 token
+                    JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
+                    try {
+                        jwtVerifier.verify(token);
+                    } catch (JWTVerificationException e) {
+                        throw new RuntimeException("401");
+                    }
+                    return true;
                 }
-                // 验证 token
-                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
-                try {
-                    jwtVerifier.verify(token);
-                } catch (JWTVerificationException e) {
-                    throw new RuntimeException("401");
-                }
-                return true;
             }
         }
         return true;

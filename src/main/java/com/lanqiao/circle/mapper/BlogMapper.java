@@ -47,4 +47,19 @@ public interface BlogMapper {
 
     List<Blog> findBlog(String content);
 
+    /**
+     * 返回普通的blog类 仅供solr使用
+     * 刘佳昇
+     * @return
+     */
+    List<Blog> getAllBaseBlog();
+
+    /**
+     * 根据content模糊查询
+     * solr用
+     * 刘佳昇
+     */
+    List<Blog> getBlogByContent(@Param("content") String content);
+
+
 }

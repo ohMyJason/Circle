@@ -43,7 +43,12 @@ public class BlogServiceImpl implements BlogService {
                     String content1 = blog.getContent();
                     String content2 = blog1.getContent();
                     String name = usersMapper.selectByPrimaryKey(blog1.getUserId()).getUserName();
-                    String content = content1 + " //@" + name +" " +content2;
+                    String content = "";
+                    if (blog.getUserId()==blog1.getUserId()){
+                        content = content1 + "//<a href=\"/user/user-center/personal.html\">@" + name +"</a>" + content2;
+                    }else {
+                        content = content1 + "//<a href=\"/user/user-center/personals.html?userId=" + blog1.getUserId() +"\">@"+ name + "</a>" + content2;
+                    }
                     blog.setContent(content);
                     blog.setRepostId(blog1.getRepostId());
                 }else {}
@@ -163,6 +168,28 @@ public class BlogServiceImpl implements BlogService {
         }catch (Exception e ){
             System.out.println(e.getCause());
             return Result.createByFailure("异常");
+        }
+    }
+
+    @Override
+    public Result searchBlogByContent(List<Integer> list) {
+        try{
+            List<BlogInfo> blogInfoList = new ArrayList<>();
+            for (Integer i:list) {
+                BlogInfo blogInfo = usersMapper.getRepostBlog(i);
+                List<String> resoureList = usersMapper.getAllResource(blogInfo.getBlogId());
+                blogInfo.setResourceList(resoureList);
+                if (blogInfo.getIsRepost() != 0) {
+                    BlogInfo blogInfo1 = usersMapper.getRepostBlog(blogInfo.getRepostId());
+                    List<String> resourceList1 = usersMapper.getAllResource(blogInfo1.getBlogId());
+                    blogInfo1.setResourceList(resourceList1);
+                    blogInfo.setBlogInfo(blogInfo1);
+                }
+                blogInfoList.add(blogInfo);
+            }
+            return Result.createSuccessResult(blogInfoList.size(),blogInfoList);
+        }catch (Exception e){
+            return Result.createByFailure();
         }
     }
 

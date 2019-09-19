@@ -12,6 +12,7 @@
     <link type="text/css" rel="stylesheet" href="../../node_modules/css/register.css">
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <script src="../../node_modules/layui/layui.js"></script>
+    <script src="../../node_modules/jQuery/jquery.cookie.js"></script>
 
 </head>
 <script>
@@ -47,8 +48,7 @@
                     </at-input>
                 </div>
                 <div class="layui-form-item">
-                    <span style="border: 1px solid #C5D9E8;background-color: #f7f7f7;font-size:12px;color: #9B9B9B;padding: 6px 16px 8px 10px;border-radius: 3px 0 0 3
-px">
+                    <span style="border: 1px solid #C5D9E8;background-color: #f7f7f7;font-size:12px;color: #9B9B9B;padding: 6px 16px 8px 10px;border-radius: 3px 0 0 3px">
                         <img src="../../node_modules/images/cake.png" style="width: 12px">
                         生&nbsp;&nbsp;&nbsp;日
                     </span>
@@ -195,9 +195,10 @@ px">
                             if (result.code == 0) {
                                 layui.use('layer', function () {
                                     var layer = layui.layer;
-                                    layer.msg("注册成功！");
+                                    layer.msg("注册成功！马上去完善个人信息！");
                                 })
-                                window.location.href = "../../index.html";
+                                $.cookie("token", result.data, {path: "/"});
+                                window.location.href = "../letter/settingInfo.html";
                             } else {
                                 layui.use('layer', function () {
                                     var layer = layui.layer;

@@ -83,7 +83,7 @@
         <div class="col-md-9">
             <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
                 <template slot="append">
-                    <i class="icon icon-search"></i>
+                    <i class="icon icon-search" @click="searchBlog"></i>
                 </template>
             </at-input>
         </div>
@@ -107,7 +107,7 @@
 
             <div class="dio" id="release-blog" style="background-color: white">
 
-                <div class="news" style="border: 1px">圈圈，和志同道合的人交朋友。</div>
+                <div class="news" style="border: 1px;">圈圈，和志同道合的人交朋友。</div>
                 <div class="neiro">
                     <textarea style="border:1px solid #2b542c;width:100%;height: 100%"
                               id="input"></textarea>
@@ -408,7 +408,7 @@
                             </span>
                         </div>
                         <div class="bt2">
-                            <span>关注</span>
+                            <a href="../user-center/attention.html"><span>关注</span></a>
                         </div>
                     </div>
                     <div class="btm1" style="border-right: 1px  solid  #3B688C">
@@ -420,7 +420,7 @@
                             </span>
                         </div>
                         <div class="bt2">
-                            <span>粉丝</span>
+                            <a href="../user-center/fans.html"><span>粉丝</span></a>
                         </div>
                     </div>
                     <div class="btm1">
@@ -432,7 +432,7 @@
                             </span>
                         </div>
                         <div class="bt2">
-                            <span>微博</span>
+                            <a href="../user-center/personal.html"><span>微博</span></a>
                         </div>
 
                     </div>
@@ -891,8 +891,7 @@
             },
             jumpPagePerson(userId) {
                 if ($.cookie('token') == null) {
-                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                    window.location.href = "../user-center/personals.html";
+                    window.location.href = "/user/user-center/personals.html?userId=" + userId;
                 } else {
                     $.ajax({
                         url: "/test/testGetUserIdByToken",
@@ -903,8 +902,7 @@
                                 if (userId == result.data) {
                                     window.location.href = "../user-center/personal.html";
                                 } else {
-                                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                                    window.location.href = "../user-center/personals.html";
+                                    window.location.href = "/user/user-center/personals.html?userId=" + userId;
                                 }
                             }
                         }
@@ -1027,7 +1025,14 @@
                     $("#user-photo").attr("src", res.data.avatarUrl);
                     $("#username").text(res.data.userName);
                 }
-
+            },error:function () {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    layer.msg("请先登录");
+                })
+                setTimeout(function () {
+                    window.location.href = "../../index.html"
+                },500)
             }
         })
 
@@ -1040,6 +1045,17 @@
         el: '#app',
         data: {
             inputValue4: ''
+        },methods:{
+            searchBlog(){
+                if (this.inputValue4==''){
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("搜索不能为空");
+                    })
+                }else {
+                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue4
+                }
+            }
         }
     })
 </script>

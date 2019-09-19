@@ -3,6 +3,8 @@ package com.lanqiao.circle.service;
 import com.lanqiao.circle.entity.Blog;
 import com.lanqiao.circle.util.Result;
 
+import java.util.List;
+
 /**
  * @Author 王昊
  * @Date 2019/9/11 7:12 下午
@@ -25,6 +27,9 @@ public interface BlogService {
 
     //管理员查询全部微博
     public Result normalBlogs(String content,int page,int limit);
+
+    //搜索微博
+    public Result searchBlogByContent(List<Integer> list);
 
     //管理员删除微博
     public Result deleteBlog(Integer blogId);

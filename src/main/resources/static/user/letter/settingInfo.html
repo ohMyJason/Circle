@@ -23,7 +23,7 @@
         <div class="col-md-9">
             <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
                 <template slot="append">
-                    <i class="icon icon-search"></i>
+                    <i class="icon icon-search" @click="searchBlog"></i>
                 </template>
             </at-input>
         </div>
@@ -183,6 +183,16 @@
             birthDay:"请选择"
         },
         methods:{
+            searchBlog(){
+                if (this.inputValue4==''){
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("搜索不能为空");
+                    })
+                }else {
+                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue4
+                }
+            },
             getFile(e) {
                 let _this = this
                 this.file = e.target.files[0];

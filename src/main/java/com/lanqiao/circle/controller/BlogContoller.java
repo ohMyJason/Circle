@@ -13,10 +13,7 @@ import com.lanqiao.circle.service.BlogService;
 import com.lanqiao.circle.service.CommentsService;
 import com.lanqiao.circle.service.LikeService;
 import com.lanqiao.circle.service.TokenService;
-import com.lanqiao.circle.util.CommentUtil;
-import com.lanqiao.circle.util.FileUploadUtil;
-import com.lanqiao.circle.util.RedisUtil;
-import com.lanqiao.circle.util.Result;
+import com.lanqiao.circle.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +58,10 @@ public class BlogContoller {
 
     @Autowired
     CirclesMapper circlesMapper;
+
+    @Autowired
+    SolrUtil solrUtil;
+
     /**
      * 实现评论功能
      *
@@ -123,6 +124,13 @@ public class BlogContoller {
         return blogService.forwardBlog(blog);
     }
 
+    /**
+     * 发微博接口
+     * @param httpServletRequest
+     * @param map
+     * @return
+     * 刘佳昇
+     */
     @UserLoginToken
     @PostMapping("/insertBlog")
     @Transactional
@@ -144,6 +152,7 @@ public class BlogContoller {
                 redisUtil.updateZet("circle-blog-num",1,circleName);
             }
             blogMapper.insertSelective(blog);
+            solrUtil.saveBlog(blog);
             for (Object itemId:itemIds){
                 BlogItem blogItem = blogItemMapper.selectByPrimaryKey((Integer)itemId);
                 blogItem.setBlogId(blog.getBlogId());
@@ -160,7 +169,7 @@ public class BlogContoller {
 
     /**
      * 发微博 图片或视频上传接口
-     *
+     * 刘佳昇
      * @param file
      * @param flag
      * @return
@@ -190,6 +199,26 @@ public class BlogContoller {
         }
 
     }
+
+    /**
+     * 查询微博
+     * @param content
+     * @return
+     */
+    @PostMapping("searchBlogByContent")
+    public Result searchBlogByContent(@RequestParam(name = "content")String content){
+        return blogService.searchBlogByContent(solrUtil.selectByContent(content));
+    }
+
+    @PostMapping("searchBlogInCircle")
+    public Result searchBlogInCircle(@RequestParam(name = "content")String content,@RequestParam(name = "circleId")String circleId){
+        return blogService.searchBlogByContent(solrUtil.selectByContent(content,circleId));
+    }
+
+
+
+
+
     /**
      * 首页展示所有微博
      * @param page
