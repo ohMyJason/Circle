@@ -219,12 +219,6 @@
         </div>
     </div>
 <script>
-    $(document).ready(function() {
-        var url =decodeURI(location.search);
-        var content = url.substr(9);
-        vm3.searchBlog = content
-    })
-
     var vm3 = new Vue({
         el: '#search-blog',
         data: {
@@ -405,22 +399,25 @@
                 }
             }
         }
-        // ,created(){
-        //     $.ajax({
-        //         url:"/blog/searchBlogByContent",
-        //         type:"post",
-        //         data:{
-        //             content : this.searchBlog,
-        //         },
-        //         success:function (result) {
-        //             if(result.code == 0){
-        //                 vm3.blogInfoList = result.data;
-        //             }
-        //         },error:function () {
-        //
-        //         }
-        //     })
-        // }
+        ,created(){
+            var url =decodeURI(location.search);
+            var content = url.substr(9);
+            this.searchBlog = content
+            $.ajax({
+                url:"/blog/searchBlogByContent",
+                type:"post",
+                data:{
+                    content : this.searchBlog,
+                },
+                success:function (result) {
+                    if(result.code == 0){
+                        vm3.blogInfoList = result.data;
+                    }
+                },error:function () {
+
+                }
+            })
+        }
     })
 
 </script>
