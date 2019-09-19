@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,8 +48,15 @@ public class BlogSolrController {
     }
 
     @PostMapping("/deleteById")
-    public Result deleteById(String id){
-        return Result.createSuccessResult(solrUtil.delSolrBlogById(id));
+    public Result deleteById(String begin,String end){
+        ArrayList<String> ids = new ArrayList<>();
+        for (int i = Integer.parseInt(begin); i <= Integer.parseInt(end); i++) {
+            ids.add(""+i);
+            System.out.println("log: id->"+i+"已经加入删除队列");
+        }
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("error",solrUtil.delSolrBlogById(ids));
+        return Result.createSuccessResult(map);
     }
 
     @PostMapping("/getSolrBlogById")
@@ -83,8 +92,13 @@ public class BlogSolrController {
     //手动封装solr函数工具----------------------------------------------------------------结束
 
     @PostMapping("/testSearch")
-    public Result testSearch(String content){
-        List list = solrUtil.selectByContent(content);
+    public Result testSearch(String content,String circleId){
+        List list;
+        if (circleId!=null){
+           list = solrUtil.selectByContent(content,circleId);
+        }else {
+            list = solrUtil.selectByContent(content);
+        }
         return Result.createSuccessResult(list.size(),list);
     }
 
