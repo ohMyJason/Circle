@@ -48,9 +48,15 @@
             <div class="col-md-5"></div>
         </div>
 
-        <div class="row" style="margin: 10px 0">
+        <div class="row" style="margin: 10px 0" v-if="blogInfoList.length!=0">
             <div class="col-md-offset-4 col-md-20">
                 <h1 v-cloak>圈圈为您找到相关搜索结果约:{{blogInfoList.length}}个</h1>
+            </div>
+        </div>
+
+        <div class="row" style="margin: 10px 0" v-if="blogInfoList.length==0">
+            <div class="col-md-offset-4 col-md-20">
+                <h1 v-cloak>抱歉，圈圈没有为您找到符合要求的相关结果，建议您换个关键字呢</h1>
             </div>
         </div>
 
@@ -230,7 +236,7 @@
             ],
             forwardInput:'',
             selected: 'll',
-            reviewed:'ll'
+            reviewed:'ll',
         },methods:{
             searchBlogByContent(){
                 if (this.inputValue4==''){
@@ -246,7 +252,6 @@
                                 vm3.blogInfoList = result.data;
                                 vm3.inputValue4='';
                             }
-                        },error:function () {
                         }
                     })
                 }
@@ -411,6 +416,8 @@
         //             if(result.code == 0){
         //                 vm3.blogInfoList = result.data;
         //             }
+        //         },error:function () {
+        //
         //         }
         //     })
         // }

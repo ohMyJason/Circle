@@ -83,7 +83,7 @@
         <div class="col-md-9">
             <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
                 <template slot="append">
-                    <i class="icon icon-search"></i>
+                    <i class="icon icon-search" @click="searchBlog"></i>
                 </template>
             </at-input>
         </div>
@@ -1027,7 +1027,14 @@
                     $("#user-photo").attr("src", res.data.avatarUrl);
                     $("#username").text(res.data.userName);
                 }
-
+            },error:function () {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    layer.msg("请先登录");
+                })
+                setTimeout(function () {
+                    window.location.href = "../../index.html"
+                },500)
             }
         })
 
@@ -1040,6 +1047,17 @@
         el: '#app',
         data: {
             inputValue4: ''
+        },methods:{
+            searchBlog(){
+                if (this.inputValue4==''){
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("搜索不能为空");
+                    })
+                }else {
+                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue4
+                }
+            }
         }
     })
 </script>

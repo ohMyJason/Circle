@@ -679,7 +679,14 @@
             inputValue4: ''
         },methods:{
             searchBlog(){
-                window.location.href="/user/blog/blog.html?content="+this.inputValue4
+                if (this.inputValue4==''){
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("搜索不能为空");
+                    })
+                }else {
+                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue4
+                }
             }
         }
 
