@@ -27,6 +27,7 @@ public class Blog  implements Serializable {
 
     private Integer repostId;
 
+    @Indexed
     private Integer circleId;
 
     private Integer weight;

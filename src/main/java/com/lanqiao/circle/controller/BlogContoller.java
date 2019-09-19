@@ -152,6 +152,7 @@ public class BlogContoller {
                 redisUtil.updateZet("circle-blog-num",1,circleName);
             }
             blogMapper.insertSelective(blog);
+            solrUtil.saveBlog(blog);
             for (Object itemId:itemIds){
                 BlogItem blogItem = blogItemMapper.selectByPrimaryKey((Integer)itemId);
                 blogItem.setBlogId(blog.getBlogId());
@@ -207,6 +208,11 @@ public class BlogContoller {
     @PostMapping("searchBlogByContent")
     public Result searchBlogByContent(@RequestParam(name = "content")String content){
         return blogService.searchBlogByContent(solrUtil.selectByContent(content));
+    }
+
+    @PostMapping("searchBlogInCircle")
+    public Result searchBlogInCircle(@RequestParam(name = "content")String content,@RequestParam(name = "circleId")String circleId){
+        return blogService.searchBlogByContent(solrUtil.selectByContent(content,circleId));
     }
 
 

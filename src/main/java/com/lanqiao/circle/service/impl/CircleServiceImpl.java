@@ -63,7 +63,7 @@ public class CircleServiceImpl implements CircleService {
     @Override
     public Result createCircle(Circles circles) {
         try{
-            String timeStr1= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String timeStr1= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             circles.setCreateTime(timeStr1);
             if(circlesMapper.insertSelective(circles) > 0){
                 return Result.createSuccessResult();

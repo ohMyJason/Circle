@@ -41,27 +41,27 @@
         </div>
     </div>
 
-    <div id="mid-search" class="row search-margin">
-        <div class="col-md-3"></div>
-        <div class="col-md-3 logo">
-            <a href="#">
-                <img src="../../node_modules/images/logo.png" class="img-up">
-            </a>
-        </div>
-        <div class="col-md-8">
-            <at-input v-model="searchVal" placeholder="请输入内容" class="mid-search"></at-input>
-        </div>
-        <div class="col-md-2">
-            <at-button type="info" hollow class="mid-search" title="圈内搜索">圈内搜索</at-button>
-        </div>
-        <div class="col-md-3 col-md-offset-2">
-            <span class="span-mid" title="发现身边的事！">发现身边的事！</span>
-        </div>
-        <div class="col-md-3">
-        </div>
-    </div>
-
     <div id="mid-title">
+        <div class="row search-margin">
+            <div class="col-md-3"></div>
+            <div class="col-md-3 logo">
+                <a href="#">
+                    <img src="../../node_modules/images/logo.png" class="img-up">
+                </a>
+            </div>
+            <div class="col-md-8">
+                <at-input v-model="searchVal" placeholder="请输入内容" class="mid-search"></at-input>
+            </div>
+            <div class="col-md-2">
+                <at-button type="info" hollow class="mid-search" title="圈内搜索" @click="searchIncircle">圈内搜索</at-button>
+            </div>
+            <div class="col-md-3 col-md-offset-2">
+                <span class="span-mid" title="发现身边的事！">发现身边的事！</span>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-2 div-img">
@@ -140,7 +140,7 @@
                     <div v-if="item.isRepost == 1">
                         <div class="row">
                             <div class="col-md-18 col-md-offset-3">
-                                <span v-text="item.content" class="color#333"></span>
+                                <span v-html="item.content" class="color#333"></span>
                             </div>
                             <div class="col-md-3"></div>
                         </div>
@@ -271,23 +271,16 @@
             }
         }
     })
-    var vm1 = new Vue({
-        el: '#mid-search',
-        data: {
-            searchVal: '',
-        }
-    })
 
     var vm2 = new Vue({
         el: '#mid-title',
         data: {
-            circleItem: {
-            }
+            circleItem: {},
+            searchVal: '',
         },methods:{
             jumpPagePerson1(userId){
                 if ($.cookie('token') == null){
-                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                    window.location.href="../user-center/personals.html";
+                window.location.href = "/user/user-center/personals.html?userId=" + userId;
                 }else{
                     $.ajax({
                         url:"/test/testGetUserIdByToken",
@@ -298,8 +291,7 @@
                                 if(userId == result.data){
                                     window.location.href="../user-center/personal.html";
                                 }else {
-                                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                                    window.location.href="../user-center/personals.html";
+                                    window.location.href = "/user/user-center/personals.html?userId=" + userId;
                                 }
                             }
                         },error:function () {
@@ -307,6 +299,23 @@
                                 var layer = layui.layer;
                                 layer.msg("请先登录!");
                             })
+                        }
+                    })
+                }
+            },
+            searchIncircle(){
+                if(this.searchVal==''){
+                    
+                }else {
+                    $.ajax({
+                        url:"/blog/searchBlogInCircle",
+                        type:"post",
+                        data:{
+                            content: this.searchVal,
+                            circleId : $.cookie("circleId"),
+                        },success:function (result) {
+                            vm3.blogInfoList = result.data;
+                            vm3.flag="false";
                         }
                     })
                 }
@@ -323,7 +332,13 @@
                     if(result.code == 0){
                         vm2.circleItem = result.data;
                     }else {
-                        alert(result.msg);
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg("圈子里什么都没有啊，快去添加吧！");
+                        })
+                        setTimeout(function () {
+                            window.location.href="/user/index/userIndex.html"
+                        },1000)
                     }
                 }
             })
@@ -341,7 +356,8 @@
             size: '3',
             forwardInput:'',
             selected: 'll',
-            reviewed:'ll'
+            reviewed:'ll',
+            flag:'true',
         },methods:{
             add(){
                 $.ajax({
@@ -490,8 +506,7 @@
             },
             jumpPagePerson(userId){
                 if ($.cookie('token') == null){
-                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                    window.location.href="../user-center/personals.html";
+                    window.location.href = "/user/user-center/personals.html?userId=" + userId;
                 }else{
                     $.ajax({
                         url:"/test/testGetUserIdByToken",
@@ -502,8 +517,7 @@
                                if(userId == result.data){
                                    window.location.href="../user-center/personal.html";
                                }else {
-                                   $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                                   window.location.href="../user-center/personals.html";
+                                   window.location.href = "/user/user-center/personals.html?userId=" + userId;
                                }
                             }
                         }
@@ -548,7 +562,9 @@
                     //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
                     //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
                     next(lis.join(''), page < 10000); //假设总页数为 10
-                    vm3.add();
+                    if (vm3.flag=='true'){
+                        vm3.add();
+                    }
                 }, 500);
 
             }
