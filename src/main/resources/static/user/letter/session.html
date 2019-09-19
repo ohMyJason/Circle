@@ -103,8 +103,11 @@
                         </div>
                         <!-- 接收消息 -->
                         <div class="messageMiddleBox left" v-show="item.senterId != userInfo.userId">
-                            <div class="messageBox left">
+                            <div class="messageBox left" v-if = "item.resourceUrl == null">
                                 <p v-html = "item.letterContent"></p>
+                            </div>
+                            <div class="messageBox left" v-if="item.resourceUrl != null">
+                                <img :src="item.resourceUrl" style="width: 100px">
                             </div>
                         </div>
                     </div>

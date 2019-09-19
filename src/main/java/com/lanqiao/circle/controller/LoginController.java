@@ -61,7 +61,7 @@ public class LoginController {
                 res.put("user",JSON.toJSON(baseUser));
                 return Result.createSuccessResult(res);
             }else {
-                return Result.createByFailure("登录名或密码错误，没有此用户，登录失败");
+                return Result.createByFailure("登录名或密码错误，z");
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
