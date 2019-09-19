@@ -3,7 +3,6 @@ package com.lanqiao.circle.util;
 import com.lanqiao.circle.entity.Blog;
 import com.lanqiao.circle.mapper.BlogMapper;
 import org.apache.solr.client.solrj.response.UpdateResponse;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.SolrTemplate;
@@ -12,11 +11,9 @@ import org.springframework.data.solr.core.query.Query;
 import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.data.solr.core.query.result.ScoredPage;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,11 +32,12 @@ public class SolrUtil {
 
     /**
      * 向solr里插数据
+     *
      * @param blog
      * @return
      */
-    public boolean saveBlog(Blog blog){
-        if (!blog.getBlogId().equals(blog.getId())){
+    public boolean saveBlog(Blog blog) {
+        if (!blog.getBlogId().equals(blog.getId())) {
             throw new RuntimeException("id和blogid不符合");
         }
         UpdateResponse response = solrTemplate.saveBean("blogs", blog);
@@ -50,45 +48,75 @@ public class SolrUtil {
 
     /**
      * 根据id删除
-     * @param id
+     *
+     * @param ids
      * @return
      */
-    public boolean delSolrBlogById(String id){
-        UpdateResponse response = solrTemplate.deleteByIds("blogs", ""+id);
-        solrTemplate.commit("blog");
-        return response.getStatus()==0;
+    public List delSolrBlogById(List<String> ids) {
+        ArrayList<String> errorIds = new ArrayList<>();
+        for (String id : ids) {
+            UpdateResponse response = solrTemplate.deleteByIds("blogs", "" + id);
+            solrTemplate.commit("blogs");
+            if (!(response.getStatus() == 0)) {
+                errorIds.add(id);
+
+            }
+        }
+        return errorIds;
     }
-
-
 
 
     /**
      * 根据内容查询
+     *
      * @param content
      * @return 所有的blogId
      */
-    public  List selectByContent(String content){
-        //查询所有
+    public List selectByContent(String content) {
+        return selectByContent(content, null);
+    }
+
+
+    /**
+     * 根据内容和圈子id查询
+     *
+     * @param content
+     * @param circleId
+     * @return
+     */
+    public List selectByContent(String content, String circleId) {
+//查询所有
         Query query = new SimpleQuery();
+
+        Criteria criteria;
+        criteria = new Criteria("content").is(content);
+
         //设置条件
-        Criteria criteria = new Criteria("content").is(content);
-        //设置分页
         query.addCriteria(criteria);
+        //设置分页
         query.setOffset(1L);
         query.setRows(100000);
         //设置排序规则
-        Sort sort = new Sort(Sort.Direction.ASC,"createTime");
+        Sort sort = new Sort(Sort.Direction.ASC, "createTime");
         query.addSort(sort);
         //blog容器
-        ScoredPage<Blog> pages = solrTemplate.queryForPage("blogs", query,Blog.class);
+        ScoredPage<Blog> pages = solrTemplate.queryForPage("blogs", query, Blog.class);
         List<Blog> resBlogs = pages.getContent();
+        //加入circle不为null，过滤circleid
+        if (circleId!=null){
+            resBlogs = filterCircle(resBlogs,circleId);
+        }
         //存储blogid容器
-        List<Integer> blogIds=new ArrayList<>();
+        List<Integer> blogIds = new ArrayList<>();
         //假如solr没有，则往里存
-        if (resBlogs==null||resBlogs.size()==0){
+        if (resBlogs == null || resBlogs.size() == 0) {
             System.out.println("log:--------------solr里面没有啊----------------");
             List<Blog> blogByContent = blogMapper.getBlogByContent(content);
-            for (Blog blog:blogByContent){
+            //过滤CIrcle
+            if (circleId!=null){
+                blogByContent = filterCircle(blogByContent,circleId);
+            }
+            for (Blog blog : blogByContent) {
                 saveBlog(blog);
                 blogIds.add(blog.getBlogId());
             }
@@ -106,6 +134,16 @@ public class SolrUtil {
         return blogIds;
     }
 
+
+    private List<Blog> filterCircle(List<Blog> blogs, String circleId){
+        List<Blog> res = new ArrayList<>();
+        for(Blog blog:blogs){
+            if ((blog.getCircleId().equals(Integer.parseInt(circleId)))){
+                res.add(blog);
+            }
+        }
+        return res;
+    }
 
 
 }

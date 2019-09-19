@@ -16,7 +16,6 @@ import javax.annotation.PreDestroy;
  * @Date 2019/9/19 2:10
  */
 @Service
-//@Component
 public class ProducerService {
     @Value("${apache.rocketmq.producer.producerGroup}")
     private String producerGroup;
@@ -51,6 +50,7 @@ public class ProducerService {
 //        System.out.println(result.toString());
         return "{\"MsgId\":\"" + result.getMsgId() + "\"}";
     }
+
 
     @PreDestroy
     public void shutDownProducer() {

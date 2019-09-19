@@ -152,6 +152,7 @@ public class BlogContoller {
                 redisUtil.updateZet("circle-blog-num",1,circleName);
             }
             blogMapper.insertSelective(blog);
+            solrUtil.saveBlog(blog);
             for (Object itemId:itemIds){
                 BlogItem blogItem = blogItemMapper.selectByPrimaryKey((Integer)itemId);
                 blogItem.setBlogId(blog.getBlogId());
