@@ -286,6 +286,9 @@
                                 var layer = layui.layer;
                                 layer.msg("转发成功");
                             })
+                            setTimeout(function () {
+                                window.location.reload();
+                            },1000);
                             vm.selected = 'll';
                         }
                     },error:function () {

@@ -46,7 +46,7 @@ public class BlogServiceImpl implements BlogService {
 //                    if (blog.getUserId()==blog1.getUserId()){
 //                        content = content1 + "//<a href=\"/user/user-center/personal.html\">@" + name +"</a>" + content2;
 //                    }else {
-                    String content = content1 + "//<a href=\"/user/user-center/personals.html?userId=" + blog1.getUserId() +"\">@"+ name + "</a>" + content2;
+                    String content = content1 + "//<a href=\"/user/user-center/personals.html?userId=" + blog1.getUserId() +"\">@"+ name + "：</a>" + content2;
 //                    }
                     blog.setContent(content);
                     blog.setRepostId(blog1.getRepostId());

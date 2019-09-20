@@ -596,39 +596,71 @@
             circleId: "",
             itemsId: [],
             circleItem: [],
+            status:'',
 
         },
         methods: {
             relealeBlog: function () {
-                if (this.circleId != "") {
+                if (this.circleId != ""&&this.blogContent!="") {
                     layer.load(1);
                     $.ajax({
-                        url: "/blog/insertBlog",
-                        type: "post",
-                        headers: {"token": $.cookie("token")},
-                        contentType: "application/json",
-                        data: JSON.stringify({
-                            "blog": {
-                                "content": this.blogContent,
-                                "circleId": this.circleId
-                            },
-                            "itemIds": this.itemsId
-                        }),
-                        success: function (res) {
-                            layer.closeAll('loading');
-                            if (res.code == 0) {
-                                layui.use('layer', function () {
-                                    var layer = layui.layer;
-                                    layer.msg("发表成功");
+                        url:"/userInfo/getUserInfo",
+                        headers:{"token":$.cookie("token")},
+                        dataType:"json",
+                        type:"post",
+                        async:false,
+                        success:function (res) {
+                            if (res.code==0){
+                                if (res.data.status==1){
+                                    this.status=1;
+                                    layer.msg("您已经被封号，无法发言");
                                     setTimeout(function () {
                                         window.location.reload();
-                                    }, 1000);
-                                })
+                                    },1000);
+                                }else {
+                                    console.log("ssss");
+                                    $.ajax({
+                                        url: "/blog/insertBlog",
+                                        type: "post",
+                                        headers: {"token": $.cookie("token")},
+                                        contentType: "application/json",
+                                        async:false,
+                                        data: JSON.stringify({
+                                            "blog": {
+                                                "content": vm4.blogContent,
+                                                "circleId": vm4.circleId
+                                            },
+                                            "itemIds": vm4.itemsId
+                                        }),
+                                        success: function (res) {
+                                            layer.closeAll('loading');
+                                            if (res.code == 0) {
+                                                layui.use('layer', function () {
+                                                    var layer = layui.layer;
+                                                    layer.msg("发表成功");
+                                                    setTimeout(function () {
+                                                        window.location.reload();
+                                                    }, 1000);
+                                                })
+                                            }else {
+                                                layer.msg("操作异常，请联系管理员");
+                                            }
+                                        }
+                                    })
+                                }
                             }
+
+                        },
+                        error:function () {
+                            layer.msg("未登录或登录过期，请重新登录");
+                            setTimeout(function () {
+                                window.location.href="/"
+                            },1000);
                         }
                     })
+
                 } else {
-                    layer.msg("请选择圈子!!!");
+                    layer.msg("圈子和内容都不能为空哦！");
                 }
             }
         }
@@ -758,6 +790,9 @@
                                 var layer = layui.layer;
                                 layer.msg("转发成功");
                             })
+                            setTimeout(function () {
+                                window.location.reload();
+                            },1000);
                             vm3.selected = 'll';
                         }
                     }, error: function () {
