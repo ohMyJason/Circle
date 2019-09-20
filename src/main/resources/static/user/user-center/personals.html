@@ -467,6 +467,23 @@
             this.userId1 = conte
             console.log(this.userId1);
             //展示他人除微博外信息
+            if ($.cookie('token') == null){
+            }else {
+                $.ajax({
+                    url:"/test/testGetUserIdByToken",
+                    type:"post",
+                    headers:{'token':$.cookie("token")},
+                    success:function (result) {
+                        if(result.code == 0){
+                            if(vm.userId1 == result.data){
+                                window.location.href="../user-center/personal.html";
+                            }
+                        }
+                    }
+                })
+            }
+
+
             $.ajax({
                 url:"/userInfo/getOtherInfo",
                 type:"post",
