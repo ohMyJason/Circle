@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../../node_modules/css/circleRank.css">
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
+
     <style>
         [v-cloak] {
             display: none;
@@ -38,7 +40,7 @@
         <div class="col-md-11">
             <at-input v-model="inputValue4" placeholder="搜索圈子" append-button class="top-search">
                 <template slot="append">
-                    <i class="icon icon-search"></i>
+                    <i class="icon icon-search" @click="searchCircle"></i>
                 </template>
             </at-input>
         </div>
@@ -114,6 +116,29 @@
                 + vm.addZero(d.getHours()) + ":" + vm.addZero(d.getMinutes()) + ":" + vm.addZero(d.getSeconds());
             },jumpCircle(id){
                 $.cookie("circleId",id,{path: '/user/circle/circle.html'})
+            },searchCircle(){
+                $.ajax({
+                    url:"/circle/searchCircleLike",
+                    type:"post",
+                    data:{
+                      name: this.inputValue4
+                    },
+                    success:function (result) {
+                        if(result.code == 0){
+                            vm.circleList = result.data;
+                            vm.circleCount = result.count;
+                        }else {
+                            layui.use('layer',function() {
+                                var layer = layui.layer;
+                                layer.msg(result.msg);
+                            })
+                            vm.circleList=[];
+                            vm.circleCount = 0;
+                        }
+                    },error:function () {
+
+                    }
+                })
             }
         },created(){
             $.ajax({

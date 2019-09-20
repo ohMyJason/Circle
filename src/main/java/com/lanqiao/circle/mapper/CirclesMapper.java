@@ -31,6 +31,8 @@ public interface CirclesMapper {
 
     List<HashMap> getAllCirclesInfo();
 
+    List<HashMap> getCircleLike(String name);
+
     List<HashMap> getCircleUserNum(Integer circleId);
 
     List<HashMap> getCircleBlogNum(Integer circleId);

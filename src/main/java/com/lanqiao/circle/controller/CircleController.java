@@ -95,6 +95,10 @@ public class CircleController {
         return circleService.showAllCircle();
     }
 
+    @PostMapping("searchCircleLike")
+    public Result searchCircleLike(@RequestParam(name = "name")String name){
+        return circleService.showCircleLike(name);
+    }
     /**
      * 管理员查询全部圈子
      */

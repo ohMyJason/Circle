@@ -79,7 +79,7 @@
                 <span class="black-blue" v-cloak>&nbsp;&nbsp;&nbsp;圈子主题:{{circleItem.circleTitle}}</span>
             </div>
             <div class="col-md-3 col-md-offset-1">
-                <a href="" @click="jumpPagePerson1(circleItem.userId)"><span class="black-blue" v-cloak>创建人:{{circleItem.createName}}</span></a>
+                <a href="" @click.prevent="jumpPagePerson1(circleItem.userId)"><span class="black-blue" v-cloak>创建人:{{circleItem.createName}}</span></a>
             </div>
             <div class="col-md-4">
                 <span class="black-blue" v-cloak>创建时间:{{circleItem.createTime}}</span>

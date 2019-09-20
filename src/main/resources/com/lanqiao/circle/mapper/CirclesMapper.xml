@@ -184,4 +184,10 @@
     from tb_circle
     where circle_name = #{circleName}
   </select>
+
+  <select id="getCircleLike" parameterType="string" resultType="hashmap">
+    select circle_id as circleId,circle_name as circleName,circle_title as circleTitle,circle_img_url as circleImgUrl
+    from tb_circle where circle_name like '%${name}%'
+   </select>
+
 </mapper>

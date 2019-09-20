@@ -92,6 +92,26 @@ public class CircleServiceImpl implements CircleService {
         }
     }
 
+    @Override
+    public Result showCircleLike(String name) {
+        try {
+            List<HashMap> hashMapList = circlesMapper.getCircleLike(name);
+            if (hashMapList.size()!=0){
+                for (HashMap hashMap:hashMapList) {
+                    List<HashMap> hashMaps1 = circlesMapper.getCircleUserNum((Integer)hashMap.get("circleId"));
+                    hashMap.put("userNum",hashMaps1.size());
+                    List<HashMap> hashMaps2 = circlesMapper.getCircleBlogNum((Integer)hashMap.get("circleId"));
+                    hashMap.put("blogNum",hashMaps2.size());
+                }
+                return Result.createSuccessResult(hashMapList.size(),hashMapList);
+            }else {
+                return Result.createByFailure("无相关圈子信息！");
+            }
+        }catch (Exception e){
+            return Result.createByFailure("操作异常，请联系管理人员！");
+        }
+    }
+
 
     @Override
     public Result normalCircles(String circleName,int page,int limit){

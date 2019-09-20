@@ -20,6 +20,9 @@ public interface CircleService {
     //展示所有圈子
     public Result showAllCircle();
 
+    //模糊查询圈子
+    public Result showCircleLike(String name);
+
     //管理员查询全部圈子
     public Result normalCircles(String circleName,int page,int limit);
 
