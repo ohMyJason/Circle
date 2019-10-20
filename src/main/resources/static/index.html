@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>登陆</title>
-    <script src="node_modules/vue/dist/vue.js"></script>
-    <script src="node_modules/at-ui/dist/at.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Circle-首页</title>
+    <link rel="stylesheet" href="node_modules/css/index.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <!--<link rel="stylesheet" href="node_modules/layui/css/layui.css" media="all">-->
+
     <script src="node_modules/jQuery/jquery-3.4.1.min.js"></script>
-    <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
-    <link rel="stylesheet" href="node_modules/css/top.css">
-    <link rel="stylesheet" href="node_modules/css/Index.css">
-    <link rel="stylesheet" href="node_modules/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="node_modules/css/circle.css">
+    <script src="node_modules/bootstrap/js/bootstrap.js"></script>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/layui/layui.js"></script>
+    <script src="node_modules/jQuery/jquery.cookie.js"></script>
 
     <style>
-
         [v-cloak] {
             display: none;
         }
@@ -23,35 +24,20 @@
             cursor: pointer;
         }
     </style>
-    <script src="node_modules/jQuery/jquery.cookie.js"></script>
-    <script src="node_modules/layui/layui.js"></script>
 </head>
 <body>
-<div id="app" class="container">
-    <div class="row top-header">
-        <div class="col-md-3 logo">
-            <img src="node_modules/images/logo.png" class="img-up">
-        </div>
-        <div class="col-md-9">
-            <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
-                <template slot="append">
-                    <i class="icon icon-search" @click="searchBlog"></i>
-                </template>
-            </at-input>
-        </div>
-        <div class="col-md-7 col-md-offset-5">
-            <a href="/user/index/userIndex.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
-            <a href="/user/circle/circleRank.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
-            <a href="/user/letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
-            <a href="/user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
-        </div>
+<!---------------导航条---------------->
+<header id="circle_header">
+    <div class="container-fluid">
+        <iframe id="headerFrame" name="headerFrame" width="100%" src="navbar.html" frameborder="0" scrolling="no"></iframe>
     </div>
-</div>
-<div id="contain">
-    <div class="row circle_frame">
-        <div class="col-md-16">
-            <div id="blog-content">
-                <div class="content-show" style="width: 800px" v-for="(item,i) in blogInfoList">
+</header>
+<!---------------内容部分---------------->
+<section id="circle_content" class="container">
+    <div class="row">
+        <div id="left_section" class="col-md-8 border">
+            <div id="blog-content" v-for="(item,i) in blogInfoList">
+                <div class="content-show" style="width: 800px">
                     <!--         控制头           -->
                     <div class="row" style="padding: 10px">
                         <div class="col-md-2 col-md-offset-1">
@@ -226,6 +212,196 @@
 
                 </div>
             </div>
+        </div>
+        <div id="right_section" class="col-md-4 border">234</div>
+    </div>
+</section>
+<!---------------尾部---------------->
+<footer id="circle_footer">
+    <div class="container">
+        <iframe id="footerFrame" name="footerFrame" width="100%" src="footer.html" frameborder="0" scrolling="no"></iframe>
+    </div>
+</footer>
+
+<div id="contain">
+    <div class="row circle_frame">
+        <div class="col-md-16">
+            <!--<div id="blog-content">-->
+                <!--<div class="content-show" style="width: 800px" v-for="(item,i) in blogInfoList">-->
+                    <!--&lt;!&ndash;         控制头           &ndash;&gt;-->
+                    <!--<div class="row" style="padding: 10px">-->
+                        <!--<div class="col-md-2 col-md-offset-1">-->
+                            <!--<a href="#" @click="jumpPagePerson(item.userId)"><img :src="item.avatarUrl"-->
+
+                                                                                  <!--class="header-img"></a>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-8">-->
+                            <!--<a href="#" @click="jumpPagePerson(item.userId)"><span v-text="item.userName"-->
+                                                                                   <!--class="black blog-belonger"></span></a>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-2 col-md-offset-9" v-if="item.isRepost == 0">-->
+                            <!--<at-tag color="success" style="margin-bottom: 5px">原创</at-tag>-->
+                            <!--<a style="margin-right: 100px" href="/user/circle/circle.html"-->
+                               <!--@click="toCircle(item.circleId)">-->
+                                <!--<at-tag color="info">{{item.circleName}}</at-tag>-->
+                            <!--</a>-->
+
+                        <!--</div>-->
+                        <!--<div class="col-md-2 col-md-offset-9" v-if="item.isRepost == 1">-->
+                            <!--<at-tag color="info" style="margin-bottom: 5px">转载</at-tag>-->
+                            <!--<a style="margin-right: 100px" href="/user/circle/circle.html"-->
+                               <!--@click="toCircle(item.circleId)">-->
+                                <!--<at-tag color="info">{{item.circleName}}</at-tag>-->
+                            <!--</a>-->
+
+
+                        <!--</div>-->
+
+                    <!--</div>-->
+                    <!--&lt;!&ndash;        原创展示            &ndash;&gt;-->
+                    <!--<div v-if="item.isRepost == 0">-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-18 col-md-offset-3">-->
+                                <!--<span v-html="item.content" class="color#333" style="font-size: 16px"></span>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-3"></div>-->
+                        <!--</div>-->
+                        <!--<div class="row" v-if="item.type == 2">-->
+                            <!--<div class="col-md-18 col-md-offset-3">-->
+                                <!--<video :src="item.resourceList[0]" controls="controls" width="100%" height="260px">-->
+                                    <!--您的浏览器不支持播放该视频！-->
+                                <!--</video>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-3"></div>-->
+                        <!--</div>-->
+                        <!--<div class="row" v-if="item.type == 1">-->
+                            <!--<div class="col-md-11 col-md-offset-3">-->
+                                <!--<div v-for="(urlList,i) in item.resourceList" class="show-img">-->
+                                    <!--<img :src="urlList" class="all-img">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-10"></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;      转载展示          &ndash;&gt;-->
+                    <!--<div v-if="item.isRepost == 1">-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-18 col-md-offset-3">-->
+                                <!--<span v-html="item.content" class="color#333" style="font-size: 16px"></span>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-3"></div>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;    原帖展示    &ndash;&gt;-->
+                        <!--<div v-if="item.blogInfo.isRepost == 0" class="row">-->
+                            <!--<div class="col-md-18 col-md-offset-3 trans-show" style="border-radius: 10px">-->
+                                <!--<div class="row" style="padding-top: 10px">-->
+                                    <!--<div class="col-md-2 col-md-offset-1" style="padding-bottom: 6px">-->
+                                        <!--<img :src="item.blogInfo.avatarUrl" class="header-img">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-7 col-md-offset-1" style="padding-bottom: 6px">-->
+                                        <!--<a href="#"><span v-text="item.blogInfo.userName"-->
+                                                          <!--class="black-blue blog-belonger"></span></a>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-13"></div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-18 col-md-offset-3"-->
+                                         <!--style="padding-bottom: 10px;padding-left: 27px">-->
+                                        <!--<span v-html="item.blogInfo.content"></span>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-3"></div>-->
+                                <!--</div>-->
+                                <!--<div class="row" v-if="item.blogInfo.type == 2">-->
+                                    <!--<div class="col-md-18 col-md-offset-3">-->
+                                        <!--<video :src="item.blogInfo.resourceList[0]" controls="controls" width="100%"-->
+                                               <!--height="260px">您的浏览器不支持播放该视频！-->
+                                        <!--</video>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-3"></div>-->
+                                <!--</div>-->
+                                <!--<div class="row" v-if="item.blogInfo.type == 1">-->
+                                    <!--<div class="col-md-15 col-md-offset-2" style="margin-left: 90px;margin-bottom: 8px">-->
+                                        <!--<div v-for="(urlList,i) in item.blogInfo.resourceList" class="show-img"-->
+                                             <!--style="margin:0">-->
+                                            <!--<img :src="urlList" class="all-img"-->
+                                                 <!--style="margin: 4px;border: 1px solid rgba(0, 0, 0, .05);">-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-7"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-3"></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--&lt;!&ndash;    评论点赞相关 &ndash;&gt;-->
+                    <!--<div class="row l-c-s">-->
+                        <!--<div class="col-md-5">-->
+                            <!--<a href="" class="icon icon-share a-font-20px" @click.prevent="showForward(i)">转发</a>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-5">-->
+                            <!--<a href="" @click.prevent="showReview(i,item.blogId)" class="icon icon-edit a-font-20px"-->
+                               <!--v-cloak>{{item.commentNum}}</a>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-5">-->
+                            <!--<a href="" @click.prevent="like($event,item.blogId)" class="icon icon-thumbs-up a-font-20px"-->
+                               <!--v-cloak>{{item.likeNum}}</a>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-9">-->
+                            <!--<span class="font-16px" v-cloak>发布时间:{{item.createTime}}</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div :class=['row','addForward',selected==i?'':'hidden']>-->
+                        <!--<div class="col-md-20 col-md-offset-1">-->
+                            <!--<input type="text" class="forwardInput" v-model="forwardInput">-->
+                        <!--</div>-->
+                        <!--<div class="col-md-3">-->
+                            <!--<input type="button" class="forwardButton" value="转发"-->
+                                   <!--@click="forwardBlog($event,item.blogId)">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div :class=['addForward',reviewed==i?'':'hidden']>-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-20 col-md-offset-1">-->
+                                <!--<input type="text" class="forwardInput" v-model="forwardInput">-->
+                            <!--</div>-->
+                            <!--<div class="col-md-3">-->
+                                <!--<input type="button" class="forwardButton" value="发布评论"-->
+                                       <!--@click="reviedBlog($event,item.blogId)">-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<div v-if="commentList != ''" style="border-top: 1px solid silver">-->
+                            <!--<div v-for="comment in commentList">-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-1 col-md-offset-1 commentShow">-->
+                                        <!--<img :src="comment.avatarUrl" class="commentHeader">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-21 commentShow">-->
+                                        <!--<span class="black commenter" v-cloak>{{comment.userName}}:</span>-->
+                                        <!--<span class="color#333 commenter" v-text="comment.commentContent"></span>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-1"></div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-1"></div>-->
+                                    <!--<div class="col-md-17 commentShow"></div>-->
+                                    <!--<div class="col-md-5 commentShow">-->
+                                        <!--<span v-text="comment.commentTime"></span>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-1"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div v-if="commentList == ''" class="row">-->
+                            <!--<div class="col-md-16 col-md-offset-8">-->
+                                <!--<span style="font-size: 18px">还没有人评论呢，快来评论吧！</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+            <!--</div>-->
             <ul class="flow-default" style="height: 300px;" id="LAY_demo2"></ul>
         </div>
         <div class="col-md-8">
@@ -665,26 +841,6 @@
     });
 </script>
 <script>
-    let v1 = new Vue({
-
-        el: '#app',
-        data: {
-            inputValue4: ''
-        },methods:{
-            searchBlog(){
-                if (this.inputValue4==''){
-                    layui.use('layer', function () {
-                        var layer = layui.layer;
-                        layer.msg("搜索不能为空");
-                    })
-                }else {
-                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue4
-                }
-            }
-        }
-
-    });
-
     //登录
     let v3 = new Vue({
         el: '#login-box',
