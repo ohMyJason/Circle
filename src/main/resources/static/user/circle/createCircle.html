@@ -1,38 +1,111 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>创建圈子</title>
-    <script src="../../node_modules/vue/dist/vue.js"></script>
-    <script src="../../node_modules/at-ui/dist/at.js"></script>
-    <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
-    <link rel="stylesheet" href="../../node_modules/css/top.css">
+    <link rel="stylesheet" href="../../node_modules/css/navbar.css">
+    <link rel="stylesheet" href="../../node_modules/css/footer.css">
     <link rel="stylesheet" href="../../node_modules/css/createCircle.css">
+    <link rel="stylesheet" href="http://ico.z01.com/zico.min.css">
+    <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" href="../../../favicon.ico" type="image/x-icon">
+
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
-    <script src="../../node_modules/jQuery/jquery.cookie.js"></script>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
     <script src="../../node_modules/layui/layui.js"></script>
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
+    <script src="../../node_modules/bootstrap/js/bootstrap.js"></script>
+    <script src="../../node_modules/at-ui/dist/at.js"></script>
 </head>
 <body>
-<div id="app" class="container">
-    <div class="row top-header">
-        <div class="col-md-3 logo">
-            <img src="../../node_modules/images/logo.png" class="img-up">
-        </div>
-        <div class="col-md-9">
-            <at-input v-model="inputValue4" placeholder="请输入内容" append-button class="top-search">
-                <template slot="append">
-                    <i class="icon icon-search" @click="searchBlog"></i>
-                </template>
-            </at-input>
-        </div>
-        <div class="col-md-7 col-md-offset-5">
-            <a href="/user/index/userIndex.html" class="top-font-size"><i class="icon icon-home"></i>首页</a>
-            <a href="../../user/circle/circleRank.html" class="top-font-size"><i class="icon icon-aperture"></i>圈子</a>
-            <a href="../../user/letter/session.html" class="top-font-size"><i class="icon icon-mail"></i>私信</a>
-            <a href="../../user/user-center/personal.html" class="top-font-size"><i class="icon icon-user"></i>用户</a>
+<!---------------导航条---------------->
+<header id="circle_navbar">
+    <div id="app">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white navbar_c fixed-top">
+            <div class="container-fluid">
+                <!------------Logo图标------->
+                <a class="navbar-brand col-xs-3 col-md-2" href="index.html">
+                    <img src="../../node_modules/images/logo.png" class="img-fluid">
+                </a>
+                <!------------搜索框----------->
+                <form class="form-inline input-group input-group-xs col-xs-8 col-md-4">
+                    <input class="form-control" type="search" v-model="inputValue" placeholder="大家正在搜" aria-label="Search">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm" @click="searchBlog"><i class="zi zi_search"></i></span>
+                    </div>
+                </form>
+
+                <!------------汉堡按钮------------>
+                <button class="navbar-toggler col-xs-2 col-md-1 ml-5" type="button" data-toggle="collapse"
+                        data-target="#circle_nav" aria-controls="circle_nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon" style="width: 25px;margin-left: 5px;margin-right: 5px"></span>
+                </button>
+
+                <!------------六个导航按钮--------->
+                <div class="collapse navbar-collapse col-lg-6" id="circle_nav">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="userIndex.html"><i class="icon icon-home"></i>首页</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../circle/circleRank.html"><i class="icon icon-aperture"></i>圈子</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../letter/session.html"><i class="icon icon-mail"></i>私信</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../user-center/personal.html"><i class="icon icon-user"></i>用户</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="newRegister.html" target="_blank">注册</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="modal" data-target="#exampleModalT">登录</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 导航条模态框 -->
+        <div class="modal fade" id="exampleModalT" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">账号登录</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mr-3 input-group d-flex align-items-center mb-2">
+                            <i class="icon icon-user mr-3" style="font-size: 25px"></i>
+                            <input class="form-control" type="text" placeholder="请输入账号" onclick="this.placeholder='' " v-model="loginName">
+                        </div>
+                        <div class="mr-3 input-group d-flex align-items-center mb-1">
+                            <i class="icon icon-lock mr-3" style="font-size: 25px"></i>
+                            <input class="form-control" type="password" placeholder="请输入密码" onclick="this.placeholder='' " v-model="password">
+                        </div>
+                        <a href="retrieve.html" target="_blank" class="d-flex flex-end">忘记密码？</a>
+                        <button type="button" class="btn btn-block bg-info mt-2" @click="login">立即登录</button>
+
+                        <div class="row ml-2">
+                            <span style="font-size: 14px">还没有账号？<a href="newRegister.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <!--<div class="container-fluid">-->
+    <!--<iframe id="headerFrame" name="headerFrame" width="100%" src="../../navbar.html" frameborder="0" scrolling="no"></iframe>-->
+    <!--</div>-->
+</header>
+
+<div id="app1" class="container">
+
     <div class="row create-margin">
         <div class="col-md-6"></div>
         <div class="col-md-12">
@@ -62,9 +135,73 @@
         <div class="col-md-6"></div>
     </div>
 </div>
+
+<script>
+    //导航条搜索登录功能
+    let vm = new Vue({
+        el: '#circle_navbar',
+        data: {
+            inputValue: '',
+            loginName: '',
+            password: ''
+        },methods:{
+            //搜索功能
+            searchBlog(){
+                if (this.inputValue==''){
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("搜索不能为空");
+                    })
+                }else {
+                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue
+                }
+            },
+
+            //登录
+            login:function () {
+                if (this.loginName==''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入手机/用户名/邮箱！");
+                    })
+                }else if (this.password==''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入密码！");
+                    })
+                }else{
+                    $.ajax({
+                        url: "/userLogin/login",
+                        type: "post",
+                        data: {
+                            loginName: this.loginName,
+                            password: this.password,
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("登陆成功！");
+                                });
+                                window.location.href = "/user/index/userIndex.html";
+                                $.cookie("token", result.data.token, {path: "/"});
+                            } else {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("登陆失败！");
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+        }
+
+    });
+</script>
 <script>
     var vm = new Vue({
-        el: '#app',
+        el: '#app1',
         data:{
             inputValue4:'',
             src:'../../node_modules/images/upload.png',
