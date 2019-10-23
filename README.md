@@ -7,7 +7,8 @@
 ## 技术栈
 
 ### 前端
-- AT-ui
+- [Bootstrap4](https://code.z01.com/v4/)
+- [AT-ui组件库](https://at-ui.github.io/at-ui/#/zh)
 - Layui
 - Vue
 

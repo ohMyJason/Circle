@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Circle-首页</title>
+    <link rel="stylesheet" href="../../node_modules/css/navbar.css">
+    <link rel="stylesheet" href="../../node_modules/css/footer.css">
+    <link rel="stylesheet" href="../../node_modules/css/index.css">
+    <link rel="stylesheet" href="http://ico.z01.com/zico.min.css">
+    <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" href="../../../favicon.ico" type="image/x-icon">
+
+    <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/layui/layui.js"></script>
+    <script src="../../node_modules/js/jquery-cookie.js"></script>
+    <script src="../../node_modules/bootstrap/js/bootstrap.js"></script>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<!---------------导航条---------------->
+<header id="circle_navbar">
+    <div id="app">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white navbar_c">
+            <div class="container-fluid">
+                <!------------Logo图标------->
+                <a class="navbar-brand col-xs-3 col-md-2" href="index.html">
+                    <img src="../../node_modules/images/logo.png" class="img-fluid">
+                </a>
+                <!------------搜索框----------->
+                <form class="form-inline input-group input-group-xs col-xs-8 col-md-4">
+                    <input class="form-control" type="search" v-model="inputValue" placeholder="大家正在搜" aria-label="Search">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm" @click="searchBlog"><i class="zi zi_search"></i></span>
+                    </div>
+                </form>
+
+                <!------------汉堡按钮------------>
+                <button class="navbar-toggler col-xs-2 col-md-1 ml-5" type="button" data-toggle="collapse"
+                        data-target="#circle_nav" aria-controls="circle_nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon" style="width: 25px;margin-left: 5px;margin-right: 5px"></span>
+                </button>
+
+                <!------------六个导航按钮--------->
+                <div class="collapse navbar-collapse col-lg-6" id="circle_nav">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="userIndex.html"><i class="icon icon-home"></i>首页</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../circle/circleRank.html"><i class="icon icon-aperture"></i>圈子</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../letter/session.html"><i class="icon icon-mail"></i>私信</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../user-center/personal.html"><i class="icon icon-user"></i>用户</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="newRegister.html" target="_blank">注册</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="modal" data-target="#exampleModalT">登录</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 导航条模态框 -->
+        <div class="modal fade" id="exampleModalT" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">账号登录</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mr-3 input-group d-flex align-items-center mb-2">
+                            <i class="icon icon-user mr-3" style="font-size: 25px"></i>
+                            <input class="form-control" type="text" placeholder="请输入账号" onclick="this.placeholder='' " v-model="loginName">
+                        </div>
+                        <div class="mr-3 input-group d-flex align-items-center mb-1">
+                            <i class="icon icon-lock mr-3" style="font-size: 25px"></i>
+                            <input class="form-control" type="password" placeholder="请输入密码" onclick="this.placeholder='' " v-model="password">
+                        </div>
+                        <a href="retrieve.html" target="_blank" class="d-flex flex-end">忘记密码？</a>
+                        <button type="button" class="btn btn-block bg-info mt-2" @click="login">立即登录</button>
+
+                        <div class="row ml-2">
+                            <span style="font-size: 14px">还没有账号？<a href="newRegister.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="container-fluid">-->
+        <!--<iframe id="headerFrame" name="headerFrame" width="100%" src="../../navbar.html" frameborder="0" scrolling="no"></iframe>-->
+    <!--</div>-->
+</header>
+<!---------------内容部分---------------->
+<section id="circle_content" class="container mt-5">
+    <div class="row justify-content-between">
+        <!----------------左边微博展示部分------------->
+        <div id="left_section" class="col-md-7">
+            <!---------------一个blogItem-------------->
+            <div id="blog_content" class="rounded" v-for="(item,i) in blogInfoList">
+                <!---------------控制头-------------->
+                <div class="row justify-content-between">
+                    <div class="media d-flex align-items-center m-1 mb-3 p-2 col-md-7">
+                        <div class="media-left mr-2">
+                            <a>
+                                <img :src="item.avatarUrl" alt="用户头像" class="media-object rounded-circle img-fluid img-thumbnail" width="80">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a style="font-size: 20px" class="mb-0" v-cloak>
+                                {{item.userName}}</a>
+                            <p class="text-muted mb-0" v-cloak>{{item.createTime}}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mt-3 mr-3" v-if="item.isRepost == 0">
+                        <span class="badge badge-pill badge-success mb-2">原创</span>
+                        <span class="badge badge-info" v-cloak>{{item.circleName}}</span>
+                    </div>
+                    <div class="col-md-3 mt-3 mr-3" v-if="item.isRepost == 1">
+                        <span class="badge badge-pill badge-warning mb-2">转载</span>
+                        <a href="../circle/circle.html" @click="toCircle(item.circleId)">
+                            <span class="badge badge-info" v-cloak>{{item.circleName}}</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-----------原创展示----------->
+                <div v-if="item.isRepost == 0">
+                    <p class="text-justify" v-cloak>{{item.content}}</p>
+                    <!--------发图片--------->
+                    <div class="row" v-if="item.type == 1">
+                        <div v-for="(urlList,i) in item.resourceList">
+                            <img :src="urlList" width="80px">
+                        </div>
+                        <!--<div v-for="(urlList,i) in item.resourceList" class="col-sm-3">-->
+                            <!--<img :src="urlList" class="img-fluid" width="80px" data-toggle="modal" data-target="#exampleModal">-->
+                        <!--</div>-->
+                    </div>
+
+                    <!----------发视频--------->
+                    <div class="row" v-if="item.type == 2">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" :src="item.resourceList[0]" allowfullscreen></iframe>
+                        </div>
+                        <!--<div class="col-md- col-md-offset-3">-->
+                            <!--<video :src="item.resourceList[0]" controls="controls" width="100%" height="260px">-->
+                                <!--您的浏览器不支持播放该视频！-->
+                            <!--</video>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-3"></div>-->
+                    </div>
+                </div>
+
+                <!-----------转载展示----------->
+                <div v-if="item.isRepost == 1">
+                    <p class="text-justify" v-cloak>{{item.content}}</p>
+                    <!-----------原创展示----------->
+                    <div v-if="item.blogInfo.isRepost == 0" class="bg-light">
+                        <div class="row justify-content-between">
+                            <div class="media d-flex align-items-center m-1 mb-3 p-2 col-md-7">
+                                <div class="media-left mr-2">
+                                    <a @click="jumpPagePerson(item.blogInfo.userId)">
+                                        <img :src="item.blogInfo.avatarUrl" alt="用户头像" class="media-object rounded-circle img-fluid img-thumbnail" width="80">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <a @click="jumpPagePerson(item.blogInfo.userId)" style="font-size: 20px" class="mb-0" v-cloak>
+                                        {{item.blogInfo.userName}}</a>
+                                    <p class="text-muted mb-0" v-cloak>{{item.blogInfo.createTime}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--------发图片--------->
+                        <div class="row" v-if="item.blogInfo.type == 1">
+                            <div v-for="(urlList,i) in item.blogInfo.resourceList" class="col-sm-3">
+                                <img :src="urlList" class="img-fluid" width="80px">
+                                <!--<img :src="urlList" class="img-fluid" width="80px" data-toggle="modal" data-target="#exampleModal">-->
+                            </div>
+                        </div>
+
+                        <!----------发视频--------->
+                        <div class="row" v-if="item.blogInfo.type == 2">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" :src="item.blogInfo.resourceList[0]" allowfullscreen></iframe>
+                            </div>
+                            <!--<div class="col-md- col-md-offset-3">-->
+                            <!--<video :src="item.resourceList[0]" controls="controls" width="100%" height="260px">-->
+                            <!--您的浏览器不支持播放该视频！-->
+                            <!--</video>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-3"></div>-->
+                        </div>
+                    </div>
+                </div>
+
+                <!-----------评论点赞相关------------>
+                <div class="row align-items-center">
+                    <div style="width: 20%" class="border">
+                        <a class="icon icon-share a-font-20px" @click.prevent="showForward(i)">转发</a>
+                    </div>
+                    <div style="width: 20%">
+                        <a class="icon icon-edit a-font-20px" @click.prevent="showReview(i,item.blogId)" v-cloak>{{item.commentNum}}</a>
+                    </div>
+                    <div style="width: 20%">
+                        <a class="icon icon-thumbs-up a-font-20px" @click.prevent="like($event,item.blogId)" v-cloak>{{item.likeNum}}</a>
+                    </div>
+                    <div style="width: 40%">
+                        <span class="font-16px" v-cloak>发布时间:{{item.createTime}}</span>
+                    </div>
+                </div>
+
+                <div :class=['row','addForward',selected==i?'':'hidden']>
+                    <div class="col-sm-10">
+                        <input type="text" class="forwardInput" v-model="forwardInput">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="forwardButton" value="转发"
+                               @click="forwardBlog($event,item.blogId)">
+                    </div>
+                </div>
+                <div :class=['addForward',reviewed==i?'':'hidden']>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <input type="text" class="forwardInput" v-model="forwardInput">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="button" class="forwardButton" value="发布评论"
+                                   @click="reviedBlog($event,item.blogId)">
+                        </div>
+                    </div>
+
+                    <!----------commentList评论不为空---------->
+                    <div v-if="commentList != ''" class="border">
+                        <div v-for="comment in commentList">
+                            <div class="row">
+                                <img :src="comment.avatarUrl" class="rounded-circle img-fluid img-thumbnail" width="35">
+                                <span v-cloak>{{comment.userName}}:</span>
+                                <span v-text="comment.commentContent"></span>
+                                <span v-text="comment.commentTime" class="mr-3"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!----------commentList评论为空---------->
+                    <div v-if="commentList == ''" class="row">
+                        <h4>还没有人评论呢，快来评论吧！</h4>
+                    </div>
+                </div>
+
+                <!-----------流加载容器--------->
+                <ul class="flow-default" style="height: 300px;" id="LAY_demo2"></ul>
+
+                <!-- Modal模态框 -->
+                <!--<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+                    <!--<div class="modal-dialog" role="document">-->
+                        <!--<div class="modal-content">-->
+                            <!--<div class="modal-header">-->
+                                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                                    <!--<span aria-hidden="true">&times;</span>-->
+                                <!--</button>-->
+                            <!--</div>-->
+                            <!--<div class="modal-body">-->
+                                <!--<img :src="" class="img-fluid">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+        </div>
+
+        <!----------------右边登录部分------------->
+        <div id="right_section" class="col-md-4 p-3">
+            <div id="fixed_box" class="border">
+                <!-----------账号登录----------->
+                <form id="admin_login" class="p-3 mb-4">
+                    <div id="c_login" class="bg-white p-3">
+                        <h4 class="flex-center">账号登录</h4>
+                        <hr>
+                        <div class="mr-3 input-group d-flex align-items-center mb-2">
+                            <i class="icon icon-user mr-3" style="font-size: 25px"></i>
+                            <input class="form-control" type="text" placeholder="请输入账号" onclick="this.placeholder='' " v-model="loginName">
+                        </div>
+                        <div class="mr-3 input-group d-flex align-items-center mb-1">
+                            <i class="icon icon-lock mr-3" style="font-size: 25px"></i>
+                            <input class="form-control" type="password" placeholder="请输入密码" onclick="this.placeholder='' " v-model="password">
+                        </div>
+                        <a href="retrieve.html" target="_blank" class="d-flex flex-end">忘记密码？</a>
+                        <button type="button" class="btn btn-block mt-2" @click="login">立即登录</button>
+
+                        <div class="row ml-2">
+                            <span style="font-size: 14px">还没有账号？<a href="newRegister.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
+                        </div>
+                    </div>
+                </form>
+                <!-----------热门圈子---------->
+                <div id="hot_circle" class="bg-light p-2">
+                    <h4>热门圈子</h4>
+                    <div class="row ml-3 mt-3" v-for="circle in circleList">
+                        <img :src="circle.circleImg" height="50px" width="50px">
+                        <div class="ml-2">
+                            <h6>{{circle.circleName}}</h6>
+                            <p>{{circle.circleScore}}条微博</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!---------------尾部---------------->
+<footer id="circle_footer">
+    <!--—------------上半部分------------->
+    <div id="top_part" class="container bg-white mt-3">
+        <div class="row justify-content-between">
+            <div class="d-none d-md-none d-lg-block">
+                <h6>圈圈精彩</h6>
+                <div class="row no-gutters">
+                    <ul class="list-unstyled">
+                        <li><a href="">热门圈子</a></li>
+                        <li><a href="">名人堂</a></li>
+                        <li><a href="">微相册</a></li>
+                        <li><a href="">微指数</a></li>
+                    </ul>
+                    <ul class="list-unstyled ml-3">
+                        <li><a href="">热门话题</a></li>
+                        <li><a href="">圈圈会员</a></li>
+                        <li><a href="">微游戏</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="d-none d-sm-none d-md-block">
+                <h6>手机玩圈圈</h6>
+                <div class="row no-gutters">
+                    <img src="../../node_modules/images/twocode.PNG" width="80">
+                    <a href="" class="ml-2">扫码下载，更多版本<br>戳这里</a>
+                </div>
+            </div>
+
+            <div class="d-none d-sm-block">
+                <h6>认证&合作</h6>
+                <div class="row no-gutters">
+                    <ul class="list-unstyled">
+                        <li><a href="">申请认证</a></li>
+                        <li><a href="">企业圈圈</a></li>
+                        <li><a href="">圈子标识</a></li>
+                        <li><a href="">开放平台</a></li>
+                    </ul>
+                    <ul class="list-unstyled ml-3">
+                        <li><a href="">链接网站</a></li>
+                        <li><a href="">广告服务</a></li>
+                        <li><a href="">广告代理商</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--问题：最小屏幕上两个li在一行排列-->
+            <div class="d-none d-sm-block">
+                <h6>圈圈帮助</h6>
+                <div class="row no-gutters">
+                    <ul class="list-unstyled">
+                        <li class="col-xs-6"><a href="">常见问题</a></li>
+                        <li class="col-xs-6"><a href="">自助服务</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--—------------下半部分------------->
+    <div id="bottom_part">
+        <div class="container d-none d-sm-block">
+            <p class="row pt-3 justify-content-center">
+                <a>圈圈客服</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>客服热线4000-960-960</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>意见反馈</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>舞弊举报</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>About Circle</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>开放平台</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>微博招聘</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>新浪网导航</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>投诉处理大厅</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>DMCA投诉/Report</a>
+            </p>
+            <p class="row justify-content-center">
+                <a>京ICP证100780号</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>互联网药品服务许可证</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>京网文[2017]10291-1172号</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>京ICP备12002058号</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>增值电信业务经营许可证B2-20140447</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>乙测资字1111805</a>
+            </p>
+            <p class="row justify-content-center">
+                <a>广播电视节目制作经营许可证（京）字第04005号</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>Copyright © 2009-2019 WEIBO </span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>北京微梦创科网络技术有限公司</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a><img src="../../node_modules/images/badge.png">京公网安备11000002000019号</a>
+            </p>
+        </div>
+    </div>
+    <!--<div class="container">-->
+        <!--<iframe id="footerFrame" name="footerFrame" width="100%" src="../../footer.html" frameborder="0" scrolling="no"></iframe>-->
+    <!--</div>-->
+</footer>
+
+<script>
+    //微博加载
+    var vm1 = new Vue({
+        el: '#left_section',
+        data: {
+            blogInfoList: [],
+            commentList: [],
+            pageNum: '1',
+            size: '3',
+            forwardInput: '',
+            selected: 'll',
+            reviewed: 'll',
+            selectType: "0"  //0-热度 1-关注 2-实时
+        }, methods: {
+            toCircle(circleId) {
+                $.cookie("circleId", circleId, {path: '../circle/circle.html'})
+            },
+            add() {
+                if (this.selectType == 0) {
+                    $.ajax({
+                        url: "/blog/showAllBlog",
+                        type: "post",
+                        data: {
+                            page: this.pageNum,
+                            size: this.size
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                for (i = 0; i < result.count; i++) {
+                                    vm1.blogInfoList.push(result.data[i]);
+                                }
+                                vm1.pageNum = parseInt(vm1.pageNum) + 1;
+                            }
+                        }
+                    })
+                } else if (this.selectType == 1) {
+                    $.ajax({
+                        url: "/blog/showConcernBlog",
+                        type: "post",
+                        headers: {"token": $.cookie("token")},
+                        data: {
+                            page: this.pageNum,
+                            size: this.size
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                for (i = 0; i < result.count; i++) {
+                                    vm1.blogInfoList.push(result.data[i]);
+                                }
+                                vm1.pageNum = parseInt(vm1.pageNum) + 1;
+                            }
+                        }
+                    })
+                } else if (this.selectType == 2) {
+                    $.ajax({
+                        url: "/blog/showBlogByCreateTime",
+                        type: "post",
+                        headers: {"token": $.cookie("token")},
+                        data: {
+                            page: this.pageNum,
+                            size: this.size
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                for (i = 0; i < result.count; i++) {
+                                    vm1.blogInfoList.push(result.data[i]);
+                                }
+                                vm1.pageNum = parseInt(vm1.pageNum) + 1;
+                            }
+                        }
+                    })
+                }
+            },
+            showForward(i) {
+                if (this.selected != i) {
+                    this.selected = i;
+                    this.reviewed = 'll';
+                    this.forwardInput = '';
+                } else {
+                    this.selected = 'lll';
+                }
+            },
+            forwardBlog(e, blogId) {
+                $.ajax({
+                    url: "/blog/forwardBlog",
+                    type: "post",
+                    headers: {'token': $.cookie("token")},
+                    data: {
+                        blogId: blogId,
+                        forwardContent: this.forwardInput
+                    },
+                    success: function (result) {
+                        if (result.code == 0) {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("转发成功");
+                            })
+                            setTimeout(function () {
+                                window.location.reload();
+                            },1000);
+                            vm1.selected = 'll';
+                        }
+                    }, error: function () {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg("请先登录!");
+                        })
+                    }
+                })
+            },
+            showReview(i, blogId) {
+                if (this.reviewed != i) {
+                    this.reviewed = i;
+                    this.forwardInput = '';
+                    this.selected = 'lll';
+                    $.ajax({
+                        url: "/blog/showComment",
+                        type: "post",
+                        data: {
+                            blogId: blogId,
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                vm1.commentList = result.data;
+                            }
+                        }
+                    })
+                } else {
+                    this.reviewed = 'lll';
+                }
+            },
+            reviedBlog(e, blogId) {
+                if (this.forwardInput == '') {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入评论信息！");
+                    })
+                } else {
+                    $.ajax({
+                        url: "/blog/insertComment",
+                        type: "post",
+                        headers: {'token': $.cookie("token")},
+                        data: {
+                            blogId: blogId,
+                            commentContent: this.forwardInput
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer', function () {
+                                    var layer = layui.layer;
+                                    layer.msg("评论成功");
+                                })
+                                vm1.reviewed = 'lll';
+                            }
+                        }, error: function () {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("请先登录");
+                            })
+                        }
+                    })
+                }
+            },
+            like(e, blogId) {
+                $.ajax({
+                    url: "/blog/insertLike",
+                    type: "post",
+                    headers: {'token': $.cookie("token")},
+                    data: {
+                        blogId: blogId
+                    },
+                    success: function (result) {
+                        if (result.code == 0) {
+                            e.target.innerText = parseInt(e.target.innerText) + 1;
+                            e.target.style.color = "blue";
+                        } else {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg(result.msg);
+                            })
+                            e.target.style.color = "blue";
+                        }
+                    }, error: function () {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg("请先登录");
+                        })
+                    }
+                })
+            },
+            jumpPagePerson(userId) {
+                if ($.cookie('token') == null) {
+                    // $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                    window.location.href = "../user-center/personals.html?userId=" + userId;
+                } else {
+                    $.ajax({
+                        url: "/test/testGetUserIdByToken",
+                        type: "post",
+                        headers: {'token': $.cookie("token")},
+                        success: function (result) {
+                            if (result.code == 0) {
+                                if (userId == result.data) {
+                                    window.location.href = "../user-center/personal.html";
+                                } else {
+                                    // $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                                    window.location.href = "../user-center/personals.html?userId="+userId;
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+        },created(){
+            $.ajax({
+                url: "/blog/showAllBlog",
+                type: "post",
+                data: {
+                    page: this.pageNum,
+                    size: this.size
+                },
+                success: function (result) {
+                    if (result.code == 0) {
+                        for (i = 0; i < result.count; i++) {
+                            vm1.blogInfoList.push(result.data[i]);
+                        }
+                        vm1.pageNum = parseInt(vm1.pageNum) + 1;
+                    }
+                }
+            })
+        }
+    });
+    layui.use('flow', function () {
+        var flow = layui.flow;
+        flow.load({
+            elem: '#LAY_demo2', //流加载容器
+            done: function (page, next) { //执行下一页的回调
+                //模拟数据插入
+                setTimeout(function () {
+                    var lis = [];
+                    // for(var i = 0; i < 8; i++){
+                    //     lis.push('<li>'+ ( (page-1)*8 + i + 1 ) +'</li>')
+                    // }
+                    //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                    //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                    next(lis.join(''), page < 10000); //假设总页数为 10
+                    vm1.add();
+                }, 500);
+            }
+        });
+    });
+</script>
+<script>
+    //导航条搜索登录功能
+    let vm = new Vue({
+        el: '#circle_navbar',
+        data: {
+            inputValue: '',
+            loginName: '',
+            password: ''
+        },methods:{
+            //搜索功能
+            searchBlog(){
+                if (this.inputValue==''){
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("搜索不能为空");
+                    })
+                }else {
+                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue
+                }
+            },
+
+            //登录
+            login:function () {
+                if (this.loginName==''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入手机/用户名/邮箱！");
+                    })
+                }else if (this.password==''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入密码！");
+                    })
+                }else{
+                    $.ajax({
+                        url: "/userLogin/login",
+                        type: "post",
+                        data: {
+                            loginName: this.loginName,
+                            password: this.password,
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("登陆成功！");
+                                });
+                                window.location.href = "/user/index/userIndex.html";
+                                $.cookie("token", result.data.token, {path: "/"});
+                            } else {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("登陆失败！");
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+        }
+
+    });
+    //展示首页所有微博
+    // let vm1 = new Vue({
+    //     el: '#left_section',
+    //     data: {
+    //         blogInfoList: [],
+    //         // commentList: [],
+    //         pageNum: '1',
+    //         pageSize: '3',
+    //         // forwardInput: '',
+    //         // selected: 'll',
+    //         // reviewed: 'll',
+    //         selectType: "0"  //0-热度 1-关注 2-实时
+    //     }, methods: {
+    //         toCircle(circleId) {
+    //             $.cookie("circleId", circleId, {path: '../circle/circle.html'})
+    //         },
+    //         showAllBlog() {
+    //             if (this.selectType == 0) {
+    //                 $.ajax({
+    //                     url: "/blog/showAllBlog",
+    //                     type: "post",
+    //                     data: {
+    //                         page: this.pageNum,
+    //                         size: this.pageSize
+    //                     },
+    //                     success: function (result) {
+    //                         if (result.code == 0) {
+    //                             for (i = 0; i < result.count; i++) {
+    //                                 vm1.blogInfoList.push(result.data[i]);
+    //                             }
+    //                             vm1.pageNum = parseInt(vm1.pageNum) + 1;
+    //                         }
+    //                     }
+    //                 })
+    //             } else if (this.selectType == 1) {
+    //                 $.ajax({
+    //                     url: "/blog/showConcernBlog",
+    //                     type: "post",
+    //                     headers: {"token": $.cookie("token")},
+    //                     data: {
+    //                         page: this.pageNum,
+    //                         size: this.pageSize
+    //                     },
+    //                     success: function (result) {
+    //                         if (result.code == 0) {
+    //                             for (i = 0; i < result.count; i++) {
+    //                                 vm1.blogInfoList.push(result.data[i]);
+    //                             }
+    //                             vm1.pageNum = parseInt(vm1.pageNum) + 1;
+    //                         }
+    //                     }
+    //                 })
+    //             } else if (this.selectType == 2) {
+    //                 $.ajax({
+    //                     url: "/blog/showBlogByCreateTime",
+    //                     type: "post",
+    //                     headers: {"token": $.cookie("token")},
+    //                     data: {
+    //                         page: this.pageNum,
+    //                         size: this.pageSize
+    //                     },
+    //                     success: function (result) {
+    //                         if (result.code == 0) {
+    //                             for (i = 0; i < result.count; i++) {
+    //                                 vm1.blogInfoList.push(result.data[i]);
+    //                             }
+    //                             vm1.pageNum = parseInt(vm1.pageNum) + 1;
+    //                         }
+    //                     }
+    //                 })
+    //             }
+    //         },
+    //         // showForward(i) {
+    //         //     if (this.selected != i) {
+    //         //         this.selected = i;
+    //         //         this.reviewed = 'll';
+    //         //         this.forwardInput = '';
+    //         //     } else {
+    //         //         this.selected = 'lll';
+    //         //     }
+    //         // },
+    //         // forwardBlog(e, blogId) {
+    //         //     $.ajax({
+    //         //         url: "/blog/forwardBlog",
+    //         //         type: "post",
+    //         //         headers: {'token': $.cookie("token")},
+    //         //         data: {
+    //         //             blogId: blogId,
+    //         //             forwardContent: this.forwardInput
+    //         //         },
+    //         //         success: function (result) {
+    //         //             if (result.code == 0) {
+    //         //                 layui.use('layer', function () {
+    //         //                     var layer = layui.layer;
+    //         //                     layer.msg("转发成功");
+    //         //                 });
+    //         //                 setTimeout(function () {
+    //         //                     window.location.reload();
+    //         //                 },1000);
+    //         //                 vm1.selected = 'll';
+    //         //             }
+    //         //         }, error: function () {
+    //         //             layui.use('layer', function () {
+    //         //                 var layer = layui.layer;
+    //         //                 layer.msg("请先登录!");
+    //         //             })
+    //         //         }
+    //         //     })
+    //         // },
+    //         // showReview(i, blogId) {
+    //         //     if (this.reviewed != i) {
+    //         //         this.reviewed = i;
+    //         //         this.forwardInput = '';
+    //         //         this.selected = 'lll';
+    //         //         $.ajax({
+    //         //             url: "/blog/showComment",
+    //         //             type: "post",
+    //         //             data: {
+    //         //                 blogId: blogId,
+    //         //             },
+    //         //             success: function (result) {
+    //         //                 if (result.code == 0) {
+    //         //                     vm1.commentList = result.data;
+    //         //                 }
+    //         //             }
+    //         //         })
+    //         //     } else {
+    //         //         this.reviewed = 'lll';
+    //         //     }
+    //         // },
+    //         // reviedBlog(e, blogId) {
+    //         //     if (this.forwardInput == '') {
+    //         //         layui.use('layer', function () {
+    //         //             var layer = layui.layer;
+    //         //             layer.msg("请输入评论信息！");
+    //         //         })
+    //         //     } else {
+    //         //         $.ajax({
+    //         //             url: "/blog/insertComment",
+    //         //             type: "post",
+    //         //             headers: {'token': $.cookie("token")},
+    //         //             data: {
+    //         //                 blogId: blogId,
+    //         //                 commentContent: this.forwardInput
+    //         //             },
+    //         //             success: function (result) {
+    //         //                 if (result.code == 0) {
+    //         //                     layui.use('layer', function () {
+    //         //                         var layer = layui.layer;
+    //         //                         layer.msg("评论成功");
+    //         //                     })
+    //         //                     vm1.reviewed = 'lll';
+    //         //                 }
+    //         //             }, error: function () {
+    //         //                 layui.use('layer', function () {
+    //         //                     var layer = layui.layer;
+    //         //                     layer.msg("请先登录");
+    //         //                 })
+    //         //             }
+    //         //         })
+    //         //     }
+    //         // },
+    //         // like(e, blogId) {
+    //         //     $.ajax({
+    //         //         url: "/blog/insertLike",
+    //         //         type: "post",
+    //         //         headers: {'token': $.cookie("token")},
+    //         //         data: {
+    //         //             blogId: blogId
+    //         //         },
+    //         //         success: function (result) {
+    //         //             if (result.code == 0) {
+    //         //                 e.target.innerText = parseInt(e.target.innerText) + 1;
+    //         //                 e.target.style.color = "blue";
+    //         //             } else {
+    //         //                 layui.use('layer', function () {
+    //         //                     var layer = layui.layer;
+    //         //                     layer.msg(result.msg);
+    //         //                 })
+    //         //                 e.target.style.color = "blue";
+    //         //             }
+    //         //         }, error: function () {
+    //         //             layui.use('layer', function () {
+    //         //                 var layer = layui.layer;
+    //         //                 layer.msg("请先登录");
+    //         //             })
+    //         //         }
+    //         //     })
+    //         // },
+    //         jumpPagePerson(userId) {
+    //             if ($.cookie('token') == null) {
+    //                 // $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+    //                 window.location.href = "/user/user-center/personals.html?userId=" + userId;
+    //             } else {
+    //                 $.ajax({
+    //                     url: "/test/testGetUserIdByToken",
+    //                     type: "post",
+    //                     headers: {'token': $.cookie("token")},
+    //                     success: function (result) {
+    //                         if (result.code == 0) {
+    //                             if (userId == result.data) {
+    //                                 window.location.href = "/user/user-center/personal.html";
+    //                             } else {
+    //                                 // $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+    //                                 window.location.href = "/user/user-center/personals.html?userId="+userId;
+    //                             }
+    //                         }
+    //                     }
+    //                 })
+    //             }
+    //         }
+    //     }
+    // });
+
+    // layui.use('flow', function () {
+    //     var flow = layui.flow;
+    //     flow.load({
+    //         elem: '#LAY_demo2' //流加载容器
+    //         , done: function (page, next) { //执行下一页的回调
+    //             //模拟数据插入
+    //             setTimeout(function () {
+    //                 var lis = [];
+    //                 // for(var i = 0; i < 8; i++){
+    //                 //     lis.push('<li>'+ ( (page-1)*8 + i + 1 ) +'</li>')
+    //                 // }
+    //                 //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+    //                 //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+    //                 next(lis.join(''), page < 10000); //假设总页数为 10
+    //                 vm1.showAllBlog();
+    //             }, 500);
+    //         }
+    //     });
+    // });
+
+    //登录和搜索
+    let vm2 = new Vue({
+        el: '#right_section',
+        data: {
+            inputValue: '',
+            loginName: '',
+            password: '',
+            circleList:[]
+        },methods:{
+            //搜索功能
+            searchBlog(){
+                if (this.inputValue==''){
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("搜索不能为空");
+                    })
+                }else {
+                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue
+                }
+            },
+
+            //登录
+            login:function () {
+                if (this.loginName==''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入手机/用户名/邮箱！");
+                   })
+                }else if (this.password==''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入密码！");
+                    })
+                }else{
+                    $.ajax({
+                        url: "/userLogin/login",
+                        type: "post",
+                        data: {
+                            loginName: this.loginName,
+                            password: this.password,
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("登陆成功！");
+                                });
+                                window.location.href = "/user/index/userIndex.html";
+                                $.cookie("token", result.data.token, {path: "/"});
+                            } else {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("登陆失败！");
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+        },created(){       //热门圈子
+            $.ajax({
+                url:"/circle/hotCircle",
+                dataType:"json",
+                type:"post",
+                success:function (res) {
+                    if (res.code == 0){
+                        for (let i = 0; i < 5; i++) {
+                            vm2.circleList.push(res.data[i]);
+                        }
+                    } else {
+                        layer.msg("热门圈子获取失败");
+                    }
+                }
+            })
+        }
+
+    });
+</script>
+</body>
+</html>

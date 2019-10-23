@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width">
     <title>用户界面</title>
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
-    <link rel="stylesheet" href="../../node_modules/css/top.css">
     <link rel="stylesheet" href="../../node_modules/css/personal.css">
 
     <script src="../../node_modules/jQuery/jquery-3.4.1.min.js"></script>
@@ -207,9 +206,6 @@
 
                         </div>
 
-                        <!--<div class="pagination">-->
-                            <!--<at-pagination :total="100" show-quickjump></at-pagination>-->
-                        <!--</div>-->
                         <div class="pagination flex-center">
                             <input type="button" class="page-btn" value="上一页" @click="gotoPrePage()">
                             <input type="button" class="page-btn" value="下一页" @click="gotoNextPage()">
@@ -430,7 +426,7 @@
                         layer.msg("请先登录");
                     })
                     setTimeout(function () {
-                        window.location.href = "../../index.html"
+                        window.location.href = "../index/index.html"
                     },1000)
                 }
             })

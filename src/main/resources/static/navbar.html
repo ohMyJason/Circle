@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta content="原本想写一个公用导航条，用<iframe>嵌入其他页面的，可是嵌入后布局层次很迷">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Circle-导航条</title>
     <link rel="stylesheet" href="node_modules/css/navbar.css">
@@ -20,7 +21,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white navbar_c">
         <div class="container-fluid">
             <!------------Logo图标------->
-            <a class="navbar-brand col-xs-3 col-md-2" href="index.html">
+            <a class="navbar-brand col-xs-3 col-md-2" href="user/index/index.html">
                 <img src="node_modules/images/logo.png" class="img-fluid">
             </a>
             <!------------搜索框----------->
@@ -53,24 +54,57 @@
                         <a class="nav-link" href="user/user-center/personal.html"><i class="icon icon-user"></i>用户</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="user/index/newRegister.html">注册</a>
+                        <a class="nav-link" href="user/index/newRegister.html" target="_blank">注册</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" @click="login">登录</a>
+                        <a class="nav-link" data-toggle="modal" data-target="#exampleModal">登录</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">账号登录</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mr-3 input-group d-flex align-items-center mb-2">
+                        <i class="icon icon-user mr-3" style="font-size: 25px"></i>
+                        <input class="form-control" type="text" placeholder="请输入账号" onclick="this.placeholder='' " v-model="loginName">
+                    </div>
+                    <div class="mr-3 input-group d-flex align-items-center mb-1">
+                        <i class="icon icon-lock mr-3" style="font-size: 25px"></i>
+                        <input class="form-control" type="password" placeholder="请输入密码" onclick="this.placeholder='' " v-model="password">
+                    </div>
+                    <a href="user/index/retrieve.html" target="_blank" class="d-flex flex-end">忘记密码？</a>
+                    <button type="button" class="btn btn-block bg-info mt-2" @click="login">立即登录</button>
+
+                    <div class="row ml-2">
+                        <span style="font-size: 14px">还没有账号？<a href="user/index/newRegister.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    //搜索功能,el只能挂载到div标签？
+    //el只能挂载到div标签？
     let vm = new Vue({
         el: '#app',
         data: {
-            inputValue: ''
+            inputValue: '',
+            loginName: '',
+            password: ''
         },methods:{
+            //搜索功能
             searchBlog(){
                 if (this.inputValue==''){
                     layui.use('layer', function () {
@@ -79,6 +113,45 @@
                     })
                 }else {
                     window.location.href = "/user/blog/blog.html?content=" + this.inputValue
+                }
+            },
+
+            //登录
+            login:function () {
+                if (this.loginName==''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入手机/用户名/邮箱！");
+                    })
+                }else if (this.password==''){
+                    layui.use('layer',function() {
+                        var layer = layui.layer;
+                        layer.msg("请输入密码！");
+                    })
+                }else{
+                    $.ajax({
+                        url: "/userLogin/login",
+                        type: "post",
+                        data: {
+                            loginName: this.loginName,
+                            password: this.password,
+                        },
+                        success: function (result) {
+                            if (result.code == 0) {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("登陆成功！");
+                                });
+                                window.location.href = "/user/index/userIndex.html";
+                                $.cookie("token", result.data.token, {path: "/"});
+                            } else {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg("登陆失败！");
+                                })
+                            }
+                        }
+                    })
                 }
             }
         }
