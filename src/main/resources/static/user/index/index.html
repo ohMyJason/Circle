@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../node_modules/css/index.css">
     <link rel="stylesheet" href="http://ico.z01.com/zico.min.css">
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="../../node_modules/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="../../node_modules/bootstrap/css/bootstrap.css">
     <link rel="shortcut icon" href="../../../favicon.ico" type="image/x-icon">
 
@@ -115,13 +116,13 @@
         <div id="left_section" class="col-md-7">
             <div id="content_show">
                 <!---------------一个blogItem-------------->
-                <div id="blog_content" class="rounded" v-for="(item,i) in blogInfoList">
+                <div id="blog_content" class="rounded mb-3" v-for="(item,i) in blogInfoList">
                     <!---------------控制头-------------->
                     <div class="row justify-content-between">
                         <div class="media d-flex align-items-center m-1 mb-3 p-2 col-md-7">
                             <div class="media-left mr-2">
-                                <a @click="jumpPagePerson(item.userId)" class="d-block" style="width: 80px;height: 80px">
-                                    <img :src="item.avatarUrl" alt="用户头像" class="media-object rounded-circle img-fluid img-thumbnail m-0" width="80" height="80">
+                                <a @click="jumpPagePerson(item.userId)" class="d-block d-flex" style="width: 80px;height: 80px">
+                                    <img :src="item.avatarUrl" alt="用户头像" class="media-object rounded-circle img-fluid img-thumbnail m-0">
                                 </a>
                             </div>
                             <div class="media-body">
@@ -131,11 +132,11 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3 mt-3 mr-3" v-if="item.isRepost == 0">
+                        <div class="col-md-3 mt-md-3 mr-3" v-if="item.isRepost == 0">
                             <span class="badge badge-pill badge-success mb-2">原创</span>
                             <a class="badge badge-info text-white" @click="toCircle(item.circleId)" v-cloak>{{item.circleName}}</a>
                         </div>
-                        <div class="col-md-3 mt-3 mr-3" v-if="item.isRepost == 1">
+                        <div class="col-md-3 mt-md-3 mr-3" v-if="item.isRepost == 1">
                             <span class="badge badge-pill badge-warning mb-2">转载</span>
                             <a class="badge badge-info text-white" @click="toCircle(item.circleId)"  v-cloak>{{item.circleName}}</a>
                         </div>
@@ -146,29 +147,10 @@
                         <p class="text-wrap mt-n3" style="font-size: 16px" v-cloak>{{item.content}}</p>
                         <!--------发图片--------->
                         <div class="row" v-if="item.type == 1">
-                            <div v-for="(urlList,i) in item.resourceList" class="col-4">
-                                <img :src="urlList" class="div_border img-fluid m-1">
+                            <div v-for="(urlList,i) in item.resourceList" class="col-4 d-flex align-items-stretch">
+                                <img :src="urlList" class="img-fluid m-1">
                             </div>
-                            <!--<div v-for="(urlList,i) in item.resourceList">-->
-                            <!--<img :src="urlList" class="div_border" data-toggle="modal" data-target="#exampleModal">-->
-                            <!--</div>-->
                         </div>
-
-                        <!-- Modal模态框 -->
-                        <!--<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-invalid="img_modal">-->
-                        <!--<div class="modal-dialog" role="document">-->
-                        <!--<div class="modal-content">-->
-                        <!--<div class="modal-header">-->
-                        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-                        <!--<span aria-hidden="true">&times;</span>-->
-                        <!--</button>-->
-                        <!--</div>-->
-                        <!--<div class="modal-body">-->
-                        <!--<img :src="" class="img-fluid">-->
-                        <!--</div>-->
-                        <!--</div>-->
-                        <!--</div>-->
-                        <!--</div>-->
 
                         <!----------发视频--------->
                         <div class="row" v-if="item.type == 2">
@@ -185,15 +167,15 @@
                     </div>
 
                     <!-----------转载展示----------->
-                    <div v-if="item.isRepost == 1">
+                    <div v-if="item.isRepost == 1" class="p-3">
                         <p class="text-wrap mt-n3" style="font-size: 16px" v-cloak>{{item.content}}</p>
                         <!-----------原创展示----------->
-                        <div v-if="item.blogInfo.isRepost == 0" class="bg-secondary">
+                        <div v-if="item.blogInfo.isRepost == 0" class="original_box rounded-lg p-3">
                             <div class="row justify-content-between">
                                 <div class="media d-flex align-items-center m-1 mb-3 p-2 col-md-7">
                                     <div class="media-left mr-2">
-                                        <a @click="jumpPagePerson(item.blogInfo.userId)">
-                                            <img :src="item.blogInfo.avatarUrl" alt="用户头像" class="media-object rounded-circle img-fluid img-thumbnail" width="60">
+                                        <a @click="jumpPagePerson(item.blogInfo.userId)" class="d-block d-flex" style="width: 60px;height: 60px">
+                                            <img :src="item.blogInfo.avatarUrl" alt="用户头像" class="media-object rounded-circle img-fluid">
                                         </a>
                                     </div>
                                     <div class="media-body">
@@ -205,8 +187,8 @@
                             </div>
                             <!--------发图片--------->
                             <div class="row" v-if="item.blogInfo.type == 1">
-                                <div v-for="(urlList,i) in item.blogInfo.resourceList" class="col-4">
-                                    <img :src="urlList" class="img-fluid m-1">
+                                <div v-for="(urlList,i) in item.blogInfo.resourceList" class="col-4 d-flex align-items-stretch">
+                                    <img :src="urlList" class="img-fluid m-1" @click="showImg(i)">
                                     <!--<img :src="urlList" class="img-fluid" data-toggle="modal" data-target="#exampleModal">-->
                                 </div>
                             </div>
@@ -238,15 +220,15 @@
                             <a class="icon icon-thumbs-up" @click.prevent="like($event,item.blogId)" v-cloak>{{item.likeNum}}</a>
                         </div>
                         <div style="width: 40%" class="text-center">
-                            <span v-cloak>发布时间:{{item.createTime}}</span>
+                            <span v-cloak>{{item.createTime}}</span>
                         </div>
                     </div>
 
-                    <div :class=['row','addForward',selected==i?'':'hidden']>
+                    <div :class=['addForward',selected==i?'':'hidden']>
                         <div class="input-group m-2">
                             <input type="text" class="forwardInput form-control" v-model="forwardInput">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-info btn-sm forwardButton" @click="forwardBlog($event,item.blogId)">转发</button>
+                                <button type="button" class="btn btn-info btn-sm" @click="forwardBlog($event,item.blogId)">转发</button>
                             </div>
                         </div>
                     </div>
@@ -254,13 +236,13 @@
                         <div class="input-group m-1">
                             <input type="text" class="forwardInput form-control" v-model="forwardInput">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-info btn-sm forwardButton" @click="reviedBlog($event,item.blogId)">发布评论</button>
+                                <button type="button" class="btn btn-info btn-sm" @click="reviedBlog($event,item.blogId)">发布评论</button>
                             </div>
                         </div>
 
                         <!----------commentList评论不为空---------->
                         <div v-if="commentList != ''" class="border">
-                            <div v-for="comment in commentList" style="font-size: 14px" class="bg-light border-bottom">
+                            <div v-for="comment in commentList" class="border-bottom comment">
                                 <div class="row mr-0 ml-0">
                                     <img :src="comment.avatarUrl" class="rounded-circle m-2" width="35" height="35">
                                     <p class="text-muted ml-1 mt-3" v-cloak><b>{{comment.userName}}:</b>{{comment.commentContent}}</p>
@@ -271,8 +253,8 @@
                             </div>
                         </div>
                         <!----------commentList评论为空---------->
-                        <div v-if="commentList == ''" class="row text-center">
-                            <h6 class="text-muted text-center">还没有人评论呢，快来评论吧！</h6>
+                        <div v-if="commentList == ''" class="row d-flex justify-content-center">
+                            <h6 class="text-muted">还没有人评论呢，快来评论吧！</h6>
                         </div>
                     </div>
                 </div>
@@ -419,19 +401,6 @@
     <!--</div>-->
 </footer>
 
-<!--<script>-->
-    <!--$(function()-->
-        <!--{-->
-            <!--$(".div_border").click(function() {-->
-                <!--console.log(1)-->
-                <!--console.log($(this));-->
-                <!--$('.modal-body').html( $(this).html() );-->
-                <!--$('#img_modal').modal('toggle');-->
-            <!--});-->
-        <!--}-->
-    <!--);-->
-<!--</script>-->
-
 <script>
     //微博加载
     var vm1 = new Vue({
@@ -469,12 +438,12 @@
                     })
                 }
             },
-            showForward(i) {
-                if (this.selected != i) {
+            showForward(i){
+                if(this.selected != i) {
                     this.selected = i;
-                    this.reviewed = 'll';
-                    this.forwardInput = '';
-                } else {
+                    this.reviewed='ll';
+                    this.forwardInput='';
+                }else {
                     this.selected = 'lll';
                 }
             },
@@ -675,14 +644,14 @@
                             if (result.code == 0) {
                                 layui.use('layer',function() {
                                     var layer = layui.layer;
-                                    layer.msg("登陆成功！");
+                                    layer.msg("登录成功！");
                                 });
                                 window.location.href = "/user/index/userIndex.html";
                                 $.cookie("token", result.data.token, {path: "/"});
                             } else {
                                 layui.use('layer',function() {
                                     var layer = layui.layer;
-                                    layer.msg("登陆失败！");
+                                    layer.msg("登录失败！");
                                 })
                             }
                         }
@@ -744,14 +713,14 @@
                             if (result.code == 0) {
                                 layui.use('layer',function() {
                                     var layer = layui.layer;
-                                    layer.msg("登陆成功！");
+                                    layer.msg("登录成功！");
                                 });
                                 window.location.href = "/user/index/userIndex.html";
                                 $.cookie("token", result.data.token, {path: "/"});
                             } else {
                                 layui.use('layer',function() {
                                     var layer = layui.layer;
-                                    layer.msg("登陆失败！");
+                                    layer.msg("登录失败！");
                                 })
                             }
                         }

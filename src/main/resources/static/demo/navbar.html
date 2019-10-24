@@ -5,24 +5,24 @@
     <meta content="原本想写一个公用导航条，用<iframe>嵌入其他页面的，可是嵌入后布局层次很迷">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Circle-导航条</title>
-    <link rel="stylesheet" href="node_modules/css/navbar.css">
+    <link rel="stylesheet" href="../node_modules/css/navbar.css">
     <link rel="stylesheet" href="http://ico.z01.com/zico.min.css">
-    <link rel="stylesheet" href="node_modules/at-ui-style/css/at.css">
-    <link rel="stylesheet" href="node_modules/bootstrap/css/bootstrap.css">
-    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../node_modules/at-ui-style/css/at.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon">
 
-    <script src="node_modules/vue/dist/vue.js"></script>
-    <script src="node_modules/layui/layui.js"></script>
-    <script src="node_modules/jQuery/jquery-3.4.1.min.js"></script>
-    <script src="node_modules/bootstrap/js/bootstrap.js"></script>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script src="../node_modules/layui/layui.js"></script>
+    <script src="../node_modules/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../node_modules/bootstrap/js/bootstrap.js"></script>
 </head>
 <body id="circle_navbar">
 <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-white navbar_c">
         <div class="container-fluid">
             <!------------Logo图标------->
-            <a class="navbar-brand col-xs-3 col-md-2" href="user/index/index.html">
-                <img src="node_modules/images/logo.png" class="img-fluid">
+            <a class="navbar-brand col-xs-3 col-md-2" href="../user/index/index.html">
+                <img src="../node_modules/images/logo.png" class="img-fluid">
             </a>
             <!------------搜索框----------->
             <form class="form-inline input-group input-group-xs col-xs-8 col-md-4">
@@ -42,19 +42,19 @@
             <div class="collapse navbar-collapse col-lg-6" id="circle_nav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="user/index/userIndex.html"><i class="icon icon-home"></i>首页</a>
+                        <a class="nav-link" href="../user/index/userIndex.html"><i class="icon icon-home"></i>首页</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="user/circle/circleRank.html"><i class="icon icon-aperture"></i>圈子</a>
+                        <a class="nav-link" href="../user/circle/circleRank.html"><i class="icon icon-aperture"></i>圈子</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="user/letter/session.html"><i class="icon icon-mail"></i>私信</a>
+                        <a class="nav-link" href="../user/letter/session.html"><i class="icon icon-mail"></i>私信</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="user/user-center/personal.html"><i class="icon icon-user"></i>用户</a>
+                        <a class="nav-link" href="../user/user-center/personal.html"><i class="icon icon-user"></i>用户</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="user/index/newRegister.html" target="_blank">注册</a>
+                        <a class="nav-link" href="../user/index/newRegister.html" target="_blank">注册</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="modal" data-target="#exampleModal">登录</a>
@@ -83,11 +83,11 @@
                         <i class="icon icon-lock mr-3" style="font-size: 25px"></i>
                         <input class="form-control" type="password" placeholder="请输入密码" onclick="this.placeholder='' " v-model="password">
                     </div>
-                    <a href="user/index/retrieve.html" target="_blank" class="d-flex flex-end">忘记密码？</a>
+                    <a href="../user/index/retrieve.html" target="_blank" class="d-flex flex-end">忘记密码？</a>
                     <button type="button" class="btn btn-block bg-info mt-2" @click="login">立即登录</button>
 
                     <div class="row ml-2">
-                        <span style="font-size: 14px">还没有账号？<a href="user/index/newRegister.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
+                        <span style="font-size: 14px">还没有账号？<a href="../user/index/newRegister.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
                     </div>
                 </div>
             </div>
@@ -142,7 +142,7 @@
                                     var layer = layui.layer;
                                     layer.msg("登陆成功！");
                                 });
-                                window.location.href = "/user/index/userIndex.html";
+                                window.location.href = "../user/index/userIndex.html";
                                 $.cookie("token", result.data.token, {path: "/"});
                             } else {
                                 layui.use('layer',function() {
