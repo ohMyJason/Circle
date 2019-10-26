@@ -6,7 +6,6 @@
     <title>创建圈子</title>
     <link rel="stylesheet" href="../../node_modules/css/navbar.css">
     <link rel="stylesheet" href="../../node_modules/css/footer.css">
-    <link rel="stylesheet" href="../../node_modules/css/createCircle.css">
     <link rel="stylesheet" href="http://ico.z01.com/zico.min.css">
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/bootstrap/css/bootstrap.css">
@@ -17,7 +16,17 @@
     <script src="../../node_modules/layui/layui.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
     <script src="../../node_modules/bootstrap/js/bootstrap.js"></script>
-    <script src="../../node_modules/at-ui/dist/at.js"></script>
+    <style>
+        #create_circle{
+            position: absolute;
+            z-index: 1;
+            margin-top: 100px;
+        }
+
+        #c_register_box p{
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
 <!---------------导航条---------------->
@@ -29,13 +38,6 @@
                 <a class="navbar-brand col-xs-3 col-md-2" href="index.html">
                     <img src="../../node_modules/images/logo.png" class="img-fluid">
                 </a>
-                <!------------搜索框----------->
-                <form class="form-inline input-group input-group-xs col-xs-8 col-md-4">
-                    <input class="form-control" type="search" v-model="inputValue" placeholder="大家正在搜" aria-label="Search">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-sm" @click="searchBlog"><i class="zi zi_search"></i></span>
-                    </div>
-                </form>
 
                 <!------------汉堡按钮------------>
                 <button class="navbar-toggler col-xs-2 col-md-1 ml-5" type="button" data-toggle="collapse"
@@ -104,59 +106,41 @@
     <!--</div>-->
 </header>
 
-<div id="app1" class="container">
-
-    <div class="row create-margin">
-        <div class="col-md-6"></div>
-        <div class="col-md-12">
-            <div class="row"><h1 class="h1-circle">开始创建你的圈子！</h1></div>
-            <div class="row">
-                <form class="circle-form">
-                    圈子名称:<at-input v-model="circleName" placeholder="请输入名称" size="large"></at-input>
-                    圈子主题:<at-input v-model="circleTitle" placeholder="一句话描述你的圈子"></at-input>
-                    圈子头像:<br>
-                    <input type="file" @change="getFile" id="file" style="display: none">
-                    <label for="file"><img :src="src" class="img-container"></label><br>
-                    <input type="button" class="at-btn--primary at-btn--large" value="创建圈子" @click="createCircle">
-                </form>
-                <div class="rule">
-                    <h3>创建须知:</h3>
-                    <span>1.创建者账号需处于正常使用状态!</span><br>
-                    <span>2.圈子创建成功后，创建者的名称将永远展示在圈子中！</span><br>
-                    <span>3.圈子中不得以任何途径和方式传播违禁信息！!</span><br>
-                    <h4>以下内容为违规信息</h4>
-                    <span>1.不符合社会主义核心价值观</span><br>
-                    <span>2.传播扩散虚假信息和不良信息</span><br>
-                    <span>3.宣传反动言论、宣传鬼神之说</span><br>
-                    <span>4.其他违规信息</span><br>
-                </div>
-            </div>
+<section id="create_circle" class="container-fluid">
+    <div class="border rounded-lg col-md-8 col-md-offset-4 bg-light">
+        <h4 class="text-center mt-3 mb-3">开始创建你的圈子！</h4>
+        <form class="ml-md-5 mr-md-5" id="circle_form">
+            圈子名称:<input type="text" v-model="circleName" placeholder="请输入名称" class="at-input__original mb-3">
+            圈子主题:<input type="text" v-model="circleTitle" placeholder="一句话描述你的圈子" class="at-input__original mb-3">
+            圈子头像：<br>
+            <input type="file" @change="getFile" id="file" style="display: none">
+            <label for="file"><img :src="src" class="img-fluid" width="80"></label><br>
+            <input type="button" class="btn btn-primary" @click="createCircle" value="创建圈子">
+        </form>
+        <div class="container d-flex flex-column mt-3 ml-md-5 mr-md-5">
+            <h6><b>创建须知:</b></h6>
+            <span>1.创建者账号需处于正常使用状态!</span>
+            <span>2.圈子创建成功后，创建者的名称将永远展示在圈子中！</span>
+            <span>3.圈子中不得以任何途径和方式传播违禁信息！!</span>
+            <h6 class="mt-1"><b>以下内容为违规信息：</b></h6>
+            <span>1.不符合社会主义核心价值观</span>
+            <span>2.传播扩散虚假信息和不良信息</span>
+            <span>3.宣传反动言论、宣传鬼神之说</span>
+            <span>4.其他违规信息</span>
         </div>
-        <div class="col-md-6"></div>
     </div>
-</div>
+</section>
 
+<canvas id="cas" width="100%" height="100%"></canvas>
+
+<!--导航条登录功能vm-->
 <script>
-    //导航条搜索登录功能
     let vm = new Vue({
         el: '#circle_navbar',
         data: {
-            inputValue: '',
             loginName: '',
             password: ''
         },methods:{
-            //搜索功能
-            searchBlog(){
-                if (this.inputValue==''){
-                    layui.use('layer', function () {
-                        var layer = layui.layer;
-                        layer.msg("搜索不能为空");
-                    })
-                }else {
-                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue
-                }
-            },
-
             //登录
             login:function () {
                 if (this.loginName==''){
@@ -199,27 +183,17 @@
 
     });
 </script>
+<!--创建圈子vm1-->
 <script>
-    var vm = new Vue({
-        el: '#app1',
+    var vm1 = new Vue({
+        el: '#create_circle',
         data:{
-            inputValue4:'',
             src:'../../node_modules/images/upload.png',
             circleName:'',
             circleTitle:'',
             flag:'false',
             file:''
         },methods: {
-            searchBlog(){
-                if (this.inputValue4==''){
-                    layui.use('layer', function () {
-                        var layer = layui.layer;
-                        layer.msg("搜索不能为空");
-                    })
-                }else {
-                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue4
-                }
-            },
             getFile(e) {
                 let _this = this
                 this.file = e.target.files[0];
@@ -261,14 +235,15 @@
                         data: myform,
                         success:function (result) {
                             if (result.code==0){
+                                console.log(result.code);
                                 layui.use('layer',function() {
                                     var layer = layui.layer;
                                     layer.msg("创建成功！");
                                     window.location.href="/user/circle/circleRank.html"
                                 })
-                                vm.circleName = '';
-                                vm.circleTitle ='';
-                                vm.file='';
+                                vm1.circleName = '';
+                                vm1.circleTitle ='';
+                                vm1.file='';
                             }else {
                                 alert(result.msg)
                             }
@@ -278,6 +253,126 @@
             }
         }
     })
+</script>
+<!-----canvas背景------->
+<script>
+    var canvas = document.getElementById("cas");
+    var ctx = canvas.getContext("2d");
+
+    resize();
+    window.onresize = resize;
+
+    function resize() {
+        canvas.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        canvas.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    }
+
+    var RAF = (function() {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+    })();
+
+    // 鼠标活动时，获取鼠标坐标
+    var warea = {x: null, y: null, max: 20000};
+    window.onmousemove = function(e) {
+        e = e || window.event;
+
+        warea.x = e.clientX;
+        warea.y = e.clientY;
+    };
+    window.onmouseout = function(e) {
+        warea.x = null;
+        warea.y = null;
+    };
+
+    // 添加粒子
+    // x，y为粒子坐标，xa, ya为粒子xy轴加速度，max为连线的最大距离
+    var dots = [];
+    for (var i = 0; i < 300; i++) {
+        var x = Math.random() * canvas.width;
+        var y = Math.random() * canvas.height;
+        var xa = Math.random() * 2 - 1;
+        var ya = Math.random() * 2 - 1;
+
+        dots.push({
+            x: x,
+            y: y,
+            xa: xa,
+            ya: ya,
+            max: 6000
+        })
+    }
+
+    // 延迟100秒开始执行动画，如果立即执行有时位置计算会出错
+    setTimeout(function() {
+        animate();
+    }, 100);
+
+    // 每一帧循环的逻辑
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 将鼠标坐标添加进去，产生一个用于比对距离的点数组
+        var ndots = [warea].concat(dots);
+
+        dots.forEach(function(dot) {
+
+            // 粒子位移
+            dot.x += dot.xa;
+            dot.y += dot.ya;
+
+            // 遇到边界将加速度反向
+            dot.xa *= (dot.x > canvas.width || dot.x < 0) ? -1 : 1;
+            dot.ya *= (dot.y > canvas.height || dot.y < 0) ? -1 : 1;
+
+            // 绘制点
+            ctx.fillRect(dot.x - 0.5, dot.y - 0.5, 1, 1);
+
+            // 循环比对粒子间的距离
+            for (var i = 0; i < ndots.length; i++) {
+                var d2 = ndots[i];
+
+                if (dot === d2 || d2.x === null || d2.y === null) continue;
+
+                var xc = dot.x - d2.x;
+                var yc = dot.y - d2.y;
+
+                // 两个粒子之间的距离
+                var dis = xc * xc + yc * yc;
+
+                // 距离比
+                var ratio;
+
+                // 如果两个粒子之间的距离小于粒子对象的max值，则在两个粒子间画线
+                if (dis < d2.max) {
+
+                    // 如果是鼠标，则让粒子向鼠标的位置移动
+                    if (d2 === warea && dis > (d2.max / 2)) {
+                        dot.x -= xc * 0.03;
+                        dot.y -= yc * 0.03;
+                    }
+
+                    // 计算距离比
+                    ratio = (d2.max - dis) / d2.max;
+
+                    // 画线
+                    ctx.beginPath();
+                    ctx.lineWidth = ratio / 2;
+                    //线条颜色
+                    ctx.strokeStyle = 'rgba(0,0,0,' + (ratio + 0.2) + ')';
+                    ctx.moveTo(dot.x, dot.y);
+                    ctx.lineTo(d2.x, d2.y);
+                    ctx.stroke();
+                }
+            }
+
+            // 将已经计算过的粒子从数组中删除
+            ndots.splice(ndots.indexOf(dot), 1);
+        });
+
+        RAF(animate);
+    }
 </script>
 </body>
 </html>

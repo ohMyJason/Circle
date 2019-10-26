@@ -17,9 +17,20 @@
     <script src="../../node_modules/layui/layui.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
     <script src="../../node_modules/bootstrap/js/bootstrap.js"></script>
-    <script src="../../node_modules/at-ui/dist/at.js"></script>
 
     <style>
+        #circle_rank{
+            margin-top: 100px;
+        }
+
+        #circle_rank h6{
+            color: #6190E8;
+        }
+
+        #circle_rank a:hover{
+            text-decoration-line: unset;
+        }
+
         [v-cloak] {
             display: none;
         }
@@ -32,14 +43,14 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-white navbar_c fixed-top">
             <div class="container-fluid">
                 <!------------Logo图标------->
-                <a class="navbar-brand col-xs-3 col-md-2" href="index.html">
+                <a class="navbar-brand col-xs-3 col-md-2" href="../index/index.html">
                     <img src="../../node_modules/images/logo.png" class="img-fluid">
                 </a>
                 <!------------搜索框----------->
                 <form class="form-inline input-group input-group-xs col-xs-8 col-md-4">
-                    <input class="form-control" type="search" v-model="inputValue" placeholder="大家正在搜" aria-label="Search">
+                    <input class="form-control" type="search" v-model="inputValue" placeholder="搜索圈子" aria-label="Search">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-sm" @click="searchBlog"><i class="zi zi_search"></i></span>
+                        <span class="input-group-text" id="inputGroup-sizing-sm"><i class="zi zi_search" @click="searchCircle"></i></span>
                     </div>
                 </form>
 
@@ -53,7 +64,7 @@
                 <div class="collapse navbar-collapse col-lg-6" id="circle_nav">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="userIndex.html"><i class="icon icon-home"></i>首页</a>
+                            <a class="nav-link" href="../index/userIndex.html"><i class="icon icon-home"></i>首页</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../circle/circleRank.html"><i class="icon icon-aperture"></i>圈子</a>
@@ -65,7 +76,7 @@
                             <a class="nav-link" href="../user-center/personal.html"><i class="icon icon-user"></i>用户</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="newRegister.html" target="_blank">注册</a>
+                            <a class="nav-link" href="../index/register.html" target="_blank">注册</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="modal" data-target="#exampleModalT">登录</a>
@@ -94,86 +105,48 @@
                             <i class="icon icon-lock mr-3" style="font-size: 25px"></i>
                             <input class="form-control" type="password" placeholder="请输入密码" onclick="this.placeholder='' " v-model="password">
                         </div>
-                        <a href="retrieve.html" target="_blank" class="d-flex flex-end">忘记密码？</a>
+                        <a href="../index/retrieve.html" target="_blank" class="d-flex flex-end">忘记密码？</a>
                         <button type="button" class="btn btn-block bg-info mt-2" @click="login">立即登录</button>
 
                         <div class="row ml-2">
-                            <span style="font-size: 14px">还没有账号？<a href="newRegister.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
+                            <span style="font-size: 14px">还没有账号？<a href="../index/register.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--<div class="container-fluid">-->
-    <!--<iframe id="headerFrame" name="headerFrame" width="100%" src="../../navbar.html" frameborder="0" scrolling="no"></iframe>-->
-    <!--</div>-->
 </header>
 
-<div id="app1" class="container">
-
-    <div class="row search-top">
-        <div class="col-md-3 logo col-md-offset-4">
-            <img src="../../node_modules/images/logo.png" class="img-up">
-        </div>
-        <div class="col-md-11">
-            <at-input v-model="inputValue4" placeholder="搜索圈子" append-button class="top-search">
-                <template slot="append">
-                    <i class="icon icon-search" @click="searchCircle"></i>
-                </template>
-            </at-input>
-        </div>
-        <div class="col-md-6"></div>
+<section id="circle_rank" class="container">
+    <div class="row mb-3">
+        <b class="order-0 ml-3">Circle</b>
+        <span class="circle-time-num order-3 order-md-2 ml-3 ml-md-5" v-cloak>截至：{{nowTime}} &nbsp;&nbsp;共有：{{circleCount}} 个圈子</span>
+        <a href="createCircle.html" class="text-muted order-2 order-md-3 ml-5">都不喜欢？创建自己的圈子 ></a>
     </div>
 
-    <div class="row" style="margin-bottom: 20px">
-        <div class="col-md-7 col-md-offset-17">
-            <a href="createCircle.html"><span style="color: #3F536E">都不喜欢？创建自己的圈子</span></a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-18 col-md-offset-3 circleInfo">
-            <div class="row circle-nav">
-                <div class="col-md-6 col-md-offset-1">
-                    <span>Circle</span>
-                </div>
-                <div class="col-md-9 col-md-offset-8">
-                    <span class="circle-time-num" v-cloak>截至：{{nowTime}} &nbsp;&nbsp;共有：{{circleCount}} 个圈子</span>
-                </div>
-            </div>
-
-            <div class="row" style="margin-top: 10px">
-                <div class="col-md-offset-1 col-md-22">
-                    <div class="circle-show" v-for="(item,i) in circleList">
-                        <div class="img-border">
-                            <img :src="item.circleImgUrl" class="circle-image">
-                        </div>
-                        <div style="float: left">
-                            <at-tag color="error" v-if="item.userNum > 5">火热</at-tag>
-                            <at-tag color="info" v-if="item.userNum < 6">推荐</at-tag>
-                            <a href="circle.html" target="_blank" class="circle-name" @click="jumpCircle(item.circleId)"><span v-text="item.circleName"></span></a><br>
-                            <span class="circle-title" v-text="item.circleTitle"></span>
-                            <span class="icon icon-user" title="参与人数">{{item.userNum}}</span>
-                            <span class="icon icon-message-circle blog-num-mar" title="微博数量">{{item.blogNum}}</span>
-                        </div>
+    <div class="container border rounded-lg p-3">
+        <div class="row no-gutters">
+            <div class="row no-gutters mt-5 col-md-6 col-8" v-for="(item,i) in circleList">
+                <img :src="item.circleImgUrl" width="80px" height="80px">
+                <div class="ml-3">
+                    <div class="row flex align-items-center no-gutters">
+                        <span class="badge badge-danger" v-if="item.userNum > 5">火热</span>
+                        <span class="badge badge-primary" v-if="item.userNum < 6">推荐</span>
+                        <a href="circle.html" target="_blank" @click="jumpCircle(item.circleId)" class="ml-2"><h6 class="mb-0" v-text="item.circleName"></h6></a>
+                    </div>
+                    <span class="text-muted text-truncate d-inline-block mt-2" style="font-size: 14px;max-width: 150px;" v-cloak>{{item.circleTitle}}</span>
+                    <div class="row no-gutters text-muted mt-2">
+                        <span class="icon icon-user" title="参与人数">{{item.userNum}}</span>
+                        <span class="icon icon-message-circle ml-2" title="微博数量">{{item.blogNum}}</span>
                     </div>
                 </div>
-
-                <div class="col-md-1"></div>
             </div>
-
         </div>
-        <div class="col-md-3"></div>
     </div>
-
-
-
-
-</div>
-
+</section>
+<!--导航条搜索圈子、登录功能vm-->
 <script>
-    //导航条搜索登录功能
     let vm = new Vue({
         el: '#circle_navbar',
         data: {
@@ -182,14 +155,35 @@
             password: ''
         },methods:{
             //搜索功能
-            searchBlog(){
+            searchCircle(){
                 if (this.inputValue==''){
                     layui.use('layer', function () {
                         var layer = layui.layer;
                         layer.msg("搜索不能为空");
                     })
                 }else {
-                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue
+                    $.ajax({
+                        url:"/circle/searchCircleLike",
+                        type:"post",
+                        data:{
+                            name: this.inputValue
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                vm1.circleList = result.data;
+                                vm1.circleCount = result.count;
+                            }else {
+                                layui.use('layer',function() {
+                                    var layer = layui.layer;
+                                    layer.msg(result.msg);
+                                })
+                                vm1.circleList=[];
+                                vm1.circleCount = 0;
+                            }
+                        },error:function () {
+
+                        }
+                    })
                 }
             },
 
@@ -235,15 +229,14 @@
 
     });
 </script>
+<!--展示圈子vm1-->
 <script>
-    var vm = new Vue({
-        el: '#app1',
+    var vm1 = new Vue({
+        el: '#circle_rank',
         data:{
-            inputValue4:'',
             nowTime:'',
             circleCount:'',
-            circleList:[
-            ],
+            circleList:[],
         },methods:{
             addZero(d){
                 if (d < 10) {
@@ -253,33 +246,10 @@
                 }
             },setTime(){
                 var d = new Date();
-                this.nowTime = d.getFullYear() + "-" + vm.addZero((d.getMonth() + 1)) + "-" + vm.addZero(d.getDate()) + " "
-                + vm.addZero(d.getHours()) + ":" + vm.addZero(d.getMinutes()) + ":" + vm.addZero(d.getSeconds());
+                vm1.nowTime = d.getFullYear() + "-" + vm1.addZero((d.getMonth() + 1)) + "-" + vm1.addZero(d.getDate()) + " "
+                + vm1.addZero(d.getHours()) + ":" + vm1.addZero(d.getMinutes()) + ":" + vm1.addZero(d.getSeconds());
             },jumpCircle(id){
                 $.cookie("circleId",id,{path: '/user/circle/circle.html'})
-            },searchCircle(){
-                $.ajax({
-                    url:"/circle/searchCircleLike",
-                    type:"post",
-                    data:{
-                      name: this.inputValue4
-                    },
-                    success:function (result) {
-                        if(result.code == 0){
-                            vm.circleList = result.data;
-                            vm.circleCount = result.count;
-                        }else {
-                            layui.use('layer',function() {
-                                var layer = layui.layer;
-                                layer.msg(result.msg);
-                            })
-                            vm.circleList=[];
-                            vm.circleCount = 0;
-                        }
-                    },error:function () {
-
-                    }
-                })
             }
         },created(){
             $.ajax({
@@ -287,7 +257,7 @@
                 type:"post",
                 success:function (result) {
                     if(result.code == 0){
-                        vm.circleList = result.data;
+                        vm1.circleList = result.data;
                     }
                 }
             })
@@ -296,14 +266,13 @@
                 type:"post",
                 success:function (result) {
                     if(result.code == 0){
-                        vm.circleCount = result.count;
+                        vm1.circleCount = result.count;
                     }
                 }
             })
         }
     })
-    setInterval("vm.setTime()", 1000);
-
+    setInterval("vm1.setTime()", 1000);
 </script>
 </body>
 </html>
