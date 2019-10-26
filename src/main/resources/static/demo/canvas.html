@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>动态背景</title>
+    <meta charset="utf-8" />
+    <!--https://blog.csdn.net/hzp666/article/details/60868989-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="apple-mobile-web-app-title" content=""/>
+    <meta name="apple-touch-fullscreen" content="YES" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta http-equiv="x-rim-auto-match" content="none" />
+    <meta name="format-detection" content="telephone=no" />
+    <!-- This is to force IE into the latest version mode, overriding 'compatibility' mode which breaks everything. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="" />
+    <link href="assets/css/reset.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/base.css" rel="stylesheet" type="text/css">
+    <!--feature-->
+    <link href="assets/css/index.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<section class="doc doc--bg2">
+    <!-- logo -->
+    <div class="logo"><img src="assets/img/image/logo.png" alt=""></div>
+    <div class="sohonav">
+        <a href="slt_repast.html" class="item">
+            <i class="icon-repast"></i><br>餐饮
+        </a>
+        <a href="slt_relaxation.html" class="item">
+            <i class="icon-fallow"></i><br>休闲娱乐
+        </a>
+        <a href="slt_shopping.html" class="item">
+            <i class="icon-shop"></i><br>购物
+        </a>
+    </div>
+    <canvas id="canvas" style="position:absolute;top:0px;left:0px;z-index:1;"></canvas>
+</section>
+<script type="text/javascript">
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    canvas.width = canvas.parentNode.offsetWidth;
+    canvas.height = canvas.parentNode.offsetHeight;
+    //如果浏览器支持requestAnimFrame则使用requestAnimFrame否则使用setTimeout
+    window.requestAnimFrame = (function(){
+        return  window.requestAnimationFrame       ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame    ||
+            function( callback ){
+                window.setTimeout(callback, 1000 / 60);
+            };
+    })();
+    //初始角度为0
+    var step = 0;
+    //定义三条不同波浪的颜色
+    var lines = ["rgba(0,222,255, 0.2)",
+        "rgba(157,192,249, 0.2)",
+        "rgba(0,168,255, 0.2)"];
+    function loop(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        step++;
+        //画3个不同颜色的矩形
+        for(var j = lines.length - 1; j >= 0; j--) {
+            ctx.fillStyle = lines[j];
+            //每个矩形的角度都不同，每个之间相差45度
+            var angle = (step+j*45)*Math.PI/180;
+            var deltaHeight   = Math.sin(angle) * 50;
+            var deltaHeightRight   = Math.cos(angle) * 50;
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height/2+deltaHeight);
+            ctx.bezierCurveTo(canvas.width /2, canvas.height/2+deltaHeight-50, canvas.width / 2, canvas.height/2+deltaHeightRight-50, canvas.width, canvas.height/2+deltaHeightRight);
+            ctx.lineTo(canvas.width, canvas.height);
+            ctx.lineTo(0, canvas.height);
+            ctx.lineTo(0, canvas.height/2+deltaHeight);
+            ctx.closePath();
+            ctx.fill();
+        }
+        requestAnimFrame(loop);
+    }
+    loop();
+</script>
+</body>
+</html>

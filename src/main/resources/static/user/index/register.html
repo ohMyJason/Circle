@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>注册</title>
+    <title>Circle-注册</title>
     <link rel="stylesheet" href="../../node_modules/css/navbar.css">
     <link rel="stylesheet" href="../../node_modules/css/footer.css">
-    <link rel="stylesheet" href="../../node_modules/css/register.css">
     <link rel="stylesheet" href="http://ico.z01.com/zico.min.css">
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/bootstrap/css/bootstrap.css">
@@ -17,14 +16,12 @@
     <script src="../../node_modules/layui/layui.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
     <script src="../../node_modules/bootstrap/js/bootstrap.js"></script>
-
     <script src="../../node_modules/at-ui/dist/at.js"></script>
+
     <link type="text/css" rel="stylesheet" href="../../node_modules/layui/css/layui.css" media="all">
-
+    <link type="text/css" rel="stylesheet" href="../../node_modules/css/register.css">
 </head>
-<script>
 
-</script>
 <body>
 <!---------------导航条---------------->
 <header id="circle_navbar">
@@ -65,7 +62,7 @@
                             <a class="nav-link" href="../user-center/personal.html"><i class="icon icon-user"></i>用户</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="newRegister.html" target="_blank">注册</a>
+                            <a class="nav-link" href="register.html" target="_blank">注册</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="modal" data-target="#exampleModalT">登录</a>
@@ -98,7 +95,7 @@
                         <button type="button" class="btn btn-block bg-info mt-2" @click="login">立即登录</button>
 
                         <div class="row ml-2">
-                            <span style="font-size: 14px">还没有账号？<a href="newRegister.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
+                            <span style="font-size: 14px">还没有账号？<a href="register.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
                         </div>
                     </div>
                 </div>
@@ -110,107 +107,67 @@
     <!--</div>-->
 </header>
 
-<div  id="foot">
-    <div class="head" >
-        <img src="../../node_modules/images/logo.png" height="100%" width="100%"/>
+<section id="c_register" class="container-fluid">
+    <div class="row d-flex justify-content-center">
+        <img src="../../node_modules/images/logom.png" height="100px">
     </div>
-    <div id="contain">
-        <div class="line">
-            <div class="wenzi">
-                <a href="#">个人注册</a>
+
+    <div class="border rounded-lg col-md-8 col-md-offset-4" id="c_register_box">
+        <p class="text-center mt-3 mb-3">个人注册</p>
+        <form class="ml-md-5 mr-md-5" id="register_form">
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="icon icon-smartphone"></i>您的手机</div>
+                </div>
+                <input type="text" class="form-control" v-model="phoneNumber" placeholder="请输入11位手机号">
             </div>
-        </div>
-        <div class="main">
-            <div class="reg-form">
-                <div class="info-list">
-                    <div class="tip">
-                        <div class="tag">
-                            <div class="icon icon-smartphone">&nbsp;&nbsp;手机:</div>
-                        </div>
-                    </div>
-                    <div class="flag">
-                        <div class="flag-1">
-<!--                            <input class="inputMsg" type="text" placeholder="请输入手机号码" v-model="phoneNumber">-->
-                            <at-input class="inputMsg" type="text" placeholder="请输入手机号码" v-model="phoneNumber" size="small" blur="this.placeholder=''"></at-input>
-                        </div>
-                    </div>
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="icon icon-alert-triangle" ></i>设置密码</div>
                 </div>
-                <div class="pas">
-                    <div class="tid">&nbsp;&nbsp;设置密码:</div>
-                    <div class="pascenter">
-<!--                        <input  class="inputMsg" type="password" placeholder="请输入密码" v-model="password">-->
-                        <at-input class="inputMsg" type="password" placeholder="请输入密码" v-model="password" size="small" onclick="this.placeholder=''"></at-input>
-                    </div>
-                </div>
-                <div class="choose">
-                    <div class="bir">&nbsp;&nbsp;生日:</div>
-
-
-                    <select class="year" name="year" v-model="birthYear">
-                        <option value="请选择" selected>请选择</option>
-                        <option v-for="n in 2019" :value="n" v-text="n" v-if="n > 1900"></option>
-                    </select>
-<!--                    <at-dropdown>-->
-<!--                        <at-button size="small">年<i class="icon icon-chevron-down" style="width: 90px"></i></at-button>-->
-<!--                        <at-dropdown-menu slot="menu">-->
-<!--                            <at-dropdown-item v-for="n in  2019":name="n" v-text="n" v-if="n>1900"></at-dropdown-item>-->
-<!--                        </at-dropdown-menu>-->
-<!--                    </at-dropdown>-->
-
-
-                    年
-                    <select class="month" name="month" v-model="birthMonth">
-                        <option value="请选择" selected>请选择</option>
-                        <option v-for="n in 12" :value="n" v-text="n"></option>
-                    </select>月
-                    <select class="day" v-model="birthDay">
-                        <option value="请选择" selected >请选择</option>
-                        <option v-for="n in 31" :value="n" v-text="n"></option>
-                    </select>日
-                </div>
-                <div class="actcode">
-                    <div class="send">注册码:</div>
-                    <button class="button" @click="sendMsg">免费获取短信激活码</button>
-<!--                    <input type="text" class="codeStyle" v-model="code">-->
-                    <at-input class="codeStyle" type="text"  v-model="code" ></at-input>
-
-
-                    <div class="fit" >
-                        <input type="button" value=" 收不到验证码？" style="border: 0px;background-color:  #f1f1f1" @click="sendMsg">
-                    </div>
-
-                </div>
-                <div class="rejister">
-                    <button @click="registerNow" class="registerNow">立即注册</button>
-                </div>
+                <input type="password" class="form-control" v-model="password" placeholder="请输入您的密码">
             </div>
-            <div class="right-item">
-                <div class="login">
-                    <div class="right-item1">
-                        已有账号，
-                        <a href="index.html" style="color: #1E9FFF">直接登陆>></a>
-                    </div>
-                    <div class="right-item2">圈圈注册帮助</div>
-                    <div class="right-item3">
-                        <a href="#" style="color: #1E9FFF" >1.&nbsp;&nbsp;注册帮助指南</a>
-                    </div>
-                    <div class="right-item3">
-                        <a href="#" style="color: #1E9FFF" >2.&nbsp;&nbsp;账号已经注册怎么办？</a>
-                    </div>
-                    <div class="right-item3">
-                        <a href="#" style="color: #1E9FFF" >3.&nbsp;&nbsp;注册时显示IP地址异常怎么办？</a>
-                    </div>
-                    <div class="right-item3">
-                        <a href="#" style="color: #1E9FFF" >更多帮助>></a>
+            <!-----------生日------------>
+            <div class="input-group mb-2 mr-sm-2">
+                <div>
+                    <div class="input-group-text">
+                        <i class="zi zi_birthdaycake" zico="生日蛋糕" style="color: grey;"></i>
+                        生&nbsp;&nbsp;日
                     </div>
                 </div>
+                <select class="form-control" v-model="birthYear">
+                    <option v-for="n in 2019" :value="n" v-text="n" v-if="n > 1980">...</option>
+                </select>
+                <div class="input-group-text ml-1 mr-1">年</div>
+
+                <select class="form-control" v-model="birthMonth">
+                    <option v-for="n in 12" :value="n" v-text="n" v-if="n < 13">...</option>
+                </select>
+                <div class="input-group-text ml-1 mr-1">月</div>
+
+                <select class="form-control" v-model="birthDay">
+                    <option v-for="n in 31" :value="n" v-text="n" v-if="n < 32">...</option>
+                </select>
+                <div class="input-group-text ml-1 mr-1">日</div>
             </div>
-        </div>
+            <!-----------验证码---------->
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="icon icon-edit-2"></i>验证码</div>
+                </div>
+                <input type="text" class="form-control mr-md-5 mr-1" v-model="code" placeholder="请输入内容">
+                <button type="button" class="btn btn-outline-primary bg-white" @click="sendMsg">点击获取短信激活码</button>
+            </div>
+            <!----------立即注册按钮------->
+            <button type="button" class="btn btn-primary btn-block mt-5 mb-5" id="register_now" @click="registerNow">立即注册</button>
+        </form>
     </div>
-</div>
+</section>
+
+<canvas id="cas" width="100%" height="100%"></canvas>
+<!--导航条搜索登录功能-->
 <script>
-    //导航条搜索登录功能
-    let vm = new Vue({
+    let vm1 = new Vue({
         el: '#circle_navbar',
         data: {
             inputValue: '',
@@ -273,88 +230,88 @@
 </script>
 <script>
     var vm = new Vue({
-        el: '#foot',
-        data:{
-            phoneNumber:'',
-            userName:'',
-            password:'',
-            birthYear:"请选择",
-            birthMonth:"请选择",
-            birthDay:"请选择",
-            code:'',
-            resCode:'---res',
-        },methods:{
-          sendMsg(){
-              var reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
-              if (this.phoneNumber==''){
-                  layui.use('layer',function() {
-                      var layer = layui.layer;
-                      layer.msg("请输入手机号！");
-                  })
-              }else if (!reg.test(this.phoneNumber)){
-                  layui.use('layer',function() {
-                      var layer = layui.layer;
-                      layer.msg("请输入正确的手机号！");
-                  })
-              }else {
-                  $.ajax({
-                      url: "/userLogin/sendMsg",
-                      type: "post",
-                      data: {
-                          phoneNumber: this.phoneNumber
-                      },
-                      success: function (result) {
-                          layui.use('layer',function() {
-                              var layer = layui.layer;
-                              layer.msg("发送成功，注意接受短信！");
-                          })
-                          if (result.code == 0) {
-                              vm.resCode = result.data;
-                          }
-                      },error:function () {
-                          layui.use('layer',function() {
-                              var layer = layui.layer;
-                              layer.msg("请求失败");
-                          })
-                      }
-                  })
-              }
-
-          },registerNow(){
-                var regpas = /^(\w){6,16}$/;
-                var regpho = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
-                if(this.phoneNumber ==''){
-                    layui.use('layer',function() {
+        el: '#register_form',
+        data: {
+            phoneNumber: '',
+            userName: '',
+            password: '',
+            birthYear: "请选择",
+            birthMonth: "请选择",
+            birthDay: "请选择",
+            code: '',
+            resCode: '---res',
+        }, methods: {
+            sendMsg() {
+                var reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+                if (this.phoneNumber == '') {
+                    layui.use('layer', function () {
                         var layer = layui.layer;
                         layer.msg("请输入手机号！");
                     })
-                }else if (!regpho.test(this.phoneNumber)) {
+                } else if (!reg.test(this.phoneNumber)) {
                     layui.use('layer', function () {
                         var layer = layui.layer;
                         layer.msg("请输入正确的手机号！");
                     })
-                } else if(this.password==''){
-                    layui.use('layer',function() {
+                } else {
+                    $.ajax({
+                        url: "/userLogin/sendMsg",
+                        type: "post",
+                        data: {
+                            phoneNumber: this.phoneNumber
+                        },
+                        success: function (result) {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("发送成功，注意接受短信！");
+                            })
+                            if (result.code == 0) {
+                                vm.resCode = result.data;
+                            }
+                        }, error: function () {
+                            layui.use('layer', function () {
+                                var layer = layui.layer;
+                                layer.msg("请求失败");
+                            })
+                        }
+                    })
+                }
+
+            }, registerNow() {
+                var regpas = /^(\w){6,16}$/;
+                var regpho = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+                if (this.phoneNumber == '') {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入手机号！");
+                    })
+                } else if (!regpho.test(this.phoneNumber)) {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.msg("请输入正确的手机号！");
+                    })
+                } else if (this.password == '') {
+                    layui.use('layer', function () {
                         var layer = layui.layer;
                         layer.msg("密码不能为空");
                     })
-                } else if (!regpas.test(this.password)){
-                    layui.use('layer',function() {
+                } else if (!regpas.test(this.password)) {
+                    layui.use('layer', function () {
                         var layer = layui.layer;
                         layer.msg("请输入6-16位数字字母下划线组成的密码！");
                     })
-                }else if(this.birthYear == '请选择' || this.birthDay == '请选择' || this.birthMonth == '请选择'){
-                    layui.use('layer',function() {
+                } else if (this.birthYear == '请选择' || this.birthDay == '请选择' || this.birthMonth == '请选择') {
+                    layui.use('layer', function () {
                         var layer = layui.layer;
                         layer.msg("请选择出生年月！");
                     })
-                } else if(this.code!=this.resCode){
+                } else if (this.code != this.resCode) {
                     layui.use('layer', function () {
                         var layer = layui.layer;
                         layer.msg("请输入正确的验证码！");
                     })
-                }else {
-                    var birthday = this.birthYear+'-'+this.birthMonth+'-'+this.birthDay
+                } else {
+                    var birthday = this.birthYear + '-' + this.birthMonth + '-' + this.birthDay
                     $.ajax({
                         url: "/userLogin/registered",
                         type: "post",
@@ -365,19 +322,20 @@
                         },
                         success: function (result) {
                             if (result.code == 0) {
-                                layui.use('layer',function() {
+                                layui.use('layer', function () {
                                     var layer = layui.layer;
-                                    layer.msg("注册成功！");
+                                    layer.msg("注册成功！马上去完善个人信息！");
                                 })
-                                window.location.href = "index.html";
-                            }else {
-                                layui.use('layer',function() {
+                                $.cookie("token", result.data, {path: "/"});
+                                window.location.href = "../letter/settingInfo.html";
+                            } else {
+                                layui.use('layer', function () {
                                     var layer = layui.layer;
                                     layer.msg(result.msg);
                                 })
                             }
-                        },error:function () {
-                            layui.use('layer',function() {
+                        }, error: function () {
+                            layui.use('layer', function () {
                                 var layer = layui.layer;
                                 layer.msg("请求失败");
                             })
@@ -387,6 +345,126 @@
             }
         },
     })
+</script>
+<!-----canvas背景------->
+<script>
+    var canvas = document.getElementById("cas");
+    var ctx = canvas.getContext("2d");
+
+    resize();
+    window.onresize = resize;
+
+    function resize() {
+        canvas.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        canvas.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    }
+
+    var RAF = (function() {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+    })();
+
+    // 鼠标活动时，获取鼠标坐标
+    var warea = {x: null, y: null, max: 20000};
+    window.onmousemove = function(e) {
+        e = e || window.event;
+
+        warea.x = e.clientX;
+        warea.y = e.clientY;
+    };
+    window.onmouseout = function(e) {
+        warea.x = null;
+        warea.y = null;
+    };
+
+    // 添加粒子
+    // x，y为粒子坐标，xa, ya为粒子xy轴加速度，max为连线的最大距离
+    var dots = [];
+    for (var i = 0; i < 300; i++) {
+        var x = Math.random() * canvas.width;
+        var y = Math.random() * canvas.height;
+        var xa = Math.random() * 2 - 1;
+        var ya = Math.random() * 2 - 1;
+
+        dots.push({
+            x: x,
+            y: y,
+            xa: xa,
+            ya: ya,
+            max: 6000
+        })
+    }
+
+    // 延迟100秒开始执行动画，如果立即执行有时位置计算会出错
+    setTimeout(function() {
+        animate();
+    }, 100);
+
+    // 每一帧循环的逻辑
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 将鼠标坐标添加进去，产生一个用于比对距离的点数组
+        var ndots = [warea].concat(dots);
+
+        dots.forEach(function(dot) {
+
+            // 粒子位移
+            dot.x += dot.xa;
+            dot.y += dot.ya;
+
+            // 遇到边界将加速度反向
+            dot.xa *= (dot.x > canvas.width || dot.x < 0) ? -1 : 1;
+            dot.ya *= (dot.y > canvas.height || dot.y < 0) ? -1 : 1;
+
+            // 绘制点
+            ctx.fillRect(dot.x - 0.5, dot.y - 0.5, 1, 1);
+
+            // 循环比对粒子间的距离
+            for (var i = 0; i < ndots.length; i++) {
+                var d2 = ndots[i];
+
+                if (dot === d2 || d2.x === null || d2.y === null) continue;
+
+                var xc = dot.x - d2.x;
+                var yc = dot.y - d2.y;
+
+                // 两个粒子之间的距离
+                var dis = xc * xc + yc * yc;
+
+                // 距离比
+                var ratio;
+
+                // 如果两个粒子之间的距离小于粒子对象的max值，则在两个粒子间画线
+                if (dis < d2.max) {
+
+                    // 如果是鼠标，则让粒子向鼠标的位置移动
+                    if (d2 === warea && dis > (d2.max / 2)) {
+                        dot.x -= xc * 0.03;
+                        dot.y -= yc * 0.03;
+                    }
+
+                    // 计算距离比
+                    ratio = (d2.max - dis) / d2.max;
+
+                    // 画线
+                    ctx.beginPath();
+                    ctx.lineWidth = ratio / 2;
+                    //线条颜色
+                    ctx.strokeStyle = 'rgba(0,0,0,' + (ratio + 0.2) + ')';
+                    ctx.moveTo(dot.x, dot.y);
+                    ctx.lineTo(d2.x, d2.y);
+                    ctx.stroke();
+                }
+            }
+
+            // 将已经计算过的粒子从数组中删除
+            ndots.splice(ndots.indexOf(dot), 1);
+        });
+
+        RAF(animate);
+    }
 </script>
 
 </body>
