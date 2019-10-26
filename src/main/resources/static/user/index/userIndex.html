@@ -525,7 +525,8 @@
             selectType: "0"  //0-热度 1-关注 2-实时
         }, methods:{
             toCircle(circleId) {
-                $.cookie("circleId", circleId, {path: '../circle/circle.html'})
+                $.cookie("circleId", circleId, {path: "/user/circle/circle.html"});
+                window.location.href = "/user/circle/circle.html";
             },
             add() {
                 if (this.selectType == 0) {
@@ -946,7 +947,7 @@
         }
     })
 </script>
-
+<!-----文件上传----->
 <script>
     //表情
     // $.Lemoji({

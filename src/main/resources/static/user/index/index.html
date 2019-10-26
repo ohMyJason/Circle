@@ -401,8 +401,8 @@
     <!--</div>-->
 </footer>
 
+<!--微博加载vm1-->
 <script>
-    //微博加载
     var vm1 = new Vue({
         el: '#content_show',
         data: {
@@ -416,7 +416,8 @@
             selectType: "0"  //0-热度 1-关注 2-实时
         }, methods:{
             toCircle(circleId) {
-                $.cookie("circleId", circleId, {path: '/circle/circle.html'})
+                $.cookie("circleId", circleId, {path: "/user/circle/circle.html"});
+                window.location.href = "/user/circle/circle.html";
             },
             add() {
                 if (this.selectType == 0) {
@@ -599,8 +600,8 @@
         });
     });
 </script>
+<!--导航条搜索登录功能vm-->
 <script>
-    //导航条搜索登录功能
     let vm = new Vue({
         el: '#circle_navbar',
         data: {
@@ -616,7 +617,19 @@
                         layer.msg("搜索不能为空");
                     })
                 }else {
-                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue
+                    $.ajax({
+                        url:"/blog/searchBlogByContent",
+                        type:"post",
+                        data:{
+                            content : this.inputValue,
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                vm1.blogInfoList = result.data;
+                                vm.inputValue='';
+                            }
+                        }
+                    })
                 }
             },
 
@@ -659,34 +672,21 @@
                 }
             }
         }
-
     });
 </script>
-
+<!--右边登录和热门圈子展示vm2-->
 <script>
-    //右边登录和搜索、热门圈子展示
     let vm2 = new Vue({
         el: '#right_section',
         data: {
-            inputValue: '',
             loginName: '',
             password: '',
             circleList:[]
         },methods:{
             //到圈子
             toCircle(circleId) {
-                $.cookie("circleId", circleId, {path: '/circle/circle.html'})
-            },
-            //搜索功能
-            searchBlog(){
-                if (this.inputValue==''){
-                    layui.use('layer', function () {
-                        var layer = layui.layer;
-                        layer.msg("搜索不能为空");
-                    })
-                }else {
-                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue
-                }
+                $.cookie("circleId", circleId, {path: "/user/circle/circle.html"});
+                window.location.href = "/user/circle/circle.html";
             },
 
             //登录

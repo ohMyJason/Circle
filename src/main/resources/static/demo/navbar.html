@@ -112,6 +112,19 @@
                         layer.msg("搜索不能为空");
                     })
                 }else {
+                    $.ajax({
+                        url:"/blog/searchBlogByContent",
+                        type:"post",
+                        data:{
+                            content : this.inputValue,
+                        },
+                        success:function (result) {
+                            if(result.code == 0){
+                                vm.blogInfoList = result.data;
+                                vm.inputValue='';
+                            }
+                        }
+                    })
                     window.location.href = "/user/blog/blog.html?content=" + this.inputValue
                 }
             },
