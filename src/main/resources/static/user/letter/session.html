@@ -106,19 +106,19 @@
     </div>
 </header>
 
-<section id="session_box" class="container">
-    <div class="row">
+<section id="session_box" class="container-fluid p-0">
+    <div class="row d-flex justify-content-center" style="margin-top: 100px">
         <!--------会话列表---------->
         <div class="col-12 col-md-3 bg-dark no-gutters" id="ConversationList">
             <!--------个人信息--------->
-            <div class="row border-secondary border-bottom" id="userInfo">
-                <img :src="userInfo.avatarUrl" alt="用户头像" width="40px" height="40px" class="img-fluid m-2 rounded-circle">
+            <div class="row border-secondary border-bottom pl-3 pl-md-0" id="userInfo">
+                <img :src="userInfo.avatarUrl" alt="用户头像" width="40px" height="40px" class="img-fluid m-2 ml-2 rounded-circle">
                 <span class="text-white mt-3" v-text="userInfo.userName"></span>
             </div>
             <!--------会话列表--------->
-            <span class="row text-muted border-secondary border-bottom p-1">会话列表</span>
+            <span class="row text-muted border-secondary border-bottom p-1 pl-3 pl-md-0">会话列表</span>
             <!--------会话对象--------->
-            <div class="list row d-flex justify-content-between" v-for="(item,i) in userList" @click = "clickFriends(i);getMsg(i)">
+            <div class="list row d-flex justify-content-between pl-3 pl-md-0 pr-3 pr-md-0" v-for="(item,i) in userList" @click = "clickFriends(i);getMsg(i)">
                 <div class="row no-gutters">
                     <a href="#ConversationDetails" style="height: 40px;width: 40px" class="m-2 d-flex d-block">
                         <img :src="item.avatarUrl" alt="用户头像" width="40px" height="40px" class="img-fluid m-0 rounded-circle">
@@ -136,11 +136,11 @@
         </div>
 
         <!--------右边会话详情---------->
-        <div class="col-12 col-md-9 bg-light no-gutters" id="ConversationDetails">
+        <div class="col-12 col-md-6 bg-light no-gutters" id="ConversationDetails">
             <!-- 历史消息$联系人信息 -->
             <div id="message">
                 <!-------顶部联系人昵称------->
-                <p id="contactName" class="text-muted mt-3">您还未选中或发起聊天，快去跟好友聊一聊吧</p>
+                <p id="contactName" class="text-muted mt-3 pl-3 pl-md-0">您还未选中或发起聊天，快去跟好友聊一聊吧</p>
                 <!-------历史消息--------->
                 <div id="msgContent">
                     <!-- 接收信息示例 -->
@@ -148,26 +148,25 @@
                         <!-----信息发送时间----->
                         <p class="row text-muted no-gutters d-flex justify-content-center m-3" v-cloak>{{item.sendTime}}</p>
                         <!-- 用户的头像 -->
-                        <div class="smallImgBox float-right" v-show="item.senterId == userInfo.userId">
-                            <img :src="userInfo.avatarUrl" alt="用户头像" class="imgSize" >
-                        </div>
-                        <!-- 聊天对象的头像 -->
-                        <div class="smallImgBox float-left" v-show="item.senterId != userInfo.userId">
-                            <img :src="item.avatarUrl" alt="用户头像" class="imgSize">
-                        </div>
-
-                        <!-- 发送消息 -->
-                        <div class="messageMiddleBox float-right" v-show="item.senterId == userInfo.userId">
-                            <div class="float-right bg-primary rounded" v-if="item.resourceUrl == null">
+                        <div class="row d-flex justify-content-end" v-show="item.senterId == userInfo.userId">
+                            <div class="bg-primary rounded mr-1" v-if="item.resourceUrl == null">
                                 <p class="p-1 text-white" v-html = "item.letterContent"></p>
                             </div>
+                            <!--发送的图片-->
                             <div class="float-right bg-primary p-1 rounded" v-if="item.resourceUrl != null">
                                 <img :src="item.resourceUrl" style="width: 100px">
                             </div>
+                            <div class="smallImgBox float-right">
+                                <img :src="userInfo.avatarUrl" alt="用户头像" class="imgSize" >
+                            </div>
+                        </div>
+                        <!-- 聊天对象的头像 -->
+                        <div class="smallImgBox float-left ml-0" v-show="item.senterId != userInfo.userId">
+                            <img :src="item.avatarUrl" alt="用户头像" class="imgSize">
                         </div>
 
                         <!-- 接收消息 -->
-                        <div class="messageMiddleBox left" v-show="item.senterId != userInfo.userId">
+                        <div class="messageMiddleBox float-left" v-show="item.senterId != userInfo.userId">
                             <div class="float-left bg-info rounded">
                                 <p class="p-1 text-white" v-html = "item.letterContent"></p>
                             </div>

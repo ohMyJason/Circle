@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>个人信息</title>
     <link rel="stylesheet" href="../../node_modules/css/navbar.css">
-    <link rel="stylesheet" href="../../node_modules/css/footer.css">
     <link rel="stylesheet" href="../../node_modules/css/settingInfo.css">
     <link rel="stylesheet" href="http://ico.z01.com/zico.min.css">
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
@@ -17,7 +16,6 @@
     <script src="../../node_modules/layui/layui.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
     <script src="../../node_modules/bootstrap/js/bootstrap.js"></script>
-    <script src="../../node_modules/at-ui/dist/at.js"></script>
 </head>
 <body>
 <!---------------导航条---------------->
@@ -26,16 +24,9 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-white navbar_c fixed-top">
             <div class="container-fluid">
                 <!------------Logo图标------->
-                <a class="navbar-brand col-xs-3 col-md-2" href="index.html">
+                <a class="navbar-brand col-xs-3 col-md-2" href="../index/index.html">
                     <img src="../../node_modules/images/logo.png" class="img-fluid">
                 </a>
-                <!------------搜索框----------->
-                <form class="form-inline input-group input-group-xs col-xs-8 col-md-4">
-                    <input class="form-control" type="search" v-model="inputValue" placeholder="大家正在搜" aria-label="Search">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-sm" @click="searchBlog"><i class="zi zi_search"></i></span>
-                    </div>
-                </form>
 
                 <!------------汉堡按钮------------>
                 <button class="navbar-toggler col-xs-2 col-md-1 ml-5" type="button" data-toggle="collapse"
@@ -47,7 +38,7 @@
                 <div class="collapse navbar-collapse col-lg-6" id="circle_nav">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="userIndex.html"><i class="icon icon-home"></i>首页</a>
+                            <a class="nav-link" href="../index/userIndex.html"><i class="icon icon-home"></i>首页</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../circle/circleRank.html"><i class="icon icon-aperture"></i>圈子</a>
@@ -59,7 +50,7 @@
                             <a class="nav-link" href="../user-center/personal.html"><i class="icon icon-user"></i>用户</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="newRegister.html" target="_blank">注册</a>
+                            <a class="nav-link" href="../index/register.html" target="_blank">注册</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="modal" data-target="#exampleModalT">登录</a>
@@ -88,177 +79,153 @@
                             <i class="icon icon-lock mr-3" style="font-size: 25px"></i>
                             <input class="form-control" type="password" placeholder="请输入密码" onclick="this.placeholder='' " v-model="password">
                         </div>
-                        <a href="retrieve.html" target="_blank" class="d-flex flex-end">忘记密码？</a>
+                        <a href="../index/retrieve.html" target="_blank" class="d-flex flex-end">忘记密码？</a>
                         <button type="button" class="btn btn-block bg-info mt-2" @click="login">立即登录</button>
 
                         <div class="row ml-2">
-                            <span style="font-size: 14px">还没有账号？<a href="newRegister.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
+                            <span style="font-size: 14px">还没有账号？<a href="../index/register.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--<div class="container-fluid">-->
-    <!--<iframe id="headerFrame" name="headerFrame" width="100%" src="../../navbar.html" frameborder="0" scrolling="no"></iframe>-->
-    <!--</div>-->
 </header>
 
-<div id="app1" class="container">
-
-    <div class="create-margin">
-        <div class="row circle_frame">
-            <div class="col-md-3"></div>
-            <div class="col-md-18 setting_info">
-                <div class="text_481X1">账号设置</div>
-                <div class="box_480X1"></div>  <!--水平分隔线-->
-                <div class="account_event">
-                    <div class="row first_item">
-                        <div class="row avatar_box col-md-11">
-                            <span class="text_486X1">用户头像</span>
-                            <form id="f" class="row">
-                                <input type="file" @change="getFile" id="file" style="display: none">
-                                <label for="file"><img :src="src" class="avatarUrl"></label>
-                                <span class="text_487X1 flex-center" @click="submitAvatar()">上传</span>
-                            </form>
-                        </div>
-                        <div class="row account_box col-md-11">
-                            <span class="text_486X1">账户状态</span>
-                            <span class="account_status" v-text="userInfo.status"></span>
-                        </div>
-                    </div>
-
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">用户名</span>
-                        <span id="showName" class="show_info col-md-15" v-text="userInfo.userName"></span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="showNameInput()">编辑</span>
-                    </div>
-                    <div id="changeName" class="row change_info_item" style="display: none">
-                        <span class="text_485X1 col-md-6">修改昵称</span>
-                        <input id="changeNameInput" type="text" v-model="forwardInput1">
-                        <span class="text_487X1 col-md-2 flex-center" @click="submitName()">确定</span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="cancelName()">取消</span>
-                    </div>
-
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">手机号</span>
-                        <span class="show_info col-md-15" v-text="userInfo.phone"></span>
-                    </div>
-
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">邮箱</span>
-                        <span id="showEmail" class="show_info col-md-15" v-text="userInfo.email"></span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="showEmailInput()">编辑</span>
-                    </div>
-                    <div id="changeEmail" class="row change_info_item" style="display: none">
-                        <span class="text_485X1 col-md-6">修改邮箱</span>
-                        <input id="changeEmailInput" type="text" v-model="forwardInput2">
-                        <span class="text_487X1 col-md-2 flex-center" @click="submitEmail()">确定</span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="cancelEmail()">取消</span>
-                    </div>
-
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">性别</span>
-                        <span class="show_info col-md-15" v-text="userInfo.sex" v-cloak>{{forwardInput3}}</span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="showSexInput()">编辑</span>
-                    </div>
-                    <div id="changeSex" class="row change_info_item" style="display: none">
-                        <span class="text_485X1 col-md-6">设置性别</span>
-                        <input type="radio" id="one" value="0" v-model="forwardInput3"><label for="one">保密</label>
-                        <input type="radio" id="two" value="1" v-model="forwardInput3"><label for="two">男</label>
-                        <input type="radio" id="three" value="2" v-model="forwardInput3"><label for="three">女</label>
-                        <span class="text_487X1 col-md-2 flex-center" @click="submitSex()">确定</span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="cancelSex()">取消</span>
-                    </div>
-
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">感情状况</span>
-                        <span class="show_info col-md-15" v-text="userInfo.isSingle" v-cloak>{{forwardInput4}}</span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="showSingleInput()">编辑</span>
-                    </div>
-                    <div id="changeSingle" class="row change_info_item" style="display: none">
-                        <span class="text_485X1 col-md-6">修改感情状况</span>
-                        <input type="radio" id="oneS" value="0" v-model="forwardInput4"><label for="oneS">保密</label>
-                        <input type="radio" id="twoS" value="1" v-model="forwardInput4"><label for="twoS">单身</label>
-                        <input type="radio" id="threeS" value="2" v-model="forwardInput4"><label for="threeS">恋爱</label>
-                        <span class="text_487X1 col-md-2 flex-center" @click="submitSingle()">确定</span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="cancelSingle()">取消</span>
-                    </div>
-
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">生日</span>
-                        <span class="show_info col-md-15" v-cloak>{{userInfo.birthday}}</span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="showBirthInput()">编辑</span>
-                    </div>
-                    <div id="changeBirth" class="row change_info_item" style="display: none">
-                        <span class="text_485X1 col-md-6">设置生日</span>
-                        <select class="year" name="year" v-model="birthYear">
-                            <option value="请选择" selected>请选择</option>
-                            <option v-for="n in 2019" :value="n" v-text="n" v-if="n > 1900"></option>
-                        </select>年
-                        <select class="month" name="month" v-model="birthMonth">
-                            <option value="请选择" selected>请选择</option>
-                            <option v-for="n in 12" :value="n" v-text="n"></option>
-                        </select>月
-                        <select class="day" v-model="birthDay">
-                            <option value="请选择" selected >请选择</option>
-                            <option v-for="n in 31" :value="n" v-text="n"></option>
-                        </select>日
-
-                        <span class="text_487X1 col-md-2 flex-center" @click="submitBirth()">确定</span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="cancelBirth()">取消</span>
-                    </div>
-
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">注册时间</span>
-                        <span class="show_info col-md-15" v-text="userInfo.createTime"></span>
-                    </div>
-
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">所在地</span>
-                        <span class="show_info col-md-15" v-text="userInfo.address"></span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="showAddressInput()">编辑</span>
-                    </div>
-                    <div id="changeAddress" class="row change_info_item" style="display: none">
-                        <span class="text_485X1 col-md-6">修改所在地</span>
-                        <input id="changeAddressInput" type="text" v-model="forwardInput5">
-                        <span class="text_487X1 col-md-2 flex-center" @click="submitAddress()">确定</span>
-                        <span class="text_487X1 col-md-2 flex-center" @click="cancelAddress()">取消</span>
-                    </div>
-
-                    <div class="row info_item">
-                        <span class="text_485X1 col-md-6">是否注销</span>
-                        <span class="show_info col-md-15" v-text="userInfo.isDelete"></span>
-                    </div>
+<section id="set_box" class="container-fluid p-0">
+    <div class="border bg-white col-md-8 col-md-offset-4 shadow" id="setting_info">
+        <h6 class="m-3"><b>账号设置</b></h6>
+        <hr class="border-danger">   <!-----水平线------>
+        <div class="container-fluid p-0">
+            <div class="row first_item d-flex justify-content-between no-gutters">
+                <div class="row avatar_box col-6 no-gutters">
+                    <span class="text_485X1 ml-3 mr-3">用户头像</span>
+                    <form id="f">
+                        <input type="file" @change="getFile" id="file" style="display: none">
+                        <label for="file"><img :src="src" class="avatarUrl"></label>
+                        <span class="text_487X1 flex-center ml-md-5" @click="submitAvatar()">上传</span>
+                    </form>
                 </div>
-
+                <div class="row account_box col-5 ml-3 d-flex align-items-center no-gutters">
+                    <span class="text_485X1 ml-3 mr-3">账户状态</span>
+                    <span v-text="userInfo.status"></span>
+                </div>
             </div>
-            <div class="col-md-3"></div>
+
+            <div class="row info_item no-gutters">
+                <span class="text_485X1 col-3 pl-3">用户名</span>
+                <span id="showName" class="show_info col-7" v-text="userInfo.userName"></span>
+                <span class="text_487X1 col-2 flex-center" @click="showNameInput()">编辑</span>
+            </div>
+            <div id="changeName" class="row change_info_item no-gutters" style="display: none">
+                <span class="text_485X1 col-3 pl-3">修改昵称</span>
+                <input id="changeNameInput" type="text" v-model="forwardInput1">
+                <span class="text_487X1 col-2 flex-center" @click="submitName()">确定</span>
+                <span class="text_487X1 col-2 flex-center" @click="cancelName()">取消</span>
+            </div>
+
+            <div class="row info_item no-gutters">
+                <span class="text_485X1 col-3 pl-3">手机号</span>
+                <span class="show_info col-9" v-text="userInfo.phone"></span>
+            </div>
+
+            <div class="row info_item no-gutters">
+                <span class="text_485X1 col-3 pl-3">邮箱</span>
+                <span id="showEmail" class="show_info col-7" v-text="userInfo.email"></span>
+                <span class="text_487X1 col-2 flex-center" @click="showEmailInput()">编辑</span>
+            </div>
+            <div id="changeEmail" class="row change_info_item no-gutters" style="display: none">
+                <span class="text_485X1 col-3 pl-3">修改邮箱</span>
+                <input id="changeEmailInput" type="text" v-model="forwardInput2">
+                <span class="text_487X1 col-2 flex-center" @click="submitEmail()">确定</span>
+                <span class="text_487X1 col-2 flex-center" @click="cancelEmail()">取消</span>
+            </div>
+
+            <div class="row info_item no-gutters">
+                <span class="text_485X1 col-3 pl-3">性别</span>
+                <span class="show_info col-7" v-text="userInfo.sex"></span>
+                <span class="text_487X1 col-2 flex-center" @click="showSexInput()">编辑</span>
+            </div>
+            <div id="changeSex" class="row change_info_item no-gutters" style="display: none">
+                <span class="text_485X1 col-3 pl-3">设置性别</span>
+                <input type="radio" id="one" value="0" v-model="forwardInput3"><label for="one">保密</label>
+                <input type="radio" id="two" value="1" v-model="forwardInput3"><label for="two">男</label>
+                <input type="radio" id="three" value="2" v-model="forwardInput3"><label for="three">女</label>
+                <span class="text_487X1 col-2 flex-center" @click="submitSex()">确定</span>
+                <span class="text_487X1 col-2 flex-center" @click="cancelSex()">取消</span>
+            </div>
+
+            <div class="row info_item no-gutters">
+                <span class="text_485X1 col-3 pl-3">感情状况</span>
+                <span class="show_info col-7" v-text="userInfo.isSingle"></span>
+                <span class="text_487X1 col-2 flex-center" @click="showSingleInput()">编辑</span>
+            </div>
+            <div id="changeSingle" class="row change_info_item no-gutters" style="display: none">
+                <span class="text_485X1 col-3 pl-3">修改感情状况</span>
+                <input type="radio" id="oneS" value="0" v-model="forwardInput4"><label for="oneS">保密</label>
+                <input type="radio" id="twoS" value="1" v-model="forwardInput4"><label for="twoS">单身</label>
+                <input type="radio" id="threeS" value="2" v-model="forwardInput4"><label for="threeS">恋爱</label>
+                <span class="text_487X1 col-2 flex-center" @click="submitSingle()">确定</span>
+                <span class="text_487X1 col-2 flex-center" @click="cancelSingle()">取消</span>
+            </div>
+
+            <div class="row info_item no-gutters">
+                <span class="text_485X1 col-3 pl-3">生日</span>
+                <span class="show_info col-7" v-cloak>{{userInfo.birthday}}</span>
+                <span class="text_487X1 col-2 flex-center" @click="showBirthInput()">编辑</span>
+            </div>
+            <div id="changeBirth" class="row change_info_item no-gutters" style="display: none">
+                <span class="text_485X1 col-3 pl-3">设置生日</span>
+                <select class="year" name="year" v-model="birthYear">
+                    <option value="请选择" selected>请选择</option>
+                    <option v-for="n in 2019" :value="n" v-text="n" v-if="n > 1900"></option>
+                </select>年
+                <select class="month" name="month" v-model="birthMonth">
+                    <option value="请选择" selected>请选择</option>
+                    <option v-for="n in 12" :value="n" v-text="n"></option>
+                </select>月
+                <select class="day" v-model="birthDay">
+                    <option value="请选择" selected >请选择</option>
+                    <option v-for="n in 31" :value="n" v-text="n"></option>
+                </select>日
+
+                <span class="text_487X1 col-2 flex-center" @click="submitBirth()">确定</span>
+                <span class="text_487X1 col-2 flex-center" @click="cancelBirth()">取消</span>
+            </div>
+
+            <div class="row info_item no-gutters">
+                <span class="text_485X1 col-3 pl-3">注册时间</span>
+                <span class="show_info col-7" v-text="userInfo.createTime"></span>
+            </div>
+
+            <div class="row info_item no-gutters">
+                <span class="text_485X1 col-3 pl-3">所在地</span>
+                <span class="show_info col-7" v-text="userInfo.address"></span>
+                <span class="text_487X1 col-2 flex-center" @click="showAddressInput()">编辑</span>
+            </div>
+            <div id="changeAddress" class="row change_info_item no-gutters" style="display: none">
+                <span class="text_485X1 col-3 pl-3">修改所在地</span>
+                <input id="changeAddressInput" type="text" v-model="forwardInput5">
+                <span class="text_487X1 col-2 flex-center" @click="submitAddress()">确定</span>
+                <span class="text_487X1 col-2 flex-center" @click="cancelAddress()">取消</span>
+            </div>
+
+            <div class="row info_item no-gutters">
+                <span class="text_485X1 col-3 pl-3">是否注销</span>
+                <span class="show_info col-7" v-text="userInfo.isDelete"></span>
+            </div>
         </div>
     </div>
-</div>
+</section>
 </body>
+<!--导航条登录功能vm1-->
 <script>
-    //导航条搜索登录功能
-    let vm = new Vue({
+    let vm1 = new Vue({
         el: '#circle_navbar',
         data: {
-            inputValue: '',
             loginName: '',
             password: ''
         },methods:{
-            //搜索功能
-            searchBlog(){
-                if (this.inputValue==''){
-                    layui.use('layer', function () {
-                        var layer = layui.layer;
-                        layer.msg("搜索不能为空");
-                    })
-                }else {
-                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue
-                }
-            },
-
             //登录
             login:function () {
                 if (this.loginName==''){
@@ -301,13 +268,13 @@
 
     });
 </script>
+
 <script>
     var vm = new Vue({
-        el: '#app1',
+        el: '#set_box',
         data:{
             src:'',
             file:'',
-            inputValue4:'',
             userInfo:{},
             forwardInput1:'',
             forwardInput2:'',
@@ -319,16 +286,6 @@
             birthDay:"请选择",
         },
         methods:{
-            searchBlog(){
-                if (this.inputValue4==''){
-                    layui.use('layer', function () {
-                        var layer = layui.layer;
-                        layer.msg("搜索不能为空");
-                    })
-                }else {
-                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue4
-                }
-            },
             getFile(e) {
                 let _this = this
                 this.file = e.target.files[0];
@@ -560,8 +517,6 @@
                     })
                 }
             },
-
-
         },
         created(){
             $.ajax({

@@ -6,6 +6,7 @@
     <title>用户界面</title>
     <link rel="stylesheet" href="../../node_modules/css/navbar.css">
     <link rel="stylesheet" href="../../node_modules/css/footer.css">
+    <link rel="stylesheet" href="../../node_modules/css/index.css">
     <link rel="stylesheet" href="../../node_modules/css/personal.css">
     <link rel="stylesheet" href="http://ico.z01.com/zico.min.css">
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
@@ -31,7 +32,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-white navbar_c fixed-top">
             <div class="container-fluid">
                 <!------------Logo图标------->
-                <a class="navbar-brand col-xs-3 col-md-2" href="index.html">
+                <a class="navbar-brand col-xs-3 col-md-2" href="../index/index.html">
                     <img src="../../node_modules/images/logo.png" class="img-fluid">
                 </a>
                 <!------------搜索框----------->
@@ -52,7 +53,7 @@
                 <div class="collapse navbar-collapse col-lg-6" id="circle_nav">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="userIndex.html"><i class="icon icon-home"></i>首页</a>
+                            <a class="nav-link" href="../index/userIndex.html"><i class="icon icon-home"></i>首页</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../circle/circleRank.html"><i class="icon icon-aperture"></i>圈子</a>
@@ -64,7 +65,7 @@
                             <a class="nav-link" href="../user-center/personal.html"><i class="icon icon-user"></i>用户</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="newRegister.html" target="_blank">注册</a>
+                            <a class="nav-link" href="../index/register.html" target="_blank">注册</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="modal" data-target="#exampleModalT">登录</a>
@@ -97,7 +98,7 @@
                         <button type="button" class="btn btn-block bg-info mt-2" @click="login">立即登录</button>
 
                         <div class="row ml-2">
-                            <span style="font-size: 14px">还没有账号？<a href="newRegister.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
+                            <span style="font-size: 14px">还没有账号？<a href="../index/register.html" target="_blank" style="color: #c7254e">立刻注册</a></span>
                         </div>
                     </div>
                 </div>
@@ -109,191 +110,286 @@
     <!--</div>-->
 </header>
 
-<div id="app1" class="container">
+<section id="personal_box" class="container-fluid p-0 d-flex justify-content-center">
+    <div class="border col-md-9" id="setting_info">
 
-    <div class="create-margin">
-        <div class="row circle_frame">
-            <div class="col-md-3"></div>
-            <div class="col-md-18">
+        <div class="first_box flex-center">
+            <img :src="userInfo.avatarUrl" class="icon-head"><br>
+            <span class="nick_name" v-cloak>{{userInfo.userName}}</span>
+        </div>
 
-                <div class="first_box flex-center">
-                    <img :src="userInfo.avatarUrl" class="icon-head"><br>
-                    <span class="nick_name" v-cloak>{{userInfo.userName}}</span>
+        <div class="second_box row flex-center no-gutters">圈圈，和志同道合的人交朋友！</div>
+
+        <div class="row no-gutters d-flex justify-content-between">
+            <!------------左边box----------->
+            <div class="left_box col-md-3">
+                <!-------关注、粉丝、微博------->
+                <div class="row no-gutters d-flex justify-content-center num_box mt-3 mb-3 bg-white rounded">
+                    <div class="col-4 border-right"><p class="text-center mb-0" id="guanzhu">{{userInfo.bloggerNum}}</p>
+                        <p class="text-center mb-0"><a href="../user-center/attention.html" class="text-muted">关注</a></p></div>
+                    <div class="col-4 border-right"><p class="text-center mb-0" id="fansNum">{{userInfo.fansNum}}</p>
+                        <p class="text-center mb-0"><a href="../user-center/fans.html" class="text-muted">粉丝</a></p></div>
+                    <div class="col-4"><p class="text-center mb-0" id="blogNum">{{userInfo.blogNum}}</p>
+                        <p class="text-center mb-0"><a href="../user-center/personal.html" class="text-muted">微博</a></p></div>
                 </div>
 
-                <div class="second_box row flex-center">圈圈，和志同道合的人交朋友！
-                    <!--<at-menu mode="horizontal" active-name="0" class="col-md-24">-->
-                        <!--<at-menu-item name="1" class="col-md-offset-5">我的主页</at-menu-item>-->
-                        <!--<at-menu-item name="2" class="col-md-offset-8">我的相册</at-menu-item>-->
-                    <!--</at-menu>-->
+                <span class="row no-gutters d-flex justify-content-center mb-3 bg-white rounded pt-3 pb-3">
+                    <a href="../../user/letter/settingInfo.html" class="text-muted">编辑个人资料</a>
+                </span>
+            </div>
+
+            <!-----右边微博展示------>
+            <div class="right_box col-md-8 mb-3 no-gutters">
+                <div class="row nav_bar flex-center no-gutters">我的微博</div>
+
+                <div id="content_show">
+                    <!---------------一个blogItem-------------->
+                    <div id="blog_content" class="rounded mb-3 bg-white" v-for="(item,i) in blogInfoList">
+                        <!---------------控制头-------------->
+                        <div class="row justify-content-between">
+                            <div class="media d-flex align-items-center m-1 mb-3 p-2 col-md-7">
+                                <div class="media-left mr-2">
+                                    <a @click="jumpPagePerson(item.userId)" class="d-block d-flex" style="width: 80px;height: 80px">
+                                        <img :src="item.avatarUrl" alt="用户头像" class="media-object rounded-circle img-fluid img-thumbnail m-0">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <a style="font-size: 20px" class="mb-0" @click="jumpPagePerson(item.userId)" v-cloak>
+                                        {{item.userName}}</a>
+                                    <p class="text-muted mb-0" v-cloak>{{item.createTime}}</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 mt-md-3 mr-3" v-if="item.isRepost == 0">
+                                <span class="badge badge-pill badge-success mb-2">原创</span>
+                                <a class="badge badge-info text-white" @click="toCircle(item.circleId)" v-cloak>{{item.circleName}}</a>
+                            </div>
+                            <div class="col-md-3 mt-md-3 mr-3" v-if="item.isRepost == 1">
+                                <span class="badge badge-pill badge-warning mb-2">转载</span>
+                                <a class="badge badge-info text-white" @click="toCircle(item.circleId)"  v-cloak>{{item.circleName}}</a>
+                            </div>
+                        </div>
+
+                        <!-----------原创展示----------->
+                        <div v-if="item.isRepost == 0" class="p-3">
+                            <p class="text-wrap mt-n3" style="font-size: 16px" v-cloak>{{item.content}}</p>
+                            <!--------发图片--------->
+                            <div class="row" v-if="item.type == 1">
+                                <div v-for="(urlList,i) in item.resourceList" class="col-4 d-flex align-items-stretch">
+                                    <img :src="urlList" class="img-fluid m-1">
+                                </div>
+                            </div>
+
+                            <!----------发视频--------->
+                            <div class="row" v-if="item.type == 2">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="embed-responsive-item" :src="item.resourceList[0]" allowfullscreen></iframe>
+                                </div>
+                                <!--<div class="col-md- col-md-offset-3">-->
+                                <!--<video :src="item.resourceList[0]" controls="controls" width="100%" height="260px">-->
+                                <!--您的浏览器不支持播放该视频！-->
+                                <!--</video>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-3"></div>-->
+                            </div>
+                        </div>
+
+                        <!-----------转载展示----------->
+                        <div v-if="item.isRepost == 1" class="p-3">
+                            <p class="text-wrap mt-n3" style="font-size: 16px" v-cloak>{{item.content}}</p>
+                            <!-----------原创展示----------->
+                            <div v-if="item.blogInfo.isRepost == 0" class="original_box rounded-lg p-3">
+                                <div class="row justify-content-between">
+                                    <div class="media d-flex align-items-center m-1 mb-3 p-2 col-md-7">
+                                        <div class="media-left mr-2">
+                                            <a @click="jumpPagePerson(item.blogInfo.userId)" class="d-block d-flex" style="width: 60px;height: 60px">
+                                                <img :src="item.blogInfo.avatarUrl" alt="用户头像" class="media-object rounded-circle img-fluid">
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a style="font-size: 18px" class="mb-0" @click="jumpPagePerson(item.blogInfo.userId)" v-cloak>
+                                                {{item.blogInfo.userName}}</a>
+                                            <p class="text-muted mb-0" v-cloak>{{item.blogInfo.createTime}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--------发图片--------->
+                                <div class="row" v-if="item.blogInfo.type == 1">
+                                    <div v-for="(urlList,i) in item.blogInfo.resourceList" class="col-4 d-flex align-items-stretch">
+                                        <img :src="urlList" class="img-fluid m-1" @click="showImg(i)">
+                                        <!--<img :src="urlList" class="img-fluid" data-toggle="modal" data-target="#exampleModal">-->
+                                    </div>
+                                </div>
+
+                                <!----------发视频--------->
+                                <div class="row" v-if="item.blogInfo.type == 2">
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" :src="item.blogInfo.resourceList[0]" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-----------评论点赞相关------------>
+                        <div class="row ml-n2 mr-n2 rounded-bottom" style="border: 2px solid #dee2e6">
+                            <div style="width: 20%" class="border-right text-center">
+                                <a class="icon icon-share" @click.prevent="showForward(i)">转发</a>
+                            </div>
+                            <div style="width: 20%" class="border-right text-center">
+                                <a class="icon icon-edit" @click.prevent="showReview(i,item.blogId)" v-cloak>{{item.commentNum}}</a>
+                            </div>
+                            <div style="width: 20%" class="border-right text-center">
+                                <a class="icon icon-thumbs-up" @click.prevent="like($event,item.blogId)" v-cloak>{{item.likeNum}}</a>
+                            </div>
+                            <div style="width: 40%" class="text-center">
+                                <span v-cloak>{{item.createTime}}</span>
+                            </div>
+                        </div>
+
+                        <div :class=['addForward',selected==i?'':'hidden']>
+                            <div class="input-group m-2">
+                                <input type="text" class="forwardInput form-control" v-model="forwardInput">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-info btn-sm mt-2" @click="forwardBlog($event,item.blogId)">转发</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div :class=['addForward',reviewed==i?'':'hidden']>
+                            <div class="input-group m-1">
+                                <input type="text" class="forwardInput form-control" v-model="forwardInput">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-info btn-sm mt-2" @click="reviedBlog($event,item.blogId)">发布评论</button>
+                                </div>
+                            </div>
+
+                            <!----------commentList评论不为空---------->
+                            <div v-if="commentList != ''" class="border">
+                                <div v-for="comment in commentList" class="border-bottom comment">
+                                    <div class="row mr-0 ml-0 flex-nowrap">
+                                        <img :src="comment.avatarUrl" class="rounded-circle m-2" width="35" height="35">
+                                        <p class="text-muted mt-3" v-cloak><b>{{comment.userName}}:</b>{{comment.commentContent}}</p>
+                                    </div>
+                                    <div class="row d-flex flex-row-reverse text-muted mt-n3">
+                                        <p class="mb-0 mr-3" v-text="comment.commentTime"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!----------commentList评论为空---------->
+                            <div v-if="commentList == ''" class="row d-flex justify-content-center">
+                                <h6 class="text-muted">还没有人评论呢，快来评论吧！</h6>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="row">
-                    <div class="left_box col-md-7">
-                        <div class="left_top_box flex-center">
-                            <at-breadcrumb separator="" class="row sel_list">
-                                <at-breadcrumb-item href="../../user/user-center/attention.html" class="col-md-offset-1" v-cloak>{{userInfo.bloggerNum}} 关注</at-breadcrumb-item>
-                                <div class="box_29X1"></div>
-                                <at-breadcrumb-item href="../../user/user-center/fans.html" class="col-md-offset-1" v-cloak>{{userInfo.fansNum}} 粉丝</at-breadcrumb-item>
-                                <div class="box_29X1"></div>
-                                <at-breadcrumb-item href="../../user/user-center/personal.html" class="col-md-offset-1" v-cloak>{{userInfo.blogNum}} 微博</at-breadcrumb-item>
-                            </at-breadcrumb>
-                        </div>
-                        <div class="person_info flex-center">
-                            <span><a href="../../user/letter/settingInfo.html">编辑个人资料</a></span>
-                        </div>
-                    </div>
-                    <div class="right_box col-md-17">
-                        <div class="row nav_bar flex-center">我的微博</div>
-
-                        <div class="personal_card" v-for="(item,i) in myBlogList">
-                            <div class="personal_box row">
-                                <img :src="item.avatarUrl" class="user_img">
-                                <div class="user_info">
-                                    <span class="user_nickname" v-cloak>{{item.userName}}</span><br>
-                                    <span class="publish_date" v-cloak>{{item.createTime}}</span>
-                                </div>
-                                <at-tag color="warning" v-cloak>{{item.circleName}}</at-tag>
-                            </div>
-                            <!-- 原创展示 -->
-                            <div v-if="item.isRepost == 0">
-                                <div class="row">
-                                    <div class="col-md-18 col-md-offset-3">
-                                        <span v-html="item.content"></span>
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                </div>
-                                <div class="row" v-if="item.type == 1">
-                                    <div class="col-md-18 col-md-offset-3">
-                                        <div class="img_list" v-for="(imgUrl,i) in item.resourceList">
-                                            <img :src="imgUrl" class="publish_img">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                </div>
-                                <div class="row" v-if="item.type == 2">
-                                    <div class="col-md-18 col-md-offset-3">
-                                        <video :src="item.resourceList[0]" controls="controls" width="100%" height="260px">您的浏览器不支持播放该视频！</video>
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                </div>
-                            </div>
-
-                            <!-- 转载展示 -->
-                            <div v-if="item.isRepost == 1">
-                                <div class="row">
-                                    <div class="col-md-18 col-md-offset-3">
-                                        <span v-html="item.content"></span>
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                </div>
-
-                                <div v-if="item.blogInfo.isRepost == 0">
-                                    <div class="col-md-18 col-md-offset-3" style="background-color: #ECECEC">
-                                        <div class="personal_box row">
-                                            <img :src="item.blogInfo.avatarUrl" class="user_img">
-                                            <div class="user_info">
-                                                <span class="user_nickname" v-cloak>{{item.blogInfo.userName}}</span><br>
-                                                <span class="publish_date" v-cloak>{{item.blogInfo.createTime}}</span>
-                                            </div>
-                                            <at-tag color="warning" v-cloak>{{item.blogInfo.circleName}}</at-tag>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-18 col-md-offset-3">
-                                                <span v-html="item.blogInfo.content"></span>
-                                            </div>
-                                            <div class="col-md-3"></div>
-                                        </div>
-                                        <div class="row" v-if="item.blogInfo.type == 1">
-                                            <div class="col-md-19 col-md-offset-3">
-                                                <div class="img_list" v-for="(imgUrl,i) in item.blogInfo.resourceList">
-                                                    <img :src="imgUrl" class="publish_img">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3"></div>
-                                        </div>
-                                        <div class="row" v-if="item.blogInfo.type == 2">
-                                            <div class="col-md-18 col-md-offset-3">
-                                                <video :src="item.blogInfo.resourceList[0]" controls="controls" width="100%" height="260px">您的浏览器不支持播放该视频！</video>
-                                            </div>
-                                            <div class="col-md-3"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                </div>
-                            </div>
-
-                            <div class="box_49X1"></div> <!--分隔线-->
-                            <div class="row flex-center box_19X1">
-                                <div class="col-md-8">
-                                    <a class="icon icon-external-link" @click.prevent="showForward(i)">转发</a>
-                                </div>
-                                <div class="col-md-8">
-                                    <a class="icon icon-message-square" @click.prevent="showReview(i,item.blogId)" v-text="item.commentNum"></a>
-                                </div>
-                                <div class="col-md-8">
-                                    <a class="icon icon-thumbs-up" @click.prevent="like($event,item.blogId)" v-cloak>{{item.likeNum}}</a>
-                                </div>
-                            </div>
-
-                            <div :class=['row','addForward',selected==i?'':'hidden']>
-                                <div class="col-md-19 col-md-offset-1">
-                                    <input type="text" class="forwardInput" v-model="forwardInput">
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="button" class="forwardButton" value="转发" @click="forwardBlog($event,item.blogId)">
-                                </div>
-                            </div>
-
-                            <div :class=['addForward',reviewed==i?'':'hidden']>
-                                <div class="row">
-                                    <div class="col-md-19 col-md-offset-1">
-                                        <input type="text" class="forwardInput" v-model="forwardInput">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="button" class="forwardButton" value="发布评论" @click="reviedBlog($event,item.blogId)">
-                                    </div>
-                                </div>
-
-                                <div v-if="commentList != ''">
-                                    <div v-for="comment in commentList">
-                                        <div class="row">
-                                            <div class="col-md-2 col-md-offset-1 commentShow">
-                                                <img :src="comment.avatarUrl" class="commentHeader">
-                                            </div>
-                                            <div class="col-md-13 commentShow">
-                                                <span class="black commenter" v-cloak>{{comment.userName}}:</span>
-                                                <span class="commenter" v-text="comment.commentContent"></span>
-                                            </div>
-                                            <div class="col-md-7 commentShow" v-cloak>{{comment.commentTime}}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div v-if="commentList == ''" class="row">
-                                    <div class="col-md-16 col-md-offset-8">
-                                        <span style="font-size: 18px">还没有人评论呢，快来评论吧！</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="pagination flex-center">
-                            <input type="button" class="page-btn" value="上一页" @click="gotoPrePage()">
-                            <input type="button" class="page-btn" value="下一页" @click="gotoNextPage()">
-                        </div>
-                    </div>
+                <div class="pagination flex-center">
+                    <input type="button" class="page-btn" value="上一页" @click="gotoPrePage()">
+                    <input type="button" class="page-btn" value="下一页" @click="gotoNextPage()">
                 </div>
 
             </div>
-            <div class="col-md-3"></div>
         </div>
     </div>
-</div>
+</section>
+
+<!---------------尾部---------------->
+<footer id="circle_footer">
+    <!--—------------上半部分------------->
+    <div id="top_part" class="container bg-white mt-3">
+        <div class="row justify-content-between">
+            <div class="d-none d-md-none d-lg-block">
+                <h6>圈圈精彩</h6>
+                <div class="row no-gutters">
+                    <ul class="list-unstyled">
+                        <li><a href="">热门圈子</a></li>
+                        <li><a href="">名人堂</a></li>
+                        <li><a href="">微相册</a></li>
+                        <li><a href="">微指数</a></li>
+                    </ul>
+                    <ul class="list-unstyled ml-3">
+                        <li><a href="">热门话题</a></li>
+                        <li><a href="">圈圈会员</a></li>
+                        <li><a href="">微游戏</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="d-none d-sm-none d-md-block">
+                <h6>手机玩圈圈</h6>
+                <div class="row no-gutters">
+                    <img src="../../node_modules/images/twocode.PNG" width="80">
+                    <a href="" class="ml-2">扫码下载，更多版本<br>戳这里</a>
+                </div>
+            </div>
+
+            <div class="d-none d-sm-block">
+                <h6>认证&合作</h6>
+                <div class="row no-gutters">
+                    <ul class="list-unstyled">
+                        <li><a href="">申请认证</a></li>
+                        <li><a href="">企业圈圈</a></li>
+                        <li><a href="">圈子标识</a></li>
+                        <li><a href="">开放平台</a></li>
+                    </ul>
+                    <ul class="list-unstyled ml-3">
+                        <li><a href="">链接网站</a></li>
+                        <li><a href="">广告服务</a></li>
+                        <li><a href="">广告代理商</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--问题：最小屏幕上两个li在一行排列-->
+            <div class="d-none d-sm-block">
+                <h6>圈圈帮助</h6>
+                <div class="row no-gutters">
+                    <ul class="list-unstyled">
+                        <li class="col-xs-6"><a href="">常见问题</a></li>
+                        <li class="col-xs-6"><a href="">自助服务</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--—------------下半部分------------->
+    <div id="bottom_part">
+        <div class="container d-none d-sm-block">
+            <p class="row pt-3 justify-content-center">
+                <a>圈圈客服</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>客服热线4000-960-960</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>意见反馈</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>舞弊举报</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>About Circle</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>开放平台</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>微博招聘</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>新浪网导航</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>投诉处理大厅</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>DMCA投诉/Report</a>
+            </p>
+            <p class="row justify-content-center">
+                <a>京ICP证100780号</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>互联网药品服务许可证</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>京网文[2017]10291-1172号</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>京ICP备12002058号</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>增值电信业务经营许可证B2-20140447</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>乙测资字1111805</a>
+            </p>
+            <p class="row justify-content-center">
+                <a>广播电视节目制作经营许可证（京）字第04005号</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>Copyright © 2009-2019 WEIBO </span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>北京微梦创科网络技术有限公司</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a><img src="../../node_modules/images/badge.png">京公网安备11000002000019号</a>
+            </p>
+        </div>
+    </div>
+    <!--<div class="container">-->
+    <!--<iframe id="footerFrame" name="footerFrame" width="100%" src="../../footer.html" frameborder="0" scrolling="no"></iframe>-->
+    <!--</div>-->
+</footer>
 </body>
+<!--导航条搜索登录功能vm1-->
 <script>
-    //导航条搜索登录功能
-    let vm = new Vue({
+    let vm1 = new Vue({
         el: '#circle_navbar',
         data: {
             inputValue: '',
@@ -356,11 +452,10 @@
 </script>
 <script>
     var vm = new Vue({
-        el: '#app1',
+        el: '#personal_box',
         data:{
-            inputValue4:'',
             userInfo:{},
-            myBlogList:[],
+            blogInfoList:[],
             commentList:[],
             forwardInput:'',
             selected:'ll',
@@ -368,16 +463,6 @@
             pageNum:'1',
         },
         methods: {
-            searchBlog(){
-                if (this.inputValue4==''){
-                    layui.use('layer', function () {
-                        var layer = layui.layer;
-                        layer.msg("搜索不能为空");
-                    })
-                }else {
-                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue4
-                }
-            },
             showForward:function(i){
                 if(this.selected != i) {
                     this.selected = i;
@@ -513,7 +598,7 @@
                         },
                         success:function (result) {
                             if(result.code == 0){
-                                vm.myBlogList = result.data;
+                                vm.blogInfoList = result.data;
                             }
                         }
                     })
@@ -535,7 +620,7 @@
                         },
                         success: function (result) {
                             if (result.code == 0) {
-                                vm.myBlogList = result.data;
+                                vm.blogInfoList = result.data;
                             }
                         },error:function () {
                         }
@@ -578,7 +663,7 @@
                 },
                 success:function (result) {
                     if(result.code == 0){
-                        vm.myBlogList = result.data;
+                        vm.blogInfoList = result.data;
                     }
                 }
             })
