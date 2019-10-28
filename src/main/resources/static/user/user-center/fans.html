@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>我的粉丝页</title>
     <link rel="stylesheet" href="../../node_modules/css/navbar.css">
-    <link rel="stylesheet" href="../../node_modules/css/footer.css">
     <link rel="stylesheet" href="../../node_modules/css/fans.css">
     <link rel="stylesheet" href="http://ico.z01.com/zico.min.css">
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
@@ -109,55 +108,45 @@
     <!--</div>-->
 </header>
 
-<div id="app1" class="container">
+<section id="personal_box" class="container-fluid p-0 d-flex justify-content-center">
+    <div class="col-md-9" id="setting_info">
 
-    <div class="create-margin">
-        <div class="row circle_frame">
-            <div class="col-md-3"></div>
-            <div class="col-md-18">
+        <div class="first_box flex-center">
+            <img :src="src" class="icon-head"><br>
+            <span class="nick_name" v-cloak>{{userName}}</span>
+        </div>
 
-                <div class="first_box flex-center">
-                    <img :src="src" class="icon-head"><br>
-                    <span class="nick_name" v-cloak>{{userName}}</span><br>
-                </div>
+        <div class="second_box row flex-center no-gutters">我的关注页</div>
 
-                <div class="row second_box flex-center">我的粉丝页</div>
+        <div class="no-gutters mt-3 shadow p-3 bg-white">
+            <b class="row pb-2 border-bottom text-muted no-gutters" v-cloak>全部粉丝&nbsp;{{fansNum}}</b>
 
-                <div class="third_box">
-                    <div class="row">
-                        <div class="text_481X1" v-cloak>粉丝&nbsp;{{fansNum}}</div>
+            <div class="fans_card" v-for="(item,index) in fansList">
+                <div class="personal_box row">
+                    <img :src="item.avatarUrl" class="user_img">
+                    <div class="user_info col-5">
+                        <p class="user_nickname mb-1" v-cloak>{{item.fansName}}</p>
+                        <p class="mb-1" v-cloak>生日 {{item.birthday}}</p>
+                        <p class="mb-1" v-cloak>地址 {{item.address}}</p>
+                        <p class="mb-1" v-cloak>性别 {{item.sex}}</p>
+                        <p class="mb-1" v-cloak>感情状况 {{item.isSingle}}</p>
                     </div>
-                    <div class="box_480X1"></div>  <!--水平分隔线-->
-
-                    <div class="fans_card" v-for="(item,index) in fansList">
-                        <div class="personal_box row">
-                            <img :src="item.avatarUrl" class="user_img">
-                            <div class="user_info col-md-15">
-                                <p class="user_nickname" v-cloak>{{item.fansName}}</p>
-                                <p class="user_item" v-cloak>生日 {{item.birthday}}</p>
-                                <p class="user_item" v-cloak>地址 {{item.address}}</p>
-                                <p class="user_item" v-cloak>性别 {{item.sex}}</p>
-                                <p class="user_item" v-cloak>感情状况 {{item.isSingle}}</p>
-                            </div>
-                            <div class="focus_btn col-md-2">
-                                <a id="sendS" @click = "sendSession(index)"><at-button type="warning" >私信</at-button></a>
-                            </div>
-                            <div class="concern_btn col-md-3">
-                                <a id="tag_box1" @click="addConcernOrSub($event,item.fansId)" v-cloak>{{item.flag}}</a>
-                            </div>
-                        </div>
+                    <div class="col-3 col-md-5 d-md-flex justify-content-md-end align-items-md-start p-md-3">
+                        <button type="button" class="btn btn-warning text-white p-1 session_btn" @click="sendSession(index)"
+                                style="font-size: 14px">私信</button>
+                        <button type="button" class="btn btn-secondary p-1 cancel_btn ml-md-3"
+                                @click="addConcernOrSub($event,item.bloggerId)" style="font-size: 14px" v-cloak>{{item.flag}}</button>
                     </div>
                 </div>
-
             </div>
-            <div class="col-md-3"></div>
         </div>
     </div>
-</div>
+</section>
+
 </body>
+<!--导航条搜索登录功能vm1-->
 <script>
-    //导航条搜索登录功能
-    let vm = new Vue({
+    let vm1 = new Vue({
         el: '#circle_navbar',
         data: {
             inputValue: '',
@@ -218,11 +207,11 @@
 
     });
 </script>
+
 <script>
     var vm = new Vue({
-        el: '#app1',
+        el: '#personal_box',
         data:{
-            inputValue4:'',
             src:'',
             userName:'',
             fansNum: '',
@@ -231,16 +220,6 @@
             pageSize:'1000',
         },
         methods:{
-            searchBlog(){
-                if (this.inputValue4==''){
-                    layui.use('layer', function () {
-                        var layer = layui.layer;
-                        layer.msg("搜索不能为空");
-                    })
-                }else {
-                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue4
-                }
-            },
             sendSession:function (index) {
                 var userName = vm.fansList[index].fansName;
                 window.location.href = "../../user/letter/session.html?userName=" + userName;

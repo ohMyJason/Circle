@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>我的关注页</title>
     <link rel="stylesheet" href="../../node_modules/css/navbar.css">
-    <link rel="stylesheet" href="../../node_modules/css/attention.css">
+    <link rel="stylesheet" href="../../node_modules/css/personal.css">
     <link rel="stylesheet" href="http://ico.z01.com/zico.min.css">
     <link rel="stylesheet" href="../../node_modules/at-ui-style/css/at.css">
     <link rel="stylesheet" href="../../node_modules/bootstrap/css/bootstrap.css">
@@ -17,6 +17,29 @@
     <script src="../../node_modules/js/jquery-cookie.js"></script>
     <script src="../../node_modules/bootstrap/js/bootstrap.js"></script>
     <style>
+        /*我的主页、我的相册*/
+        .second_box{
+            height: 56px;
+            line-height: 56px;
+            color: #397F7C;
+            font-size: 18px;
+            font-weight: bold;
+            font-family: 微软雅黑;
+            letter-spacing: 8px;
+            background-color: white;
+        }
+
+        .member_avatar{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #CCCCCC;
+        }
+
+        .member_word{
+            letter-spacing: 2px;
+        }
+
         [v-cloak] {
             display: none;
         }
@@ -107,55 +130,48 @@
     <!--</div>-->
 </header>
 
-<div id="app1" class="container">
+<section id="personal_box" class="container-fluid p-0 d-flex justify-content-center">
+    <div class="col-md-9" id="setting_info">
 
-    <div class="create-margin">
-        <div class="row circle_frame">
-            <div class="col-md-3"></div>
-            <div class="col-md-18">
+        <div class="first_box flex-center">
+            <img :src="src" class="icon-head"><br>
+            <span class="nick_name" v-cloak>{{userName}}</span>
+        </div>
 
-                <div class="first_box flex-center">
-                    <img :src="src" class="icon-head"><br>
-                    <span class="nick_name" v-cloak>{{userName}}</span><br>
-                </div>
+        <div class="second_box row flex-center no-gutters">我的关注页</div>
 
-                <div class="row second_box flex-center">我的关注页</div>
+        <div class="no-gutters mt-3 shadow p-3 bg-white">
+            <b class="row pb-2 border-bottom text-muted no-gutters" v-cloak>全部关注&nbsp;{{attentionNum}}</b>
 
-                <div class="third_box">
-                    <div class="row">
-                        <div class="text_481X1" v-cloak>全部关注&nbsp;{{attentionNum}}</div>
-                    </div>
-                    <div class="box_480X1"></div>  <!--水平分隔线-->
-
-                    <div class="member_box row">
-                        <ul class="member_ul">
-                            <li class="member_li S_bg1 row" v-for="(item,index) in memberList">
-                                <img :src="item.avatarUrl" alt="关注用户头像" class="member_avatar">
-                                <div class="box_111X1"></div>
-                                <div class="member_info">
-                                    <span class="text_96X1">{{item.bloggerName}}</span>
-                                    <p class="member_attention icon icon-check">已关注</p>
-                                    <p class="member_word">生日：{{item.birthday}}</p>
-                                    <p class="member_word">地址：{{item.address}}</p>
-                                    <p class="member_word">性别：{{item.sex}}</p>
-                                    <p class="member_word">感情状况：{{item.isSingle}}</p>
-                                </div>
-                                <a id = "sendSS" @click="sendSession(index)"><at-button type="primary" class="session_btn">私信</at-button></a>
-                                <a id="cancel_btn" @click="addConcernOrSub($event,item.bloggerId)">取消关注</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
+            <div class="no-gutters">
+                <ul class="row d-flex justify-content-between no-gutters pr-4 pr-md-0">
+                    <li class="bg-light col-12 col-md-5 m-3 d-flex align-items-center pl-2" v-for="(item,index) in memberList">
+                        <img :src="item.avatarUrl" alt="关注用户头像" class="member_avatar">
+                        <div class="border-left m-3 pl-2">
+                            <b>{{item.bloggerName}}</b>
+                            <p class="mt-2 mb-2 icon icon-check">已关注</p>
+                            <p class="member_word mb-0">生日：{{item.birthday}}</p>
+                            <p class="member_word mb-0">地址：{{item.address}}</p>
+                            <p class="member_word mb-0">性别：{{item.sex}}</p>
+                            <p class="member_word mb-0">感情状况：{{item.isSingle}}</p>
+                        </div>
+                        <div class="d-flex flex-column float-right">
+                            <button type="button" class="btn btn-primary p-0 session_btn" @click="sendSession(index)"
+                                    style="font-size: 14px">私信</button>
+                            <button type="button" class="btn btn-secondary p-1 mt-3 cancel_btn"
+                                    @click="addConcernOrSub($event,item.bloggerId)" style="font-size: 14px">取消关注</button>
+                        </div>
+                    </li>
+                </ul>
             </div>
-            <div class="col-md-3"></div>
         </div>
     </div>
-</div>
+</section>
+
 </body>
+<!--导航条搜索登录功能vm1-->
 <script>
-    //导航条搜索登录功能
-    let vm = new Vue({
+    let vm1 = new Vue({
         el: '#circle_navbar',
         data: {
             inputValue: '',
@@ -218,9 +234,8 @@
 </script>
 <script>
     var vm = new Vue({
-        el: '#app1',
+        el: '#personal_box',
         data:{
-            inputValue4:'',
             src:'',
             userName:'',
             attentionNum:'',
@@ -229,16 +244,6 @@
             pageSize:'1000'
         },
         methods:{
-            searchBlog(){
-                if (this.inputValue4==''){
-                    layui.use('layer', function () {
-                        var layer = layui.layer;
-                        layer.msg("搜索不能为空");
-                    })
-                }else {
-                    window.location.href = "/user/blog/blog.html?content=" + this.inputValue4
-                }
-            },
             sendSession:function(index){
                 var userName = vm.memberList[index].bloggerName;
                 window.location.href="/user/letter/session.html?userName="+ userName;
@@ -311,7 +316,7 @@
                         vm.attentionNum = result.count;
                         for(i=0;i<result.count;i++){
                             vm.memberList[i] = result.data[i];
-                            console.log(result.data[i].bloggerId)
+                            // console.log(result.data[i].bloggerId)
                             //判断性别
                             if(result.data[i].sex == 0){
                                 vm.memberList[i].sex = "保密";
