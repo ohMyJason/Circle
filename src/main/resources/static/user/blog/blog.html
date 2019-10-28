@@ -17,10 +17,6 @@
     <script src="../../node_modules/layui/layui.js"></script>
     <script src="../../node_modules/js/jquery-cookie.js"></script>
     <script src="../../node_modules/bootstrap/js/bootstrap.js"></script>
-    <script src="../../node_modules/at-ui/dist/at.js"></script>
-
-    <link rel="stylesheet" href="../../node_modules/css/circle.css">
-    <link rel="stylesheet" href="../../node_modules/css/circleRank.css">
     <style>
         [v-cloak] {
             display: none;
@@ -191,6 +187,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <p class="text-wrap mt-n3" style="font-size: 16px" v-cloak>{{item.blogInfo.content}}</p>
                                 <!--------发图片--------->
                                 <div class="row" v-if="item.blogInfo.type == 1">
                                     <div v-for="(urlList,i) in item.blogInfo.resourceList" class="col-4 d-flex align-items-stretch">
@@ -226,7 +223,7 @@
 
                         <div :class=['addForward',selected==i?'':'hidden']>
                             <div class="input-group m-2">
-                                <input type="text" class="forwardInput form-control" v-model="forwardInput">
+                                <input type="text" class="forwardInput form-control mt-2" v-model="forwardInput">
                                 <div class="input-group-append" style="height: 38px;margin-top: 10px">
                                     <button type="button" class="btn btn-info btn-sm" @click="forwardBlog($event,item.blogId)">转发</button>
                                 </div>
@@ -234,7 +231,7 @@
                         </div>
                         <div :class=['addForward',reviewed==i?'':'hidden']>
                             <div class="input-group m-1">
-                                <input type="text" class="forwardInput form-control" v-model="forwardInput">
+                                <input type="text" class="forwardInput form-control mt-2" v-model="forwardInput">
                                 <div class="input-group-append" style="height: 38px;margin-top: 10px">
                                     <button type="button" class="btn btn-info btn-sm" @click="reviedBlog($event,item.blogId)">发布评论</button>
                                 </div>
@@ -282,6 +279,10 @@
             selected: 'll',
             reviewed:'ll',
         },methods:{
+            toCircle(circleId) {
+                $.cookie("circleId", circleId, {path: "/user/circle/circle.html"});
+                window.location.href = "/user/circle/circle.html";
+            },
             //登录
             login:function () {
                 if (this.loginName==''){
@@ -470,22 +471,22 @@
                     }
                 })
             },
-            jumpPagePerson(userId){
-                if ($.cookie('token') == null){
-                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                    window.location.href="../user-center/personals.html";
-                }else{
+            jumpPagePerson(userId) {
+                if ($.cookie('token') == null) {
+                    // $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                    window.location.href = "../user-center/personals.html?userId=" + userId;
+                } else {
                     $.ajax({
-                        url:"/test/testGetUserIdByToken",
-                        type:"post",
-                        headers:{'token':$.cookie("token")},
-                        success:function (result) {
-                            if(result.code == 0){
-                                if(userId == result.data){
-                                    window.location.href="../user-center/personal.html";
-                                }else {
-                                    $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
-                                    window.location.href="../user-center/personals.html";
+                        url: "/test/testGetUserIdByToken",
+                        type: "post",
+                        headers: {'token': $.cookie("token")},
+                        success: function (result) {
+                            if (result.code == 0) {
+                                if (userId == result.data) {
+                                    window.location.href = "../user-center/personal.html";
+                                } else {
+                                    // $.cookie("userId", userId, {path: '/user/user-center/personals.html'});
+                                    window.location.href = "../user-center/personals.html?userId="+userId;
                                 }
                             }
                         }

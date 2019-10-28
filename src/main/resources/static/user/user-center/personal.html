@@ -20,6 +20,32 @@
     <script src="../../node_modules/bootstrap/js/bootstrap.js"></script>
     <script src="../../node_modules/at-ui/dist/at.js"></script>
     <style>
+        /*全部、热门、更多的导航条*/
+        .nav_bar{
+            height: 38px;
+            margin-top: 15px;
+            border-radius: 5px;
+            background-color: #ECECEC;
+            line-height: 38px;
+            color: #5B89F8;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: "Microsoft YaHei";
+            letter-spacing: 18px;
+        }
+
+        /*我的主页、我的相册*/
+        .second_box{
+            height: 56px;
+            line-height: 56px;
+            color: #999999;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: "Microsoft YaHei";
+            letter-spacing: 5px;
+            background-color: white;
+        }
+
         [v-cloak] {
             display: none;
         }
@@ -133,7 +159,7 @@
                         <p class="text-center mb-0"><a href="../user-center/personal.html" class="text-muted">微博</a></p></div>
                 </div>
 
-                <span class="row no-gutters d-flex justify-content-center mb-3 bg-white rounded pt-3 pb-3">
+                <span class="row no-gutters d-flex justify-content-center bg-white rounded pt-3 pb-3">
                     <a href="../../user/letter/settingInfo.html" class="text-muted">编辑个人资料</a>
                 </span>
             </div>
@@ -149,12 +175,12 @@
                         <div class="row justify-content-between">
                             <div class="media d-flex align-items-center m-1 mb-3 p-2 col-md-7">
                                 <div class="media-left mr-2">
-                                    <a @click="jumpPagePerson(item.userId)" class="d-block d-flex" style="width: 80px;height: 80px">
+                                    <a class="d-block d-flex" style="width: 80px;height: 80px">
                                         <img :src="item.avatarUrl" alt="用户头像" class="media-object rounded-circle img-fluid img-thumbnail m-0">
                                     </a>
                                 </div>
                                 <div class="media-body">
-                                    <a style="font-size: 20px" class="mb-0" @click="jumpPagePerson(item.userId)" v-cloak>
+                                    <a style="font-size: 20px" class="mb-0" v-cloak>
                                         {{item.userName}}</a>
                                     <p class="text-muted mb-0" v-cloak>{{item.createTime}}</p>
                                 </div>
@@ -202,17 +228,18 @@
                                 <div class="row justify-content-between">
                                     <div class="media d-flex align-items-center m-1 mb-3 p-2 col-md-7">
                                         <div class="media-left mr-2">
-                                            <a @click="jumpPagePerson(item.blogInfo.userId)" class="d-block d-flex" style="width: 60px;height: 60px">
+                                            <a class="d-block d-flex" style="width: 60px;height: 60px">
                                                 <img :src="item.blogInfo.avatarUrl" alt="用户头像" class="media-object rounded-circle img-fluid">
                                             </a>
                                         </div>
                                         <div class="media-body">
-                                            <a style="font-size: 18px" class="mb-0" @click="jumpPagePerson(item.blogInfo.userId)" v-cloak>
+                                            <a style="font-size: 18px" class="mb-0" v-cloak>
                                                 {{item.blogInfo.userName}}</a>
                                             <p class="text-muted mb-0" v-cloak>{{item.blogInfo.createTime}}</p>
                                         </div>
                                     </div>
                                 </div>
+                                <p class="text-wrap mt-n3" style="font-size: 16px" v-cloak>{{item.blogInfo.content}}</p>
                                 <!--------发图片--------->
                                 <div class="row" v-if="item.blogInfo.type == 1">
                                     <div v-for="(urlList,i) in item.blogInfo.resourceList" class="col-4 d-flex align-items-stretch">
@@ -236,7 +263,7 @@
                                 <a class="icon icon-share" @click.prevent="showForward(i)">转发</a>
                             </div>
                             <div style="width: 20%" class="border-right text-center">
-                                <a class="icon icon-edit" @click.prevent="showReview(i,item.blogId)" v-cloak>{{item.commentNum}}</a>
+                                <a class="icon icon-message-square" @click.prevent="showReview(i,item.blogId)" v-cloak>{{item.commentNum}}</a>
                             </div>
                             <div style="width: 20%" class="border-right text-center">
                                 <a class="icon icon-thumbs-up" @click.prevent="like($event,item.blogId)" v-cloak>{{item.likeNum}}</a>
@@ -250,7 +277,7 @@
                             <div class="input-group m-2">
                                 <input type="text" class="forwardInput form-control" v-model="forwardInput">
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-info btn-sm mt-2" @click="forwardBlog($event,item.blogId)">转发</button>
+                                    <button type="button" class="btn btn-info btn-sm" @click="forwardBlog($event,item.blogId)">转发</button>
                                 </div>
                             </div>
                         </div>
@@ -258,7 +285,7 @@
                             <div class="input-group m-1">
                                 <input type="text" class="forwardInput form-control" v-model="forwardInput">
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-info btn-sm mt-2" @click="reviedBlog($event,item.blogId)">发布评论</button>
+                                    <button type="button" class="btn btn-info btn-sm" @click="reviedBlog($event,item.blogId)">发布评论</button>
                                 </div>
                             </div>
 
@@ -282,9 +309,9 @@
                     </div>
                 </div>
 
-                <div class="pagination flex-center">
-                    <input type="button" class="page-btn" value="上一页" @click="gotoPrePage()">
-                    <input type="button" class="page-btn" value="下一页" @click="gotoNextPage()">
+                <div class="row d-flex justify-content-center">
+                    <button type="button" class="btn btn-primary mr-5" @click="gotoPrePage()">上一页</button>
+                    <button type="button" class="btn btn-primary" @click="gotoNextPage()">下一页</button>
                 </div>
 
             </div>
@@ -463,6 +490,10 @@
             pageNum:'1',
         },
         methods: {
+            toCircle(circleId) {
+                $.cookie("circleId", circleId, {path: "/user/circle/circle.html"});
+                window.location.href = "/user/circle/circle.html";
+            },
             showForward:function(i){
                 if(this.selected != i) {
                     this.selected = i;

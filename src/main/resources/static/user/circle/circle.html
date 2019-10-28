@@ -116,7 +116,7 @@
             <div class="row d-flex align-items-center">
                 <img src="../../node_modules/images/logo.png" class="img-fluid col-3 col-md-2">
                 <input type="text" class="form-control col-5" v-model="searchVal" placeholder="请输入内容">
-                <button class="btn btn-outline-primary col-2 m-2 pl-0 pr-0" type="button" @click="searchIncircle">圈内搜索</button>
+                <button class="btn btn-outline-primary col-2 m-2 pl-0 pr-0" type="button" @click="searchIncircle" style="font-size: 14px">圈内搜索</button>
                 <h5 class="ml-3">发现身边的事！</h5>
             </div>
 
@@ -160,11 +160,11 @@
 
                         <div class="col-md-3 mt-md-3 mr-3" v-if="item.isRepost == 0">
                             <span class="badge badge-pill badge-success mb-2">原创</span>
-                            <a class="badge badge-info text-white" @click="toCircle(item.circleId)" v-cloak>{{item.circleName}}</a>
+                            <a class="badge badge-info text-white" v-cloak>{{item.circleName}}</a>
                         </div>
                         <div class="col-md-3 mt-md-3 mr-3" v-if="item.isRepost == 1">
                             <span class="badge badge-pill badge-warning mb-2">转载</span>
-                            <a class="badge badge-info text-white" @click="toCircle(item.circleId)"  v-cloak>{{item.circleName}}</a>
+                            <a class="badge badge-info text-white" v-cloak>{{item.circleName}}</a>
                         </div>
                     </div>
 
@@ -205,6 +205,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <p class="text-wrap mt-n3" style="font-size: 16px" v-cloak>{{item.blogInfo.content}}</p>
                             <!--------发图片--------->
                             <div class="row" v-if="item.blogInfo.type == 1">
                                 <div v-for="(urlList,i) in item.blogInfo.resourceList" class="col-4 d-flex align-items-stretch">
