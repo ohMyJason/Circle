@@ -127,7 +127,9 @@
     <div class="container border rounded-lg p-3">
         <div class="row no-gutters">
             <div class="row no-gutters mt-3 mt-md-5 col-md-6 col-12" v-for="(item,i) in circleList">
-                <img :src="item.circleImgUrl" width="80px" height="80px">
+                <a href="circle.html" @click="jumpCircle(item.circleId)">
+                    <img :src="item.circleImgUrl" width="80px" height="80px">
+                </a>
                 <div class="ml-3">
                     <div class="row flex align-items-center no-gutters">
                         <span class="badge badge-danger" v-if="item.userNum > 5">火热</span>

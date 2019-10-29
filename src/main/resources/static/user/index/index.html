@@ -113,7 +113,7 @@
 <section id="circle_content" class="container">
     <div class="row justify-content-between" id="c_box">
         <!----------------左边微博展示部分------------->
-        <div id="left_section" class="col-md-7">
+        <div id="left_section" class="col-md-7 order-1 order-md-0">
             <div id="content_show">
                 <!---------------一个blogItem-------------->
                 <div id="blog_content" class="rounded mb-3" v-for="(item,i) in blogInfoList">
@@ -144,7 +144,7 @@
 
                     <!-----------原创展示----------->
                     <div v-if="item.isRepost == 0" class="p-3">
-                        <p class="text-wrap mt-n3" style="font-size: 16px" v-cloak>{{item.content}}</p>
+                        <p class="text-wrap mt-n3" style="font-size: 16px" v-html="item.content"></p>
                         <!--------发图片--------->
                         <div class="row" v-if="item.type == 1">
                             <div v-for="(urlList,i) in item.resourceList" class="col-4 d-flex align-items-stretch">
@@ -168,7 +168,7 @@
 
                     <!-----------转载展示----------->
                     <div v-if="item.isRepost == 1" class="p-3">
-                        <p class="text-wrap mt-n3" style="font-size: 16px" v-cloak>{{item.content}}</p>
+                        <p class="text-wrap mt-n3" style="font-size: 16px" v-html="item.content"></p>
                         <!-----------原创展示----------->
                         <div v-if="item.blogInfo.isRepost == 0" class="original_box rounded-lg p-3">
                             <div class="row justify-content-between">
@@ -185,7 +185,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-wrap mt-n3" style="font-size: 16px" v-cloak>{{item.blogInfo.content}}</p>
+                            <p class="text-wrap mt-n3" style="font-size: 16px" v-html="item.blogInfo.content"></p>
                             <!--------发图片--------->
                             <div class="row" v-if="item.blogInfo.type == 1">
                                 <div v-for="(urlList,i) in item.blogInfo.resourceList" class="col-4 d-flex align-items-stretch">
@@ -266,7 +266,7 @@
         </div>
 
         <!----------------右边登录部分------------->
-        <div id="right_section" class="col-md-4">
+        <div id="right_section" class="col-md-4 order-0 order-md-1">
             <div id="fixed_box" class="border p-3">
                 <!-----------账号登录----------->
                 <form id="admin_login" class="p-3 mb-4">
@@ -290,7 +290,7 @@
                     </div>
                 </form>
                 <!-----------热门圈子---------->
-                <div id="hot_circle" class="bg-light p-2">
+                <div id="hot_circle" class="bg-light p-2 d-none d-md-block">
                     <h4>热门圈子</h4>
                     <div class="row ml-3 mt-3" v-for="circle in circleList" @click="toCircle(circle.circleId)">
                         <img :src="circle.circleImg" height="50px" width="50px">
@@ -303,7 +303,7 @@
             </div>
         </div>
 
-        <a id="return_top" href="#circle_content"  class="d-inline pl-2 pr-2 text-white rounded-circle position-fixed">
+        <a id="return_top" href="#circle_content"  class="order-2 d-inline pl-2 pr-2 text-white rounded-circle position-fixed">
             <i class="icon icon-chevron-up"></i></a>
     </div>
 </section>
