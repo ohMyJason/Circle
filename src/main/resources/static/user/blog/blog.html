@@ -147,7 +147,7 @@
 
                         <!-----------原创展示----------->
                         <div v-if="item.isRepost == 0" class="p-3">
-                            <p class="text-wrap mt-n3" style="font-size: 16px" v-html="item.content"></p>
+                            <p class="text-wrap mt-n3 mb-0" style="font-size: 16px" v-html="item.content"></p>
                             <!--------发图片--------->
                             <div class="row" v-if="item.type == 1">
                                 <div v-for="(urlList,i) in item.resourceList" class="col-4 d-flex align-items-stretch">
@@ -171,7 +171,7 @@
 
                         <!-----------转载展示----------->
                         <div v-if="item.isRepost == 1" class="p-3">
-                            <p class="text-wrap mt-n3" style="font-size: 16px" v-html="item.content"></p>
+                            <p class="text-wrap mt-n3 mb-0" style="font-size: 16px" v-html="item.content"></p>
                             <!-----------原创展示----------->
                             <div v-if="item.blogInfo.isRepost == 0" class="original_box rounded-lg p-3">
                                 <div class="row justify-content-between">
@@ -188,7 +188,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p class="text-wrap mt-n3" style="font-size: 16px" v-html="item.blogInfo.content"></p>
+                                <p class="text-wrap mt-n3 mb-0" style="font-size: 16px" v-html="item.blogInfo.content"></p>
                                 <!--------发图片--------->
                                 <div class="row" v-if="item.blogInfo.type == 1">
                                     <div v-for="(urlList,i) in item.blogInfo.resourceList" class="col-4 d-flex align-items-stretch">
