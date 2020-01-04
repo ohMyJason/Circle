@@ -8,6 +8,7 @@ import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.LoginService;
 import com.lanqiao.circle.service.TokenService;
 import com.lanqiao.circle.util.CommentUtil;
+import com.lanqiao.circle.util.MailUtil;
 import com.lanqiao.circle.util.Result;
 import com.lanqiao.circle.util.SmsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * @author 刘佳昇
@@ -118,6 +119,23 @@ public class LoginController {
             return Result.createByFailure();
         }
     }
+
+
+
+
+
+    //邮箱发送验证码
+    //发送邮件代码
+    @PostMapping("/sendEmailCode")
+    public Result sendAuthCodeEmail(@RequestParam("email") String email) {
+        String code = MailUtil.sendEmail(email);
+        return Result.createSuccessResult(code);
+
+    }
+
+
+
+
 
 
 
