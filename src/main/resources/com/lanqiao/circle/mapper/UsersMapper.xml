@@ -276,4 +276,10 @@
     from tb_users
     where  phone = #{phone,jdbcType=VARCHAR}
   </select>
+
+  <select id="getUsersByEmail" resultMap="BaseResultMap" parameterType="string">
+    select <include refid="Base_Column_List"/>
+    from  tb_users
+    where email = #{email}
+  </select>
 </mapper>

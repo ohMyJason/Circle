@@ -5,19 +5,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.lanqiao.circle.entity.Users;
 import com.lanqiao.circle.mapper.UsersMapper;
-import com.lanqiao.circle.service.LoginService;
 import com.lanqiao.circle.service.TokenService;
 import com.lanqiao.circle.util.CommentUtil;
 import com.lanqiao.circle.util.MailUtil;
 import com.lanqiao.circle.util.Result;
 import com.lanqiao.circle.util.SmsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @author 刘佳昇
@@ -49,6 +48,9 @@ public class LoginController {
     @PostMapping("/login")
     public Result login(@RequestParam(name = "loginName") String loginName, @RequestParam(name = "password") String password){
         try {
+            if (loginName ==  "无手机号"){
+                return Result.createByFailure("你还没注册手机号哦");
+            }
             Users user = new Users();
             user.setUserName(loginName);
             user.setEmail(loginName);
@@ -79,11 +81,7 @@ public class LoginController {
     public  Result registered(Users user){
         try {
             user.setUserName(user.getPhone());
-            String newPassword = commentUtil.getMd5(user.getPassword());
-            user.setPassword(newPassword);
-            String timeStr1= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            user.setCreateTime(timeStr1);
-            user.setAvatarUrl("//47.98.46.243:8080/userImg/20190915122520_moren.png");
+            user = initUser(user);
 //            if (usersMapper.getUserByUserName(user.getUserName())==null){
             if (usersMapper.getUsersByPhone(user.getPhone())==null){
                 usersMapper.insertSelective(user);
@@ -97,6 +95,42 @@ public class LoginController {
             return Result.createByFailure(e.getMessage());
         }
 
+    }
+    /**
+     * init user 设置密码MD5
+     */
+    private Users initUser(Users user){
+        String newPassword = commentUtil.getMd5(user.getPassword());
+        user.setPassword(newPassword);
+        String timeStr1= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        user.setCreateTime(timeStr1);
+        user.setAvatarUrl("//47.98.46.243:8080/userImg/20190915122520_moren.png");
+        return user;
+    }
+
+    /**
+     * 邮箱注册接口
+     * @param
+     * @return
+     */
+    @PostMapping("/registeredByEmail")
+    public Result registeredByEmail(Users user){
+        try {
+            user.setUserName(user.getEmail());
+            user = initUser(user);
+            if (usersMapper.getUsersByEmail(user.getEmail())==null){
+                user.setPhone("无手机号");
+                usersMapper.insertSelective(user);
+                String token = tokenService.getToken(user);
+                return Result.createSuccessResult(token);
+            }else {
+                return Result.createByFailure("该邮箱注册过");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.createByFailure(e.getMessage());
+        }
     }
 
 

@@ -45,4 +45,6 @@ public interface UsersMapper {
     Users getUserByUserName(String userName);
 
     Users getUsersByPhone(String phone);
+
+    Users getUsersByEmail(String email);
 }

@@ -62,7 +62,7 @@ public class MailUtil {
             activeCode=(int)(Math.random()*10)+activeCode;
         }
         MailUtil.sendMail(email,"圈圈账户邮箱激活",
-                "验证码为"+activeCode);
+                "圈圈邮箱验证码为："+activeCode+"，请不要告知他人");
         return activeCode;
     }
 }
