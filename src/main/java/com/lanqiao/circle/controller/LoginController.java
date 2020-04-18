@@ -64,11 +64,11 @@ public class LoginController {
                 res.put("user",JSON.toJSON(baseUser));
                 return Result.createSuccessResult(res);
             }else {
-                return Result.createByFailure("登录名或密码错误，z");
+                return Result.createByFailure("登录名或密码错误");
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
-            return Result.createByFailure("异常");
+            return Result.createByFailure(e.getMessage());
         }
     }
 
