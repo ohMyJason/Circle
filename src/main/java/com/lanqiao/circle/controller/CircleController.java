@@ -85,6 +85,21 @@ public class CircleController {
         circles.setCircleImgUrl(url);
         return circleService.createCircle(circles);
     }
+    /**
+     * 手机端创建圈子
+     * @param httpServletRequest
+     * @param circles
+     * @return
+     */
+    @UserLoginToken
+    @PostMapping("/mobelCreateCircle")
+    public Result mobelCreateCircle(HttpServletRequest httpServletRequest, String circleImgUrl, Circles circles){
+        int userId = Integer.parseInt(tokenService.getUserId(httpServletRequest));
+        circles.setUserId(userId);
+        String url = circleImgUrl;
+        circles.setCircleImgUrl(url);
+        return circleService.createCircle(circles);
+    }
 
     /**
      * 展示所有圈子

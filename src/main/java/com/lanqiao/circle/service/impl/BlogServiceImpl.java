@@ -176,19 +176,24 @@ public class BlogServiceImpl implements BlogService {
             List<BlogInfo> blogInfoList = new ArrayList<>();
             for (Integer i:list) {
                 BlogInfo blogInfo = usersMapper.getRepostBlog(i);
-                List<String> resoureList = usersMapper.getAllResource(blogInfo.getBlogId());
-                blogInfo.setResourceList(resoureList);
-                if (blogInfo.getIsRepost() != 0) {
-                    BlogInfo blogInfo1 = usersMapper.getRepostBlog(blogInfo.getRepostId());
-                    List<String> resourceList1 = usersMapper.getAllResource(blogInfo1.getBlogId());
-                    blogInfo1.setResourceList(resourceList1);
-                    blogInfo.setBlogInfo(blogInfo1);
+                if (blogInfo!=null){
+                    List<String> resoureList = usersMapper.getAllResource(blogInfo.getBlogId());
+                    blogInfo.setResourceList(resoureList);
+                    if (blogInfo.getIsRepost() != 0) {
+                        BlogInfo blogInfo1 = usersMapper.getRepostBlog(blogInfo.getRepostId());
+                        List<String> resourceList1 = usersMapper.getAllResource(blogInfo1.getBlogId());
+                        blogInfo1.setResourceList(resourceList1);
+                        blogInfo.setBlogInfo(blogInfo1);
+                    }
+                    blogInfoList.add(blogInfo);
                 }
-                blogInfoList.add(blogInfo);
+
             }
+            System.out.println("xxx");
             return Result.createSuccessResult(blogInfoList.size(),blogInfoList);
         }catch (Exception e){
-            return Result.createByFailure();
+            e.printStackTrace();
+            return Result.createByFailure(e.getMessage());
         }
     }
 

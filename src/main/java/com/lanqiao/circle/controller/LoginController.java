@@ -112,6 +112,7 @@ public class LoginController {
      * 邮箱注册接口
      * @param
      * @return
+     * 邮箱号，
      */
     @PostMapping("/registeredByEmail")
     public Result registeredByEmail(Users user){
@@ -150,7 +151,7 @@ public class LoginController {
             System.out.println(code);
             return Result.createSuccessResult(code);
         }catch(Exception e){
-            return Result.createByFailure();
+            return Result.createByFailure(e.getMessage());
         }
     }
 
@@ -162,8 +163,13 @@ public class LoginController {
     //发送邮件代码
     @PostMapping("/sendEmailCode")
     public Result sendAuthCodeEmail(@RequestParam("email") String email) {
-        String code = MailUtil.sendEmail(email);
-        return Result.createSuccessResult(code);
+        try {
+
+            String code = MailUtil.sendEmail(email);
+            return Result.createSuccessResult(code);
+        }catch (Exception e){
+            return Result.createByFailure(e.getMessage());
+        }
 
     }
 

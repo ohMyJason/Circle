@@ -1,133 +1,134 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lanqiao.circle.mapper.BlogMapper" >
-  <resultMap id="BaseResultMap" type="com.lanqiao.circle.entity.Blog" >
-    <id column="blog_id" property="blogId" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
-    <result column="is_repost" property="isRepost" jdbcType="INTEGER" />
-    <result column="repost_id" property="repostId" jdbcType="INTEGER" />
-    <result column="circle_id" property="circleId" jdbcType="INTEGER" />
-    <result column="weight" property="weight" jdbcType="INTEGER" />
-    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    blog_id, user_id, create_time, content, is_repost, repost_id, circle_id, weight, 
+<mapper namespace="com.lanqiao.circle.mapper.BlogMapper">
+    <resultMap id="BaseResultMap" type="com.lanqiao.circle.entity.Blog">
+        <id column="blog_id" property="blogId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="is_repost" property="isRepost" jdbcType="INTEGER"/>
+        <result column="repost_id" property="repostId" jdbcType="INTEGER"/>
+        <result column="circle_id" property="circleId" jdbcType="INTEGER"/>
+        <result column="weight" property="weight" jdbcType="INTEGER"/>
+        <result column="is_delete" property="isDelete" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    blog_id, user_id, create_time, content, is_repost, repost_id, circle_id, weight,
     is_delete
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from tb_blog
-    where blog_id = #{blogId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_blog
+        where blog_id = #{blogId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_blog
     where blog_id = #{blogId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lanqiao.circle.entity.Blog" >
-    insert into tb_blog (blog_id, user_id, create_time, 
-      content, is_repost, repost_id, 
+    <insert id="insert" parameterType="com.lanqiao.circle.entity.Blog">
+    insert into tb_blog (blog_id, user_id, create_time,
+      content, is_repost, repost_id,
       circle_id, weight, is_delete
       )
-    values (#{blogId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, 
-      #{content,jdbcType=VARCHAR}, #{isRepost,jdbcType=INTEGER}, #{repostId,jdbcType=INTEGER}, 
+    values (#{blogId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR},
+      #{content,jdbcType=VARCHAR}, #{isRepost,jdbcType=INTEGER}, #{repostId,jdbcType=INTEGER},
       #{circleId,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Blog"  useGeneratedKeys="true" keyProperty="blogId">
-    insert into tb_blog
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="blogId != null" >
-        blog_id,
-      </if>
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="content != null" >
-        content,
-      </if>
-      <if test="isRepost != null" >
-        is_repost,
-      </if>
-      <if test="repostId != null" >
-        repost_id,
-      </if>
-      <if test="circleId != null" >
-        circle_id,
-      </if>
-      <if test="weight != null" >
-        weight,
-      </if>
-      <if test="isDelete != null" >
-        is_delete,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="blogId != null" >
-        #{blogId,jdbcType=INTEGER},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="isRepost != null" >
-        #{isRepost,jdbcType=INTEGER},
-      </if>
-      <if test="repostId != null" >
-        #{repostId,jdbcType=INTEGER},
-      </if>
-      <if test="circleId != null" >
-        #{circleId,jdbcType=INTEGER},
-      </if>
-      <if test="weight != null" >
-        #{weight,jdbcType=INTEGER},
-      </if>
-      <if test="isDelete != null" >
-        #{isDelete,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.lanqiao.circle.entity.Blog" >
-    update tb_blog
-    <set >
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="isRepost != null" >
-        is_repost = #{isRepost,jdbcType=INTEGER},
-      </if>
-      <if test="repostId != null" >
-        repost_id = #{repostId,jdbcType=INTEGER},
-      </if>
-      <if test="circleId != null" >
-        circle_id = #{circleId,jdbcType=INTEGER},
-      </if>
-      <if test="weight != null" >
-        weight = #{weight,jdbcType=INTEGER},
-      </if>
-      <if test="isDelete != null" >
-        is_delete = #{isDelete,jdbcType=INTEGER},
-      </if>
-    </set>
-    where blog_id = #{blogId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.lanqiao.circle.entity.Blog" >
+    <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Blog" useGeneratedKeys="true"
+            keyProperty="blogId">
+        insert into tb_blog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="blogId != null">
+                blog_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="isRepost != null">
+                is_repost,
+            </if>
+            <if test="repostId != null">
+                repost_id,
+            </if>
+            <if test="circleId != null">
+                circle_id,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="blogId != null">
+                #{blogId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="isRepost != null">
+                #{isRepost,jdbcType=INTEGER},
+            </if>
+            <if test="repostId != null">
+                #{repostId,jdbcType=INTEGER},
+            </if>
+            <if test="circleId != null">
+                #{circleId,jdbcType=INTEGER},
+            </if>
+            <if test="weight != null">
+                #{weight,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.lanqiao.circle.entity.Blog">
+        update tb_blog
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="isRepost != null">
+                is_repost = #{isRepost,jdbcType=INTEGER},
+            </if>
+            <if test="repostId != null">
+                repost_id = #{repostId,jdbcType=INTEGER},
+            </if>
+            <if test="circleId != null">
+                circle_id = #{circleId,jdbcType=INTEGER},
+            </if>
+            <if test="weight != null">
+                weight = #{weight,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=INTEGER},
+            </if>
+        </set>
+        where blog_id = #{blogId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.lanqiao.circle.entity.Blog">
     update tb_blog
     set user_id = #{userId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=VARCHAR},
@@ -140,96 +141,107 @@
     where blog_id = #{blogId,jdbcType=INTEGER}
   </update>
 
-  <select id="getUserAllblogByUserId" resultType="hashmap">
+    <select id="getUserAllblogByUserId" resultType="hashmap">
         select * from index_blog where userId = #{userId,jdbcType=INTEGER}
   </select>
 
-  <select id="normalBlogs" resultType="hashmap">
-    select  b.content,u.user_name as userName,b.weight,b.is_repost as isRepost,b.circle_id as circleId,b.create_time as createTime,b.blog_id as blogId,c.circle_name as circleName
-    from tb_blog b,tb_users u,tb_circle c
-    <where>
-      <if test="content!=null">
-        b.content like '%${content}%'
-      </if>
-      and b.is_delete = 0 and b.user_id = u.user_id and u.user_id = c.user_id
-    </where>
-    LIMIT #{start},#{limit}
+    <select id="normalBlogs" resultType="hashmap">
+        select b.content,u.user_name as userName,b.weight,b.is_repost as isRepost,b.circle_id as circleId,b.create_time
+        as createTime,b.blog_id as blogId,c.circle_name as circleName
+        from tb_blog b,tb_users u,tb_circle c
+        <where>
+            <if test="content!=null">
+                b.content like '%${content}%'
+            </if>
+            and b.is_delete = 0 and b.user_id = u.user_id and u.user_id = c.user_id
+        </where>
+        LIMIT #{start},#{limit}
     </select>
 
-  <select id="getBlogCount"  resultType="integer">
-    select count(*)
-    from tb_blog
-    <where>
-      <if test="content!=null">
-        content like '%${content}%'
-      </if>
-    </where>
-  </select>
+    <select id="getBlogCount" resultType="integer">
+        select count(*)
+        from tb_blog
+        <where>
+            <if test="content!=null">
+                content like '%${content}%'
+            </if>
+        </where>
+    </select>
 
-  <update id="deleteBlog" parameterType="com.lanqiao.circle.entity.Blog" >
+    <update id="deleteBlog" parameterType="com.lanqiao.circle.entity.Blog">
     update tb_blog
     set is_delete = 1
     where blog_id = #{blogId}
   </update>
 
-  <update id="setWeight" parameterType="com.lanqiao.circle.entity.Blog" >
+    <update id="setWeight" parameterType="com.lanqiao.circle.entity.Blog">
     update tb_blog
     set weight = 10000
     where blog_id = #{blogId}
   </update>
 
-  <update id="editWeight" parameterType="com.lanqiao.circle.entity.Blog" >
-    update tb_blog
-    <set>
-        weight = #{weight,jdbcType=INTEGER},
-    </set>
-    where blog_id = #{blogId,jdbcType=INTEGER}
-  </update>
+    <update id="editWeight" parameterType="com.lanqiao.circle.entity.Blog">
+        update tb_blog
+        <set>
+            weight = #{weight,jdbcType=INTEGER},
+        </set>
+        where blog_id = #{blogId,jdbcType=INTEGER}
+    </update>
 
-  <select id="findBlog" resultType="com.lanqiao.circle.entity.Blog" parameterType="java.lang.String">
+    <select id="findBlog" resultType="com.lanqiao.circle.entity.Blog" parameterType="java.lang.String">
     select content
     from tb_blog
     where content LIKE concat(concat("%",#{content,jdbcType=VARCHAR}),"%")
   </select>
 
-  <select id="showAllBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
+    <select id="showAllBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
      select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
     from index_blog
     where isDelete = 0 ORDER BY weight DESC,createTime DESC LIMIT #{pageIndex},#{size}
   </select>
 
-  <select id="showOriginalBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
+    <select id="showOriginalBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
     select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
     from index_blog
     where isDelete = 0 and isRepost = 0 ORDER BY weight DESC,createTime DESC LIMIT #{pageIndex},#{size}
   </select>
 
-  <select id="showConcernBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
-    select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
-    from index_blog
-    where userId in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach> ORDER BY createTime DESC LIMIT #{pageIndex},#{size}
-  </select>
+    <select id="showConcernBlog" resultType="com.lanqiao.circle.entity.BlogInfo">
+        select DISTINCT
+        blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
+        from index_blog
+        where userId in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}
+    </foreach> ORDER BY createTime DESC LIMIT #{pageIndex},#{size}
+    </select>
 
-  <select id="showBlogByCreateTime" resultType="com.lanqiao.circle.entity.BlogInfo">
+    <select id="showBlogByCreateTime" resultType="com.lanqiao.circle.entity.BlogInfo">
     select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
     from index_blog
     where isDelete = 0 ORDER BY createTime DESC LIMIT #{pageIndex},#{size}
   </select>
 
-  <select id="getBlogByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="getBlogByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select * from tb_blog where user_id = #{userId,jdbcType=INTEGER} and is_delete = 0
   </select>
 
-  <select id="getAllBaseBlog" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from tb_blog
-  </select>
+    <select id="getAllBaseBlog" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_blog
+    </select>
 
-  <select id="getBlogByContent" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from tb_blog
-    <where>
-      content like '%${content}%'
-    </where>
+    <select id="getBlogByContent" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_blog
+        <where>
+            content like '%${content}%'
+        </where>
+    </select>
+
+    <select id="getBlogInfoByBlogId" resultType="com.lanqiao.circle.entity.BlogInfo" parameterType="integer">
+     select DISTINCT blogId,userId,createTime,content,isRepost,repostId,circleId,weight,type,userName,avatarUrl,circleName,likeNum,commentNum
+    from index_blog
+    where isDelete = 0 and blogId=#{blogId}
   </select>
 </mapper>

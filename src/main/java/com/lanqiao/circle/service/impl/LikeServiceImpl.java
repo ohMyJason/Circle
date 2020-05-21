@@ -28,7 +28,12 @@ public class LikeServiceImpl implements LikeService {
         try{
             Like like1 = likeMapper.selectByPrimaryKey(likeKey);
             if(like1 != null){
-                return Result.createByFailure("你已经点过赞了！");
+                //若存在条目返回1，表示取消点赞
+                likeMapper.deleteByPrimaryKey(like1);
+                Blog blog = blogMapper.selectByPrimaryKey(like1.getBlogId());
+                blog.setWeight(blog.getWeight() - 1);
+                blogMapper.updateByPrimaryKeySelective(blog);
+                return Result.createSuccessResult(1);
             }else {
                 Like like = new Like();
                 like.setUserId(likeKey.getUserId());
@@ -43,7 +48,8 @@ public class LikeServiceImpl implements LikeService {
                 }
             }
         }catch (Exception e){
-            return Result.createByFailure("操作异常，请联系管理人员！");
+            e.printStackTrace();
+            return Result.createByFailure(e.getMessage());
         }
     }
 }

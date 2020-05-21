@@ -1,9 +1,12 @@
 package com.lanqiao.circle.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lanqiao.circle.entity.Blog;
 import com.lanqiao.circle.entity.Comments;
+import com.lanqiao.circle.entity.Users;
 import com.lanqiao.circle.mapper.BlogMapper;
 import com.lanqiao.circle.mapper.CommentsMapper;
+import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.CommentsService;
 import com.lanqiao.circle.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,8 @@ public class CommentsServiceImpl implements CommentsService {
     CommentsMapper commentsMapper;
     @Autowired
     BlogMapper blogMapper;
+    @Autowired
+    UsersMapper usersMapper;
 
     @Transactional
     @Override
@@ -37,12 +42,22 @@ public class CommentsServiceImpl implements CommentsService {
                 Blog blog = blogMapper.selectByPrimaryKey(comments.getBlogId());
                 blog.setWeight(blog.getWeight() + 1);
                 blogMapper.updateByPrimaryKeySelective(blog);
-                return Result.createSuccessResult();
+                //返回评论实例，前端可以立即显示
+                JSONObject commentRes = new JSONObject();
+                Users commentUser = usersMapper.selectByPrimaryKey(comments.getUserId());
+                commentRes.put("commentTime",comments.getCommentTime());
+                commentRes.put("userName",commentUser.getUserName());
+                commentRes.put("userId",commentUser.getUserId());
+                commentRes.put("commentContent",comments.getCommentContent());
+                commentRes.put("commentContent",comments.getCommentContent());
+                commentRes.put("avatarUrl",commentUser.getAvatarUrl());
+                return Result.createSuccessResult(commentRes);
             }else {
                 return Result.createByFailure("评论失败!");
             }
         }catch (Exception e){
-            return Result.createByFailure("操作异常，请联系管理人员！");
+            e.printStackTrace();
+            return Result.createByFailure(e.getMessage());
         }
     }
 

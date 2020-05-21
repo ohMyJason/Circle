@@ -2,13 +2,11 @@ package com.lanqiao.circle.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lanqiao.circle.annotations.UserLoginToken;
-import com.lanqiao.circle.entity.Blog;
-import com.lanqiao.circle.entity.BlogItem;
-import com.lanqiao.circle.entity.Comments;
-import com.lanqiao.circle.entity.LikeKey;
+import com.lanqiao.circle.entity.*;
 import com.lanqiao.circle.mapper.BlogItemMapper;
 import com.lanqiao.circle.mapper.BlogMapper;
 import com.lanqiao.circle.mapper.CirclesMapper;
+import com.lanqiao.circle.mapper.UsersMapper;
 import com.lanqiao.circle.service.BlogService;
 import com.lanqiao.circle.service.CommentsService;
 import com.lanqiao.circle.service.LikeService;
@@ -61,6 +59,9 @@ public class BlogContoller {
 
     @Autowired
     SolrUtil solrUtil;
+
+    @Autowired
+    UsersMapper usersMapper;
 
     /**
      * 实现评论功能
@@ -146,6 +147,7 @@ public class BlogContoller {
             blog.setContent(baseBlog.get("content").toString());
             blog.setCircleId(Integer.parseInt(baseBlog.get("circleId").toString()));
             String circleName = circlesMapper.selectByPrimaryKey(blog.getCircleId()).getCircleName();
+            //暂时不用redis
             if (!redisUtil.hasMember("circle-blog-num",circleName)){
                 redisUtil.addZSet("circle-blog-num",1,circleName);
             }else {
@@ -307,5 +309,28 @@ public class BlogContoller {
         return blogService.findBlog(content);
     }
 
+
+    /**
+     * 根据Id查微博，返回单个微博
+     */
+    @PostMapping("/getBlogById")
+    public Result getBlogById(Integer blogId){
+        try {
+            BlogInfo blogInfo = blogMapper.getBlogInfoByBlogId(blogId);
+            List<String> resoureList = usersMapper.getAllResource(blogInfo.getBlogId());
+            blogInfo.setResourceList(resoureList);
+            if(blogInfo.getIsRepost() != 0) {
+                BlogInfo blogInfo1 = usersMapper.getRepostBlog(blogInfo.getRepostId());
+                List<String> resourceList1 = usersMapper.getAllResource(blogInfo1.getBlogId());
+                blogInfo1.setResourceList(resourceList1);
+                blogInfo.setBlogInfo(blogInfo1);
+            }
+            return Result.createSuccessResult(blogInfo);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.createByFailure(e.getMessage());
+        }
+
+    }
 
 }

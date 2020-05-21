@@ -68,7 +68,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     Date d1 = df.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                     Date d2 = df.parse(str[0]);
                     long diff = d1.getTime() - d2.getTime();
-                    if (diff > 3600000){
+                    //过期时间一小时太短了，一年吧
+                    if (diff > 365*3600000){
                         userId = null;
                     }else {
                         userId = str[1];

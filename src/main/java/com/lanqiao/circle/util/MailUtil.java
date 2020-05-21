@@ -19,7 +19,7 @@ public class MailUtil {
         String from = "719134834@qq.com";                 // 邮件发送人的邮件地址
         String to = email;                                         // 邮件接收人的邮件地址
         final String username = "719134834";      //发件人的邮件帐户
-        final String password = "raubxxtchgbbbcdh";                       //发件人的邮件授权码
+        final String password = "auzohqjiweofbcfc";                       //发件人的邮件授权码
 
         //定义Properties对象,设置环境信息
         Properties props = System.getProperties();

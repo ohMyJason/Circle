@@ -61,5 +61,5 @@ public interface BlogMapper {
      */
     List<Blog> getBlogByContent(@Param("content") String content);
 
-
+    BlogInfo getBlogInfoByBlogId(Integer blogId);
 }

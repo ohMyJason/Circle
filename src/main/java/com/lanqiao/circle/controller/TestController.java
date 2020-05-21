@@ -2,7 +2,9 @@ package com.lanqiao.circle.controller;
 
 import com.lanqiao.circle.entity.Circles;
 import com.lanqiao.circle.entity.Users;
+import com.lanqiao.circle.mapper.CirclesMapper;
 import com.lanqiao.circle.mapper.UsersMapper;
+import com.lanqiao.circle.service.CircleService;
 import com.lanqiao.circle.service.TokenService;
 import com.lanqiao.circle.util.CommentUtil;
 import com.lanqiao.circle.util.RedisUtil;
@@ -40,6 +42,11 @@ public class TestController {
     @Autowired
     CommentUtil commentUtil;
 
+
+
+    @Autowired
+    CircleService circleService;
+
     @GetMapping("/testMapGet")
     public Result testMapGet() {
         return null;
@@ -54,7 +61,22 @@ public class TestController {
 
     @PostMapping("/testSetRedis")
     public Result testRedis(String key,String member,Double count) {
+
+
         redisUtil.addZSet(key,count,member);
+        return Result.createSuccessResult();
+    }
+
+
+    //加入持久化失效，重新设置redis
+    @PostMapping("/testSetCircleRedis")
+    public Result testCircleRedis() {
+
+        Result result = circleService.showAllCircle();
+        for (HashMap circleInfo:(List<HashMap>)result.getData()) {
+            redisUtil.addZSet("circle-blog-num",Integer.parseInt(circleInfo.get("blogNum")+"")+Integer.parseInt(circleInfo.get("userNum")+""),circleInfo.get("circleName"));
+
+        }
         return Result.createSuccessResult();
     }
 

@@ -1,5 +1,6 @@
 package com.lanqiao.circle.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lanqiao.circle.entity.BlogInfo;
 import com.lanqiao.circle.entity.Circles;
 import com.lanqiao.circle.mapper.CirclesMapper;
@@ -66,12 +67,15 @@ public class CircleServiceImpl implements CircleService {
             String timeStr1= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             circles.setCreateTime(timeStr1);
             if(circlesMapper.insertSelective(circles) > 0){
-                return Result.createSuccessResult();
+                JSONObject res = new JSONObject();
+                res.put("circleId",circles.getCircleId());
+                return Result.createSuccessResult(res);
             }else {
                 return Result.createByFailure("插入失败！");
             }
         }catch (Exception e){
-            return Result.createByFailure("操作异常，请联系管理人员！");
+            e.printStackTrace();
+            return Result.createByFailure(e.getMessage());
 
         }
     }

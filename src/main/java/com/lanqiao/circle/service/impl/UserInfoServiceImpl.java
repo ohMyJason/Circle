@@ -72,7 +72,8 @@ public class UserInfoServiceImpl implements UserInfoService {
             }
             return Result.createSuccessResult(allFans.size(),allFans);
         }catch (Exception e){
-            return Result.createByFailure("操作异常，请联系管理人员！");
+            e.printStackTrace();
+            return Result.createByFailure(e.getMessage());
         }
     }
 
@@ -145,9 +146,12 @@ public class UserInfoServiceImpl implements UserInfoService {
             hashMap.put("bloggerNum",String.valueOf(allBlogger.size()));
             List<Blog> blogList = blogMapper.getBlogByUserId(userId);
             hashMap.put("blogNum",String.valueOf(blogList.size()));
+            hashMap.put("sex",users.getSex()+"");
+            hashMap.put("isSingle",users.getIsSingle()+"");
             return Result.createSuccessResult(hashMap);
         }catch (Exception e){
-            return Result.createByFailure("操作异常，请联系管理人员！");
+            e.printStackTrace();
+            return Result.createByFailure(e.getMessage());
         }
     }
 

@@ -14,7 +14,7 @@
     circle_id, user_id, circle_name, circle_title, create_time, circle_img_url, is_delete
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from tb_circle
     where circle_id = #{circleId,jdbcType=INTEGER}
@@ -24,14 +24,14 @@
     where circle_id = #{circleId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.lanqiao.circle.entity.Circles" >
-    insert into tb_circle (circle_id, user_id, circle_name, 
-      circle_title, create_time, circle_img_url, 
+    insert into tb_circle (circle_id, user_id, circle_name,
+      circle_title, create_time, circle_img_url,
       is_delete)
-    values (#{circleId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{circleName,jdbcType=VARCHAR}, 
-      #{circleTitle,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{circleImgUrl,jdbcType=VARCHAR}, 
+    values (#{circleId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{circleName,jdbcType=VARCHAR},
+      #{circleTitle,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{circleImgUrl,jdbcType=VARCHAR},
       #{isDelete,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Circles" >
+  <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Circles" useGeneratedKeys="true" keyProperty="circleId">
     insert into tb_circle
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="circleId != null" >

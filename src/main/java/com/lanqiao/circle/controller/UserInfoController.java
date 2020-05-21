@@ -1,6 +1,7 @@
 package com.lanqiao.circle.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.lanqiao.circle.annotations.UserLoginToken;
 import com.lanqiao.circle.entity.Users;
 import com.lanqiao.circle.mapper.UsersMapper;
@@ -172,7 +173,9 @@ public class UserInfoController {
         users.setUserId(userId);
         users.setAvatarUrl(newUrl);
         usersMapper.updateByPrimaryKeySelective(users);
-        return Result.createSuccessResult();
+        JSONObject res = new JSONObject();
+        res.put("url",newUrl);
+        return Result.createSuccessResult(res);
     }
 
     /**
