@@ -3,7 +3,7 @@ package com.lanqiao.circle.entity;
 import java.util.List;
 
 /**
- * @Author 王昊
+ * @Author ohMyJasonw
  * @Date 2019/9/10 11:48 下午
  */
 public class BlogInfo {

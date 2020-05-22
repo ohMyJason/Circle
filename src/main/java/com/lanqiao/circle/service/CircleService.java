@@ -4,7 +4,7 @@ import com.lanqiao.circle.entity.Circles;
 import com.lanqiao.circle.util.Result;
 
 /**
- * @Author 王昊
+ * @Author ohMyJasonw
  * @Date 2019/9/12 7:23 下午
  */
 public interface CircleService {

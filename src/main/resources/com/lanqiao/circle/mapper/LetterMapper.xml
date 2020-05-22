@@ -12,11 +12,11 @@
     <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    letter_id, letter_content, senter_id, receiver_id, type, resource_url, send_time, 
+    letter_id, letter_content, senter_id, receiver_id, type, resource_url, send_time,
     is_delete
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from tb_letter
     where letter_id = #{letterId,jdbcType=INTEGER}
@@ -26,11 +26,11 @@
     where letter_id = #{letterId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.lanqiao.circle.entity.Letter" >
-    insert into tb_letter (letter_id, letter_content, senter_id, 
-      receiver_id, type, resource_url, 
+    insert into tb_letter (letter_id, letter_content, senter_id,
+      receiver_id, type, resource_url,
       send_time, is_delete)
-    values (#{letterId,jdbcType=INTEGER}, #{letterContent,jdbcType=VARCHAR}, #{senterId,jdbcType=INTEGER}, 
-      #{receiverId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{resourceUrl,jdbcType=VARCHAR}, 
+    values (#{letterId,jdbcType=INTEGER}, #{letterContent,jdbcType=VARCHAR}, #{senterId,jdbcType=INTEGER},
+      #{receiverId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{resourceUrl,jdbcType=VARCHAR},
       #{sendTime,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.lanqiao.circle.entity.Letter" >
@@ -145,9 +145,9 @@ select senter_id from tb_letter where receiver_id =#{receiverId,jdbcType=INTEGER
  where senter_id in (#{senterId,jdbcType=INTEGER},#{receiverId,jdbcType=INTEGER}) and receiver_id in (#{senterId,jdbcType=INTEGER},#{receiverId,jdbcType=INTEGER}) and is_delete != 1
   order by send_time)as a
 left join
-(
-select user_id,avatar_url from tb_users) as b
+(select user_id,avatar_url from tb_users) as b
 on a.senterId = b.user_id
+ORDER BY sendTime
   </select>
 
 

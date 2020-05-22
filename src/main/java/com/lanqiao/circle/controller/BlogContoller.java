@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
- * @Author 王昊
+ * @Author ohMyJasonw
  * @Date 2019/9/11 3:09 下午
  */
 @RestController
@@ -155,7 +155,7 @@ public class BlogContoller {
             }
             blogMapper.insertSelective(blog);
             //solr 天天挂 索性不用了
-            // solrUtil.saveBlog(blog);
+             solrUtil.saveBlog(blog);
             for (Object itemId:itemIds){
                 BlogItem blogItem = blogItemMapper.selectByPrimaryKey((Integer)itemId);
                 blogItem.setBlogId(blog.getBlogId());

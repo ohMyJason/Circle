@@ -5,7 +5,7 @@ import com.lanqiao.circle.entity.LikeKey;
 import com.lanqiao.circle.util.Result;
 
 /**
- * @Author 王昊
+ * @Author ohMyJasonw
  * @Date 2019/9/11 4:19 下午
  */
 public interface LikeService {

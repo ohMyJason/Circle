@@ -6,7 +6,7 @@ import com.lanqiao.circle.util.Result;
 import java.util.List;
 
 /**
- * @Author 王昊
+ * @Author ohMyJasonw
  * @Date 2019/9/11 7:12 下午
  */
 public interface BlogService {

@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @Author 王昊
+ * @Author ohMyJasonw
  * @Date 2019/9/11 7:13 下午
  */
 @Service
@@ -110,21 +110,27 @@ public class BlogServiceImpl implements BlogService {
             for (HashMap hashMap:allBlogger) {
                 integers.add((Integer) hashMap.get("bloggerId"));
             }
-            List<BlogInfo> blogInfoList = blogMapper.showConcernBlog(integers,pageIndex,size);
-            for (BlogInfo blogInfo: blogInfoList) {
-                List<String> resoureList = usersMapper.getAllResource(blogInfo.getBlogId());
-                blogInfo.setResourceList(resoureList);
-                if(blogInfo.getIsRepost() != 0) {
-                    BlogInfo blogInfo1 = usersMapper.getRepostBlog(blogInfo.getRepostId());
-                    List<String> resourceList1 = usersMapper.getAllResource(blogInfo1.getBlogId());
-                    blogInfo1.setResourceList(resourceList1);
-                    blogInfo.setBlogInfo(blogInfo1);
+            if (integers.size()>0){
+                List<BlogInfo> blogInfoList = blogMapper.showConcernBlog(integers,pageIndex,size);
+                for (BlogInfo blogInfo: blogInfoList) {
+                    List<String> resoureList = usersMapper.getAllResource(blogInfo.getBlogId());
+                    blogInfo.setResourceList(resoureList);
+                    if(blogInfo.getIsRepost() != 0) {
+                        BlogInfo blogInfo1 = usersMapper.getRepostBlog(blogInfo.getRepostId());
+                        List<String> resourceList1 = usersMapper.getAllResource(blogInfo1.getBlogId());
+                        blogInfo1.setResourceList(resourceList1);
+                        blogInfo.setBlogInfo(blogInfo1);
+                    }
                 }
+                return Result.createSuccessResult(blogInfoList.size(),blogInfoList);
+
+            }else {
+                return Result.createByFailure("你还未关注任何人");
             }
-            return Result.createSuccessResult(blogInfoList.size(),blogInfoList);
+
         }catch (Exception e){
             e.printStackTrace();
-            return Result.createByFailure("操作异常，请联系管理人员！");
+            return Result.createByFailure(e.getMessage());
 
         }
     }

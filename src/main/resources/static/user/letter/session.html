@@ -300,9 +300,7 @@
                             },1000);
                         }
                     })
-                    websocket.send(JSON.stringify({userName:userName,senterName:myUserName}));
                    //---------------------------------------------------------------------------
-
                     $.ajax({
                         url:"/session/sendMsg",
                         type:"post",
@@ -329,6 +327,8 @@
                                         if (result.code == 0) {
                                             vm.messageList = result.data;
                                         }
+                                        //websocket改为这里发
+                                        websocket.send(JSON.stringify({userName:userName,senterName:myUserName}));
                                     }
                                 })
                                 // vm.getUserList();
